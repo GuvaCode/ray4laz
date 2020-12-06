@@ -1,0 +1,18 @@
+
+tmp/*.o
+tmp/*.ppu
+tmp/*.a
+
+bin/
+
+# macos
+.DS_Store
+*.dylib
+
+# laz
+backup/
+lib/
+*.lps
+
+# GNU+Linux
+*.so
