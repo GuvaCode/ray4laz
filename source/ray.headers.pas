@@ -88,7 +88,7 @@
 *******************************************************************************)
 
 
-unit Ray.Headers;
+unit ray.headers;
 
 {$MODE ObjFpc}{$H+}
 {$PACKRECORDS C}
