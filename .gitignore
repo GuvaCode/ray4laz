@@ -2,6 +2,7 @@
 temp/*.o
 temp/*.ppu
 temp/*.a
+temp/*.compiled
 
 binary/
 
@@ -11,6 +12,7 @@ binary/
 
 # laz
 backup/
+examples/
 lib/
 *.lps
 
