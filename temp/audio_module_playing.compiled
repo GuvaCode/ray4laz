@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/bin/fpc" Date="1594078105"/>
+  <Params Value=" -MObjFPC -Scghi -Cg -O1 -g -gl -l -vewnhibq -Fi/home/vadim/Проекты/Ray4Laz/temp -Fu/home/vadim/Проекты/Ray4Laz/package/lib/x86_64-linux -Fu/usr/share/lazarus/2.0.10/packager/units/x86_64-linux -Fu/home/vadim/Проекты/Ray4Laz/examples/ -FU/home/vadim/Проекты/Ray4Laz/temp/ -FE/home/vadim/Проекты/Ray4Laz/binary/ -o/home/vadim/Проекты/Ray4Laz/binary/audio_module_playing audio_module_playing.pas"/>
+</CONFIG>
