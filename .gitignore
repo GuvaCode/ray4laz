@@ -5,9 +5,10 @@ temp/*.a
 temp/*.compiled
 
 
-!binary/resources/*.
+binary/*
+!binary/resources/
 
-binary/
+
 
 
 # macos
