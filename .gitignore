@@ -4,8 +4,10 @@ temp/*.ppu
 temp/*.a
 temp/*.compiled
 
+
+!binary/resources/
 binary/
-!binary/resources
+
 # macos
 .DS_Store
 *.dylib
