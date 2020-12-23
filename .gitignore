@@ -5,7 +5,7 @@ temp/*.a
 temp/*.compiled
 
 binary/
-
+!binary/resources
 # macos
 .DS_Store
 *.dylib
