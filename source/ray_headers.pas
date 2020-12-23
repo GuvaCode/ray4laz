@@ -1,106 +1,27 @@
-(**********************************************************************************************
-*
-*   raylib - A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)
-*
-*   FEATURES:
-*       - NO external dependencies, all required libraries included with raylib
-*       - Multiplatform: Windows, Linux, FreeBSD, OpenBSD, NetBSD, DragonFly, MacOS, UWP, Android, Raspberry Pi, HTML5.
-*       - Written in plain C code (C99) in PascalCase/camelCase notation
-*       - Hardware accelerated with OpenGL (1.1, 2.1, 3.3 or ES2 - choose at compile)
-*       - Unique OpenGL abstraction layer (usable as standalone module): [rlgl]
-*       - Multiple Fonts formats supported (TTF, XNA fonts, AngelCode fonts)
-*       - Outstanding texture formats support, including compressed formats (DXT, ETC, ASTC)
-*       - Full 3d support for 3d Shapes, Models, Billboards, Heightmaps and more!
-*       - Flexible Materials system, supporting classic maps and PBR maps
-*       - Skeletal Animation support (CPU bones-based animation)
-*       - Shaders support, including Model shaders and Postprocessing shaders
-*       - Powerful math module for Vector, Matrix and Quaternion operations: [raymath]
-*       - Audio loading and playing with streaming support (WAV, OGG, MP3, FLAC, XM, MOD)
-*       - VR stereo rendering with configurable HMD device parameters
-*       - Bindings to multiple programming languages available!
-*
-*   NOTES:
-*       One custom font is loaded by default when InitWindow() [core]
-*       If using OpenGL 3.3 or ES2, one default shader is loaded automatically (internally defined) [rlgl]
-*       If using OpenGL 3.3 or ES2, several vertex buffers (VAO/VBO) are created to manage lines-triangles-quads
-*
-*   DEPENDENCIES (included):
-*       [core] rglfw (github.com/glfw/glfw) for window/context management and input (only PLATFORM_DESKTOP)
-*       [rlgl] glad (github.com/Dav1dde/glad) for OpenGL 3.3 extensions loading (only PLATFORM_DESKTOP)
-*       [raudio] miniaudio (github.com/dr-soft/miniaudio) for audio device/context management
-*
-*   OPTIONAL DEPENDENCIES (included):
-*       [core] rgif (Charlie Tangora, Ramon Santamaria) for GIF recording
-*       [textures] stb_image (Sean Barret) for images loading (BMP, TGA, PNG, JPEG, HDR...)
-*       [textures] stb_image_write (Sean Barret) for image writting (BMP, TGA, PNG, JPG)
-*       [textures] stb_image_resize (Sean Barret) for image resizing algorithms
-*       [textures] stb_perlin (Sean Barret) for Perlin noise image generation
-*       [text] stb_truetype (Sean Barret) for ttf fonts loading
-*       [text] stb_rect_pack (Sean Barret) for rectangles packing
-*       [models] par_shapes (Philip Rideout) for parametric 3d shapes generation
-*       [models] tinyobj_loader_c (Syoyo Fujita) for models loading (OBJ, MTL)
-*       [models] cgltf (Johannes Kuhlmann) for models loading (glTF)
-*       [raudio] stb_vorbis (Sean Barret) for OGG audio loading
-*       [raudio] dr_flac (David Reid) for FLAC audio file loading
-*       [raudio] dr_mp3 (David Reid) for MP3 audio file loading
-*       [raudio] jar_xm (Joshua Reisenauer) for XM audio module loading
-*       [raudio] jar_mod (Joshua Reisenauer) for MOD audio module loading
-*
-*
-*   LICENSE: zlib/libpng
-*
-*   raylib is licensed under an unmodified zlib/libpng license, which is an OSI-certified,
-*   BSD-like license that allows static linking with closed source software:
-*
-*   Copyright (c) 2013-2020 Ramon Santamaria (@raysan5)
-*
-*   This software is provided "as-is", without any express or implied warranty. In no event
-*   will the authors be held liable for any damages arising from the use of this software.
-*
-*   Permission is granted to anyone to use this software for any purpose, including commercial
-*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
-*
-*     1. The origin of this software must not be misrepresented; you must not claim that you
-*     wrote the original software. If you use this software in a product, an acknowledgment
-*     in the product documentation would be appreciated but is not required.
-*
-*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
-*     as being the original software.
-*
-*     3. This notice may not be removed or altered from any source distribution.
-*
-********************************************************************************
-*
-* raylib-pas - Header/DLLs Conversion
-* Copyright (c) 2019 Duvall Industries LLC.
-* All Rights Reserved.
-* https://tazdij.com
-*
-* ----------------------------------------------------------------------------
-* CHANGELOG
-*
-* Version 2019.10.24
-*   - raylib-pas for raylib 2.6.0-dev
-*
-* Version 2020.09.17
-*   - raylib-pas for raylib 3.0.0-dev
-*   todo
-*   static lib
-*
-*******************************************************************************)
+{
+ raylib-pas - Header/DLLs Conversion
+ 2019 Duvall Industries LLC.
+ 2020 GuvaCode.
+
+
+ CHANGELOG
+
+ Version 2019.10.24
+   - raylib-pas for raylib 2.6.0-dev
+
+ Version 2020.09.17
+   - raylib-pas for raylib 3.0.0-dev
+}
+
+
 
 unit ray_headers;
 
 {$mode objfpc}{$H+}
 
-
-
-
-
-
 interface
 
-//{$IFNDEF USE_RAYLIB_STATIC}
+
 const
   cDllName = {$IFDEF WINDOWS} 'raylib.dll' {$IFEND}
              {$IFDEF DARWIN} 'libraylib.dylib' {$IFEND}
@@ -111,17 +32,12 @@ const
   // Some basic Defines
   DEG2RAD = (PI / 180.0);
   RAD2DEG = (180.0 / PI);
-
   MAX_TOUCH_POINTS = 10;
-
   MAX_SHADER_LOCATIONS = 32;
   MAX_MATERIAL_MAPS = 12;
 
 type
-
-  // Color type, RGBA (32bit)
   PColor = ^TColor;
-
   TColor = record
     r: byte;
     g: byte;
@@ -133,7 +49,7 @@ type
 const
   // Some Basic Colors
   // NOTE: Custom raylib color palette for amazing visuals on WHITE background
-  LIGHTGRAY: TColor = (r: 200; g: 200; b: 200; a: 255);
+  LIGHTGRAY: TColor = (r: 200; g: 200; b: 200; a: 255);                         // Light Gray
   GRAY: TColor = (r: 130; g: 130; b: 130; a: 255);
   DARKGRAY: TColor = (r: 80; g: 80; b: 80; a: 255);
   YELLOW: TColor = (r: 253; g: 249; b: 0; a: 255);
@@ -1370,6 +1286,7 @@ procedure WaveFormat(aWave: PWave; aSampleRate: integer; aSampleSize: integer; a
 function WaveCopy(aWave: TWave): TWave; cdecl; external cDllName;
 procedure WaveCrop(aWave: PWave; initSample, finalSample: integer); cdecl; external cDllName;
 function GetWaveData(aWave: TWave): PSingle; cdecl; external cDllName;
+
 // aMusic management functions
 function LoadMusicStream(aFilename: PAnsiChar): TMusic; cdecl; external cDllName;
 procedure UnloadMusicStream(aMusic: TMusic); cdecl; external cDllName;
@@ -1384,25 +1301,27 @@ procedure SetMusicPitch(aMusic: TMusic; aPitch: single); cdecl; external cDllNam
 procedure SetMusicLoopCount(aMusic: TMusic; aCount: integer); cdecl; external cDllName;
 function GetMusicTimeLength(aMusic: TMusic): single; cdecl; external cDllName;
 function GetMusicTimePlayed(aMusic: TMusic): single; cdecl; external cDllName;
+
 // TAudioStream management functions
-function InitAudioStream(aSampleRate, aSampleSize, aChannels: cardinal): TAudioStream; cdecl; external cDllName;
-procedure UpdateAudioStream(aStream: TAudioStream; aData: Pointer; samplesCount: integer); cdecl; external cDllName;
-procedure CloseAudioStream(aStream: TAudioStream); cdecl; external cDllName;
-function IsAudioBufferProcessed(aStream: TAudioStream): boolean; cdecl; external cDllName;
-procedure PlayAudioStream(aStream: TAudioStream); cdecl; external cDllName;
-procedure PauseAudioStream(aStream: TAudioStream); cdecl; external cDllName;
-procedure ResumeAudioStream(aStream: TAudioStream); cdecl; external cDllName;
-function IsAudioStreamPlaying(aStream: TAudioStream): boolean; cdecl; external cDllName;
-procedure StopAudioStream(aStream: TAudioStream); cdecl; external cDllName;
-procedure SetAudioStreamVolume(aStream: TAudioStream; aVolume: single); cdecl; external cDllName;
-procedure SetAudioStreamPitch(aStream: TAudioStream; aPitch: single); cdecl; external cDllName;
-procedure SetAudioStreamBufferSizeDefault(aSize: integer); cdecl; external cDllName;
+function InitAudioStream(aSampleRate, aSampleSize, aChannels: cardinal): TAudioStream; cdecl; external cDllName; // Init audio stream (to stream raw audio pcm data)
+procedure UpdateAudioStream(aStream: TAudioStream; aData: Pointer; samplesCount: integer); cdecl; external cDllName; // Update audio stream buffers with data
+procedure CloseAudioStream(aStream: TAudioStream); cdecl; external cDllName; // Close audio stream and free memory
+function IsAudioBufferProcessed(aStream: TAudioStream): boolean; cdecl; external cDllName; // Check if any audio stream buffers requires refill
+procedure PlayAudioStream(aStream: TAudioStream); cdecl; external cDllName; // Play audio stream
+procedure PauseAudioStream(aStream: TAudioStream); cdecl; external cDllName; // Pause audio stream
+procedure ResumeAudioStream(aStream: TAudioStream); cdecl; external cDllName; // Resume audio stream
+function IsAudioStreamPlaying(aStream: TAudioStream): boolean; cdecl; external cDllName; // Check if audio stream is playing
+procedure StopAudioStream(aStream: TAudioStream); cdecl; external cDllName; // Stop audio stream
+procedure SetAudioStreamVolume(aStream: TAudioStream; aVolume: single); cdecl; external cDllName; // Set volume for audio stream (1.0 is max level)
+procedure SetAudioStreamPitch(aStream: TAudioStream; aPitch: single); cdecl; external cDllName; // Set pitch for audio stream (1.0 is base level)
+procedure SetAudioStreamBufferSizeDefault(aSize: integer); cdecl; external cDllName; // Default size for new audio streams
+
 // Custom Misc Functions to help simplify a few things
 function Vector2Create(aX: single; aY: single): TVector2;
 procedure Vector2Set(aVec: PVector2; aX: single; aY: single);
 function Vector3Create(aX: single; aY: single; aZ: single): TVector3;
 procedure Vector3Set(aVec: PVector3; aX: single; aY: single; aZ: single);
-function ColorCreate(aR: byte; aG: byte; aB: byte; aA: byte): TColor;
+function ColorCreatVector2Createe(aR: byte; aG: byte; aB: byte; aA: byte): TColor;
 procedure TColorSet(aColor: PColor; aR: byte; aG: byte; aB: byte; aA: byte);
 function RectangleCreate(aX: integer; aY: integer; aWidth: integer; aHeight: integer): TRectangle;
 procedure RectangleSet(aRect: PRectangle; aX: integer; aY: integer; aWidth: integer; aHeight: integer);
