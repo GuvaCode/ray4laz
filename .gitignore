@@ -17,7 +17,7 @@ binary/*
 
 # laz
 backup/
-examples/
+#examples/
 lib/
 templates/standard_game/
 *.lps
