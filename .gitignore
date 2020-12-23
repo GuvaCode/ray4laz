@@ -1,9 +1,9 @@
 
-tmp/*.o
-tmp/*.ppu
-tmp/*.a
+temp/*.o
+temp/*.ppu
+temp/*.a
 
-bin/
+binary/
 
 # macos
 .DS_Store
