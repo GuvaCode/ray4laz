@@ -5,8 +5,10 @@ temp/*.a
 temp/*.compiled
 
 
-!binary/resources/
+!binary/resources/*.
+
 binary/
+
 
 # macos
 .DS_Store
