@@ -1177,23 +1177,23 @@ function CodepointToUtf8(aCodepoint: integer; aByteLength: PInteger): PAnsiChar;
 //------------------------------------------------------------------------------------
 
 // Basic geometric 3D shapes drawing functions
-procedure DrawLine3D(aStartPos: TVector3; aEndPos: TVector3; aColor: TColor); cdecl; external cDllName;
-procedure DrawPoint3D(aPosition: TVector3; aColor: TColor); cdecl; external cDllName;
-procedure DrawCircle3D(aCenter: TVector3; aRadius: single; aRotationAxis: TVector3; aRotationAngle: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawCube(aPosition: TVector3; aWidth: single; aHeight: single; aLength: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawCubeV(aPosition: TVector3; aSize: TVector3; aColor: TColor); cdecl; external cDllName;
-procedure DrawCubeWires(aPosition: TVector3; aWidth: single; aHeight: single; aLength: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawCubeWiresV(aPosition, aSize: TVector3; aColor: TColor); cdecl; external cDllName;
-procedure DrawCubeTexture(aTexture: TTexture2D; aPosition: TVector3; aWidth: single; aHeight: single; aLength: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawSphere(aCenterPos: TVector3; aRadius: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawSphereEx(aCenterPos: TVector3; aRadius: single; aRings: integer; aSlices: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawSphereWires(aCenterPos: TVector3; aRadius: single; aRings: integer; aSlices: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawCylinder(aPosition: TVector3; radiusTop: single; aRadiusBottom: single; aHeight: single; aSlices: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawCylinderWires(aPosition: TVector3; radiusTop: single; aRadiusBottom: single; aHeight: single; aSlices: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawPlane(aCenterPos: TVector3; aSize: TVector2; aColor: TColor); cdecl; external cDllName;
-procedure DrawRay(TRay: TRay; aColor: TColor); cdecl; external cDllName;
-procedure DrawGrid(aSlices: integer; aSpacing: single); cdecl; external cDllName;
-procedure DrawGizmo(aPosition: TVector3); cdecl; external cDllName;
+procedure DrawLine3D(aStartPos: TVector3; aEndPos: TVector3; aColor: TColor); cdecl; external cDllName;  // Draw a line in 3D world space
+procedure DrawPoint3D(aPosition: TVector3; aColor: TColor); cdecl; external cDllName; // Draw a point in 3D space, actually a small line
+procedure DrawCircle3D(aCenter: TVector3; aRadius: single; aRotationAxis: TVector3; aRotationAngle: single; aColor: TColor); cdecl; external cDllName; // Draw a circle in 3D world space
+procedure DrawCube(aPosition: TVector3; aWidth: single; aHeight: single; aLength: single; aColor: TColor); cdecl; external cDllName; // Draw cube
+procedure DrawCubeV(aPosition: TVector3; aSize: TVector3; aColor: TColor); cdecl; external cDllName; // Draw cube (Vector version)
+procedure DrawCubeWires(aPosition: TVector3; aWidth: single; aHeight: single; aLength: single; aColor: TColor); cdecl; external cDllName; // Draw cube wires
+procedure DrawCubeWiresV(aPosition, aSize: TVector3; aColor: TColor); cdecl; external cDllName; // Draw cube wires (Vector version)
+procedure DrawCubeTexture(aTexture: TTexture2D; aPosition: TVector3; aWidth: single; aHeight: single; aLength: single; aColor: TColor); cdecl; external cDllName; // Draw cube textured
+procedure DrawSphere(aCenterPos: TVector3; aRadius: single; aColor: TColor); cdecl; external cDllName; // Draw sphere
+procedure DrawSphereEx(aCenterPos: TVector3; aRadius: single; aRings: integer; aSlices: integer; aColor: TColor); cdecl; external cDllName; // Draw sphere with extended parameters
+procedure DrawSphereWires(aCenterPos: TVector3; aRadius: single; aRings: integer; aSlices: integer; aColor: TColor); cdecl; external cDllName; // Draw sphere wires
+procedure DrawCylinder(aPosition: TVector3; radiusTop: single; aRadiusBottom: single; aHeight: single; aSlices: integer; aColor: TColor); cdecl; external cDllName; // Draw a cylinder/cone
+procedure DrawCylinderWires(aPosition: TVector3; radiusTop: single; aRadiusBottom: single; aHeight: single; aSlices: integer; aColor: TColor); cdecl; external cDllName; // Draw a cylinder/cone wires
+procedure DrawPlane(aCenterPos: TVector3; aSize: TVector2; aColor: TColor); cdecl; external cDllName; // Draw a plane XZ
+procedure DrawRay(TRay: TRay; aColor: TColor); cdecl; external cDllName; // Draw a ray line
+procedure DrawGrid(aSlices: integer; aSpacing: single); cdecl; external cDllName; // Draw a grid (centered at (0, 0, 0))
+procedure DrawGizmo(aPosition: TVector3); cdecl; external cDllName;  // Draw simple gizmo
 //DrawTorus(), DrawTeapot() could be useful?
 
 //------------------------------------------------------------------------------------
