@@ -1254,53 +1254,57 @@ function IsVrSimulatorReady(): boolean; cdecl; external cDllName;
 procedure ToggleVrMode(); cdecl; external cDllName;
 procedure BeginVrDrawing(); cdecl; external cDllName;
 procedure EndVrDrawing(); cdecl; external cDllName;
+
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
 //------------------------------------------------------------------------------------
+
 // Audio device management functions
-procedure InitAudioDevice; cdecl; external cDllName;
-procedure CloseAudioDevice; cdecl; external cDllName;
-function IsAudioDeviceReady: boolean; cdecl; external cDllName;
-procedure SetMasterVolume(aVolume: single); cdecl; external cDllName;
+procedure InitAudioDevice; cdecl; external cDllName; // Initialize audio device and context
+procedure CloseAudioDevice; cdecl; external cDllName; // Close the audio device and context
+function IsAudioDeviceReady: boolean; cdecl; external cDllName; // Check if audio device has been initialized successfully
+procedure SetMasterVolume(aVolume: single); cdecl; external cDllName; // Set master volume (listener)
+
 // TWave/TSound loading/unloading functions
-function LoadWave(aFilename: PAnsiChar): TWave; cdecl; external cDllName;
-function LoadSound(aFilename: PAnsiChar): TSound; cdecl; external cDllName;
-function LoadSoundFromWave(aWave: TWave): TSound; cdecl; external cDllName;
-procedure UpdateSound(aSound: TSound; aData: Pointer; samplesCount: integer); cdecl; external cDllName;
-procedure UnloadWave(aWave: TWave); cdecl; external cDllName;
-procedure UnloadSound(aSound: TSound); cdecl; external cDllName;
+function LoadWave(aFilename: PAnsiChar): TWave; cdecl; external cDllName; // Load wave data from file
+function LoadSound(aFilename: PAnsiChar): TSound; cdecl; external cDllName; // Load sound from file
+// Load wave data from filefunction LoadSoundFromWave(aWave: TWave): TSound; cdecl; external cDllName; // Load sound from wave data
+procedure UpdateSound(aSound: TSound; aData: Pointer; samplesCount: integer); cdecl; external cDllName; // Update sound buffer with new data
+procedure UnloadWave(aWave: TWave); cdecl; external cDllName; // Unload wave data
+procedure UnloadSound(aSound: TSound); cdecl; external cDllName; // Unload sound
 procedure ExportWave(aWave: TWave; aFileName: PAnsiChar); cdecl; external cDllName;// Export wave data to file
-procedure ExportWaveAsCode(aWave: TWave; aFileName: PAnsiChar); cdecl; external cDllName;
+procedure ExportWaveAsCode(aWave: TWave; aFileName: PAnsiChar); cdecl; external cDllName; // Export wave sample data to code (.h)
+
 // TWave/TSound management functions
-procedure PlaySound(aSound: TSound); cdecl; external cDllName;
-procedure StopSound(aSound: TSound); cdecl; external cDllName;
-procedure PauseSound(aSound: TSound); cdecl; external cDllName;
-procedure ResumeSound(aSound: TSound); cdecl; external cDllName;
-procedure PlaySoundMulti(aSound: TSound); cdecl; external cDllName;
-procedure StopSoundMulti(); cdecl; external cDllName;
-function GetSoundsPlaying(): integer; cdecl; external cDllName;
-function IsSoundPlaying(aSound: TSound): boolean; cdecl; external cDllName;
-procedure SetSoundVolume(aSound: TSound; aVolume: single); cdecl; external cDllName;
-procedure SetSoundPitch(aSound: TSound; aPitch: single); cdecl; external cDllName;
-procedure WaveFormat(aWave: PWave; aSampleRate: integer; aSampleSize: integer; aChannels: integer); cdecl; external cDllName;
-function WaveCopy(aWave: TWave): TWave; cdecl; external cDllName;
-procedure WaveCrop(aWave: PWave; initSample, finalSample: integer); cdecl; external cDllName;
-function GetWaveData(aWave: TWave): PSingle; cdecl; external cDllName;
+procedure PlaySound(aSound: TSound); cdecl; external cDllName; // Play a sound
+procedure StopSound(aSound: TSound); cdecl; external cDllName; // Stop playing a sound
+procedure PauseSound(aSound: TSound); cdecl; external cDllName; // Pause a sound
+procedure ResumeSound(aSound: TSound); cdecl; external cDllName; // Resume a paused sound
+procedure PlaySoundMulti(aSound: TSound); cdecl; external cDllName; // Play a sound (using multichannel buffer pool)
+procedure StopSoundMulti(); cdecl; external cDllName; // Stop any sound playing (using multichannel buffer pool)
+function GetSoundsPlaying(): integer; cdecl; external cDllName; // Get number of sounds playing in the multichannel
+function IsSoundPlaying(aSound: TSound): boolean; cdecl; external cDllName; // Check if a sound is currently playing
+procedure SetSoundVolume(aSound: TSound; aVolume: single); cdecl; external cDllName; // Set volume for a sound (1.0 is max level)
+procedure SetSoundPitch(aSound: TSound; aPitch: single); cdecl; external cDllName; // Set pitch for a sound (1.0 is base level)
+procedure WaveFormat(aWave: PWave; aSampleRate: integer; aSampleSize: integer; aChannels: integer); cdecl; external cDllName; // Convert wave data to desired format
+function WaveCopy(aWave: TWave): TWave; cdecl; external cDllName; // Copy a wave to a new wave
+procedure WaveCrop(aWave: PWave; initSample, finalSample: integer); cdecl; external cDllName; // Crop a wave to defined samples range
+function GetWaveData(aWave: TWave): PSingle; cdecl; external cDllName; // Get samples data from wave as a floats array
 
 // aMusic management functions
-function LoadMusicStream(aFilename: PAnsiChar): TMusic; cdecl; external cDllName;
-procedure UnloadMusicStream(aMusic: TMusic); cdecl; external cDllName;
-procedure PlayMusicStream(aMusic: TMusic); cdecl; external cDllName;
-procedure UpdateMusicStream(aMusic: TMusic); cdecl; external cDllName;
-procedure StopMusicStream(aMusic: TMusic); cdecl; external cDllName;
-procedure PauseMusicStream(aMusic: TMusic); cdecl; external cDllName;
-procedure ResumeMusicStream(aMusic: TMusic); cdecl; external cDllName;
-function IsMusicPlaying(aMusic: TMusic): boolean; cdecl; external cDllName;
-procedure SetMusicVolume(aMusic: TMusic; aVolume: single); cdecl; external cDllName;
-procedure SetMusicPitch(aMusic: TMusic; aPitch: single); cdecl; external cDllName;
-procedure SetMusicLoopCount(aMusic: TMusic; aCount: integer); cdecl; external cDllName;
-function GetMusicTimeLength(aMusic: TMusic): single; cdecl; external cDllName;
-function GetMusicTimePlayed(aMusic: TMusic): single; cdecl; external cDllName;
+function LoadMusicStream(aFilename: PAnsiChar): TMusic; cdecl; external cDllName; // Load music stream from file
+procedure UnloadMusicStream(aMusic: TMusic); cdecl; external cDllName; // Unload music stream
+procedure PlayMusicStream(aMusic: TMusic); cdecl; external cDllName; // Start music playing
+procedure UpdateMusicStream(aMusic: TMusic); cdecl; external cDllName; // Updates buffers for music streaming
+procedure StopMusicStream(aMusic: TMusic); cdecl; external cDllName; // Stop music playing
+procedure PauseMusicStream(aMusic: TMusic); cdecl; external cDllName; // Pause music playing
+procedure ResumeMusicStream(aMusic: TMusic); cdecl; external cDllName; // Resume playing paused music
+function IsMusicPlaying(aMusic: TMusic): boolean; cdecl; external cDllName; // Check if music is playing
+procedure SetMusicVolume(aMusic: TMusic; aVolume: single); cdecl; external cDllName; // Set volume for music (1.0 is max level)
+procedure SetMusicPitch(aMusic: TMusic; aPitch: single); cdecl; external cDllName; // Set pitch for a music (1.0 is base level)
+procedure SetMusicLoopCount(aMusic: TMusic; aCount: integer); cdecl; external cDllName; // Set music loop count (loop repeats)
+function GetMusicTimeLength(aMusic: TMusic): single; cdecl; external cDllName; // Get music time length (in seconds)
+function GetMusicTimePlayed(aMusic: TMusic): single; cdecl; external cDllName; // Get current music time played (in seconds)
 
 // TAudioStream management functions
 function InitAudioStream(aSampleRate, aSampleSize, aChannels: cardinal): TAudioStream; cdecl; external cDllName; // Init audio stream (to stream raw audio pcm data)
