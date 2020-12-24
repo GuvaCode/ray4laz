@@ -1126,45 +1126,45 @@ function GetPixelDataSize(aWidth: integer; aHeight: integer; aFormat: integer): 
 //------------------------------------------------------------------------------------
 
 // TFont loading/unloading functions
-function GetFontDefault(): TFont; cdecl; external cDllName;
-function LoadFont(aFilename: PAnsiChar): TFont; cdecl; external cDllName;
-function LoadFontEx(aFilename: PAnsiChar; aFontSize: integer; aFontChars: PInteger; aCharsCount: integer): TFont; cdecl; external cDllName;
-function LoadFontFromImage(aImage: TImage; aKey: TColor; aFirstChar: integer): TFont; cdecl; external cDllName;
-function LoadFontData(aFilename: PAnsiChar; aFontSize: integer; aFontChars: PInteger; aCharsCount, atype: integer): PCharInfo; cdecl; external cDllName;
-function GenImageFontAtlas(aChars: PCharInfo; aRecs: PPRectangle; aCharsCount, aFontSize, aPadding, aPackMethod: integer): TImage; cdecl; external cDllName;
-procedure UnloadFont(aFont: TFont); cdecl; external cDllName;
+function GetFontDefault(): TFont; cdecl; external cDllName; // Get the default Font
+function LoadFont(aFilename: PAnsiChar): TFont; cdecl; external cDllName; // Load font from file into GPU memory (VRAM)
+function LoadFontEx(aFilename: PAnsiChar; aFontSize: integer; aFontChars: PInteger; aCharsCount: integer): TFont; cdecl; external cDllName; // Load font from file with extended parameters
+function LoadFontFromImage(aImage: TImage; aKey: TColor; aFirstChar: integer): TFont; cdecl; external cDllName; // Load font from Image (XNA style)
+function LoadFontData(aFilename: PAnsiChar; aFontSize: integer; aFontChars: PInteger; aCharsCount, atype: integer): PCharInfo; cdecl; external cDllName; // Load font data for further use
+function GenImageFontAtlas(aChars: PCharInfo; aRecs: PPRectangle; aCharsCount, aFontSize, aPadding, aPackMethod: integer): TImage; cdecl; external cDllName; // Generate image font atlas using chars info
+procedure UnloadFont(aFont: TFont); cdecl; external cDllName; // Unload Font from GPU memory (VRAM)
 
 // aText drawing functions
-procedure DrawFPS(aPosX: integer; aPosY: integer); cdecl; external cDllName;
-procedure DrawText(aText: PAnsiChar; aPosX: integer; aPosY: integer; aFontSize: integer; TColor: TColor); cdecl; external cDllName;
-procedure DrawTextEx(aFont: TFont; aText: PAnsiChar; aPosition: TVector2; aFontSize: single; aSpacing: single; aTint: TColor); cdecl; external cDllName;
-procedure DrawTextRec(afont: TFont; aText: PAnsiChar; rec: TRectangle; aFontSize, aSpacing: single; aWordWrap: boolean; aTint: TColor); cdecl; external cDllName;// Draw text using font inside rectangle limits
-procedure DrawTextRecEx(aFont: TFont; aText: PAnsiChar; aRec: TRectangle; aFontSize, aSpacing: single; aWordWrap: boolean; aTint: TColor; aSelectStart, aSelectLength: integer; aSelectText, selectBack: TColor); cdecl; external cDllName;
-procedure DrawTextCodepoint(aFont: TFont; aCodepoint: integer; aPosition: TVector2; aScale: single; aColor: TColor); cdecl; external cDllName;
+procedure DrawFPS(aPosX: integer; aPosY: integer); cdecl; external cDllName; // Shows current FPS
+procedure DrawText(aText: PAnsiChar; aPosX: integer; aPosY: integer; aFontSize: integer; TColor: TColor); cdecl; external cDllName; // Draw text (using default font)
+procedure DrawTextEx(aFont: TFont; aText: PAnsiChar; aPosition: TVector2; aFontSize: single; aSpacing: single; aTint: TColor); cdecl; external cDllName; // Draw text using font and additional parameters
+procedure DrawTextRec(afont: TFont; aText: PAnsiChar; rec: TRectangle; aFontSize, aSpacing: single; aWordWrap: boolean; aTint: TColor); cdecl; external cDllName; // Draw text using font inside rectangle limits
+procedure DrawTextRecEx(aFont: TFont; aText: PAnsiChar; aRec: TRectangle; aFontSize, aSpacing: single; aWordWrap: boolean; aTint: TColor; aSelectStart, aSelectLength: integer; aSelectText, selectBack: TColor); cdecl; external cDllName; // Draw text using font inside rectangle limits with support for text selection
+procedure DrawTextCodepoint(aFont: TFont; aCodepoint: integer; aPosition: TVector2; aScale: single; aColor: TColor); cdecl; external cDllName; // Draw one character (codepoint)
 
 // Text misc. functions
-function MeasureText(aText: PAnsiChar; aFontSize: integer): integer; cdecl; external cDllName;
-function MeasureTextEx(aFont: TFont; aText: PAnsiChar; aFontSize, aSpacing: single): TVector2; cdecl; external cDllName;
-function GetGlyphIndex(aFont: TFont; character: integer): integer; cdecl; external cDllName;
+function MeasureText(aText: PAnsiChar; aFontSize: integer): integer; cdecl; external cDllName; // Measure string width for default font
+function MeasureTextEx(aFont: TFont; aText: PAnsiChar; aFontSize, aSpacing: single): TVector2; cdecl; external cDllName; // Measure string size for Font
+function GetGlyphIndex(aFont: TFont; character: integer): integer; cdecl; external cDllName; // Get index position for a unicode character on font
 
 // Text strings management functions (no utf8 strings, only byte chars)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
-function TextCopy(aDst: PAnsiChar; aScr: PAnsichar): integer; cdecl; external cDllName;
-function TextIsEqual(aText1, aText2: PAnsiChar): boolean; cdecl; external cDllName;
-function TextLength(aText: PAnsiChar): cardinal; cdecl; external cDllName;
-function TextFormat(aText: PAnsiChar; aArg: integer): PAnsiChar; cdecl; external cDllName;//3.0.0
-function TextSubtext(aText: PAnsiChar; aPosition: integer; aLength: integer): PAnsiChar; cdecl; external cDllName;
-function TextReplace(aText, aReplace, aBy: PAnsiChar): PAnsiChar; cdecl; external cDllName;
-function TextInsert(aText, aInsert: PAnsiChar; aPosition: integer): PAnsiChar; cdecl; external cDllName;// Insert text in a position (memory should be freed!)
-function TextJoin(aTextList: PPAnsiChar; aCount: integer; aDelimiter: PAnsiChar): PAnsiChar; cdecl; external cDllName;// Join text strings with delimiter
-function TextSplit(aText: PAnsiChar; aDelimiter: char; aCount: PInteger): PPAnsiChar; cdecl; external cDllName;// Split text into multiple strings
-procedure TextAppend(aText, aAppend: PAnsiChar; aPosition: PInteger); cdecl; external cDllName;// Append text at specific position and move cursor!
-function TextFindIndex(aText, aFind: PAnsiChar): integer; cdecl; external cDllName;// Find first text occurrence within a string
-function TextToUpper(aText: PAnsiChar): PAnsiChar; cdecl; external cDllName;// Get upper case version of provided string
-function TextToLower(aText: PAnsiChar): PAnsiChar; cdecl; external cDllName;// Get lower case version of provided string
-function TextToPascal(aText: PAnsiChar): PAnsiChar; cdecl; external cDllName;// Get Pascal case notation version of provided string
-function TextToInteger(aText: PAnsiChar): integer; cdecl; external cDllName;
-function TextToUtf8(aCodepoints: PInteger; aLength: integer): PAnsiChar; cdecl; external cDllName;
+function TextCopy(aDst: PAnsiChar; aScr: PAnsichar): integer; cdecl; external cDllName; // Copy one string to another, returns bytes copied
+function TextIsEqual(aText1, aText2: PAnsiChar): boolean; cdecl; external cDllName; // Check if two text string are equal
+function TextLength(aText: PAnsiChar): cardinal; cdecl; external cDllName; // Get text length, checks for '\0' ending
+function TextFormat(aText: PAnsiChar; aArg: integer): PAnsiChar; cdecl; external cDllName; // Text formatting with variables (sprintf style)
+function TextSubtext(aText: PAnsiChar; aPosition: integer; aLength: integer): PAnsiChar; cdecl; external cDllName; // Get a piece of a text string
+function TextReplace(aText, aReplace, aBy: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Replace text string (memory must be freed!)
+function TextInsert(aText, aInsert: PAnsiChar; aPosition: integer): PAnsiChar; cdecl; external cDllName; // Insert text in a position (memory should be freed!)
+function TextJoin(aTextList: PPAnsiChar; aCount: integer; aDelimiter: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Join text strings with delimiter
+function TextSplit(aText: PAnsiChar; aDelimiter: char; aCount: PInteger): PPAnsiChar; cdecl; external cDllName; // Split text into multiple strings
+procedure TextAppend(aText, aAppend: PAnsiChar; aPosition: PInteger); cdecl; external cDllName; // Append text at specific position and move cursor!
+function TextFindIndex(aText, aFind: PAnsiChar): integer; cdecl; external cDllName; // Find first text occurrence within a string
+function TextToUpper(aText: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get upper case version of provided string
+function TextToLower(aText: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get lower case version of provided string
+function TextToPascal(aText: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get Pascal case notation version of provided string
+function TextToInteger(aText: PAnsiChar): integer; cdecl; external cDllName; // Get integer value from text (negative values not supported)
+function TextToUtf8(aCodepoints: PInteger; aLength: integer): PAnsiChar; cdecl; external cDllName; // Encode text codepoint into utf8 text (memory must be freed!)
 
 // UTF8 text strings management functions
 function GetCodepoints(aText: PAnsiChar; aCount: PInteger): PInteger; cdecl; external cDllName;// Get all codepoints in a string, codepoints count returned by parameters
