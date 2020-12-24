@@ -1213,47 +1213,56 @@ function CheckCollisionRayBox(aRay: TRay; aBox: TBoundingBox): boolean; cdecl; e
 function GetCollisionRayModel(aRay: TRay; var aModel: TModel): TRayHitInfo; cdecl; external cDllName;
 function GetCollisionRayTriangle(aRay: TRay; aP1: TVector3; aP2: TVector3; aP3: TVector3): TRayHitInfo; cdecl; external cDllName;
 function GetCollisionRayGround(aRay: TRay; aGroundHeight: single): TRayHitInfo; cdecl; external cDllName;
+
 //------------------------------------------------------------------------------------
-// Shaders System Functions (Module: rlgl) NOTE: This functions are useless when using OpenGL 1.1
+// Shaders System Functions (Module: rlgl)
+// NOTE: This functions are useless when using OpenGL 1.1
 //------------------------------------------------------------------------------------
+
 // TShader loading/unloading functions
-function LoadShader(avsFileName: PAnsiChar; afsFileName: PAnsiChar): TShader; cdecl; external cDllName;
-function LoadShaderCode(avsCode: PAnsiChar; afsCode: PAnsiChar): TShader; cdecl; external cDllName;
-procedure UnloadShader(aShader: TShader); cdecl; external cDllName;
-function GetShaderDefault(): TShader; cdecl; external cDllName;
-function GetTextureDefault(): TTexture2D; cdecl; external cDllName;
-function GetShapesTexture(): TTexture2D; cdecl; external cDllName;
-function GetShapesTextureRec(): TRectangle; cdecl; external cDllName;
-procedure SetShapesTexture(aTexture: TTexture2D; aSource: TRectangle); cdecl; external cDllName;
+function LoadShader(avsFileName: PAnsiChar; afsFileName: PAnsiChar): TShader; cdecl; external cDllName; // Load shader from files and bind default locations
+function LoadShaderCode(avsCode: PAnsiChar; afsCode: PAnsiChar): TShader; cdecl; external cDllName; // Load shader from code strings and bind default locations
+procedure UnloadShader(aShader: TShader); cdecl; external cDllName; // Unload shader from GPU memory (VRAM)
+
+function GetShaderDefault(): TShader; cdecl; external cDllName; // Get default shader
+function GetTextureDefault(): TTexture2D; cdecl; external cDllName; // Get default texture
+function GetShapesTexture(): TTexture2D; cdecl; external cDllName; // Get texture to draw shapes
+function GetShapesTextureRec(): TRectangle; cdecl; external cDllName; // Get texture rectangle to draw shapes
+procedure SetShapesTexture(aTexture: TTexture2D; aSource: TRectangle); cdecl; external cDllName; // Define default texture used to draw shapes
+
 // TShader configuration functions
-function GetShaderLocation(aShader: TShader; aUniformName: PAnsiChar): integer; cdecl; external cDllName;
-procedure SetShaderValue(aShader: TShader; aUniformLoc: integer; aValue: Pointer; aUniformType: integer); cdecl; external cDllName;
-procedure SetShaderValueV(aShader: TShader; aUniformLoc: integer; aValue: Pointer; aUniformType, aCount: integer); cdecl; external cDllName;
-procedure SetShaderValueMatrix(TShader: TShader; aUniformLoc: integer; mat: TMatrix); cdecl; external cDllName;
-procedure SetShaderValueTexture(aShader: TShader; aUniformLoc: integer; aTexture: TTexture2D); cdecl; external cDllName;
-procedure SetMatrixProjection(aProj: TMatrix); cdecl; external cDllName;
-procedure SetMatrixModelview(aView: TMatrix); cdecl; external cDllName;
-function GetMatrixModelview(): TMatrix; cdecl; external cDllName;
-function GetMatrixProjection(): TMatrix; cdecl; external cDllName;
-// aTexture maps generation (PBR) NOTE: Required shaders should be provided
-function GenTextureCubemap(aShader: TShader; aSkyHDR: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName;
-function GenTextureIrradiance(aShader: TShader; aCubemap: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName;
-function GenTexturePrefilter(aShader: TShader; aCubemap: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName;
-function GenTextureBRDF(aShader: TShader; aCubemap: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName;
+function GetShaderLocation(aShader: TShader; aUniformName: PAnsiChar): integer; cdecl; external cDllName; // Get shader uniform location
+procedure SetShaderValue(aShader: TShader; aUniformLoc: integer; aValue: Pointer; aUniformType: integer); cdecl; external cDllName; // Set shader uniform value
+procedure SetShaderValueV(aShader: TShader; aUniformLoc: integer; aValue: Pointer; aUniformType, aCount: integer); cdecl; external cDllName; // Set shader uniform value vector
+procedure SetShaderValueMatrix(TShader: TShader; aUniformLoc: integer; mat: TMatrix); cdecl; external cDllName; // Set shader uniform value (matrix 4x4)
+procedure SetShaderValueTexture(aShader: TShader; aUniformLoc: integer; aTexture: TTexture2D); cdecl; external cDllName; // Set shader uniform value for texture
+procedure SetMatrixProjection(aProj: TMatrix); cdecl; external cDllName; // Set a custom projection matrix (replaces internal projection matrix)
+procedure SetMatrixModelview(aView: TMatrix); cdecl; external cDllName; // Set a custom modelview matrix (replaces internal modelview matrix)
+function GetMatrixModelview(): TMatrix; cdecl; external cDllName; // Get internal modelview matrix
+function GetMatrixProjection(): TMatrix; cdecl; external cDllName; // Get internal projection matrix
+
+// aTexture maps generation (PBR)
+//NOTE: Required shaders should be provided
+function GenTextureCubemap(aShader: TShader; aSkyHDR: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName; // Generate cubemap texture from 2D texture
+function GenTextureIrradiance(aShader: TShader; aCubemap: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName; // Generate irradiance texture using cubemap data
+function GenTexturePrefilter(aShader: TShader; aCubemap: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName; // Generate prefilter texture using cubemap data
+function GenTextureBRDF(aShader: TShader; aCubemap: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName; // Generate BRDF texture
+
 // Shading begin/end functions
 procedure BeginShaderMode(aShader: TShader); cdecl; external cDllName;// Begin custom shader drawing
 procedure EndShaderMode(); cdecl; external cDllName;// End custom shader drawing (use default shader)
 procedure BeginBlendMode(aMode: integer); cdecl; external cDllName;// Begin blending mode (alpha, additive, multiplied)
 procedure EndBlendMode(); cdecl; external cDllName;// End blending mode (reset to default: alpha blending)
+
 // VR control functions
-procedure InitVrSimulator(); cdecl; external cDllName;
-procedure CloseVrSimulator(); cdecl; external cDllName;
-procedure UpdateVrTracking(aCamera: PCamera); cdecl; external cDllName;
-procedure SetVrConfiguration(aInfo: TVrDeviceInfo; aDistortion: TShader); cdecl; external cDllName;
-function IsVrSimulatorReady(): boolean; cdecl; external cDllName;
-procedure ToggleVrMode(); cdecl; external cDllName;
-procedure BeginVrDrawing(); cdecl; external cDllName;
-procedure EndVrDrawing(); cdecl; external cDllName;
+procedure InitVrSimulator(); cdecl; external cDllName; // Init VR simulator for selected device parameters
+procedure CloseVrSimulator(); cdecl; external cDllName; // Close VR simulator for current device
+procedure UpdateVrTracking(aCamera: PCamera); cdecl; external cDllName; // Update VR tracking (position and orientation) and camera
+procedure SetVrConfiguration(aInfo: TVrDeviceInfo; aDistortion: TShader); cdecl; external cDllName; // Set stereo rendering configuration parameters
+function IsVrSimulatorReady(): boolean; cdecl; external cDllName; // Detect if VR simulator is ready
+procedure ToggleVrMode(); cdecl; external cDllName; // Enable/Disable VR experience
+procedure BeginVrDrawing(); cdecl; external cDllName; // Begin VR simulator stereo rendering
+procedure EndVrDrawing(); cdecl; external cDllName; // End VR simulator stereo rendering
 
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
