@@ -813,12 +813,14 @@ function GetWindowPosition(): TVector2; cdecl; external cDllName; // Get window 
 function GetMonitorName(aMonitor: integer): PAnsiChar; cdecl; external cDllName;
 function GetClipboardText(): PAnsiChar; cdecl; external cDllName;
 procedure SetClipboardText(aText: PAnsiChar); cdecl; external cDllName;
+
 // Cursor-related functions
 procedure ShowCursor(); cdecl; external cDllName;
 procedure HideCursor(); cdecl; external cDllName;
 function IsCursorHidden(): boolean; cdecl; external cDllName;
 procedure EnableCursor(); cdecl; external cDllName;
 procedure DisableCursor(); cdecl; external cDllName;
+
 // Drawing-related functions
 procedure ClearBackground(aColor: TColor); cdecl; external cDllName;
 procedure BeginDrawing(); cdecl; external cDllName;
@@ -831,6 +833,7 @@ procedure BeginTextureMode(aTarget: TRenderTexture2D); cdecl; external cDllName;
 procedure EndTextureMode(); cdecl; external cDllName;
 procedure BeginScissorMode(aX, aY, aWidth, aHeight: integer); cdecl; external cDllName;
 procedure EndScissorMode(); cdecl; external cDllName;
+
 // Screen-space-related functions
 function GetMouseRay(aMousePosition: TVector2; aCamera: TCamera): TRay; cdecl; external cDllName;
 function GetCameraMatrix(aCamera: TCamera): TMatrix; cdecl; external cDllName;
@@ -838,11 +841,13 @@ function GetCameraMatrix2D(aCamera: TCamera2D): TMatrix; cdecl; external cDllNam
 function GetWorldToScreen(aPosition: TVector3; aCamera: TCamera): TVector2; cdecl; external cDllName;
 function GetWorldToScreen2D(aPosition: TVector2; aCamera: TCamera2D): TVector2; cdecl; external cDllName;
 function GetScreenToWorld2D(aPosition: TVector2; aCamera: TCamera2D): TVector2; cdecl; external cDllName;
+
 // Timming-related functions
 procedure SetTargetFPS(aFPS: integer); cdecl; external cDllName;
 function GetFPS(): integer; cdecl; external cDllName;
 function GetFrameTime(): single; cdecl; external cDllName;
 function GetTime(): double; cdecl; external cDllName;
+
 // TColor-related functions
 function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
 function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName;
@@ -851,6 +856,7 @@ function ColorToHSV(aColor: TColor): TVector3; cdecl; external cDllName;
 function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName;
 function GetColor(aHexValue: integer): TColor; cdecl; external cDllName;
 function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
+
 // Misc. functions
 procedure SetConfigFlags(aFlags: cardinal); cdecl; external cDllName;
 procedure SetTraceLogLevel(aLogType: integer); cdecl; external cDllName;
@@ -859,6 +865,7 @@ procedure SetTraceLogCallback(aCallback: TTraceLogCallback); cdecl; external cDl
 procedure TraceLog(aLogType: integer; aText: PAnsiChar); cdecl; external cDllName;
 procedure TakeScreenshot(aFilename: PAnsiChar); cdecl; external cDllName;
 function GetRandomValue(aMin: integer; aMax: integer): integer; cdecl; external cDllName;
+
 // Files management functions
 function LoadFileData(aFileName: PAnsiChar; bytesRead: PCardinal): PAnsiChar; cdecl; external;
 procedure SaveFileData(aFileName: PAnsiChar; aData: Pointer; bytesToWrite: cardinal); cdecl; external;
@@ -883,14 +890,17 @@ function GetFileModTime(aFilename: PAnsiChar): longint; cdecl; external cDllName
 
 function CompressData(aData: PByte; aDataLength: integer; aCompDataLength: PInteger): PByte; cdecl; external cDllName;
 function DecompressData(aCompData: PByte; aCompDataLength: integer; aDataLength: PInteger): PByte; cdecl; external cDllName;
+
 // Persistent storage management
 procedure StorageSaveValue(aPosition: integer; aValue: integer); cdecl; external cDllName;
 function StorageLoadValue(aPosition: integer): integer; cdecl; external cDllName;
 
 procedure OpenURL(aUrl: PAnsiChar); cdecl; external cDllName;
+
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
 //------------------------------------------------------------------------------------
+
 // Input-related functions: keyboard
 function IsKeyPressed(aKey: integer): boolean; cdecl; external cDllName;
 function IsKeyDown(aKey: integer): boolean; cdecl; external cDllName;
@@ -898,6 +908,7 @@ function IsKeyReleased(aKey: integer): boolean; cdecl; external cDllName;
 function IsKeyUp(aKey: integer): boolean; cdecl; external cDllName;
 function GetKeyPressed(): integer; cdecl; external cDllName;
 procedure SetExitKey(aKey: integer); cdecl; external cDllName;
+
 // Input-related functions: gamepads
 function IsGamepadAvailable(aGamepad: integer): boolean; cdecl; external cDllName;
 function IsGamepadName(aGamepad: integer; aName: PAnsiChar): boolean; cdecl; external cDllName;
@@ -909,6 +920,7 @@ function IsGamepadButtonUp(aGamepad: integer; aButton: integer): boolean; cdecl;
 function GetGamepadButtonPressed(): integer; cdecl; external cDllName;
 function GetGamepadAxisCount(aGamepad: integer): integer; cdecl; external cDllName;
 function GetGamepadAxisMovement(aGamepad: integer; aAxis: integer): single; cdecl; external cDllName;
+
 // Input-related functions: mouse
 function IsMouseButtonPressed(aButton: integer): boolean; cdecl; external cDllName;
 function IsMouseButtonDown(aButton: integer): boolean; cdecl; external cDllName;
@@ -921,13 +933,16 @@ procedure SetMousePosition(aPosition: TVector2); cdecl; external cDllName;
 procedure SetMouseOffset(aOffsetX, aOffsetY: integer); cdecl; external cDllName;
 procedure SetMouseScale(aScaleX, aScaleY: single); cdecl; external cDllName;
 function GetMouseWheelMove(): integer; cdecl; external cDllName;
+
 // Input-related functions: touch
 function GetTouchX(): integer; cdecl; external cDllName;
 function GetTouchY(): integer; cdecl; external cDllName;
 function GetTouchPosition(aIndex: integer): TVector2; cdecl; external cDllName;
+
 //------------------------------------------------------------------------------------
 // Gestures and Touch Handling Functions (Module: gestures)
 //------------------------------------------------------------------------------------
+
 procedure SetGesturesEnabled(aGestureFlags: cardinal); cdecl; external cDllName;
 function IsGestureDetected(aGesture: integer): boolean; cdecl; external cDllName;
 function GetGestureDetected(): integer; cdecl; external cDllName;
@@ -937,9 +952,11 @@ function GetGestureDragVector(): TVector2; cdecl; external cDllName;
 function GetGestureDragAngle(): single; cdecl; external cDllName;
 function GetGesturePinchVector(): TVector2; cdecl; external cDllName;
 function GetGesturePinchAngle(): single; cdecl; external cDllName;
+
 //------------------------------------------------------------------------------------
 // TCamera System Functions (Module: TCamera)
 //------------------------------------------------------------------------------------
+
 procedure SetCameraMode(aCamera: TCamera; aMode: integer); cdecl; external cDllName;
 procedure UpdateCamera(aCamera: PCamera); cdecl; external cDllName;
 
@@ -947,9 +964,11 @@ procedure SetCameraPanControl(aPanKey: integer); cdecl; external cDllName;
 procedure SetCameraAltControl(aAltKey: integer); cdecl; external cDllName;
 procedure SetCameraSmoothZoomControl(aszKey: integer); cdecl; external cDllName;
 procedure SetCameraMoveControls(aFrontKey: integer; aBackKey: integer; aRightKey: integer; aLeftKey: integer; aUpKey: integer; aDownKey: integer); cdecl; external cDllName;
+
 //------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
 //------------------------------------------------------------------------------------
+
 // Basic shapes drawing functions
 procedure DrawPixel(aPosX: integer; aPosY: integer; aColor: TColor); cdecl; external cDllName;
 procedure DrawPixelV(aPosition: TVector2; TColor: TColor); cdecl; external cDllName;
@@ -990,6 +1009,7 @@ procedure DrawTriangleFan(aPoints: PVector2; aNumPoints: integer; aColor: TColor
 procedure DrawTriangleStrip(aPoints: PVector2; aPointsCount: integer; aColor: TColor); cdecl; external cDllName;
 procedure DrawPoly(aCenter: TVector2; aSides: integer; aRadius: single; aRotation: single; aColor: TColor); cdecl; external cDllName;
 procedure DrawPolyLines(aCenter: TVector2; aSides: integer; aRadius: single; aRotation: single; aColor: TColor); cdecl; external cDllName;
+
 // Basic shapes collision detection functions
 function CheckCollisionRecs(aRect1: TRectangle; aRect2: TRectangle): boolean; cdecl; external cDllName;
 function CheckCollisionCircles(aCenter1: TVector2; aRadius1: single; aCenter2: TVector2; aRadius2: single): boolean; cdecl; external cDllName;
@@ -998,9 +1018,11 @@ function GetCollisionRec(aRect1: TRectangle; aRect2: TRectangle): TRectangle; cd
 function CheckCollisionPointRec(aPoint: TVector2; aRect: TRectangle): boolean; cdecl; external cDllName;
 function CheckCollisionPointCircle(aPoint: TVector2; aCenter: TVector2; aRadius: single): boolean; cdecl; external cDllName;
 function CheckCollisionPointTriangle(aPoint: TVector2; aP1: TVector2; aP2: TVector2; aP3: TVector2): boolean; cdecl; external cDllName;
+
 //------------------------------------------------------------------------------------
 // Texture Loading and Drawing Functions (Module: textures)
 //------------------------------------------------------------------------------------
+
 // Image loading functions
 // NOTE: This functions do not require GPU access
 function LoadImage(aFilename: PAnsiChar): TImage; cdecl; external cDllName;
@@ -1012,6 +1034,7 @@ procedure ExportImage(aFilename: PAnsiChar; TImage: TImage); cdecl; external cDl
 procedure ExportImageAsCode(aImage: TImage; aFilename: PAnsiChar); cdecl; external cDllName;
 function GetImageData(aImage: TImage): PColor; cdecl; external cDllName;
 function GetImageDataNormalized(aImage: TImage): PVector4; cdecl; external cDllName;
+
 // TImage generation functions
 function GenImageColor(aWidth: integer; aHeight: integer; aColor: TColor): TImage; cdecl; external cDllName;
 function GenImageGradientV(aWidth: integer; aHeight: integer; aTop: TColor; aBottom: TColor): TImage; cdecl; external cDllName;
@@ -1021,6 +1044,7 @@ function GenImageChecked(aWidth: integer; aHeight: integer; aChecksX: integer; a
 function GenImageWhiteNoise(aWidth: integer; aHeight: integer; aFactor: single): TImage; cdecl; external cDllName;
 function GenImagePerlinNoise(aWidth: integer; aHeight: integer; aOffsetX: integer; aOffsetY: integer; aScale: single): TImage; cdecl; external cDllName;
 function GenImageCellular(aWidth: integer; aHeight: integer; aTileSize: integer): TImage; cdecl; external cDllName;
+
 // TImage manipulation functions
 function ImageCopy(aImage: TImage): TImage; cdecl; external cDllName;
 function ImageFromImage(aImage: TImage; aRec: TRectangle): TImage; cdecl; external cDllName;
@@ -1050,6 +1074,7 @@ procedure ImageColorBrightness(aImage: PImage; aBrightness: integer); cdecl; ext
 procedure ImageColorReplace(aImage: PImage; aColor: TColor; aReplace: TColor); cdecl; external cDllName;
 function ImageExtractPalette(aImage: TImage; aMaxPaletteSize: integer; aExtractCount: PInteger): PColor; cdecl; external cDllName;
 function GetImageAlphaBorder(aImage: TImage; aThreshold: single): TRectangle; cdecl; external cDllName;
+
 // Image drawing functions
 // NOTE: Image software-rendering functions (CPU)
 procedure ImageClearBackground(aDst: PImage; aColor: TColor); cdecl; external cDllName;
@@ -1066,6 +1091,7 @@ procedure ImageDrawRectangleLines(aDst: PImage; aRec: TRectangle; aThick: intege
 procedure ImageDraw(aDest: PImage; aSrc: TImage; aSrcRec: TRectangle; aDestRec: TRectangle; aTint: TColor); cdecl; external cDllName;
 procedure ImageDrawText(aDest: PImage; aPosition: TVector2; aText: PAnsiChar; aFontSize: integer; aColor: TColor); cdecl; external cDllName;
 procedure ImageDrawTextEx(aDest: PImage; aPosition: TVector2; TFont: TFont; aText: PAnsiChar; aFontSize: single; aSpacing: single; aColor: TColor); cdecl; external cDllName;
+
 // Texture loading functions
 // NOTE: These functions require GPU access
 function LoadTexture(aFilename: PAnsiChar): TTexture2D; cdecl; external cDllName;
@@ -1077,10 +1103,12 @@ procedure UnloadRenderTexture(aTarget: TRenderTexture2D); cdecl; external cDllNa
 procedure UpdateTexture(aTexture: TTexture2D; aPixels: Pointer); cdecl; external cDllName;
 function GetTextureData(aTexture: TTexture2D): TImage; cdecl; external cDllName;
 function GetScreenData(): TImage; cdecl; external cDllName;
+
 // TTexture2D configuration functions
 procedure GenTextureMipmaps(aTexture: PTexture2D); cdecl; external cDllName;
 procedure SetTextureFilter(aTexture: TTexture2D; aFilterMode: integer); cdecl; external cDllName;
 procedure SetTextureWrap(aTexture: TTexture2D; aWrapMode: integer); cdecl; external cDllName;
+
 // TTexture2D drawing functions
 procedure DrawTexture(aTexture: TTexture2D; posX: integer; aPosY: integer; aTint: TColor); cdecl; external cDllName;
 procedure DrawTextureV(aTexture: TTexture2D; position: TVector2; aTint: TColor); cdecl; external cDllName;
@@ -1089,11 +1117,14 @@ procedure DrawTextureRec(aTexture: TTexture2D; sourceRec: TRectangle; aPosition:
 procedure DrawTextureQuad(aTexture: TTexture2D; aTiling, aOffset: TVector2; aQuad: TRectangle; aTint: TColor); cdecl; external cDllName;
 procedure DrawTexturePro(aTexture: TTexture2D; sourceRec: TRectangle; aDestRec: TRectangle; aOrigin: TVector2; aRotation: single; aTint: TColor); cdecl; external cDllName;
 procedure DrawTextureNPatch(aTexture: TTexture2D; aNPatchInfo: TNPatchInfo; aDestRec: TRectangle; aOrigin: TVector2; aRotation: single; aTint: TColor); cdecl; external cDllName;
+
 // Image/Texture misc functions
 function GetPixelDataSize(aWidth: integer; aHeight: integer; aFormat: integer): integer; cdecl; external cDllName;
+
 //------------------------------------------------------------------------------------
 // TFont Loading and Text Drawing Functions (Module: text)
 //------------------------------------------------------------------------------------
+
 // TFont loading/unloading functions
 function GetFontDefault(): TFont; cdecl; external cDllName;
 function LoadFont(aFilename: PAnsiChar): TFont; cdecl; external cDllName;
@@ -1102,6 +1133,7 @@ function LoadFontFromImage(aImage: TImage; aKey: TColor; aFirstChar: integer): T
 function LoadFontData(aFilename: PAnsiChar; aFontSize: integer; aFontChars: PInteger; aCharsCount, atype: integer): PCharInfo; cdecl; external cDllName;
 function GenImageFontAtlas(aChars: PCharInfo; aRecs: PPRectangle; aCharsCount, aFontSize, aPadding, aPackMethod: integer): TImage; cdecl; external cDllName;
 procedure UnloadFont(aFont: TFont); cdecl; external cDllName;
+
 // aText drawing functions
 procedure DrawFPS(aPosX: integer; aPosY: integer); cdecl; external cDllName;
 procedure DrawText(aText: PAnsiChar; aPosX: integer; aPosY: integer; aFontSize: integer; TColor: TColor); cdecl; external cDllName;
@@ -1109,10 +1141,12 @@ procedure DrawTextEx(aFont: TFont; aText: PAnsiChar; aPosition: TVector2; aFontS
 procedure DrawTextRec(afont: TFont; aText: PAnsiChar; rec: TRectangle; aFontSize, aSpacing: single; aWordWrap: boolean; aTint: TColor); cdecl; external cDllName;// Draw text using font inside rectangle limits
 procedure DrawTextRecEx(aFont: TFont; aText: PAnsiChar; aRec: TRectangle; aFontSize, aSpacing: single; aWordWrap: boolean; aTint: TColor; aSelectStart, aSelectLength: integer; aSelectText, selectBack: TColor); cdecl; external cDllName;
 procedure DrawTextCodepoint(aFont: TFont; aCodepoint: integer; aPosition: TVector2; aScale: single; aColor: TColor); cdecl; external cDllName;
+
 // Text misc. functions
 function MeasureText(aText: PAnsiChar; aFontSize: integer): integer; cdecl; external cDllName;
 function MeasureTextEx(aFont: TFont; aText: PAnsiChar; aFontSize, aSpacing: single): TVector2; cdecl; external cDllName;
 function GetGlyphIndex(aFont: TFont; character: integer): integer; cdecl; external cDllName;
+
 // Text strings management functions (no utf8 strings, only byte chars)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
 function TextCopy(aDst: PAnsiChar; aScr: PAnsichar): integer; cdecl; external cDllName;
@@ -1131,14 +1165,17 @@ function TextToLower(aText: PAnsiChar): PAnsiChar; cdecl; external cDllName;// G
 function TextToPascal(aText: PAnsiChar): PAnsiChar; cdecl; external cDllName;// Get Pascal case notation version of provided string
 function TextToInteger(aText: PAnsiChar): integer; cdecl; external cDllName;
 function TextToUtf8(aCodepoints: PInteger; aLength: integer): PAnsiChar; cdecl; external cDllName;
+
 // UTF8 text strings management functions
 function GetCodepoints(aText: PAnsiChar; aCount: PInteger): PInteger; cdecl; external cDllName;// Get all codepoints in a string, codepoints count returned by parameters
 function GetCodepointsCount(aText: PAnsiChar): integer; cdecl; external cDllName;// Get total number of characters (codepoints) in a UTF8 encoded string
 function GetNextCodepoint(aText: PAnsiChar; aBytesProcessed: PInteger): integer; cdecl; external cDllName;// Returns next codepoint in a UTF8 encoded string; 0x3f('?') is returned on failure
 function CodepointToUtf8(aCodepoint: integer; aByteLength: PInteger): PAnsiChar; cdecl; external cDllName;// Encode codepoint into utf8 text (char array length returned as parameter)
+
 //------------------------------------------------------------------------------------
 // Basic 3d Shapes Drawing Functions (Module: models)
 //------------------------------------------------------------------------------------
+
 // Basic geometric 3D shapes drawing functions
 procedure DrawLine3D(aStartPos: TVector3; aEndPos: TVector3; aColor: TColor); cdecl; external cDllName;
 procedure DrawPoint3D(aPosition: TVector3; aColor: TColor); cdecl; external cDllName;
@@ -1158,61 +1195,70 @@ procedure DrawRay(TRay: TRay; aColor: TColor); cdecl; external cDllName;
 procedure DrawGrid(aSlices: integer; aSpacing: single); cdecl; external cDllName;
 procedure DrawGizmo(aPosition: TVector3); cdecl; external cDllName;
 //DrawTorus(), DrawTeapot() could be useful?
+
 //------------------------------------------------------------------------------------
 // TModel 3d Loading and Drawing Functions (Module: models)
 //------------------------------------------------------------------------------------
+
 // TModel loading/unloading functions
-function LoadModel(aFilename: PAnsiChar): TModel; cdecl; external cDllName;
-function LoadModelFromMesh(aMesh: TMesh): TModel; cdecl; external cDllName;
-procedure UnloadModel(aModel: TModel); cdecl; external cDllName;
+function LoadModel(aFilename: PAnsiChar): TModel; cdecl; external cDllName; // Load model from files (meshes and materials)
+function LoadModelFromMesh(aMesh: TMesh): TModel; cdecl; external cDllName; // Load model from generated mesh (default material)
+procedure UnloadModel(aModel: TModel); cdecl; external cDllName; // Unload model from memory (RAM and/or VRAM)
+
 // TMesh loading/unloading functions
-function LoadMeshes(aFilename: PAnsiChar; aCount: PInteger): PMesh; cdecl; external cDllName;
-procedure ExportMesh(aMesh: TMesh; aFilename: PAnsiChar); cdecl; external cDllName;
-procedure UnloadMesh(aMesh: TMesh); cdecl; external cDllName;
+function LoadMeshes(aFilename: PAnsiChar; aCount: PInteger): PMesh; cdecl; external cDllName; // Load meshes from model file
+procedure ExportMesh(aMesh: TMesh; aFilename: PAnsiChar); cdecl; external cDllName; // Export mesh data to file
+procedure UnloadMesh(aMesh: TMesh); cdecl; external cDllName; // Unload mesh from memory (RAM and/or VRAM)
+
 // Material loading/unloading functions
-function LoadMaterials(aFilename: PAnsiChar; aMaterialCount: PInteger): PMaterial; cdecl; external cDllName;// Load materials from model file
-function LoadMaterialDefault(): TMaterial; cdecl; external cDllName;// Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)
-procedure UnloadMaterial(aMaterial: TMaterial); cdecl; external cDllName;// Unload material from GPU memory (VRAM)
-procedure SetMaterialTexture(aMaterial: PMaterial; aMapType: integer; aTexture: TTexture2D); cdecl; external cDllName;// Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR...)
-procedure SetModelMeshMaterial(aModel: PModel; aMeshId, aMaterialId: integer); cdecl; external cDllName;
+function LoadMaterials(aFilename: PAnsiChar; aMaterialCount: PInteger): PMaterial; cdecl; external cDllName; // Load materials from model file
+function LoadMaterialDefault(): TMaterial; cdecl; external cDllName; // Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)
+procedure UnloadMaterial(aMaterial: TMaterial); cdecl; external cDllName; // Unload material from GPU memory (VRAM)
+procedure SetMaterialTexture(aMaterial: PMaterial; aMapType: integer; aTexture: TTexture2D); cdecl; external cDllName; // Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR...)
+procedure SetModelMeshMaterial(aModel: PModel; aMeshId, aMaterialId: integer); cdecl; external cDllName; // Check model animation skeleton match
+
 // Model animations loading/unloading functions
-function LoadModelAnimations(aFilename: PAnsiChar; aAnimsCount: PInteger): PModelAnimation; cdecl; external cDllName;// Load model animations from file
-procedure UpdateModelAnimation(aModel: TModel; aAnim: TModelAnimation; aFrame: integer); cdecl; external cDllName;// Update model animation pose
-procedure UnloadModelAnimation(aAnim: TModelAnimation); cdecl; external cDllName;// Unload animation data
-function IsModelAnimationValid(aModel: TModel; aAnim: TModelAnimation): boolean; cdecl; external cDllName;
+function LoadModelAnimations(aFilename: PAnsiChar; aAnimsCount: PInteger): PModelAnimation; cdecl; external cDllName; // Load model animations from file
+procedure UpdateModelAnimation(aModel: TModel; aAnim: TModelAnimation; aFrame: integer); cdecl; external cDllName ;// Update model animation pose
+procedure UnloadModelAnimation(aAnim: TModelAnimation); cdecl; external cDllName; // Unload animation data
+function IsModelAnimationValid(aModel: TModel; aAnim: TModelAnimation): boolean; cdecl; external cDllName; // Check model animation skeleton match
+
 // TMesh generation functions
-function GenMeshPoly(aSides: integer; aRadius: single): TMesh; cdecl; external cDllName;
-function GenMeshPlane(aWidth: single; aLength: single; aResX: integer; aResZ: integer): TMesh; cdecl; external cDllName;
-function GenMeshCube(aWidth: single; aHeight: single; aLength: single): TMesh; cdecl; external cDllName;
-function GenMeshSphere(aRadius: single; aRings: integer; aSlices: integer): TMesh; cdecl; external cDllName;
-function GenMeshHemiSphere(aRadius: single; aRings: integer; aSlices: integer): TMesh; cdecl; external cDllName;
-function GenMeshCylinder(aRadius: single; aHeight: single; aSlices: integer): TMesh; cdecl; external cDllName;
-function GenMeshTorus(aRadius: single; aSize: single; radSeg: integer; sides: integer): TMesh; cdecl; external cDllName;
-function GenMeshKnot(aRadius: single; aSize: single; radSeg: integer; sides: integer): TMesh; cdecl; external cDllName;
-function GenMeshHeightmap(aHeightMap: TImage; aSize: TVector3): TMesh; cdecl; external cDllName;
-function GenMeshCubicmap(aCubicMap: TImage; aCubeSize: TVector3): TMesh; cdecl; external cDllName;
+function GenMeshPoly(aSides: integer; aRadius: single): TMesh; cdecl; external cDllName; // Generate polygonal mesh
+function GenMeshPlane(aWidth: single; aLength: single; aResX: integer; aResZ: integer): TMesh; cdecl; external cDllName; // Generate plane mesh (with subdivisions)
+function GenMeshCube(aWidth: single; aHeight: single; aLength: single): TMesh; cdecl; external cDllName; // Generate cuboid mesh
+function GenMeshSphere(aRadius: single; aRings: integer; aSlices: integer): TMesh; cdecl; external cDllName; // Generate sphere mesh (standard sphere)
+function GenMeshHemiSphere(aRadius: single; aRings: integer; aSlices: integer): TMesh; cdecl; external cDllName; // Generate half-sphere mesh (no bottom cap)
+function GenMeshCylinder(aRadius: single; aHeight: single; aSlices: integer): TMesh; cdecl; external cDllName; // Generate cylinder mesh
+function GenMeshTorus(aRadius: single; aSize: single; radSeg: integer; sides: integer): TMesh; cdecl; external cDllName; // Generate torus mesh
+function GenMeshKnot(aRadius: single; aSize: single; radSeg: integer; sides: integer): TMesh; cdecl; external cDllName; // Generate trefoil knot mesh
+function GenMeshHeightmap(aHeightMap: TImage; aSize: TVector3): TMesh; cdecl; external cDllName; // Generate heightmap mesh from image data
+function GenMeshCubicmap(aCubicMap: TImage; aCubeSize: TVector3): TMesh; cdecl; external cDllName; // Generate cubes-based map mesh from image data
+
 // TMesh manipulation functions
-function MeshBoundingBox(aMesh: TMesh): TBoundingBox; cdecl; external cDllName;
-procedure MeshTangents(aMesh: PMesh); cdecl; external cDllName;
-procedure MeshBinormals(aMesh: PMesh); cdecl; external cDllName;
+function MeshBoundingBox(aMesh: TMesh): TBoundingBox; cdecl; external cDllName;// Compute mesh bounding box limits
+procedure MeshTangents(aMesh: PMesh); cdecl; external cDllName; // Compute mesh tangents
+procedure MeshBinormals(aMesh: PMesh); cdecl; external cDllName; // Compute mesh binormals
+
 // TModel drawing functions
-procedure DrawModel(aModel: TModel; aPosition: TVector3; aScale: single; aTint: TColor); cdecl; external cDllName;
-procedure DrawModelEx(aModel: TModel; aPosition: TVector3; aRotationAxis: TVector3; aRotationAngle: single; aScale: TVector3; aTint: TColor); cdecl; external cDllName;
-procedure DrawModelWires(aModel: TModel; aPosition: TVector3; aScale: single; aTint: TColor); cdecl; external cDllName;
-procedure DrawModelWiresEx(aModel: TModel; aPosition: TVector3; aRotationAxis: TVector3; aRotationAngle: single; aScale: TVector3; aTint: TColor); cdecl; external cDllName;
-procedure DrawBoundingBox(aBox: TBoundingBox; TColor: TColor); cdecl; external cDllName;
-procedure DrawBillboard(aCamera: TCamera; aTexture: TTexture2D; aCenter: TVector3; aSize: single; aTint: TColor); cdecl; external cDllName;
-procedure DrawBillboardRec(aCamera: TCamera; aTexture: TTexture2D; sourceRec: TRectangle; aCenter: TVector3; aSize: single; aTint: TColor); cdecl; external cDllName;
+procedure DrawModel(aModel: TModel; aPosition: TVector3; aScale: single; aTint: TColor); cdecl; external cDllName; // Draw a model (with texture if set)
+procedure DrawModelEx(aModel: TModel; aPosition: TVector3; aRotationAxis: TVector3; aRotationAngle: single; aScale: TVector3; aTint: TColor); cdecl; external cDllName; // Draw a model with extended parameters
+procedure DrawModelWires(aModel: TModel; aPosition: TVector3; aScale: single; aTint: TColor); cdecl; external cDllName;  // Draw a model wires (with texture if set)
+procedure DrawModelWiresEx(aModel: TModel; aPosition: TVector3; aRotationAxis: TVector3; aRotationAngle: single; aScale: TVector3; aTint: TColor); cdecl; external cDllName; // Draw a model wires (with texture if set) with extended parameters
+procedure DrawBoundingBox(aBox: TBoundingBox; TColor: TColor); cdecl; external cDllName; // Draw bounding box (wires)
+procedure DrawBillboard(aCamera: TCamera; aTexture: TTexture2D; aCenter: TVector3; aSize: single; aTint: TColor); cdecl; external cDllName; // Draw a billboard texture
+procedure DrawBillboardRec(aCamera: TCamera; aTexture: TTexture2D; sourceRec: TRectangle; aCenter: TVector3; aSize: single; aTint: TColor); cdecl; external cDllName; // Draw a billboard texture defined by sourceRec
+
 // Collision detection functions
-function CheckCollisionSpheres(aCenterA: TVector3; aRadiusA: single; aCenterB: TVector3; aRadiusB: single): boolean; cdecl; external cDllName;
-function CheckCollisionBoxes(aBox1: TBoundingBox; aBox2: TBoundingBox): boolean; cdecl; external cDllName;
-function CheckCollisionBoxSphere(aBox: TBoundingBox; aCenterSphere: TVector3; aRadiusSphere: single): boolean; cdecl; external cDllName;
-function CheckCollisionRaySphere(aRay: TRay; aSpherePosition: TVector3; aSphereRadius: single): boolean; cdecl; external cDllName;
-function CheckCollisionRaySphereEx(aRay: TRay; aSpherePosition: TVector3; aSphereRadius: single; var collisionPoint: TVector3): boolean; cdecl; external cDllName;
-function CheckCollisionRayBox(aRay: TRay; aBox: TBoundingBox): boolean; cdecl; external cDllName;
-function GetCollisionRayModel(aRay: TRay; var aModel: TModel): TRayHitInfo; cdecl; external cDllName;
-function GetCollisionRayTriangle(aRay: TRay; aP1: TVector3; aP2: TVector3; aP3: TVector3): TRayHitInfo; cdecl; external cDllName;
-function GetCollisionRayGround(aRay: TRay; aGroundHeight: single): TRayHitInfo; cdecl; external cDllName;
+function CheckCollisionSpheres(aCenterA: TVector3; aRadiusA: single; aCenterB: TVector3; aRadiusB: single): boolean; cdecl; external cDllName; // Detect collision between two spheres
+function CheckCollisionBoxes(aBox1: TBoundingBox; aBox2: TBoundingBox): boolean; cdecl; external cDllName; // Detect collision between two bounding boxes
+function CheckCollisionBoxSphere(aBox: TBoundingBox; aCenterSphere: TVector3; aRadiusSphere: single): boolean; cdecl; external cDllName; // Detect collision between box and sphere
+function CheckCollisionRaySphere(aRay: TRay; aSpherePosition: TVector3; aSphereRadius: single): boolean; cdecl; external cDllName; // Detect collision between ray and sphere
+function CheckCollisionRaySphereEx(aRay: TRay; aSpherePosition: TVector3; aSphereRadius: single; var collisionPoint: TVector3): boolean; cdecl; external cDllName; // Detect collision between ray and sphere, returns collision point
+function CheckCollisionRayBox(aRay: TRay; aBox: TBoundingBox): boolean; cdecl; external cDllName; // Detect collision between ray and box
+function GetCollisionRayModel(aRay: TRay; var aModel: TModel): TRayHitInfo; cdecl; external cDllName; // Get collision info between ray and model
+function GetCollisionRayTriangle(aRay: TRay; aP1: TVector3; aP2: TVector3; aP3: TVector3): TRayHitInfo; cdecl; external cDllName; // Get collision info between ray and triangle
+function GetCollisionRayGround(aRay: TRay; aGroundHeight: single): TRayHitInfo; cdecl; external cDllName; // Get collision info between ray and ground plane (Y-normal plane)
 
 //------------------------------------------------------------------------------------
 // Shaders System Functions (Module: rlgl)
