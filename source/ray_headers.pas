@@ -389,7 +389,7 @@ type
   // Sound source type
   PSound = ^TSound;
   TSound = record
-    stream: TAudioStream        // Audio stream
+    stream: TAudioStream;        // Audio stream
     sampleCount: dword;         // Total number of samples
 
   end;
@@ -750,8 +750,8 @@ const
   BLEND_ALPHA = 0;              // Blend textures considering alpha (default)
   BLEND_ADDITIVE = 1;           // Blend textures adding colors
   BLEND_MULTIPLIED = 2;         // Blend textures multiplying colors
-  BLEND_SUBTRACT_COLORS 3;      // Blend textures subtracting colors (alternative)
-  BLEND_CUSTOM                  // Belnd textures using custom src/dst factors (use SetBlendModeCustom())
+  BLEND_SUBTRACT_COLORS = 3;      // Blend textures subtracting colors (alternative)
+  BLEND_CUSTOM = 4;               // Belnd textures using custom src/dst factors (use SetBlendModeCustom())
 
   // Gestures type
   // NOTE: It could be used as flags to enable only some gestures
@@ -796,13 +796,19 @@ type
 
 // Window-related functions
 procedure InitWindow(aWidth: integer; aHeight: integer; aTitle: PAnsiChar); cdecl; external cDllName; // Initialize window and OpenGL context
-function WindowShouldClose(): boolean; cdecl; external cDllName;
-procedure CloseWindow(); cdecl; external cDllName;
-function IsWindowReady(): boolean; cdecl; external cDllName;
-function IsWindowMinimized(): boolean; cdecl; external cDllName;
-function IsWindowResized(): boolean; cdecl; external cDllName;
-function IsWindowHidden(): boolean; cdecl; external cDllName;
-function IsWindowFullscreen(): boolean; cdecl; external cDllName;
+function WindowShouldClose(): boolean; cdecl; external cDllName; // Check if KEY_ESCAPE pressed or Close icon pressed
+procedure CloseWindow(); cdecl; external cDllName; // Close window and unload OpenGL context
+function IsWindowReady(): boolean; cdecl; external cDllName; // Check if window has been initialized successfully                                              // Check if window has been initialized successfully
+function IsWindowFullscreen(): boolean; cdecl; external cDllName; // Check if window is currently fullscreen
+function IsWindowHidden(): boolean; cdecl; external cDllName; // Check if window is currently hidden (only PLATFORM_DESKTOP)
+function IsWindowMinimized(): boolean; cdecl; external cDllName; // Check if window is currently minimized (only PLATFORM_DESKTOP)
+function IsWindowMaximized(): boolean; cdecl; external cDllName; // Check if window is currently maximized (only PLATFORM_DESKTOP)
+function IsWindowFocused(): boolean; cdecl; external cDllName; // Check if window is currently focused (only PLATFORM_DESKTOP)
+function IsWindowResized(): boolean; cdecl; external cDllName; // Check if window has been resized last frame
+function IsWindowState(aFlag: cardinal): boolean; cdecl; external cDllName; // Check if one specific window flag is enabled
+procedure SetWindowState(aFlags: cardinal); cdecl; external cDllName; // Set window configuration state using flags
+
+
 procedure ToggleFullscreen(); cdecl; external cDllName;
 procedure UnhideWindow(); cdecl; external cDllName;
 procedure HideWindow(); cdecl; external cDllName;
