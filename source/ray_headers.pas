@@ -727,6 +727,12 @@ const
   FILTER_ANISOTROPIC_8X = 4;         // Anisotropic filtering 8x
   FILTER_ANISOTROPIC_16X = 5;        // Anisotropic filtering 16x
 
+  // Texture parameters: wrap mode
+  WRAP_REPEAT = 0;                   // Repeats texture in tiled mode
+  WRAP_CLAMP = 1;                    // Clamps texture to edge pixel in tiled mode
+  WRAP_MIRROR_REPEAT = 2;            // Mirrors and repeats the texture in tiled mode
+  WRAP_MIRROR_CLAMP = 3;             // Mirrors and clamps to border the texture in tiled mode
+
   // Cubemap layout type
   CUBEMAP_AUTO_DETECT = 0;            // Automatically detect layout type
   CUBEMAP_LINE_VERTICAL = 1;          // Layout is defined by a vertical line with faces
@@ -735,20 +741,17 @@ const
   CUBEMAP_CROSS_FOUR_BY_THREE = 4;    // Layout is defined by a 4x3 cross with cubemap faces
   CUBEMAP_PANORAMA = 5;               // Layout is defined by a panorama image (equirectangular map)
 
-  // Texture parameters: wrap mode
-  WRAP_REPEAT = 0;
-  WRAP_CLAMP = 1;
-  WRAP_MIRROR_REPEAT = 2;
-  WRAP_MIRROR_CLAMP = 3;
-
-  FONT_DEFAULT = 0;
-  FONT_BITMAP = 1;
-  FONT_SDF = 2;
+  // Font type, defines generation method
+  FONT_DEFAULT = 0;             // Default font generation, anti-aliased
+  FONT_BITMAP = 1;              // Bitmap font generation, no anti-aliasing
+  FONT_SDF = 2;                 // SDF font generation, requires external shader
 
   // Color blending modes (pre-defined)
-  BLEND_ALPHA = 0;
-  BLEND_ADDITIVE = 1;
-  BLEND_MULTIPLIED = 2;
+  BLEND_ALPHA = 0;              // Blend textures considering alpha (default)
+  BLEND_ADDITIVE = 1;           // Blend textures adding colors
+  BLEND_MULTIPLIED = 2;         // Blend textures multiplying colors
+  BLEND_SUBTRACT_COLORS 3;      // Blend textures subtracting colors (alternative)
+  BLEND_CUSTOM                  // Belnd textures using custom src/dst factors (use SetBlendModeCustom())
 
   // Gestures type
   // NOTE: It could be used as flags to enable only some gestures
@@ -775,16 +778,24 @@ const
   CAMERA_PERSPECTIVE = 0;
   CAMERA_ORTHOGRAPHIC = 1;
 
-  // Type of n-patch
-  NPT_9PATCH = 0;
-  NPT_3PATCH_VERTICAL = 1;
-  NPT_3PATCH_HORIZONTAL = 2;
+  // N-patch types
+  NPT_9PATCH = 0;               // Npatch defined by 3x3 tiles
+  NPT_3PATCH_VERTICAL = 1;      // Npatch defined by 1x3 tiles
+  NPT_3PATCH_HORIZONTAL = 2;    // Npatch defined by 3x1 tiles
 
 type
   TTraceLogCallback = procedure(aLogType: integer; aText, aArgs: PAnsiChar); cdecl;
 
+//------------------------------------------------------------------------------------
+// Global Variables Definition
+//------------------------------------------------------------------------------------
+// It's lonely here...
+//------------------------------------------------------------------------------------
+// Window and Graphics Device Functions (Module: core)
+//------------------------------------------------------------------------------------
+
 // Window-related functions
-procedure InitWindow(aWidth: integer; aHeight: integer; aTitle: PAnsiChar); cdecl; external cDllName;
+procedure InitWindow(aWidth: integer; aHeight: integer; aTitle: PAnsiChar); cdecl; external cDllName; // Initialize window and OpenGL context
 function WindowShouldClose(): boolean; cdecl; external cDllName;
 procedure CloseWindow(); cdecl; external cDllName;
 function IsWindowReady(): boolean; cdecl; external cDllName;
