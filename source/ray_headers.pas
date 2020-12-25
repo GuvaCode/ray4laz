@@ -807,49 +807,53 @@ function IsWindowFocused(): boolean; cdecl; external cDllName; // Check if windo
 function IsWindowResized(): boolean; cdecl; external cDllName; // Check if window has been resized last frame
 function IsWindowState(aFlag: cardinal): boolean; cdecl; external cDllName; // Check if one specific window flag is enabled
 procedure SetWindowState(aFlags: cardinal); cdecl; external cDllName; // Set window configuration state using flags
-
-
-procedure ToggleFullscreen(); cdecl; external cDllName;
-procedure UnhideWindow(); cdecl; external cDllName;
-procedure HideWindow(); cdecl; external cDllName;
-procedure SetWindowIcon(aImage: TImage); cdecl; external cDllName;
-procedure SetWindowTitle(aTitle: PAnsiChar); cdecl; external cDllName;
-procedure SetWindowPosition(aX: integer; aY: integer); cdecl; external cDllName;
-procedure SetWindowMonitor(aMonitor: integer); cdecl; external cDllName;
-procedure SetWindowMinSize(aWidth: integer; aHeight: integer); cdecl; external cDllName;
-procedure SetWindowSize(aWidth: integer; aHeight: integer); cdecl; external cDllName;
-function GetWindowHandle(): Pointer; cdecl; external cDllName;
-function GetScreenWidth(): integer; cdecl; external cDllName;
-function GetScreenHeight(): integer; cdecl; external cDllName;
-function GetMonitorCount(): integer; cdecl; external cDllName;
-function GetMonitorWidth(aMonitor: integer): integer; cdecl; external cDllName;
-function GetMonitorHeight(aMonitor: integer): integer; cdecl; external cDllName;
-function GetMonitorPhysicalWidth(aMonitor: integer): integer; cdecl; external cDllName;
-function GetMonitorPhysicalHeight(aMonitor: integer): integer; cdecl; external cDllName;
+procedure ClearWindowState(aFlags: cardinal); cdecl; external cDllName; // Clear window configuration state flags
+procedure ToggleFullscreen(); cdecl; external cDllName; // Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+procedure MaximizeWindow(); cdecl; external cDllName; // Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
+procedure MinimizeWindow(); cdecl; external cDllName; // Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
+procedure RestoreWindow(); cdecl; external cDllName; // Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
+procedure SetWindowIcon(aImage: TImage); cdecl; external cDllName; // Set icon for window (only PLATFORM_DESKTOP)
+procedure SetWindowTitle(aTitle: PAnsiChar); cdecl; external cDllName; // Set title for window (only PLATFORM_DESKTOP)
+procedure SetWindowPosition(aX: integer; aY: integer); cdecl; external cDllName; // Set window position on screen (only PLATFORM_DESKTOP)
+procedure SetWindowMonitor(aMonitor: integer); cdecl; external cDllName; // Set monitor for the current window (fullscreen mode)
+procedure SetWindowMinSize(aWidth: integer; aHeight: integer); cdecl; external cDllName; // Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+procedure SetWindowSize(aWidth: integer; aHeight: integer); cdecl; external cDllName; // Set window dimensions
+function GetWindowHandle(): Pointer; cdecl; external cDllName; // Get native window handle
+function GetScreenWidth(): integer; cdecl; external cDllName;  // Get current screen width
+function GetScreenHeight(): integer; cdecl; external cDllName; // Get current screen height
+function GetMonitorCount(): integer; cdecl; external cDllName; // Get number of connected monitors
+function GetMonitorPosition(aMonitor: integer): TVector2; cdecl; external cDllName; // Get specified monitor position
+function GetMonitorWidth(aMonitor: integer): integer; cdecl; external cDllName; // Get specified monitor width
+function GetMonitorHeight(aMonitor: integer): integer; cdecl; external cDllName; // Get specified monitor height
+function GetMonitorPhysicalWidth(aMonitor: integer): integer; cdecl; external cDllName; // Get specified monitor physical width in millimetres
+function GetMonitorPhysicalHeight(aMonitor: integer): integer; cdecl; external cDllName; // Get specified monitor physical height in millimetres
+function GetMonitorRefreshRate(aMonitor: integer): integer; cdecl; external cDllName; // Get specified monitor refresh rate
 function GetWindowPosition(): TVector2; cdecl; external cDllName; // Get window position XY on monitor
-function GetMonitorName(aMonitor: integer): PAnsiChar; cdecl; external cDllName;
-function GetClipboardText(): PAnsiChar; cdecl; external cDllName;
-procedure SetClipboardText(aText: PAnsiChar); cdecl; external cDllName;
+function GetWindowScaleDPI(): TVector2; cdecl; external cDllName; // Get window scale DPI factor
+function GetMonitorName(aMonitor: integer): PAnsiChar; cdecl; external cDllName; // Get the human-readable, UTF-8 encoded name of the primary monitor
+procedure SetClipboardText(aText: PAnsiChar); cdecl; external cDllName; // Set clipboard text content
+function GetClipboardText(): PAnsiChar; cdecl; external cDllName; // Get clipboard text content
 
 // Cursor-related functions
-procedure ShowCursor(); cdecl; external cDllName;
-procedure HideCursor(); cdecl; external cDllName;
-function IsCursorHidden(): boolean; cdecl; external cDllName;
-procedure EnableCursor(); cdecl; external cDllName;
-procedure DisableCursor(); cdecl; external cDllName;
+procedure ShowCursor(); cdecl; external cDllName; // Shows cursor
+procedure HideCursor(); cdecl; external cDllName; // Hides cursor
+function IsCursorHidden(): boolean; cdecl; external cDllName; // Check if cursor is not visible
+procedure EnableCursor(); cdecl; external cDllName; // Enables cursor (unlock cursor)
+procedure DisableCursor(); cdecl; external cDllName; // Disables cursor (lock cursor)
+function IsCursorOnScreen(): boolean; cdecl; external cDllName; // Check if cursor is on the current screen.
 
 // Drawing-related functions
-procedure ClearBackground(aColor: TColor); cdecl; external cDllName;
-procedure BeginDrawing(); cdecl; external cDllName;
-procedure EndDrawing(); cdecl; external cDllName;
-procedure BeginMode2D(aCamera: TCamera2D); cdecl; external cDllName;
-procedure EndMode2D(); cdecl; external cDllName;
-procedure BeginMode3D(aCamera: TCamera3D); cdecl; external cDllName;
-procedure EndMode3D(); cdecl; external cDllName;
-procedure BeginTextureMode(aTarget: TRenderTexture2D); cdecl; external cDllName;
-procedure EndTextureMode(); cdecl; external cDllName;
-procedure BeginScissorMode(aX, aY, aWidth, aHeight: integer); cdecl; external cDllName;
-procedure EndScissorMode(); cdecl; external cDllName;
+procedure ClearBackground(aColor: TColor); cdecl; external cDllName; // Set background color (framebuffer clear color)
+procedure BeginDrawing(); cdecl; external cDllName; // Setup canvas (framebuffer) to start drawing
+procedure EndDrawing(); cdecl; external cDllName; // End canvas drawing and swap buffers (double buffering)
+procedure BeginMode2D(aCamera: TCamera2D); cdecl; external cDllName; // Initialize 2D mode with custom camera (2D)
+procedure EndMode2D(); cdecl; external cDllName; // Ends 2D mode with custom camera
+procedure BeginMode3D(aCamera: TCamera3D); cdecl; external cDllName; // Initializes 3D mode with custom camera (3D)
+procedure EndMode3D(); cdecl; external cDllName; // Ends 3D mode and returns to default 2D orthographic mode
+procedure BeginTextureMode(aTarget: TRenderTexture2D); cdecl; external cDllName; // Initializes render texture for drawing
+procedure EndTextureMode(); cdecl; external cDllName; // Ends drawing to render texture
+procedure BeginScissorMode(aX, aY, aWidth, aHeight: integer); cdecl; external cDllName; // Begin scissor mode (define screen area for following drawing)
+procedure EndScissorMode(); cdecl; external cDllName; // End scissor mode
 
 // Screen-space-related functions
 function GetMouseRay(aMousePosition: TVector2; aCamera: TCamera): TRay; cdecl; external cDllName;
