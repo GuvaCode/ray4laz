@@ -10,7 +10,11 @@
    - raylib-pas for raylib 2.6.0-dev
 
  Version 2020.09.17
-   - raylib-pas for raylib 3.0.0-dev
+   - for raylib 3.0.0
+
+ Varsion 2020.12.30
+  - for raylib 3.5.0
+
 }
 
 
@@ -30,13 +34,16 @@ const
 
 const
   // Some basic Defines
+  //PI = 3.14159265358979323846;
   DEG2RAD = (PI / 180.0);
   RAD2DEG = (180.0 / PI);
   MAX_TOUCH_POINTS = 10;
   MAX_SHADER_LOCATIONS = 32;
   MAX_MATERIAL_MAPS = 12;
 
+
 type
+  // Color type, RGBA (32bit)
   PColor = ^TColor;
   TColor = record
     r: byte;
@@ -49,36 +56,36 @@ type
 const
   // Some Basic Colors
   // NOTE: Custom raylib color palette for amazing visuals on WHITE background
-  LIGHTGRAY: TColor = (r: 200; g: 200; b: 200; a: 255);                         // Light Gray
-  GRAY: TColor = (r: 130; g: 130; b: 130; a: 255);
-  DARKGRAY: TColor = (r: 80; g: 80; b: 80; a: 255);
-  YELLOW: TColor = (r: 253; g: 249; b: 0; a: 255);
-  GOLD: TColor = (r: 255; g: 203; b: 0; a: 255);
-  ORANGE: TColor = (r: 255; g: 161; b: 0; a: 255);
-  PINK: TColor = (r: 255; g: 109; b: 194; a: 255);
-  RED: TColor = (r: 230; g: 41; b: 55; a: 255);
-  MAROON: TColor = (r: 190; g: 33; b: 55; a: 255);
-  GREEN: TColor = (r: 0; g: 228; b: 48; a: 255);
-  LIME: TColor = (r: 0; g: 158; b: 47; a: 255);
-  DARKGREEN: TColor = (r: 0; g: 117; b: 44; a: 255);
-  SKYBLUE: TColor = (r: 102; g: 191; b: 255; a: 255);
-  BLUE: TColor = (r: 0; g: 121; b: 241; a: 255);
-  DARKBLUE: TColor = (r: 0; g: 82; b: 172; a: 255);
-  PURPLE: TColor = (r: 200; g: 122; b: 255; a: 255);
-  VIOLET: TColor = (r: 135; g: 60; b: 190; a: 255);
-  DARKPURPLE: TColor = (r: 112; g: 31; b: 126; a: 255);
-  BEIGE: TColor = (r: 211; g: 176; b: 131; a: 255);
-  BROWN: TColor = (r: 127; g: 106; b: 79; a: 255);
-  DARKBROWN: TColor = (r: 76; g: 63; b: 47; a: 255);
-  WHITE: TColor = (r: 255; g: 255; b: 255; a: 255);
-  BLACK: TColor = (r: 0; g: 0; b: 0; a: 255);
-  BLANK: TColor = (r: 0; g: 0; b: 0; a: 0);
-  MAGENTA: TColor = (r: 255; g: 0; b: 255; a: 255);
-  RAYWHITE: TColor = (r: 245; g: 245; b: 245; a: 255);
+  LIGHTGRAY:      TColor = (r: 200; g: 200; b: 200; a: 255);  // Light Gray
+  GRAY:           TColor = (r: 130; g: 130; b: 130; a: 255);  // Gray
+  DARKGRAY:       TColor = (r: 80; g: 80; b: 80; a: 255);     // Dark Gray
+  YELLOW:         TColor = (r: 253; g: 249; b: 0; a: 255);    // Yellow
+  GOLD:           TColor = (r: 255; g: 203; b: 0; a: 255);    // Gold
+  ORANGE:         TColor = (r: 255; g: 161; b: 0; a: 255);    // Orange
+  PINK:           TColor = (r: 255; g: 109; b: 194; a: 255);  // Pink
+  RED:            TColor = (r: 230; g: 41; b: 55; a: 255);    // Red
+  MAROON:         TColor = (r: 190; g: 33; b: 55; a: 255);    // Maroon
+  GREEN:          TColor = (r: 0; g: 228; b: 48; a: 255);     // Green
+  LIME:           TColor = (r: 0; g: 158; b: 47; a: 255);     // Lime
+  DARKGREEN:      TColor = (r: 0; g: 117; b: 44; a: 255);     // Dark Green
+  SKYBLUE:        TColor = (r: 102; g: 191; b: 255; a: 255);  // Sky Blue
+  BLUE:           TColor = (r: 0; g: 121; b: 241; a: 255);    // Blue
+  DARKBLUE:       TColor = (r: 0; g: 82; b: 172; a: 255);     // Dark Blue
+  PURPLE:         TColor = (r: 200; g: 122; b: 255; a: 255);  // Purple
+  VIOLET:         TColor = (r: 135; g: 60; b: 190; a: 255);   // Violet
+  DARKPURPLE:     TColor = (r: 112; g: 31; b: 126; a: 255);   // Dark Purple
+  BEIGE:          TColor = (r: 211; g: 176; b: 131; a: 255);  // Beige
+  BROWN:          TColor = (r: 127; g: 106; b: 79; a: 255);   // Brown
+  DARKBROWN:      TColor = (r: 76; g: 63; b: 47; a: 255);     // Dark beown
+
+  WHITE:          TColor = (r: 255; g: 255; b: 255; a: 255);  // White
+  BLACK:          TColor = (r: 0; g: 0; b: 0; a: 255);        // Black
+  BLANK:          TColor = (r: 0; g: 0; b: 0; a: 0);          // Black(Transparent)
+  MAGENTA:        TColor = (r: 255; g: 0; b: 255; a: 255);    // Magenta
+  RAYWHITE:       TColor = (r: 245; g: 245; b: 245; a: 255);  // My own White (raylib logo)
 
 type
   PVector2 = ^TVector2;
-
   TVector2 =  record
     x: single;
     y: single;
@@ -86,7 +93,6 @@ type
 
   // Vector3 type
   PVector3 = ^TVector3;
-
   TVector3 = record
     x: single;
     y: single;
@@ -95,7 +101,6 @@ type
 
   // Vector4 type
   PVector4 = ^TVector4;
-
   TVector4 = record
     x: single;
     y: single;
@@ -109,7 +114,6 @@ type
 
   // Matrix type (OpenGL style 4x4 - right handed, column major)
   PMatrix = ^TMatrix;
-
   TMatrix =  record
     m0: single;
     m4: single;
@@ -132,7 +136,6 @@ type
   // Rectangle type
   PPRectangle = ^PRectangle;
   PRectangle = ^TRectangle;
-
   TRectangle =  record
     x: single;
     y: single;
@@ -143,7 +146,6 @@ type
   // Image type, bpp always RGBA (32bit)
   // NOTE: Data stored in CPU memory (RAM)
   PImage = ^TImage;
-
   TImage =  record
     Data: Pointer;
     Width: integer;
@@ -155,7 +157,6 @@ type
   // Texture2D type
   // NOTE: Data stored in GPU memory
   PTexture2D = ^TTexture2D;
-
   TTexture2D =  record
     id: cardinal;
     Width: integer;
@@ -187,7 +188,6 @@ type
 
   // N-Patch layout info
   PNPatchInfo = ^TNPatchInfo;
-
   TNPatchInfo =  record
     sourceRec: TRectangle;
     left: integer;
@@ -200,7 +200,6 @@ type
 
   // Font character info
   PCharInfo = ^TCharInfo;
-
   TCharInfo =  record
     Value: integer;
     offsetX: integer;
@@ -211,7 +210,6 @@ type
 
   // Font type, includes texture and charSet array data
   PFont = ^TFont;
-
   TFont =  record
     baseSize: integer;
     charsCount: integer;
@@ -227,7 +225,6 @@ type
 
   // Camera type, defines a camera position/orientation in 3d space
   PCamera3D = ^TCamera3D;
-
   TCamera3D =  record
     position: TVector3;
     target: TVector3;
@@ -242,7 +239,6 @@ type
 
   // Camera2D type, defines a 2d camera
   PCamera2D = ^TCamera2D;
-
   TCamera2D =  record
     offset: TVector2;
     target: TVector2;
@@ -253,139 +249,126 @@ type
   // Vertex data definning a mesh
   // NOTE: Data stored in CPU memory (and GPU)
   PMesh = ^TMesh;
-
   TMesh =  record
-    vertexCount: integer;
-    triangleCount: integer;
+    vertexCount: integer;    // Number of vertices stored in arrays
+    triangleCount: integer;  // Number of triangles stored (indexed or not)
 
     // Default Vertex Data
-    vertices: PSingle;
-    texcoords: PSingle;
-    texcoords2: PSingle;
-    normals: PSingle;
-    tangents: PSingle;
-    colors: PByte;
-    indices: PWord;
+    vertices: PSingle;      // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+    texcoords: PSingle;     // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+    texcoords2: PSingle;    // Vertex second texture coordinates (useful for lightmaps) (shader-location = 5)
+    normals: PSingle;       // Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
+    tangents: PSingle;      // Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
+    colors: PByte;          // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+    indices: PWord;         // Vertex indices (in case vertex data comes indexed)
 
     // Animation Vertex Data
-    animVertices: PSingle;
-    animNormals: PSingle;
-    boneIds: PInteger;
-    boneWeights: PSingle;
+    animVertices: PSingle;  // Animated vertex positions (after bones transformations)
+    animNormals: PSingle;   // Animated normals (after bones transformations)
+    boneIds: PInteger;      // Vertex bone ids, up to 4 bones influence by vertex (skinning)
+    boneWeights: PSingle;   // Vertex bone weight, up to 4 bones influence by vertex (skinning)
 
     // OpenGL identifiers
-    vaoId: cardinal;
-    vboId: PCardinal;
+    vaoId: cardinal;       // OpenGL Vertex Array Object id
+    vboId: PCardinal;      // OpenGL Vertex Buffer Objects id (default vertex data)
   end;
 
   // Shader type (generic)
   PShader = ^TShader;
-
   TShader =  record
-    id: cardinal;
-    locs: PInteger;
+    id: cardinal;          // Shader program id
+    locs: PInteger;        // Shader locations array (MAX_SHADER_LOCATIONS)
   end;
 
   // Material texture map
   PMaterialMap = ^TMaterialMap;
-
   TMaterialMap =  record
-    texture: TTexture2D;
-    color: TColor;
-    Value: single;
+    texture: TTexture2D;   // Material map texture
+    color: TColor;         // Material map color
+    Value: single;         // Material map value
   end;
 
   // Material type (generic)
   PMaterial = ^TMaterial;
-
   TMaterial =  record
-    shader: TShader;
-    maps: ^TMaterialMap;
-    params: PSingle;
+    shader: TShader;       // Material shader
+    maps: ^TMaterialMap;   // Material maps array (MAX_MATERIAL_MAPS)
+    params: PSingle;       // Material generic parameters (if required)
   end;
 
   // Transformation Properties
   PPTransform = ^PTransform;
   PTransform = ^TTransform;
-
   TTransform =  record
-    translation: TVector3;
-    rotation: TQuaternion;
-    scale: TVector3;
+    translation: TVector3; // Translation
+    rotation: TQuaternion; // Rotation
+    scale: TVector3;       // Scale
   end;
 
   // Bone Information
   PBoneInfo = ^TBoneInfo;
-
   TBoneInfo =  record
-    _name: array[0..31] of char;
-    parent: integer;
+    _name: array[0..31] of char; // Bone name
+    parent: integer;             // Bone parent
   end;
 
   // Model type
   PModel = ^TModel;
-
   TModel =  record
-    transform: TMatrix;
-    meshCount: integer;
-    meshes: PMesh;
+    transform: TMatrix;         // Local transform matrix
 
-    materialCount: integer;
-    materials: PMaterial;
-    meshMaterial: PInteger;
+    meshCount: integer;         // Number of meshes
+    materialCount: integer;     // Number of materials
+    meshes: PMesh;              // Meshes array
+    materials: PMaterial;       // Materials array
+    meshMaterial: PInteger;     // Mesh material number
 
     // Animation data
-    boneCount: integer;
-    bones: PBoneInfo;
-    bindPose: PTransform;
+    boneCount: integer;         // Number of bones
+    bones: PBoneInfo;           // Bones information (skeleton)
+    bindPose: PTransform;       // Bones base transformation (pose)
   end;
 
   // Model Animation
   PModelAnimation = ^TModelAnimation;
-
   TModelAnimation = record
-    boneCount: integer;
-    bones: PBoneInfo;
-
-    frameCount: integer;
-    framePoses: PPTransform;
+    boneCount: integer;         // Number of bones
+    frameCount: integer;        // Number of animation frames
+    bones: PBoneInfo;           // Bones information (skeleton)
+    framePoses: PPTransform;    // Poses array by frame
   end;
 
   // Ray type (useful for raycast)
   PRay = ^TRay;
-
   TRay =  record
-    position: TVector3;
-    direction: TVector3;
+    position: TVector3;         // Ray position (origin)
+    direction: TVector3;        // Ray direction
   end;
 
   // Raycast hit information
   PRayHitInfo = ^TRayHitInfo;
-
   TRayHitInfo =  record
-    hit: boolean;
-    distance: single;
-    position: TVector3;
-    normal: TVector3;
+    hit: boolean;               // Did the ray hit something?
+    distance: single;           // Distance to nearest hit
+    position: TVector3;         // Position of nearest hit
+    normal: TVector3;           // Surface normal of hit
   end;
 
   // Bounding box type
   PBoundingBox = ^TBoundingBox;
-
   TBoundingBox =  record
-    min: TVector3;
-    max: TVector3;
+    min: TVector3;              // Minimum vertex box-corner
+    max: TVector3;              // Maximum vertex box-corner
   end;
 
   // Wave type, defines audio wave data
   PWave = ^TWave;
-
   TWave =  record
-    sampleCount: dword;
-    sampleRate: dword;
-    sampleSize: dword;
-    channels: dword;
-    Data: Pointer;
+    sampleCount: dword;         // Total number of samples
+    sampleRate: dword;          // Frequency (samples per second)
+    sampleSize: dword;          // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
+    channels: dword;            // Number of channels (1-mono, 2-stereo)
+    Data: Pointer;              // Buffer data pointer
   end;
 
   PrAudioBuffer = ^TrAudioBuffer;
@@ -395,59 +378,69 @@ type
   // Audio stream type
   // NOTE: Useful to create custom audio streams not bound to a specific file
   PAudioStream = ^TAudioStream;
-
   TAudioStream =  record
-    sampleRate: dword;
-    sampleSize: dword;
-    channels: dword;
-    buffer: PrAudioBuffer;
+    buffer: PrAudioBuffer;      // Pointer to internal data used by the audio system
+
+    sampleRate: dword;          // Frequency (samples per second)
+    sampleSize: dword;          // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
+    channels: dword;            // Number of channels (1-mono, 2-stereo)
   end;
 
   // Sound source type
   PSound = ^TSound;
-
   TSound = record
-    sampleCount: dword;
-    stream: TAudioStream
+    stream: TAudioStream        // Audio stream
+    sampleCount: dword;         // Total number of samples
+
   end;
 
   // Music type (file streaming from memory)
   // NOTE: Anything longer than ~10 seconds should be streamed
   TMusic =  record
-    ctxType: longint;
-    ctxData: Pointer;
-    sampleCount: dword;
-    looping: boolean;
-    stream: TAudioStream;
+    stream: TAudioStream;       // Audio stream
+    sampleCount: dword;         // Total number of samples
+    looping: boolean;           // Music looping enable
+
+    ctxType: longint;           // Type of music context (audio filetype)
+    ctxData: Pointer;           // Audio context data, depends on type
   end;
 
   // Head-Mounted-Display device parameters
   PVrDeviceInfo = ^TVrDeviceInfo;
-
   TVrDeviceInfo =  record
-    hResolution: integer;
-    vResolution: integer;
-    hScreenSize: single;
-    vScreenSize: single;
-    vScreenCenter: single;
-    eyeToScreenDistance: single;
-    lensSeparationDistance: single;
-    interpupillaryDistance: single;
-    lensDistortionValues: array[0..3] of single;
-    chromaAbCorrection: array[0..3] of single;
+    hResolution: integer;                        // HMD horizontal resolution in pixels
+    vResolution: integer;                        // HMD vertical resolution in pixels
+    hScreenSize: single;                         // HMD horizontal size in meters
+    vScreenSize: single;                         // HMD vertical size in meters
+    vScreenCenter: single;                       // HMD screen center in meters
+    eyeToScreenDistance: single;                 // HMD distance between eye and display in meters
+    lensSeparationDistance: single;              // HMD lens separation distance in meters
+    interpupillaryDistance: single;              // HMD IPD (distance between pupils) in meters
+    lensDistortionValues: array[0..3] of single; // HMD lens distortion constant parameters
+    chromaAbCorrection: array[0..3] of single;   // HMD chromatic aberration correction parameters
   end;
 
+//----------------------------------------------------------------------------------
+// Enumerators Definition
+//----------------------------------------------------------------------------------
+// System/Window config flags
+// NOTE: Every bit registers one state (use it with bit masks)
+// By default all flags are set to 0
 const
-
-  // raylib Config Flags
-  FLAG_RESERVED = 1;
-  FLAG_FULLSCREEN_MODE = 2;
-  FLAG_WINDOW_RESIZABLE = 4;
-  FLAG_WINDOW_UNDECORATED = 8;
-  FLAG_WINDOW_TRANSPARENT = 16;
-  FLAG_WINDOW_HIDDEN = 128;
-  FLAG_MSAA_4X_HINT = 32;
-  FLAG_VSYNC_HINT = 64;
+  FLAG_VSYNC_HINT         = 00000040;   // Set to try enabling V-Sync on GPU
+  FLAG_FULLSCREEN_MODE    = 00000002;   // Set to run program in fullscreen
+  FLAG_WINDOW_RESIZABLE   = 00000004;   // Set to allow resizable window
+  FLAG_WINDOW_UNDECORATED = 00000008;   // Set to disable window decoration (frame and buttons)
+  FLAG_WINDOW_HIDDEN      = 00000080;   // Set to hide window
+  FLAG_WINDOW_MINIMIZED   = 00000200;   // Set to minimize window (iconify)
+  FLAG_WINDOW_MAXIMIZED   = 00000400;   // Set to maximize window (expanded to monitor)
+  FLAG_WINDOW_UNFOCUSED   = 00000800;   // Set to window non focused
+  FLAG_WINDOW_TOPMOST     = 00001000;   // Set to window always on top
+  FLAG_WINDOW_ALWAYS_RUN  = 00000100;   // Set to allow windows running while minimized
+  FLAG_WINDOW_TRANSPARENT = 00000010;   // Set to allow transparent framebuffer
+  FLAG_WINDOW_HIGHDPI     = 00002000;   // Set to support HighDPI
+  FLAG_MSAA_4X_HINT       = 00000020;   // Set to try enabling MSAA 4X
+  FLAG_INTERLACED_HINT    = 00010000;   // Set to try enabling interlaced video format (for V3D)
 
   // Trace log type
   LOG_ALL = 0;
@@ -459,98 +452,97 @@ const
   LOG_FATAL = 7;
   LOG_NONE = 8;
 
-  // Keyboard Function Keys
-  // Alphanumeric keys
-  KEY_APOSTROPHE = 39;
-  KEY_COMMA = 44;
-  KEY_MINUS = 45;
-  KEY_PERIOD = 46;
-  KEY_SLASH = 47;
-  KEY_ZERO = 48;
-  KEY_ONE = 49;
-  KEY_TWO = 50;
-  KEY_THREE = 51;
-  KEY_FOUR = 52;
-  KEY_FIVE = 53;
-  KEY_SIX = 54;
-  KEY_SEVEN = 55;
-  KEY_EIGHT = 56;
-  KEY_NINE = 57;
-  KEY_SEMICOLON = 59;
-  KEY_EQUAL = 61;
-  KEY_A = 65;
-  KEY_B = 66;
-  KEY_C = 67;
-  KEY_D = 68;
-  KEY_E = 69;
-  KEY_F = 70;
-  KEY_G = 71;
-  KEY_H = 72;
-  KEY_I = 73;
-  KEY_J = 74;
-  KEY_K = 75;
-  KEY_L = 76;
-  KEY_M = 77;
-  KEY_N = 78;
-  KEY_O = 79;
-  KEY_P = 80;
-  KEY_Q = 81;
-  KEY_R = 82;
-  KEY_S = 83;
-  KEY_T = 84;
-  KEY_U = 85;
-  KEY_V = 86;
-  KEY_W = 87;
-  KEY_X = 88;
-  KEY_Y = 89;
-  KEY_Z = 90;
+    // Alphanumeric keys
+    KEY_APOSTROPHE      = 39;
+    KEY_COMMA           = 44;
+    KEY_MINUS           = 45;
+    KEY_PERIOD          = 46;
+    KEY_SLASH           = 47;
+    KEY_ZERO            = 48;
+    KEY_ONE             = 49;
+    KEY_TWO             = 50;
+    KEY_THREE           = 51;
+    KEY_FOUR            = 52;
+    KEY_FIVE            = 53;
+    KEY_SIX             = 54;
+    KEY_SEVEN           = 55;
+    KEY_EIGHT           = 56;
+    KEY_NINE            = 57;
+    KEY_SEMICOLON       = 59;
+    KEY_EQUAL           = 61;
+    KEY_A               = 65;
+    KEY_B               = 66;
+    KEY_C               = 67;
+    KEY_D               = 68;
+    KEY_E               = 69;
+    KEY_F               = 70;
+    KEY_G               = 71;
+    KEY_H               = 72;
+    KEY_I               = 73;
+    KEY_J               = 74;
+    KEY_K               = 75;
+    KEY_L               = 76;
+    KEY_M               = 77;
+    KEY_N               = 78;
+    KEY_O               = 79;
+    KEY_P               = 80;
+    KEY_Q               = 81;
+    KEY_R               = 82;
+    KEY_S               = 83;
+    KEY_T               = 84;
+    KEY_U               = 85;
+    KEY_V               = 86;
+    KEY_W               = 87;
+    KEY_X               = 88;
+    KEY_Y               = 89;
+    KEY_Z               = 90;
 
-  // Function keys
-  KEY_SPACE = 32;
-  KEY_ESCAPE = 256;
-  KEY_ENTER = 257;
-  KEY_TAB = 258;
-  KEY_BACKSPACE = 259;
-  KEY_INSERT = 260;
-  KEY_DELETE = 261;
-  KEY_RIGHT = 262;
-  KEY_LEFT = 263;
-  KEY_DOWN = 264;
-  KEY_UP = 265;
-  KEY_PAGE_UP = 266;
-  KEY_PAGE_DOWN = 267;
-  KEY_HOME = 268;
-  KEY_END = 269;
-  KEY_CAPS_LOCK = 280;
-  KEY_SCROLL_LOCK = 281;
-  KEY_NUM_LOCK = 282;
-  KEY_PRINT_SCREEN = 283;
-  KEY_PAUSE = 284;
-  KEY_F1 = 290;
-  KEY_F2 = 291;
-  KEY_F3 = 292;
-  KEY_F4 = 293;
-  KEY_F5 = 294;
-  KEY_F6 = 295;
-  KEY_F7 = 296;
-  KEY_F8 = 297;
-  KEY_F9 = 298;
-  KEY_F10 = 299;
-  KEY_F11 = 300;
-  KEY_F12 = 301;
-  KEY_LEFT_SHIFT = 340;
-  KEY_LEFT_CONTROL = 341;
-  KEY_LEFT_ALT = 342;
-  KEY_LEFT_SUPER = 343;
-  KEY_RIGHT_SHIFT = 344;
-  KEY_RIGHT_CONTROL = 345;
-  KEY_RIGHT_ALT = 346;
-  KEY_RIGHT_SUPER = 347;
-  KEY_KB_MENU = 348;
-  KEY_LEFT_BRACKET = 91;
-  KEY_BACKSLASH = 92;
-  KEY_RIGHT_BRACKET = 93;
-  KEY_GRAVE = 96;
+    // Function keys
+    KEY_SPACE           = 32;
+    KEY_ESCAPE          = 256;
+    KEY_ENTER           = 257;
+    KEY_TAB             = 258;
+    KEY_BACKSPACE       = 259;
+    KEY_INSERT          = 260;
+    KEY_DELETE          = 261;
+    KEY_RIGHT           = 262;
+    KEY_LEFT            = 263;
+    KEY_DOWN            = 264;
+    KEY_UP              = 265;
+    KEY_PAGE_UP         = 266;
+    KEY_PAGE_DOWN       = 267;
+    KEY_HOME            = 268;
+    KEY_END             = 269;
+    KEY_CAPS_LOCK       = 280;
+    KEY_SCROLL_LOCK     = 281;
+    KEY_NUM_LOCK        = 282;
+    KEY_PRINT_SCREEN    = 283;
+    KEY_PAUSE           = 284;
+    KEY_F1              = 290;
+    KEY_F2              = 291;
+    KEY_F3              = 292;
+    KEY_F4              = 293;
+    KEY_F5              = 294;
+    KEY_F6              = 295;
+    KEY_F7              = 296;
+    KEY_F8              = 297;
+    KEY_F9              = 298;
+    KEY_F10             = 299;
+    KEY_F11             = 300;
+    KEY_F12             = 301;
+    KEY_LEFT_SHIFT      = 340;
+    KEY_LEFT_CONTROL    = 341;
+    KEY_LEFT_ALT        = 342;
+    KEY_LEFT_SUPER      = 343;
+    KEY_RIGHT_SHIFT     = 344;
+    KEY_RIGHT_CONTROL   = 345;
+    KEY_RIGHT_ALT       = 346;
+    KEY_RIGHT_SUPER     = 347;
+    KEY_KB_MENU         = 348;
+    KEY_LEFT_BRACKET    = 91;
+    KEY_BACKSLASH       = 92;
+    KEY_RIGHT_BRACKET   = 93;
+    KEY_GRAVE           = 96;
 
   // Keypad keys
   KEY_KP_0 = 320;
@@ -571,16 +563,29 @@ const
   KEY_KP_ENTER = 335;
   KEY_KP_EQUAL = 336;
 
-  // Android Physical Buttons
+  // Android buttons
   KEY_BACK = 4;
   KEY_MENU = 82;
   KEY_VOLUME_UP = 24;
   KEY_VOLUME_DOWN = 25;
 
-  // Mouse Buttons
+  // Mouse buttons
   MOUSE_LEFT_BUTTON = 0;
   MOUSE_RIGHT_BUTTON = 1;
   MOUSE_MIDDLE_BUTTON = 2;
+
+  // Mouse cursor types
+  MOUSE_CURSOR_DEFAULT       = 0;
+  MOUSE_CURSOR_ARROW         = 1;
+  MOUSE_CURSOR_IBEAM         = 2;
+  MOUSE_CURSOR_CROSSHAIR     = 3;
+  MOUSE_CURSOR_POINTING_HAND = 4;
+  MOUSE_CURSOR_RESIZE_EW     = 5;     // The horizontal resize/move arrow shape
+  MOUSE_CURSOR_RESIZE_NS     = 6;     // The vertical resize/move arrow shape
+  MOUSE_CURSOR_RESIZE_NWSE   = 7;     // The top-left to bottom-right diagonal resize/move arrow shape
+  MOUSE_CURSOR_RESIZE_NESW   = 8;     // The top-right to bottom-left diagonal resize/move arrow shape
+  MOUSE_CURSOR_RESIZE_ALL    = 9;     // The omni-directional resize/move cursor shape
+  MOUSE_CURSOR_NOT_ALLOWED   = 10;     // The operation-not-allowed shape
 
   // Gamepad Number
   GAMEPAD_PLAYER1 = 0;
@@ -588,30 +593,27 @@ const
   GAMEPAD_PLAYER3 = 2;
   GAMEPAD_PLAYER4 = 3;
 
-  // Gamepad Buttons/Axis
-
-  // This is here just for error checking
+ // Gamepad buttons
+ // This is here just for error checking
   GAMEPAD_BUTTON_UNKNOWN = 0;
-
-  // This is normally [A,B,X,Y]/[Circle,Triangle,Square,Cross]
-  // No support for 6 button controllers though..
+ // This is normally a DPAD
   GAMEPAD_BUTTON_LEFT_FACE_UP = 1;
   GAMEPAD_BUTTON_LEFT_FACE_RIGHT = 2;
   GAMEPAD_BUTTON_LEFT_FACE_DOWN = 3;
   GAMEPAD_BUTTON_LEFT_FACE_LEFT = 4;
-
-  // This is normally a DPA
+  // This normally corresponds with PlayStation and Xbox controllers
+  // XBOX: [Y,X,A,B]
+  // PS3: [Triangle,Square,Cross,Circle]
+  // No support for 6 button controllers though..
   GAMEPAD_BUTTON_RIGHT_FACE_UP = 5;
   GAMEPAD_BUTTON_RIGHT_FACE_RIGHT = 6;
   GAMEPAD_BUTTON_RIGHT_FACE_DOWN = 7;
   GAMEPAD_BUTTON_RIGHT_FACE_LEFT = 8;
-
   // Triggers
   GAMEPAD_BUTTON_LEFT_TRIGGER_1 = 9;
   GAMEPAD_BUTTON_LEFT_TRIGGER_2 = 10;
   GAMEPAD_BUTTON_RIGHT_TRIGGER_1 = 11;
   GAMEPAD_BUTTON_RIGHT_TRIGGER_2 = 12;
-
   // These are buttons in the center of the gamepad
   GAMEPAD_BUTTON_MIDDLE_LEFT = 13;     //PS3 Select
   GAMEPAD_BUTTON_MIDDLE = 14;          //PS Button/XBOX Button
@@ -621,22 +623,18 @@ const
   GAMEPAD_BUTTON_LEFT_THUMB = 16;
   GAMEPAD_BUTTON_RIGHT_THUMB = 17;
 
-
-
-  // This is here just for error checking
-  GAMEPAD_AXIS_UNKNOWN = 0;
-
+  // Gamepad axis
   // Left stick
-  GAMEPAD_AXIS_LEFT_X = 1;
-  GAMEPAD_AXIS_LEFT_Y = 2;
+  GAMEPAD_AXIS_LEFT_X = 0;
+  GAMEPAD_AXIS_LEFT_Y = 1;
 
   // Right stick
-  GAMEPAD_AXIS_RIGHT_X = 3;
-  GAMEPAD_AXIS_RIGHT_Y = 4;
+  GAMEPAD_AXIS_RIGHT_X = 2;
+  GAMEPAD_AXIS_RIGHT_Y = 3;
 
   // Pressure levels for the back triggers
-  GAMEPAD_AXIS_LEFT_TRIGGER = 5;      // [1..-1] (pressure-level)
-  GAMEPAD_AXIS_RIGHT_TRIGGER = 6;     // [1..-1] (pressure-level)
+  GAMEPAD_AXIS_LEFT_TRIGGER = 4;      // [1..-1] (pressure-level)
+  GAMEPAD_AXIS_RIGHT_TRIGGER = 5;     // [1..-1] (pressure-level)
 
   // Shader location point type
   LOC_VERTEX_POSITION = 0;
@@ -653,8 +651,8 @@ const
   LOC_COLOR_DIFFUSE = 11;
   LOC_COLOR_SPECULAR = 12;
   LOC_COLOR_AMBIENT = 13;
-  LOC_MAP_ALBEDO = 14;
-  LOC_MAP_METALNESS = 15;
+  LOC_MAP_ALBEDO = 14;       // LOC_MAP_DIFFUSE
+  LOC_MAP_METALNESS = 15;    // LOC_MAP_SPECULAR
   LOC_MAP_NORMAL = 16;
   LOC_MAP_ROUGHNESS = 17;
   LOC_MAP_OCCLUSION = 18;
@@ -668,6 +666,7 @@ const
   LOC_MAP_DIFFUSE = LOC_MAP_ALBEDO;
   LOC_MAP_SPECULAR = LOC_MAP_METALNESS;
 
+  // Shader uniform data types
   UNIFORM_FLOAT = 0;
   UNIFORM_VEC2 = 1;
   UNIFORM_VEC3 = 2;
@@ -679,53 +678,54 @@ const
   UNIFORM_SAMPLER2D = 8;
 
   // Material map type
-  MAP_ALBEDO = 0;
-  MAP_METALNESS = 1;
+  MAP_ALBEDO = 0;               // MAP_DIFFUSE
+  MAP_METALNESS = 1;            // MAP_SPECULAR
   MAP_NORMAL = 2;
   MAP_ROUGHNESS = 3;
   MAP_OCCLUSION = 4;
   MAP_EMISSION = 5;
   MAP_HEIGHT = 6;
-  MAP_CUBEMAP = 7;
-  MAP_IRRADIANCE = 8;
-  MAP_PREFILTER = 9;
+  MAP_CUBEMAP = 7;              // NOTE: Uses GL_TEXTURE_CUBE_MAP
+  MAP_IRRADIANCE = 8;           // NOTE: Uses GL_TEXTURE_CUBE_MAP
+  MAP_PREFILTER = 9;            // NOTE: Uses GL_TEXTURE_CUBE_MAP
   MAP_BRDF = 10;
+
   MAP_DIFFUSE = MAP_ALBEDO;
   MAP_SPECULAR = MAP_METALNESS;
 
   // Pixel formats
   // NOTE: Support depends on OpenGL version and platform
-  UNCOMPRESSED_GRAYSCALE = 1;
-  UNCOMPRESSED_GRAY_ALPHA = 2;
-  UNCOMPRESSED_R5G6B5 = 3;
-  UNCOMPRESSED_R8G8B8 = 4;
-  UNCOMPRESSED_R5G5B5A1 = 5;
-  UNCOMPRESSED_R4G4B4A4 = 6;
-  UNCOMPRESSED_R8G8B8A8 = 7;
-  UNCOMPRESSED_R32 = 8;
-  UNCOMPRESSED_R32G32B32 = 9;
-  UNCOMPRESSED_R32G32B32A32 = 10;
-  COMPRESSED_DXT1_RGB = 11;
-  COMPRESSED_DXT1_RGBA = 12;
-  COMPRESSED_DXT3_RGBA = 13;
-  COMPRESSED_DXT5_RGBA = 14;
-  COMPRESSED_ETC1_RGB = 15;
-  COMPRESSED_ETC2_RGB = 16;
-  COMPRESSED_ETC2_EAC_RGBA = 17;
-  COMPRESSED_PVRT_RGB = 18;
-  COMPRESSED_PVRT_RGBA = 19;
-  COMPRESSED_ASTC_4x4_RGBA = 20;
-  COMPRESSED_ASTC_8x8_RGBA = 21;
+  UNCOMPRESSED_GRAYSCALE = 1;        // 8 bit per pixel (no alpha)
+  UNCOMPRESSED_GRAY_ALPHA = 2;       // 8*2 bpp (2 channels)
+  UNCOMPRESSED_R5G6B5 = 3;           // 16 bpp
+  UNCOMPRESSED_R8G8B8 = 4;           // 24 bpp
+  UNCOMPRESSED_R5G5B5A1 = 5;         // 16 bpp (1 bit alpha)
+  UNCOMPRESSED_R4G4B4A4 = 6;         // 16 bpp (4 bit alpha)
+  UNCOMPRESSED_R8G8B8A8 = 7;         // 32 bpp
+  UNCOMPRESSED_R32 = 8;              // 32 bpp (1 channel - float)
+  UNCOMPRESSED_R32G32B32 = 9;        // 32*3 bpp (3 channels - float)
+  UNCOMPRESSED_R32G32B32A32 = 10;    // 32*4 bpp (4 channels - float)
+  COMPRESSED_DXT1_RGB = 11;          // 4 bpp (no alpha)
+  COMPRESSED_DXT1_RGBA = 12;         // 4 bpp (1 bit alpha)
+  COMPRESSED_DXT3_RGBA = 13;         // 8 bpp
+  COMPRESSED_DXT5_RGBA = 14;         // 8 bpp
+  COMPRESSED_ETC1_RGB = 15;          // 4 bpp
+  COMPRESSED_ETC2_RGB = 16;          // 4 bpp
+  COMPRESSED_ETC2_EAC_RGBA = 17;     // 8 bpp
+  COMPRESSED_PVRT_RGB = 18;          // 4 bpp
+  COMPRESSED_PVRT_RGBA = 19;         // 8 bpp
+  COMPRESSED_ASTC_4x4_RGBA = 20;     // 8 bpp
+  COMPRESSED_ASTC_8x8_RGBA = 21;     // 2 bpp
 
   // Texture parameters: filter mode
   // NOTE 1: Filtering considers mipmaps if available in the texture
   // NOTE 2: Filter is accordingly set for minification and magnification
-  FILTER_POINT = 0;
-  FILTER_BILINEAR = 1;
-  FILTER_TRILINEAR = 2;
-  FILTER_ANISOTROPIC_4X = 3;
-  FILTER_ANISOTROPIC_8X = 4;
-  FILTER_ANISOTROPIC_16X = 5;
+  FILTER_POINT = 0;                  // No filter, just pixel aproximation
+  FILTER_BILINEAR = 1;               // Linear filtering
+  FILTER_TRILINEAR = 2;              // Trilinear filtering (linear with mipmaps)
+  FILTER_ANISOTROPIC_4X = 3;         // Anisotropic filtering 4x
+  FILTER_ANISOTROPIC_8X = 4;         // Anisotropic filtering 8x
+  FILTER_ANISOTROPIC_16X = 5;        // Anisotropic filtering 16x
 
   // Cubemap layout type
   CUBEMAP_AUTO_DETECT = 0;            // Automatically detect layout type
