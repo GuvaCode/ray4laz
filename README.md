@@ -1,6 +1,6 @@
-# raylib-pas A Pascal Binding for Raylib 3.0.0 (master)
+# Ray4Laz a Pascal Binding  for Raylib 3.5.0 (master)
 
-raylib-pas is a header translation of the [Raylib Game Development Library](https://www.raylib.com/) for the [FreePascal Project](https://www.freepascal.org/).
+Ray4Laz is a header translation of the [Raylib Game Development Library](https://www.raylib.com/) for the [FreePascal Project](https://www.freepascal.org/).
 
 ## Build
 
