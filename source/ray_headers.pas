@@ -1295,7 +1295,7 @@ procedure DrawBillboard(aCamera: TCamera; aTexture: TTexture2D; aCenter: TVector
 procedure DrawBillboardRec(aCamera: TCamera; aTexture: TTexture2D; sourceRec: TRectangle; aCenter: TVector3; aSize: single; aTint: TColor); cdecl; external cDllName; // Draw a billboard texture defined by sourceRec
 
 // Collision detection functions
-function CheckCollisionSpheres(aCenterA: TVector3; aRadiusA: single; aCenterB: TVector3; aRadiusB: single): boolean; cdecl; external cDllName; // Detect collision between two spheres
+function CheckCollisionSpheres(aCenter1: TVector3; aRadius1: single; aCenter2: TVector3; aRadius2: single): boolean; cdecl; external cDllName; // Detect collision between two spheres
 function CheckCollisionBoxes(aBox1: TBoundingBox; aBox2: TBoundingBox): boolean; cdecl; external cDllName; // Detect collision between two bounding boxes
 function CheckCollisionBoxSphere(aBox: TBoundingBox; aCenterSphere: TVector3; aRadiusSphere: single): boolean; cdecl; external cDllName; // Detect collision between box and sphere
 function CheckCollisionRaySphere(aRay: TRay; aSpherePosition: TVector3; aSphereRadius: single): boolean; cdecl; external cDllName; // Detect collision between ray and sphere
