@@ -1076,13 +1076,13 @@ function ImageCopy(aImage: TImage): TImage; cdecl; external cDllName; // Create 
 function ImageFromImage(aImage: TImage; aRec: TRectangle): TImage; cdecl; external cDllName; // Create an image from another image piece
 function ImageText(aText: PAnsiChar; aFontSize: integer; aColor: TColor): TImage; cdecl; external cDllName; // Create an image from text (default font)
 function ImageTextEx(aFont: TFont; aText: PAnsiChar; aFontSize: single; aSpacing: single; aTint: TColor): TImage; cdecl; external cDllName; // Create an image from text (custom sprite font)
-procedure ImageToPOT(aImage: PImage; fillColor: TColor); cdecl; external cDllName; // Convert image to POT (power-of-two)
 procedure ImageFormat(aImage: PImage; aNewFormat: integer); cdecl; external cDllName; // Convert image data to desired format
-procedure ImageAlphaMask(aImage: PImage; alphaMask: TImage); cdecl; external cDllName; // Apply alpha mask to image
-procedure ImageAlphaClear(aImage: PImage; TColor: TColor; threshold: single); cdecl; external cDllName; // Clear alpha channel to desired color
-procedure ImageAlphaCrop(aImage: PImage; threshold: single); cdecl; external cDllName; // Crop image depending on alpha value
-procedure ImageAlphaPremultiply(aImage: PImage); cdecl; external cDllName; // Premultiply alpha channel
+procedure ImageToPOT(aImage: PImage; fillColor: TColor); cdecl; external cDllName; // Convert image to POT (power-of-two)
 procedure ImageCrop(aImage: PImage; crop: TRectangle); cdecl; external cDllName; // Crop an image to a defined rectangle
+procedure ImageAlphaCrop(aImage: PImage; threshold: single); cdecl; external cDllName; // Crop image depending on alpha value
+procedure ImageAlphaClear(aImage: PImage; TColor: TColor; threshold: single); cdecl; external cDllName; // Clear alpha channel to desired color
+procedure ImageAlphaMask(aImage: PImage; alphaMask: TImage); cdecl; external cDllName; // Apply alpha mask to image
+procedure ImageAlphaPremultiply(aImage: PImage); cdecl; external cDllName; // Premultiply alpha channel
 procedure ImageResize(aImage: PImage; aNewWidth: integer; aNewHeight: integer); cdecl; external cDllName; // Resize image (Bicubic scaling algorithm)
 procedure ImageResizeNN(aImage: PImage; aNewWidth: integer; aNewHeight: integer); cdecl; external cDllName; // Resize image (Nearest-Neighbor scaling algorithm)
 procedure ImageResizeCanvas(aImage: PImage; aNewWidth: integer; aNewHeight: integer; aOffsetX: integer; aOffsetY: integer; aColor: TColor); cdecl; external cDllName; // Resize canvas and fill with color
@@ -1098,7 +1098,10 @@ procedure ImageColorGrayscale(aImage: PImage); cdecl; external cDllName; // Modi
 procedure ImageColorContrast(aImage: PImage; aContrast: single); cdecl; external cDllName; // Modify image color: contrast (-100 to 100)
 procedure ImageColorBrightness(aImage: PImage; aBrightness: integer); cdecl; external cDllName; // Modify image color: brightness (-255 to 255)
 procedure ImageColorReplace(aImage: PImage; aColor: TColor; aReplace: TColor); cdecl; external cDllName; // Modify image color: replace color
-function ImageExtractPalette(aImage: TImage; aMaxPaletteSize: integer; aExtractCount: PInteger): PColor; cdecl; external cDllName; // Extract color palette from image to maximum size (memory should be freed)
+function LoadImageColors(aImage: TImage): PColor; cdecl; external cDllName; // Load color data from image as a Color array (RGBA - 32bit)
+function LoadImagePalette(aImage: TImage; aMaxPaletteSize: integer; aColorsCount: PInteger): PColor; cdecl; external cDllName; // Load colors palette from image as a Color array (RGBA - 32bit)
+procedure UnloadImageColors(aColor: PColor); cdecl; external cDllName; // Unload color data loaded with LoadImageColors()
+procedure UnloadImagePalette(aColor: PColor); cdecl; external cDllName; // Unload colors palette loaded with LoadImagePalette()
 function GetImageAlphaBorder(aImage: TImage; aThreshold: single): TRectangle; cdecl; external cDllName; // Get image alpha border rectangle
 
 // Image drawing functions
