@@ -18,10 +18,10 @@ raygui.h   | :heavy_check_mark: |
 ricons.h   | :heavy_check_mark: |
 physac.h   | :heavy_check_mark: |
 
-### Platforms
+**Platforms**
 OS         | Supported          |
 ---------  | ------------------ |
-Mac        | :heavy_check_mark: |
+Mac        | :heavy_uncheck_mark: |
 Windows    | :heavy_check_mark: |
 
 
