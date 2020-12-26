@@ -614,6 +614,7 @@ const
   GAMEPAD_BUTTON_LEFT_TRIGGER_2 = 10;
   GAMEPAD_BUTTON_RIGHT_TRIGGER_1 = 11;
   GAMEPAD_BUTTON_RIGHT_TRIGGER_2 = 12;
+
   // These are buttons in the center of the gamepad
   GAMEPAD_BUTTON_MIDDLE_LEFT = 13;     //PS3 Select
   GAMEPAD_BUTTON_MIDDLE = 14;          //PS Button/XBOX Button
@@ -856,12 +857,13 @@ procedure BeginScissorMode(aX, aY, aWidth, aHeight: integer); cdecl; external cD
 procedure EndScissorMode(); cdecl; external cDllName; // End scissor mode
 
 // Screen-space-related functions
-function GetMouseRay(aMousePosition: TVector2; aCamera: TCamera): TRay; cdecl; external cDllName;
-function GetCameraMatrix(aCamera: TCamera): TMatrix; cdecl; external cDllName;
-function GetCameraMatrix2D(aCamera: TCamera2D): TMatrix; cdecl; external cDllName;
-function GetWorldToScreen(aPosition: TVector3; aCamera: TCamera): TVector2; cdecl; external cDllName;
-function GetWorldToScreen2D(aPosition: TVector2; aCamera: TCamera2D): TVector2; cdecl; external cDllName;
-function GetScreenToWorld2D(aPosition: TVector2; aCamera: TCamera2D): TVector2; cdecl; external cDllName;
+function GetMouseRay(aMousePosition: TVector2; aCamera: TCamera): TRay; cdecl; external cDllName; // Returns a ray trace from mouse position
+function GetCameraMatrix(aCamera: TCamera): TMatrix; cdecl; external cDllName; // Returns camera transform matrix (view matrix)
+function GetCameraMatrix2D(aCamera: TCamera2D): TMatrix; cdecl; external cDllName; // Returns camera 2d transform matrix
+function GetWorldToScreen(aPosition: TVector3; aCamera: TCamera): TVector2; cdecl; external cDllName; // Returns the screen space position for a 3d world space position
+function GetWorldToScreenEx(aPosition: TVector3; aCamera: TCamera; aWidth, aHeight: integer): TVector2; cdecl; external cDllName; // Returns size position for a 3d world space position
+function GetWorldToScreen2D(aPosition: TVector2; aCamera: TCamera2D): TVector2; cdecl; external cDllName; // Returns the screen space position for a 2d camera world space position
+function GetScreenToWorld2D(aPosition: TVector2; aCamera: TCamera2D): TVector2; cdecl; external cDllName; // Returns the world space position for a 2d camera screen space position
 
 // Timming-related functions
 procedure SetTargetFPS(aFPS: integer); cdecl; external cDllName;
