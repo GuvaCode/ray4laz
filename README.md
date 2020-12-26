@@ -21,7 +21,7 @@ physac.h   | :heavy_check_mark: |
 **Platforms**
 OS         | Supported          |
 ---------  | ------------------ |
-Mac        | :heavy_uncheck_mark: |
+Mac        | ❌ |
 Windows    | :heavy_check_mark: |
 
 
