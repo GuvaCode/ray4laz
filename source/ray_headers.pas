@@ -1375,8 +1375,8 @@ function LoadSoundFromWave(aWave: TWave): TSound; cdecl; external cDllName; // L
 procedure UpdateSound(aSound: TSound; aData: Pointer; samplesCount: integer); cdecl; external cDllName; // Update sound buffer with new data
 procedure UnloadWave(aWave: TWave); cdecl; external cDllName; // Unload wave data
 procedure UnloadSound(aSound: TSound); cdecl; external cDllName; // Unload sound
-procedure ExportWave(aWave: TWave; aFileName: PAnsiChar); cdecl; external cDllName;// Export wave data to file
-procedure ExportWaveAsCode(aWave: TWave; aFileName: PAnsiChar); cdecl; external cDllName; // Export wave sample data to code (.h)
+function ExportWave(aWave: TWave; aFileName: PAnsiChar): boolean; cdecl; external cDllName;// Export wave data to file
+function ExportWaveAsCode(aWave: TWave; aFileName: PAnsiChar):boolean ; cdecl; external cDllName; // Export wave sample data to code (.h)
 
 // TWave/TSound management functions
 procedure PlaySound(aSound: TSound); cdecl; external cDllName; // Play a sound
