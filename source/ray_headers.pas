@@ -958,6 +958,22 @@ function GetTouchX(): integer; cdecl; external cDllName; // Returns touch positi
 function GetTouchY(): integer; cdecl; external cDllName; // Returns touch position Y for touch point 0 (relative to screen size)
 function GetTouchPosition(aIndex: integer): TVector2; cdecl; external cDllName; // Returns touch position XY for a touch point index (relative to screen size)
 
+//------------------------------------------------------------------------------------
+// Gestures and Touch Handling Functions (Module: gestures)
+//------------------------------------------------------------------------------------
+
+procedure SetGesturesEnabled(aGestureFlags: cardinal); cdecl; external cDllName; // Enable a set of gestures using flags
+function IsGestureDetected(aGesture: integer): boolean; cdecl; external cDllName; // Check if a gesture have been detected
+function GetGestureDetected(): integer; cdecl; external cDllName; // Get latest detected gesture
+function GetTouchPointsCount(): integer; cdecl; external cDllName; // Get touch points count
+function GetGestureHoldDuration(): single; cdecl; external cDllName; // Get gesture hold time in milliseconds
+function GetGestureDragVector(): TVector2; cdecl; external cDllName; // Get gesture drag vector
+function GetGestureDragAngle(): single; cdecl; external cDllName; // Get gesture drag angle
+function GetGesturePinchVector(): TVector2; cdecl; external cDllName; // Get gesture pinch delta
+function GetGesturePinchAngle(): single; cdecl; external cDllName; // Get gesture pinch angle
+
+
+
 // TColor-related functions
 function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
 function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName;
@@ -978,19 +994,7 @@ function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
 //------------------------------------------------------------------------------------
 
 
-//------------------------------------------------------------------------------------
-// Gestures and Touch Handling Functions (Module: gestures)
-//------------------------------------------------------------------------------------
 
-procedure SetGesturesEnabled(aGestureFlags: cardinal); cdecl; external cDllName;
-function IsGestureDetected(aGesture: integer): boolean; cdecl; external cDllName;
-function GetGestureDetected(): integer; cdecl; external cDllName;
-function GetTouchPointsCount(): integer; cdecl; external cDllName;
-function GetGestureHoldDuration(): single; cdecl; external cDllName;
-function GetGestureDragVector(): TVector2; cdecl; external cDllName;
-function GetGestureDragAngle(): single; cdecl; external cDllName;
-function GetGesturePinchVector(): TVector2; cdecl; external cDllName;
-function GetGesturePinchAngle(): single; cdecl; external cDllName;
 
 //------------------------------------------------------------------------------------
 // TCamera System Functions (Module: TCamera)
