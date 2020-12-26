@@ -954,9 +954,9 @@ procedure SetMouseScale(aScaleX, aScaleY: single); cdecl; external cDllName; // 
 function GetMouseWheelMove(): integer; cdecl; external cDllName; // Returns mouse wheel movement Y
 
 // Input-related functions: touch
-function GetTouchX(): integer; cdecl; external cDllName;
-function GetTouchY(): integer; cdecl; external cDllName;
-function GetTouchPosition(aIndex: integer): TVector2; cdecl; external cDllName;
+function GetTouchX(): integer; cdecl; external cDllName; // Returns touch position X for touch point 0 (relative to screen size)
+function GetTouchY(): integer; cdecl; external cDllName; // Returns touch position Y for touch point 0 (relative to screen size)
+function GetTouchPosition(aIndex: integer): TVector2; cdecl; external cDllName; // Returns touch position XY for a touch point index (relative to screen size)
 
 // TColor-related functions
 function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
