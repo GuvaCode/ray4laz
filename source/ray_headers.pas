@@ -985,8 +985,8 @@ function GetGesturePinchAngle(): single; cdecl; external cDllName; // Get gestur
 procedure SetCameraMode(aCamera: TCamera; aMode: integer); cdecl; external cDllName; // Set camera mode (multiple camera modes available)
 procedure UpdateCamera(aCamera: PCamera); cdecl; external cDllName; // Update camera position for selected mode
 
-procedure SetCameraPanControl(aPanKey: integer); cdecl; external cDllName; // Set camera pan key to combine with mouse movement (free camera)
-procedure SetCameraAltControl(aAltKey: integer); cdecl; external cDllName; // Set camera alt key to combine with mouse movement (free camera)
+procedure SetCameraPanControl(aKeyPan: integer); cdecl; external cDllName; // Set camera pan key to combine with mouse movement (free camera)
+procedure SetCameraAltControl(aKeyPan: integer); cdecl; external cDllName; // Set camera alt key to combine with mouse movement (free camera)
 procedure SetCameraSmoothZoomControl(aKeySmoothZoom: integer); cdecl; external cDllName; // Set camera smooth zoom key to combine with mouse (free camera)
 procedure SetCameraMoveControls(aKeyFront: integer; aKeyBack: integer; aKeyRight: integer; aKeyLeft: integer; aKeyUp: integer; aKeyDown: integer); cdecl; external cDllName; // Set camera move controls (1st person and 3rd person cameras)
 
