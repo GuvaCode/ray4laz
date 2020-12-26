@@ -8,11 +8,16 @@ Ray4Laz is a header translation of the [Raylib Game Development Library](https:/
 
 
 
-** Build **
+
+
+
+
+
+**Build**
 
 You can execute `make` on GNU+Linux, macOS and Windows.
 
-** Shared or Static Library **
+**Shared or Static Library**
 
 You will need to source [raylib](https://github.com/raysan5/raylib/) for your platform.
 
