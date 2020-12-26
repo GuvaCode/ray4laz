@@ -1163,7 +1163,7 @@ function GetFontDefault(): TFont; cdecl; external cDllName; // Get the default F
 function LoadFont(aFilename: PAnsiChar): TFont; cdecl; external cDllName; // Load font from file into GPU memory (VRAM)
 function LoadFontEx(aFilename: PAnsiChar; aFontSize: integer; aFontChars: PInteger; aCharsCount: integer): TFont; cdecl; external cDllName; // Load font from file with extended parameters
 function LoadFontFromImage(aImage: TImage; aKey: TColor; aFirstChar: integer): TFont; cdecl; external cDllName; // Load font from Image (XNA style)
-function LoadFontFromMemory(aFileType: PAnsiChar; aFileData: PAnsiChar,aDataSize: integer, aFontSize:integer, aFontChars: PansiChar; aCharsCount: integer); cdecl; external cDllName; // Load font from memory buffer, fileType refers to extension: i.e. "ttf"
+function LoadFontFromMemory(aFileType: PAnsiChar; aFileData: PAnsiChar; aDataSize: integer; aFontSize:integer; aFontChars: PansiChar; aCharsCount: integer):TFont; cdecl; external cDllName; // Load font from memory buffer, fileType refers to extension: i.e. "ttf"
 function LoadFontData(aFilename: PAnsiChar; aFontSize: integer; aFontChars: PInteger; aCharsCount, atype: integer): PCharInfo; cdecl; external cDllName; // Load font data for further use
 function GenImageFontAtlas(aChars: PCharInfo; aRecs: PPRectangle; aCharsCount, aFontSize, aPadding, aPackMethod: integer): TImage; cdecl; external cDllName; // Generate image font atlas using chars info
 procedure UnloadFontData(aChars:PansiChar; aCharsCount: integer); cdecl; external cDllName; // Unload font chars info data (RAM)
@@ -1215,6 +1215,8 @@ function CodepointToUtf8(aCodepoint: integer; aByteLength: PInteger): PAnsiChar;
 procedure DrawLine3D(aStartPos: TVector3; aEndPos: TVector3; aColor: TColor); cdecl; external cDllName;  // Draw a line in 3D world space
 procedure DrawPoint3D(aPosition: TVector3; aColor: TColor); cdecl; external cDllName; // Draw a point in 3D space, actually a small line
 procedure DrawCircle3D(aCenter: TVector3; aRadius: single; aRotationAxis: TVector3; aRotationAngle: single; aColor: TColor); cdecl; external cDllName; // Draw a circle in 3D world space
+procedure DrawTriangle3D(aV1: TVector3; aV2: TVector3; aV3: TVector3; aColor:TColor); cdecl; external cDllName; // Draw a color-filled triangle (vertex in counter-clockwise order!)
+procedure DrawTriangleStrip3D(aPoints:PVector3; aPointsCount:integer; aColor:TColor); cdecl; external cDllName; // Draw a triangle strip defined by points
 procedure DrawCube(aPosition: TVector3; aWidth: single; aHeight: single; aLength: single; aColor: TColor); cdecl; external cDllName; // Draw cube
 procedure DrawCubeV(aPosition: TVector3; aSize: TVector3; aColor: TColor); cdecl; external cDllName; // Draw cube (Vector version)
 procedure DrawCubeWires(aPosition: TVector3; aWidth: single; aHeight: single; aLength: single; aColor: TColor); cdecl; external cDllName; // Draw cube wires
@@ -1239,11 +1241,12 @@ procedure DrawGizmo(aPosition: TVector3); cdecl; external cDllName;  // Draw sim
 function LoadModel(aFilename: PAnsiChar): TModel; cdecl; external cDllName; // Load model from files (meshes and materials)
 function LoadModelFromMesh(aMesh: TMesh): TModel; cdecl; external cDllName; // Load model from generated mesh (default material)
 procedure UnloadModel(aModel: TModel); cdecl; external cDllName; // Unload model from memory (RAM and/or VRAM)
+procedure UnloadModelKeepMeshes(aModel: TModel); cdecl; external cDllName; // Unload model (but not meshes) from memory (RAM and/or VRAM)
 
 // TMesh loading/unloading functions
 function LoadMeshes(aFilename: PAnsiChar; aCount: PInteger): PMesh; cdecl; external cDllName; // Load meshes from model file
-procedure ExportMesh(aMesh: TMesh; aFilename: PAnsiChar); cdecl; external cDllName; // Export mesh data to file
 procedure UnloadMesh(aMesh: TMesh); cdecl; external cDllName; // Unload mesh from memory (RAM and/or VRAM)
+function ExportMesh(aMesh: TMesh; aFilename: PAnsiChar): boolean; cdecl; external cDllName; // Export mesh data to file
 
 // Material loading/unloading functions
 function LoadMaterials(aFilename: PAnsiChar; aMaterialCount: PInteger): PMaterial; cdecl; external cDllName; // Load materials from model file
