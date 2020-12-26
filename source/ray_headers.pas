@@ -929,16 +929,16 @@ procedure SetExitKey(aKey: integer); cdecl; external cDllName; // Set a custom k
 function GetKeyPressed(): integer; cdecl; external cDllName; // Get key pressed, call it multiple times for chars queued
 
 // Input-related functions: gamepads
-function IsGamepadAvailable(aGamepad: integer): boolean; cdecl; external cDllName;
-function IsGamepadName(aGamepad: integer; aName: PAnsiChar): boolean; cdecl; external cDllName;
-function GetGamepadName(aGamepad: integer): PAnsiChar; cdecl; external cDllName;
-function IsGamepadButtonPressed(aGamepad: integer; aButton: integer): boolean; cdecl; external cDllName;
-function IsGamepadButtonDown(aGamepad: integer; aButton: integer): boolean; cdecl; external cDllName;
-function IsGamepadButtonReleased(aGamepad: integer; aButton: integer): boolean; cdecl; external cDllName;
-function IsGamepadButtonUp(aGamepad: integer; aButton: integer): boolean; cdecl; external cDllName;
-function GetGamepadButtonPressed(): integer; cdecl; external cDllName;
-function GetGamepadAxisCount(aGamepad: integer): integer; cdecl; external cDllName;
-function GetGamepadAxisMovement(aGamepad: integer; aAxis: integer): single; cdecl; external cDllName;
+function IsGamepadAvailable(aGamepad: integer): boolean; cdecl; external cDllName; // Detect if a gamepad is available
+function IsGamepadName(aGamepad: integer; aName: PAnsiChar): boolean; cdecl; external cDllName; // Check gamepad name (if available)
+function GetGamepadName(aGamepad: integer): PAnsiChar; cdecl; external cDllName; // Return gamepad internal name id
+function IsGamepadButtonPressed(aGamepad: integer; aButton: integer): boolean; cdecl; external cDllName; // Detect if a gamepad button has been pressed once
+function IsGamepadButtonDown(aGamepad: integer; aButton: integer): boolean; cdecl; external cDllName; // Detect if a gamepad button is being pressed
+function IsGamepadButtonReleased(aGamepad: integer; aButton: integer): boolean; cdecl; external cDllName; // Detect if a gamepad button has been released once
+function IsGamepadButtonUp(aGamepad: integer; aButton: integer): boolean; cdecl; external cDllName; // Detect if a gamepad button is NOT being pressed
+function GetGamepadButtonPressed(): integer; cdecl; external cDllName; // Get the last gamepad button pressed
+function GetGamepadAxisCount(aGamepad: integer): integer; cdecl; external cDllName; // Return gamepad axis count for a gamepad
+function GetGamepadAxisMovement(aGamepad: integer; aAxis: integer): single; cdecl; external cDllName; // Return axis movement value for a gamepad axis
 
 // Input-related functions: mouse
 function IsMouseButtonPressed(aButton: integer): boolean; cdecl; external cDllName;
