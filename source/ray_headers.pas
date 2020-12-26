@@ -916,35 +916,17 @@ function StorageLoadValue(aPosition: cardinal): integer; cdecl; external cDllNam
 
 procedure OpenURL(aUrl: PAnsiChar); cdecl; external cDllName; // Open URL with default system browser (if available)
 
-
-
-
-// TColor-related functions
-function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
-function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName;
-function ColorFromNormalized(aNormalized: TVector4): TColor; cdecl; external cDllName;
-function ColorToHSV(aColor: TColor): TVector3; cdecl; external cDllName;
-function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName;
-function GetColor(aHexValue: integer): TColor; cdecl; external cDllName;
-function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
-
-
-
-
-
-
-
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
 //------------------------------------------------------------------------------------
 
 // Input-related functions: keyboard
-function IsKeyPressed(aKey: integer): boolean; cdecl; external cDllName;
-function IsKeyDown(aKey: integer): boolean; cdecl; external cDllName;
-function IsKeyReleased(aKey: integer): boolean; cdecl; external cDllName;
-function IsKeyUp(aKey: integer): boolean; cdecl; external cDllName;
-function GetKeyPressed(): integer; cdecl; external cDllName;
-procedure SetExitKey(aKey: integer); cdecl; external cDllName;
+function IsKeyPressed(aKey: integer): boolean; cdecl; external cDllName;  // Detect if a key has been pressed once
+function IsKeyDown(aKey: integer): boolean; cdecl; external cDllName; // Detect if a key is being pressed
+function IsKeyReleased(aKey: integer): boolean; cdecl; external cDllName; // Detect if a key has been released once
+function IsKeyUp(aKey: integer): boolean; cdecl; external cDllName; // Detect if a key is NOT being pressed
+procedure SetExitKey(aKey: integer); cdecl; external cDllName; // Set a custom key to exit program (default is ESC)
+function GetKeyPressed(): integer; cdecl; external cDllName; // Get key pressed, call it multiple times for chars queued
 
 // Input-related functions: gamepads
 function IsGamepadAvailable(aGamepad: integer): boolean; cdecl; external cDllName;
@@ -975,6 +957,26 @@ function GetMouseWheelMove(): integer; cdecl; external cDllName;
 function GetTouchX(): integer; cdecl; external cDllName;
 function GetTouchY(): integer; cdecl; external cDllName;
 function GetTouchPosition(aIndex: integer): TVector2; cdecl; external cDllName;
+
+// TColor-related functions
+function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
+function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName;
+function ColorFromNormalized(aNormalized: TVector4): TColor; cdecl; external cDllName;
+function ColorToHSV(aColor: TColor): TVector3; cdecl; external cDllName;
+function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName;
+function GetColor(aHexValue: integer): TColor; cdecl; external cDllName;
+function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
+
+
+
+
+
+
+
+//------------------------------------------------------------------------------------
+// Input Handling Functions (Module: core)
+//------------------------------------------------------------------------------------
+
 
 //------------------------------------------------------------------------------------
 // Gestures and Touch Handling Functions (Module: gestures)
