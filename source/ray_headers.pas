@@ -84,6 +84,12 @@ const
   MAGENTA:        TColor = (r: 255; g: 0; b: 255; a: 255);    // Magenta
   RAYWHITE:       TColor = (r: 245; g: 245; b: 245; a: 255);  // My own White (raylib logo)
 
+   {  FormatText = TextFormat;
+      LoadText = LoadFileText;
+      GetExtension = GetFileExtension;
+      GetImageData = LoadImageColors; }
+
+
 type
   PVector2 = ^TVector2;
   TVector2 =  record
@@ -893,7 +899,7 @@ procedure SaveFileText(aFileName: PAnsiChar; aText: PAnsiChar); cdecl; external 
 function FileExists(aFilename: PAnsiChar): boolean; cdecl; external cDllName; // Check if file exists
 function IsFileExtension(aFilename: PAnsiChar; aExt: PAnsiChar): boolean; cdecl; external cDllName; // Check file extension
 function DirectoryExists(aDirPath: PAnsiChar): boolean; cdecl; external cDllName; // Check if a directory path exists
-function GetExtension(aFilename: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get pointer to extension for a filename string
+function GetFileExtension(aFilename: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get pointer to extension for a filename string
 function GetFileName(aFilepath: PAnsiChar): PAnsiChar; cdecl; external cDllName;  // Get pointer to filename for a path string
 function GetFileNameWithoutExt(aFilepath: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get filename string without extension (uses static string)
 function GetDirectoryPath(aFilename: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get full path for a given fileName with path (uses static string)
@@ -1023,7 +1029,7 @@ procedure DrawRectabgleRoundedLines(aRec: TRectangle; aRoundness: single; aSegme
 
 procedure DrawTriangle(aVec1: TVector2; aVec2: TVector2; aVec3: TVector2; aColor: TColor); cdecl; external cDllName; // Draw a color-filled triangle (vertex in counter-clockwise order!)
 procedure DrawTriangleLines(aVec1: TVector2; aVec2: TVector2; aVec3: TVector2; aColor: TColor); cdecl; external cDllName; // Draw triangle outline (vertex in counter-clockwise order!)
-procedure DrawTriangleFan(aPoints: PVector2; aNumPoints: integer; aColor: TColor); cdecl; external cDllName; // Draw a triangle fan defined by points (first vertex is the center)
+procedure DrawTriangleFan(aPoints: PVector2; aPointsCount: integer; aColor: TColor); cdecl; external cDllName; // Draw a triangle fan defined by points (first vertex is the center)
 procedure DrawTriangleStrip(aPoints: PVector2; aPointsCount: integer; aColor: TColor); cdecl; external cDllName; // Draw a triangle strip defined by points
 procedure DrawPoly(aCenter: TVector2; aSides: integer; aRadius: single; aRotation: single; aColor: TColor); cdecl; external cDllName; // Draw a regular polygon (Vector version)
 procedure DrawPolyLines(aCenter: TVector2; aSides: integer; aRadius: single; aRotation: single; aColor: TColor); cdecl; external cDllName; // Draw a polygon outline of n sides
@@ -1428,6 +1434,9 @@ function RectangleCreate(aX: integer; aY: integer; aWidth: integer; aHeight: int
 procedure RectangleSet(aRect: PRectangle; aX: integer; aY: integer; aWidth: integer; aHeight: integer);
 function TCamera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer): TCamera3D;
 procedure TCamera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
+
+
+
 
 implementation
 
