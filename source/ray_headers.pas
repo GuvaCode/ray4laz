@@ -1130,6 +1130,7 @@ function LoadRenderTexture(aWidth: integer; aHeight: integer): TRenderTexture2D;
 procedure UnloadTexture(aTexture: TTexture2D); cdecl; external cDllName; // Unload texture from GPU memory (VRAM)
 procedure UnloadRenderTexture(aTarget: TRenderTexture2D); cdecl; external cDllName; // Unload render texture from GPU memory (VRAM)
 procedure UpdateTexture(aTexture: TTexture2D; aPixels: Pointer); cdecl; external cDllName; // Update GPU texture with new data
+procedure UpdateTextureRec(aTexture: TTexture2D;aRec: TRectangle; aPixels: Pointer); cdecl; external cDllName; // Update GPU texture rectangle with new data
 function GetTextureData(aTexture: TTexture2D): TImage; cdecl; external cDllName; // Get pixel data from GPU texture and return an Image
 function GetScreenData(): TImage; cdecl; external cDllName; // Get pixel data from screen buffer and return an Image (screenshot)
 
