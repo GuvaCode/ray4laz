@@ -1336,9 +1336,9 @@ function GetMatrixProjection(): TMatrix; cdecl; external cDllName; // Get intern
 
 // aTexture maps generation (PBR)
 //NOTE: Required shaders should be provided
-function GenTextureCubemap(aShader: TShader; aSkyHDR: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName; // Generate cubemap texture from 2D texture
-function GenTextureIrradiance(aShader: TShader; aCubemap: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName; // Generate irradiance texture using cubemap data
-function GenTexturePrefilter(aShader: TShader; aCubemap: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName; // Generate prefilter texture using cubemap data
+function  GenTextureCubemap(aShader: TShader; aPanorama:TTexture2D; aSize: integer; aFormat:integer): TTextureCubemap; cdecl; external cDllName; // Generate cubemap texture from 2D panorama texture
+function GenTextureIrradiance(aShader: TShader; aCubemap: TTextureCubemap; aSize: integer): TTextureCubemap; cdecl; external cDllName; // Generate irradiance texture using cubemap data
+function GenTexturePrefilter(aShader: TShader; aCubemap: TTextureCubemap; aSize: integer): TTextureCubemap; cdecl; external cDllName; // Generate prefilter texture using cubemap data
 function GenTextureBRDF(aShader: TShader; aCubemap: TTexture2D; aSize: integer): TTexture2D; cdecl; external cDllName; // Generate BRDF texture
 
 // Shading begin/end functions
