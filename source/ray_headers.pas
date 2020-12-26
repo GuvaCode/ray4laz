@@ -871,15 +871,6 @@ function GetFPS(): integer; cdecl; external cDllName; // Returns current FPS
 function GetFrameTime(): single; cdecl; external cDllName; // Returns time in seconds for last frame drawn
 function GetTime(): double; cdecl; external cDllName; // Returns elapsed time in seconds since InitWindow()
 
-// TColor-related functions
-function ColorToInt(aColor: TColor): integer; cdecl; external cDllName; // Returns hexadecimal value for a Color
-function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName; // Returns color normalized as float [0..1]
-function ColorFromNormalized(aNormalized: TVector4): TColor; cdecl; external cDllName; // Returns color from normalized values [0..1]
-function ColorToHSV(aColor: TColor): TVector3; cdecl; external cDllName; // Returns HSV values for a Color
-function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName; // Returns a Color from HSV values
-function GetColor(aHexValue: integer): TColor; cdecl; external cDllName; // Returns a Color struct from hexadecimal value
-function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName; // Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
-
 // Misc. functions
 procedure SetConfigFlags(aFlags: cardinal); cdecl; external cDllName; // Setup init configuration flags (view FLAGS)
 
@@ -1145,11 +1136,22 @@ procedure DrawTextureV(aTexture: TTexture2D; position: TVector2; aTint: TColor);
 procedure DrawTextureEx(aTexture: TTexture2D; position: TVector2; aRotation: single; aScale: single; aTint: TColor); cdecl; external cDllName; // Draw a Texture2D with extended parameters
 procedure DrawTextureRec(aTexture: TTexture2D; sourceRec: TRectangle; aPosition: TVector2; aTint: TColor); cdecl; external cDllName; // Draw a part of a texture defined by a rectangle
 procedure DrawTextureQuad(aTexture: TTexture2D; aTiling, aOffset: TVector2; aQuad: TRectangle; aTint: TColor); cdecl; external cDllName; // Draw texture quad with tiling and offset parameters
+procedure DrawTextureTiled(aTexture: TTexture2D; aSource: TRectangle; aDest: TRectangle; aOrigin: TVector2: aRotation: single; aScale: single; aTint: TColor); cdecl; external cDllName; // Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.
 procedure DrawTexturePro(aTexture: TTexture2D; sourceRec: TRectangle; aDestRec: TRectangle; aOrigin: TVector2; aRotation: single; aTint: TColor); cdecl; external cDllName; // Draw a part of a texture defined by a rectangle with 'pro' parameters
 procedure DrawTextureNPatch(aTexture: TTexture2D; aNPatchInfo: TNPatchInfo; aDestRec: TRectangle; aOrigin: TVector2; aRotation: single; aTint: TColor); cdecl; external cDllName; // Draws a texture (or part of it) that stretches or shrinks nicely
 
 // Image/Texture misc functions
 function GetPixelDataSize(aWidth: integer; aHeight: integer; aFormat: integer): integer; cdecl; external cDllName; // Get pixel data size in bytes (image or texture)
+
+// TColor-related functions
+function ColorToInt(aColor: TColor): integer; cdecl; external cDllName; // Returns hexadecimal value for a Color
+function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName; // Returns color normalized as float [0..1]
+function ColorFromNormalized(aNormalized: TVector4): TColor; cdecl; external cDllName; // Returns color from normalized values [0..1]
+function ColorToHSV(aColor: TColor): TVector3; cdecl; external cDllName; // Returns HSV values for a Color
+function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName; // Returns a Color from HSV values
+function GetColor(aHexValue: integer): TColor; cdecl; external cDllName; // Returns a Color struct from hexadecimal value
+function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName; // Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
+
 
 //------------------------------------------------------------------------------------
 // TFont Loading and Text Drawing Functions (Module: text)
