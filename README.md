@@ -14,15 +14,13 @@ Header     | Supported          |
 ---------  | ------------------ |
 raylib.h   | :heavy_check_mark: |
 raymath.h  | :heavy_check_mark: |
-raygui.h   | :heavy_check_mark: |
-ricons.h   | :heavy_check_mark: |
-physac.h   | :heavy_check_mark: |
-
+|
 **Platforms**
 OS         | Supported          |
 ---------  | ------------------ |
 Mac        | ❌ |
-Windows    | :heavy_check_mark: |
+Windows    | ❓|
+Linux      | :heavy_check_mark: |
 
 
 
