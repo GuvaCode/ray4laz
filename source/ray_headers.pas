@@ -883,28 +883,15 @@ procedure MemFree(aPtr:Pointer); cdecl; external cDllName; // Internal memory fr
 procedure TakeScreenshot(aFilename: PAnsiChar); cdecl; external cDllName; // Takes a screenshot of current screen (saved a .png)
 function GetRandomValue(aMin: integer; aMax: integer): integer; cdecl; external cDllName; // Returns a random value between min and max (both included)
 
-
-
-
-
-
-
-
-// TColor-related functions
-function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
-function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName;
-function ColorFromNormalized(aNormalized: TVector4): TColor; cdecl; external cDllName;
-function ColorToHSV(aColor: TColor): TVector3; cdecl; external cDllName;
-function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName;
-function GetColor(aHexValue: integer): TColor; cdecl; external cDllName;
-function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
-
-
-
 // Files management functions
-function LoadFileData(aFileName: PAnsiChar; bytesRead: PCardinal): PAnsiChar; cdecl; external;
-procedure SaveFileData(aFileName: PAnsiChar; aData: Pointer; bytesToWrite: cardinal); cdecl; external;
-function LoadFileText(aFileName: PAnsiChar): PAnsiChar; cdecl; external cDllName;
+function LoadFileData(aFileName: PAnsiChar; bytesRead: PCardinal): PAnsiChar; cdecl; external; // Load file data as byte array (read)
+procedure UnloadFileData(aData: PAnsiChar); cdecl; external; // Unload file data allocated by LoadFileData()
+//procedure SaveFileData(aFileName: PAnsiChar; aData: Pointer; bytesToWrite: cardinal); cdecl; external; // Save data to file from byte array (write), returns true on success
+function SaveFileData(aFileName: PAnsiChar; aData: Pointer; bytesToWrite: cardinal): Boolean; cdecl; external; // Save data to file from byte array (write), returns true on success
+
+
+function LoadFileText(aFileName: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Load text data from file (read), returns a '\0' terminated string
+
 procedure SaveFileText(aFileName: PAnsiChar; aText: PAnsiChar); cdecl; external cDllName;
 function FileExists(aFilename: PAnsiChar): boolean; cdecl; external cDllName;
 function IsFileExtension(aFilename: PAnsiChar; aExt: PAnsiChar): boolean; cdecl; external cDllName;
@@ -925,6 +912,24 @@ function GetFileModTime(aFilename: PAnsiChar): longint; cdecl; external cDllName
 
 function CompressData(aData: PByte; aDataLength: integer; aCompDataLength: PInteger): PByte; cdecl; external cDllName;
 function DecompressData(aCompData: PByte; aCompDataLength: integer; aDataLength: PInteger): PByte; cdecl; external cDllName;
+
+
+
+
+
+
+// TColor-related functions
+function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
+function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName;
+function ColorFromNormalized(aNormalized: TVector4): TColor; cdecl; external cDllName;
+function ColorToHSV(aColor: TColor): TVector3; cdecl; external cDllName;
+function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName;
+function GetColor(aHexValue: integer): TColor; cdecl; external cDllName;
+function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
+
+
+
+
 
 // Persistent storage management
 procedure StorageSaveValue(aPosition: integer; aValue: integer); cdecl; external cDllName;
