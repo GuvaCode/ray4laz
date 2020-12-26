@@ -1246,7 +1246,7 @@ procedure UnloadModelKeepMeshes(aModel: TModel); cdecl; external cDllName; // Un
 // TMesh loading/unloading functions
 function LoadMeshes(aFilename: PAnsiChar; aCount: PInteger): PMesh; cdecl; external cDllName; // Load meshes from model file
 procedure UnloadMesh(aMesh: TMesh); cdecl; external cDllName; // Unload mesh from memory (RAM and/or VRAM)
-function ExportMesh(aMesh: TMesh; aFilename: PAnsiChar): boolean; cdecl; external cDllName; // Export mesh data to file
+function ExportMesh(aMesh: TMesh; aFilename: PAnsiChar): boolean; cdecl; external cDllName;  // Export mesh data to file, returns true on success
 
 // Material loading/unloading functions
 function LoadMaterials(aFilename: PAnsiChar; aMaterialCount: PInteger): PMaterial; cdecl; external cDllName; // Load materials from model file
@@ -1277,6 +1277,7 @@ function GenMeshCubicmap(aCubicMap: TImage; aCubeSize: TVector3): TMesh; cdecl; 
 function MeshBoundingBox(aMesh: TMesh): TBoundingBox; cdecl; external cDllName;// Compute mesh bounding box limits
 procedure MeshTangents(aMesh: PMesh); cdecl; external cDllName; // Compute mesh tangents
 procedure MeshBinormals(aMesh: PMesh); cdecl; external cDllName; // Compute mesh binormals
+procedure MeshNormalsSmooth(aMesh: PMesh); cdecl; external cDllName; // Smooth (average) vertex normals
 
 // TModel drawing functions
 procedure DrawModel(aModel: TModel; aPosition: TVector3; aScale: single; aTint: TColor); cdecl; external cDllName; // Draw a model (with texture if set)
