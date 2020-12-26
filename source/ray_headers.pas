@@ -1422,7 +1422,7 @@ function Vector2Create(aX: single; aY: single): TVector2;
 procedure Vector2Set(aVec: PVector2; aX: single; aY: single);
 function Vector3Create(aX: single; aY: single; aZ: single): TVector3;
 procedure Vector3Set(aVec: PVector3; aX: single; aY: single; aZ: single);
-function ColorCreatVector2Createe(aR: byte; aG: byte; aB: byte; aA: byte): TColor;
+function ColorCreate(aR: byte; aG: byte; aB: byte; aA: byte): TColor;
 procedure TColorSet(aColor: PColor; aR: byte; aG: byte; aB: byte; aA: byte);
 function RectangleCreate(aX: integer; aY: integer; aWidth: integer; aHeight: integer): TRectangle;
 procedure RectangleSet(aRect: PRectangle; aX: integer; aY: integer; aWidth: integer; aHeight: integer);
