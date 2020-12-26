@@ -2,7 +2,7 @@ program core_basic_window;
 
 {$MODE objfpc}
 
-uses cmem, raylib, math;
+uses cmem, ray_headers, math;
 
 const
   screenWidth = 800;

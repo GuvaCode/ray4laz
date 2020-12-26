@@ -2,7 +2,7 @@ program core_basic_gamepad;
 
 {$MODE objfpc}
 
-uses cmem, raylib, math, sysutils;
+uses cmem, ray_headers, math, sysutils;
 
 const
   screenWidth = 800;
@@ -32,8 +32,8 @@ begin
 
   InitWindow(screenWidth, screenHeight, 'raylib [core] example - gamepad input');
 
-  texPs3Pad := LoadTexture('res/images/ps3.png');
-  texXboxPad := LoadTexture('res/images/xbox.png');
+  texPs3Pad := LoadTexture('resources/images/ps3.png');
+  texXboxPad := LoadTexture('resources/images/xbox.png');
 
   SetTargetFPS(60);
 
