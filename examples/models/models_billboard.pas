@@ -2,7 +2,7 @@ program models_billboard;
 
 {$MODE objfpc}
 
-uses cmem, raylib, math;
+uses cmem, ray_headers, math;
 
 const
   screenWidth = 800;
@@ -24,9 +24,9 @@ begin
     cam.target := Vector3Create(0.0, 2.0, 0.0);
     cam.up := Vector3Create(0.0, 1.0, 0.0);
     cam.fovy := 45.0;
-    cam.&type := CAMERA_PERSPECTIVE;
+    cam._type := CAMERA_PERSPECTIVE;
 
-    bill := LoadTexture('res/textures/billboard.png');
+    bill := LoadTexture('resources/textures/billboard.png');
     billPosition := Vector3Create(0.0, 2.0, 0.0);
 
     SetCameraMode(cam, CAMERA_ORBITAL);

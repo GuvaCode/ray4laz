@@ -2,7 +2,7 @@ program animation_test;
 
 {$MODE objfpc}
 
-uses cmem, raylib, rlgl, raymath;
+uses cmem, ray_headers, ray_rlgl, ray_math;
 
 const
 	screenWidth = 800;
@@ -24,17 +24,17 @@ begin
 	cam.target := Vector3Zero();
 	cam.up := Vector3Create(0.0, 1.0, 0.0);
 	cam.fovy := 45.0;
-	cam.&type := CAMERA_PERSPECTIVE;
+	cam._type := CAMERA_PERSPECTIVE;
 
-	model := LoadModel('res/guy/guy.iqm');
-	texture := LoadTexture('res/guy/guytex.png');
+	model := LoadModel('resources/guy/guy.iqm');
+	texture := LoadTexture('resources/guy/guytex.png');
 	SetMaterialTexture(@model.materials[0], MAP_DIFFUSE, texture);
 
 	position := Vector3Zero();
 
 	// Load Animation Data
 	animsCount := 0;
-	anims := LoadModelAnimations('res/guy/guyanim.iqm', @animsCount);
+	anims := LoadModelAnimations('resources/guy/guyanim.iqm', @animsCount);
 	animFrameCounter := 0;
 
 	WriteLn('animsCount: ', animsCount);
@@ -79,11 +79,7 @@ begin
 	for i := 0 to animsCount - 1 do
 		UnloadModelAnimation(anims[i]);
 	
-    // Don Duvall (2019-10-26)
-    //   It seems that using the CMem Unit (As the FIRST in the Uses)
-	//   makes FreePascal use the CRuntime Memory management. Allowing
-	//   us to correctly free memory allocated by raylib. (Hope this is correct)
-	FreeMem(anims);
+        Free(anims);
 
 	UnloadModel(model);
 
