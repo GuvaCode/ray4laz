@@ -1001,7 +1001,7 @@ procedure DrawLine(aStartPosX: integer; aStartPosY: integer; aEndPosX: integer; 
 procedure DrawLineV(aStartPos: TVector2; aEndPos: TVector2; aColor: TColor); cdecl; external cDllName; // Draw a line (Vector version)
 procedure DrawLineEx(aStartPos: TVector2; aEndPos: TVector2; aThick: single; aColor: TColor); cdecl; external cDllName; // Draw a line defining thickness
 procedure DrawLineBezier(aStartPos: TVector2; aEndPos: TVector2; aThick: single; aColor: TColor); cdecl; external cDllName; // Draw a line using cubic-bezier curves in-out
-procedure DrawLineStrip(aPoints: PVector2; aNumPoints: integer; aColor: TColor); cdecl; external cDllName; // Draw lines sequence
+procedure DrawLineStrip(aPoints: PVector2; aPointsCount: integer; aColor: TColor); cdecl; external cDllName; // Draw lines sequence
 procedure DrawCircle(aCenterX: integer; aCenterY: integer; aRadius: single; aColor: TColor); cdecl; external cDllName; // Draw a color-filled circle
 procedure DrawCircleSector(aCenter: TVector2; aRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName; // Draw a piece of a circle
 procedure DrawCircleSectorLines(aCenter: TVector2; aRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName; // Draw circle sector outline
