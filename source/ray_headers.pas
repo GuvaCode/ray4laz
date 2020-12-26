@@ -1115,8 +1115,7 @@ procedure ImageDrawRectangleV(aDst: PImage; aPosition: TVector2; aSize: TVector2
 procedure ImageDrawRectangleRec(aDst: PImage; aRec: TRectangle; aColor: TColor); cdecl; external cDllName; // Draw rectangle within an image
 procedure ImageDrawRectangleLines(aDst: PImage; aRec: TRectangle; aThick: integer; aColor: TColor); cdecl; external cDllName; // Draw rectangle lines within an image
 procedure ImageDraw(aDest: PImage; aSrc: TImage; aSrcRec: TRectangle; aDestRec: TRectangle; aTint: TColor); cdecl; external cDllName; // Draw a source image within a destination image (tint applied to source)
-procedure ImageDrawText(aDest: PImage; aPosition: TVector2; aText: PAnsiChar; aFontSize: integer; aColor: TColor); cdecl; external cDllName; // Draw text (default font) within an image (destination)
-//procedure ImageDrawTextEx(aDest: PImage; aPosition: TVector2; TFont: TFont; aText: PAnsiChar; aFontSize: single; aSpacing: single; aColor: TColor); cdecl; external cDllName; // Draw text (custom sprite font) within an image (destination)
+procedure ImageDrawText(aDst: PImage; aText: PAnsiChar; aPosX: integer; aPosY: integer; aFontSize: integer; aColor: TColor); cdecl; external cDllName; // Draw text (using default font) within an image (destination)
 procedure ImageDrawTextEx(aDst: PImage; aFont: TFont; aText: PAnsiChar; aPosition:TVector2; aFontSize: single; aSpacing: single; aTint: TColor); cdecl; external cDllName; // Draw text (custom sprite font) within an image (destination)
 
 
