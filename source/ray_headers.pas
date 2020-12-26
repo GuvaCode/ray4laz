@@ -1163,8 +1163,10 @@ function GetFontDefault(): TFont; cdecl; external cDllName; // Get the default F
 function LoadFont(aFilename: PAnsiChar): TFont; cdecl; external cDllName; // Load font from file into GPU memory (VRAM)
 function LoadFontEx(aFilename: PAnsiChar; aFontSize: integer; aFontChars: PInteger; aCharsCount: integer): TFont; cdecl; external cDllName; // Load font from file with extended parameters
 function LoadFontFromImage(aImage: TImage; aKey: TColor; aFirstChar: integer): TFont; cdecl; external cDllName; // Load font from Image (XNA style)
+function LoadFontFromMemory(aFileType: PAnsiChar; aFileData: PAnsiChar,aDataSize: integer, aFontSize:integer, aFontChars: PansiChar; aCharsCount: integer); cdecl; external cDllName; // Load font from memory buffer, fileType refers to extension: i.e. "ttf"
 function LoadFontData(aFilename: PAnsiChar; aFontSize: integer; aFontChars: PInteger; aCharsCount, atype: integer): PCharInfo; cdecl; external cDllName; // Load font data for further use
 function GenImageFontAtlas(aChars: PCharInfo; aRecs: PPRectangle; aCharsCount, aFontSize, aPadding, aPackMethod: integer): TImage; cdecl; external cDllName; // Generate image font atlas using chars info
+procedure UnloadFontData(aChars:PansiChar; aCharsCount: integer); cdecl; external cDllName; // Unload font chars info data (RAM)
 procedure UnloadFont(aFont: TFont); cdecl; external cDllName; // Unload Font from GPU memory (VRAM)
 
 // aText drawing functions
