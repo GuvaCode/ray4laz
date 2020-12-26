@@ -1055,17 +1055,11 @@ function GetCollisionRec(aRect1: TRectangle; aRect2: TRectangle): TRectangle; cd
 // NOTE: This functions do not require GPU access
 function LoadImage(aFilename: PAnsiChar): TImage; cdecl; external cDllName; // Load image from file into CPU memory (RAM)
 function LoadImageRaw(aFilename: PAnsiChar; aWidth: integer; aHeight: integer; aFormat: integer; headerSize: integer): TImage; cdecl; external cDllName; // Load image from RAW file data
-function LoadImageAnim(aFilename: PAnsiChar; aFrames: integer); cdecl; external cDllName; // Load image sequence from file (frames appended to image.data)
-function LoadImageFromMemory(aFileType: PAnsiChar; aFileData: PAnsiChar; aDataSize: integer); cdecl; external cDllName; // Load image from memory buffer, fileType refers to extension: i.e. "png"
-
-//function LoadImageEx(aPixels: PColor; aWidth: integer; aHeight: integer): TImage; cdecl; external cDllName; // Load image from Color array data (RGBA - 32bit)
-//function LoadImagePro(aData: Pointer; aWidth: integer; aHeight: integer; aFormat: integer): TImage; cdecl; external cDllName; // Load image from raw data with parameters
-
+function LoadImageAnim(aFilename: PAnsiChar; aFrames: integer): TImage; cdecl; external cDllName; // Load image sequence from file (frames appended to image.data)
+function LoadImageFromMemory(aFileType: PAnsiChar; aFileData: PAnsiChar; aDataSize: integer): TImage; cdecl; external cDllName; // Load image from memory buffer, fileType refers to extension: i.e. "png"
 procedure UnloadImage(aImage: TImage); cdecl; external cDllName; // Unload image from CPU memory (RAM)
-procedure ExportImage(aFilename: PAnsiChar; TImage: TImage); cdecl; external cDllName; // Export image data to file
+procedure ExportImage(aImage: Timage; aFilename: PAnsiChar); cdecl; external cDllName; // Export image data to file
 procedure ExportImageAsCode(aImage: TImage; aFilename: PAnsiChar); cdecl; external cDllName; // Export image as code file defining an array of bytes
-function GetImageData(aImage: TImage): PColor; cdecl; external cDllName; // Get pixel data from image as a Color struct array
-function GetImageDataNormalized(aImage: TImage): PVector4; cdecl; external cDllName; // Get pixel data from image as Vector4 array (float normalized)
 
 // TImage generation functions
 function GenImageColor(aWidth: integer; aHeight: integer; aColor: TColor): TImage; cdecl; external cDllName; // Generate image: plain color
