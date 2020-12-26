@@ -188,14 +188,14 @@ type
     depthTexture: boolean;
   end;
 
-  // RenderTexture type, same as RenderTexture2D
+  // RenderTexture2D type, same as RenderTexture
   PRenderTexture = ^TRenderTexture;
   TRenderTexture = TRenderTexture2D;
 
   // N-Patch layout info
   PNPatchInfo = ^TNPatchInfo;
   TNPatchInfo =  record
-    sourceRec: TRectangle;
+    source: TRectangle;
     left: integer;
     top: integer;
     right: integer;
@@ -219,6 +219,7 @@ type
   TFont =  record
     baseSize: integer;
     charsCount: integer;
+    charsPadding: integer;
     texture: TTexture2D;
     recs: PRectangle;
     chars: PCharInfo;
@@ -643,7 +644,7 @@ const
   GAMEPAD_AXIS_LEFT_TRIGGER = 4;      // [1..-1] (pressure-level)
   GAMEPAD_AXIS_RIGHT_TRIGGER = 5;     // [1..-1] (pressure-level)
 
-  // Shader location point type
+  // Shader location points
   LOC_VERTEX_POSITION = 0;
   LOC_VERTEX_TEXCOORD01 = 1;
   LOC_VERTEX_TEXCOORD02 = 2;
@@ -684,7 +685,7 @@ const
   UNIFORM_IVEC4 = 7;
   UNIFORM_SAMPLER2D = 8;
 
-  // Material map type
+  // Material maps
   MAP_ALBEDO = 0;               // MAP_DIFFUSE
   MAP_METALNESS = 1;            // MAP_SPECULAR
   MAP_NORMAL = 2;
@@ -892,10 +893,9 @@ function GetRandomValue(aMin: integer; aMax: integer): integer; cdecl; external 
 // Files management functions
 function LoadFileData(aFileName: PAnsiChar; bytesRead: PCardinal): PAnsiChar; cdecl; external; // Load file data as byte array (read)
 procedure UnloadFileData(aData: PAnsiChar); cdecl; external; // Unload file data allocated by LoadFileData()
-//procedure SaveFileData(aFileName: PAnsiChar; aData: Pointer; bytesToWrite: cardinal); cdecl; external; // Save data to file from byte array (write), returns true on success
 function SaveFileData(aFileName: PAnsiChar; aData: Pointer; bytesToWrite: cardinal): Boolean; cdecl; external; // Save data to file from byte array (write), returns true on success
 function LoadFileText(aFileName: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Load text data from file (read), returns a '\0' terminated string
-procedure SaveFileText(aFileName: PAnsiChar; aText: PAnsiChar); cdecl; external cDllName; // Save text data to file (write), string must be '\0' terminated
+function SaveFileText(aFileName: PAnsiChar; aText: PAnsiChar): boolean; cdecl; external cDllName; // Save text data to file (write), string must be '\0' terminated
 function FileExists(aFilename: PAnsiChar): boolean; cdecl; external cDllName; // Check if file exists
 function IsFileExtension(aFilename: PAnsiChar; aExt: PAnsiChar): boolean; cdecl; external cDllName; // Check file extension
 function DirectoryExists(aDirPath: PAnsiChar): boolean; cdecl; external cDllName; // Check if a directory path exists
@@ -907,7 +907,7 @@ function GetPrevDirectoryPath(aDirPath: PAnsiChar): PAnsiChar; cdecl; external c
 function GetWorkingDirectory(): PAnsiChar; cdecl; external cDllName; // Get current working directory (uses static string)
 function GetDirectoryFiles(aDirpath: PAnsiChar; aCount: PInteger): PPAnsiChar; cdecl; external cDllName; // Get filenames in a directory path (memory should be freed)
 procedure ClearDirectoryFiles(); cdecl; external cDllName; // Clear directory files paths buffers (free memory)
-function ChangeDirectory(aDir: PAnsiChar): boolean; cdecl; external cDllName; // Change working directory, returns true if success
+function ChangeDirectory(aDir: PAnsiChar): boolean; cdecl; external cDllName; // Change working directory, return true on success
 function IsFileDropped(): boolean; cdecl; external cDllName;  // Check if a file has been dropped into window
 function GetDroppedFiles(aCount: PInteger): PPAnsiChar; cdecl; external cDllName; // Get dropped files names (memory should be freed)
 procedure ClearDroppedFiles; cdecl; external cDllName; // Clear dropped files paths buffer (free memory)
@@ -917,8 +917,8 @@ function CompressData(aData: PByte; aDataLength: integer; aCompDataLength: PInte
 function DecompressData(aCompData: PByte; aCompDataLength: integer; aDataLength: PInteger): PByte; cdecl; external cDllName; // Decompress data (DEFLATE algorythm)
 
 // Persistent storage management
-procedure StorageSaveValue(aPosition: cardinal ; aValue: integer); cdecl; external cDllName; // Save integer value to storage file (to defined position)
-function StorageLoadValue(aPosition: cardinal): integer; cdecl; external cDllName;
+function SaveStorageValue(aPosition: cardinal ; aValue: integer): boolean; cdecl; external cDllName; // Save integer value to storage file (to defined position)
+function LoadStorageValue(aPosition: cardinal): integer; cdecl; external cDllName;
 
 procedure OpenURL(aUrl: PAnsiChar); cdecl; external cDllName; // Open URL with default system browser (if available)
 
