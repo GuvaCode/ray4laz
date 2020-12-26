@@ -871,6 +871,15 @@ function GetFPS(): integer; cdecl; external cDllName; // Returns current FPS
 function GetFrameTime(): single; cdecl; external cDllName; // Returns time in seconds for last frame drawn
 function GetTime(): double; cdecl; external cDllName; // Returns elapsed time in seconds since InitWindow()
 
+// TColor-related functions
+function ColorToInt(aColor: TColor): integer; cdecl; external cDllName; // Returns hexadecimal value for a Color
+function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName; // Returns color normalized as float [0..1]
+function ColorFromNormalized(aNormalized: TVector4): TColor; cdecl; external cDllName; // Returns color from normalized values [0..1]
+function ColorToHSV(aColor: TColor): TVector3; cdecl; external cDllName; // Returns HSV values for a Color
+function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName; // Returns a Color from HSV values
+function GetColor(aHexValue: integer): TColor; cdecl; external cDllName; // Returns a Color struct from hexadecimal value
+function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName; // Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
+
 // Misc. functions
 procedure SetConfigFlags(aFlags: cardinal); cdecl; external cDllName; // Setup init configuration flags (view FLAGS)
 
@@ -985,14 +994,7 @@ procedure SetCameraSmoothZoomControl(aszKey: integer); cdecl; external cDllName;
 procedure SetCameraMoveControls(aFrontKey, aBackKey, aRightKey, aLeftKey, aUpKey, aDownKey: integer); cdecl; external cDllName; // Set camera move controls (1st person and 3rd person cameras)
 //procedure SetCameraMoveControls(aFrontKey: integer; aBackKey: integer; aRightKey: integer; aLeftKey: integer; aUpKey: integer; aDownKey: integer); cdecl; external cDllName; // Set camera move controls (1st person and 3rd person cameras)
 
-// TColor-related functions
-function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
-function ColorNormalize(aColor: TColor): TVector4; cdecl; external cDllName;
-function ColorFromNormalized(aNormalized: TVector4): TColor; cdecl; external cDllName;
-function ColorToHSV(aColor: TColor): TVector3; cdecl; external cDllName;
-function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName;
-function GetColor(aHexValue: integer): TColor; cdecl; external cDllName;
-function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
+
 
 
 //------------------------------------------------------------------------------------
