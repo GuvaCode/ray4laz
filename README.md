@@ -2,8 +2,7 @@
 
 **raylib is a simple and easy-to-use library to enjoy videogames programming.**
 
-
-# Ray4Laz a Pascal Binding  for Raylib 3.5.0 (master)
+*NOTE for ADVENTURERS: raylib is a programming library to enjoy videogames programming; no fancy interface, no visual helpers, no auto-debugging... just coding in the most pure spartan-programmers way.*
 
 Ray4Laz is a header translation of the [Raylib Game Development Library](https://www.raylib.com/) for the [FreePascal Project](https://www.freepascal.org/).
 
