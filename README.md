@@ -1,3 +1,7 @@
+<img align="left" src="https://github.com/raysan5/raylib/blob/master/logo/raylib_256x256.png" width=256>
+
+
+
 # Ray4Laz a Pascal Binding  for Raylib 3.5.0 (master)
 
 Ray4Laz is a header translation of the [Raylib Game Development Library](https://www.raylib.com/) for the [FreePascal Project](https://www.freepascal.org/).
