@@ -9,6 +9,23 @@ raylib is highly inspired by Borland BGI graphics lib and by XNA framework and i
 
 **Ray4Laz is a header translation of the [Raylib Game Development Library](https://www.raylib.com/) for the [Lazarus project](https://www.lazarus-ide.org/).**
 
+**Bindings**
+Header     | Supported          |
+---------  | ------------------ |
+raylib.h   | :heavy_check_mark: |
+raymath.h  | :heavy_check_mark: |
+raygui.h   | :heavy_check_mark: |
+ricons.h   | :heavy_check_mark: |
+physac.h   | :heavy_check_mark: |
+
+### Platforms
+OS         | Supported          |
+---------  | ------------------ |
+Mac        | :heavy_check_mark: |
+Windows    | :heavy_check_mark: |
+
+
+
 **Build**
 
 You can execute `make` on GNU+Linux, macOS and Windows.
