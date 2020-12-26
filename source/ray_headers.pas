@@ -888,30 +888,27 @@ function LoadFileData(aFileName: PAnsiChar; bytesRead: PCardinal): PAnsiChar; cd
 procedure UnloadFileData(aData: PAnsiChar); cdecl; external; // Unload file data allocated by LoadFileData()
 //procedure SaveFileData(aFileName: PAnsiChar; aData: Pointer; bytesToWrite: cardinal); cdecl; external; // Save data to file from byte array (write), returns true on success
 function SaveFileData(aFileName: PAnsiChar; aData: Pointer; bytesToWrite: cardinal): Boolean; cdecl; external; // Save data to file from byte array (write), returns true on success
-
-
 function LoadFileText(aFileName: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Load text data from file (read), returns a '\0' terminated string
+procedure SaveFileText(aFileName: PAnsiChar; aText: PAnsiChar); cdecl; external cDllName; // Save text data to file (write), string must be '\0' terminated
+function FileExists(aFilename: PAnsiChar): boolean; cdecl; external cDllName; // Check if file exists
+function IsFileExtension(aFilename: PAnsiChar; aExt: PAnsiChar): boolean; cdecl; external cDllName; // Check file extension
+function DirectoryExists(aDirPath: PAnsiChar): boolean; cdecl; external cDllName; // Check if a directory path exists
+function GetExtension(aFilename: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get pointer to extension for a filename string
+function GetFileName(aFilepath: PAnsiChar): PAnsiChar; cdecl; external cDllName;  // Get pointer to filename for a path string
+function GetFileNameWithoutExt(aFilepath: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get filename string without extension (uses static string)
+function GetDirectoryPath(aFilename: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get full path for a given fileName with path (uses static string)
+function GetPrevDirectoryPath(aDirPath: PAnsiChar): PAnsiChar; cdecl; external cDllName; // Get previous directory path for a given path (uses static string)
+function GetWorkingDirectory(): PAnsiChar; cdecl; external cDllName; // Get current working directory (uses static string)
+function GetDirectoryFiles(aDirpath: PAnsiChar; aCount: PInteger): PPAnsiChar; cdecl; external cDllName; // Get filenames in a directory path (memory should be freed)
+procedure ClearDirectoryFiles(); cdecl; external cDllName; // Clear directory files paths buffers (free memory)
+function ChangeDirectory(aDir: PAnsiChar): boolean; cdecl; external cDllName; // Change working directory, returns true if success
+function IsFileDropped(): boolean; cdecl; external cDllName;  // Check if a file has been dropped into window
+function GetDroppedFiles(aCount: PInteger): PPAnsiChar; cdecl; external cDllName; // Get dropped files names (memory should be freed)
+procedure ClearDroppedFiles; cdecl; external cDllName; // Clear dropped files paths buffer (free memory)
+function GetFileModTime(aFilename: PAnsiChar): longint; cdecl; external cDllName; // Get file modification time (last write time)
 
-procedure SaveFileText(aFileName: PAnsiChar; aText: PAnsiChar); cdecl; external cDllName;
-function FileExists(aFilename: PAnsiChar): boolean; cdecl; external cDllName;
-function IsFileExtension(aFilename: PAnsiChar; aExt: PAnsiChar): boolean; cdecl; external cDllName;
-function DirectoryExists(aDirPath: PAnsiChar): boolean; cdecl; external cDllName;
-function GetExtension(aFilename: PAnsiChar): PAnsiChar; cdecl; external cDllName;
-function GetFileName(aFilepath: PAnsiChar): PAnsiChar; cdecl; external cDllName;
-function GetFileNameWithoutExt(aFilepath: PAnsiChar): PAnsiChar; cdecl; external cDllName;
-function GetDirectoryPath(aFilename: PAnsiChar): PAnsiChar; cdecl; external cDllName;
-function GetPrevDirectoryPath(aDirPath: PAnsiChar): PAnsiChar; cdecl; external cDllName;
-function GetWorkingDirectory(): AnsiChar; cdecl; external cDllName;
-function GetDirectoryFiles(aDirpath: PAnsiChar; aCount: PInteger): PPAnsiChar; cdecl; external cDllName;
-procedure ClearDirectoryFiles(); cdecl; external cDllName;
-function ChangeDirectory(aDir: PAnsiChar): boolean; cdecl; external cDllName;
-function IsFileDropped(): boolean; cdecl; external cDllName;
-function GetDroppedFiles(aCount: PInteger): PPAnsiChar; cdecl; external cDllName;
-procedure ClearDroppedFiles; cdecl; external cDllName;
-function GetFileModTime(aFilename: PAnsiChar): longint; cdecl; external cDllName;
-
-function CompressData(aData: PByte; aDataLength: integer; aCompDataLength: PInteger): PByte; cdecl; external cDllName;
-function DecompressData(aCompData: PByte; aCompDataLength: integer; aDataLength: PInteger): PByte; cdecl; external cDllName;
+function CompressData(aData: PByte; aDataLength: integer; aCompDataLength: PInteger): PByte; cdecl; external cDllName; // Compress data (DEFLATE algorythm)
+function DecompressData(aCompData: PByte; aCompDataLength: integer; aDataLength: PInteger): PByte; cdecl; external cDllName; // Decompress data (DEFLATE algorythm)
 
 
 
