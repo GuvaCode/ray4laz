@@ -941,17 +941,17 @@ function GetGamepadAxisCount(aGamepad: integer): integer; cdecl; external cDllNa
 function GetGamepadAxisMovement(aGamepad: integer; aAxis: integer): single; cdecl; external cDllName; // Return axis movement value for a gamepad axis
 
 // Input-related functions: mouse
-function IsMouseButtonPressed(aButton: integer): boolean; cdecl; external cDllName;
-function IsMouseButtonDown(aButton: integer): boolean; cdecl; external cDllName;
-function IsMouseButtonReleased(aButton: integer): boolean; cdecl; external cDllName;
-function IsMouseButtonUp(aButton: integer): boolean; cdecl; external cDllName;
-function GetMouseX: integer; cdecl; external cDllName;
-function GetMouseY: integer; cdecl; external cDllName;
-function GetMousePosition(): TVector2; cdecl; external cDllName;
-procedure SetMousePosition(aPosition: TVector2); cdecl; external cDllName;
-procedure SetMouseOffset(aOffsetX, aOffsetY: integer); cdecl; external cDllName;
-procedure SetMouseScale(aScaleX, aScaleY: single); cdecl; external cDllName;
-function GetMouseWheelMove(): integer; cdecl; external cDllName;
+function IsMouseButtonPressed(aButton: integer): boolean; cdecl; external cDllName; // Detect if a mouse button has been pressed once
+function IsMouseButtonDown(aButton: integer): boolean; cdecl; external cDllName; // Detect if a mouse button is being pressed
+function IsMouseButtonReleased(aButton: integer): boolean; cdecl; external cDllName; // Detect if a mouse button has been released once
+function IsMouseButtonUp(aButton: integer): boolean; cdecl; external cDllName; // Detect if a mouse button is NOT being pressed
+function GetMouseX(): integer; cdecl; external cDllName; // Returns mouse position X
+function GetMouseY(): integer; cdecl; external cDllName; // Returns mouse position Y
+function GetMousePosition(): TVector2; cdecl; external cDllName; // Returns mouse position XY
+procedure SetMousePosition(aPosition: TVector2); cdecl; external cDllName; // Set mouse position XY
+procedure SetMouseOffset(aOffsetX, aOffsetY: integer); cdecl; external cDllName; // Set mouse offset
+procedure SetMouseScale(aScaleX, aScaleY: single); cdecl; external cDllName; // Set mouse scaling
+function GetMouseWheelMove(): integer; cdecl; external cDllName; // Returns mouse wheel movement Y
 
 // Input-related functions: touch
 function GetTouchX(): integer; cdecl; external cDllName;
