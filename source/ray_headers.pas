@@ -910,7 +910,11 @@ function GetFileModTime(aFilename: PAnsiChar): longint; cdecl; external cDllName
 function CompressData(aData: PByte; aDataLength: integer; aCompDataLength: PInteger): PByte; cdecl; external cDllName; // Compress data (DEFLATE algorythm)
 function DecompressData(aCompData: PByte; aCompDataLength: integer; aDataLength: PInteger): PByte; cdecl; external cDllName; // Decompress data (DEFLATE algorythm)
 
+// Persistent storage management
+procedure StorageSaveValue(aPosition: cardinal ; aValue: integer); cdecl; external cDllName; // Save integer value to storage file (to defined position)
+function StorageLoadValue(aPosition: cardinal): integer; cdecl; external cDllName;
 
+procedure OpenURL(aUrl: PAnsiChar); cdecl; external cDllName; // Open URL with default system browser (if available)
 
 
 
@@ -928,11 +932,7 @@ function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
 
 
 
-// Persistent storage management
-procedure StorageSaveValue(aPosition: integer; aValue: integer); cdecl; external cDllName;
-function StorageLoadValue(aPosition: integer): integer; cdecl; external cDllName;
 
-procedure OpenURL(aUrl: PAnsiChar); cdecl; external cDllName;
 
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
