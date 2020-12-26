@@ -1055,8 +1055,8 @@ function LoadImageRaw(aFilename: PAnsiChar; aWidth: integer; aHeight: integer; a
 function LoadImageAnim(aFilename: PAnsiChar; aFrames: integer): TImage; cdecl; external cDllName; // Load image sequence from file (frames appended to image.data)
 function LoadImageFromMemory(aFileType: PAnsiChar; aFileData: PAnsiChar; aDataSize: integer): TImage; cdecl; external cDllName; // Load image from memory buffer, fileType refers to extension: i.e. "png"
 procedure UnloadImage(aImage: TImage); cdecl; external cDllName; // Unload image from CPU memory (RAM)
-procedure ExportImage(aImage: Timage; aFilename: PAnsiChar); cdecl; external cDllName; // Export image data to file
-procedure ExportImageAsCode(aImage: TImage; aFilename: PAnsiChar); cdecl; external cDllName; // Export image as code file defining an array of bytes
+function ExportImage(aImage: Timage; aFilename: PAnsiChar): boolean; cdecl; external cDllName; // Export image data to file
+function ExportImageAsCode(aImage: TImage; aFilename: PAnsiChar): boolean; cdecl; external cDllName; // Export image as code file defining an array of bytes
 
 // TImage generation functions
 function GenImageColor(aWidth: integer; aHeight: integer; aColor: TColor): TImage; cdecl; external cDllName; // Generate image: plain color
@@ -1082,7 +1082,7 @@ procedure ImageAlphaMask(aImage: PImage; alphaMask: TImage); cdecl; external cDl
 procedure ImageAlphaPremultiply(aImage: PImage); cdecl; external cDllName; // Premultiply alpha channel
 procedure ImageResize(aImage: PImage; aNewWidth: integer; aNewHeight: integer); cdecl; external cDllName; // Resize image (Bicubic scaling algorithm)
 procedure ImageResizeNN(aImage: PImage; aNewWidth: integer; aNewHeight: integer); cdecl; external cDllName; // Resize image (Nearest-Neighbor scaling algorithm)
-procedure ImageResizeCanvas(aImage: PImage; aNewWidth: integer; aNewHeight: integer; aOffsetX: integer; aOffsetY: integer; aColor: TColor); cdecl; external cDllName; // Resize canvas and fill with color
+procedure ImageResizeCanvas(aImage: PImage; aNewWidth: integer; aNewHeight: integer; aOffsetX: integer; aOffsetY: integer; aFill: TColor); cdecl; external cDllName; // Resize canvas and fill with color
 procedure ImageMipmaps(aImage: PImage); cdecl; external cDllName; // Generate all mipmap levels for a provided image
 procedure ImageDither(aImage: PImage; aRedBpp: integer; aGreenBpp: integer; aBlueBpp: integer; aAlphaBpp: integer); cdecl; external cDllName; // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
 procedure ImageFlipVertical(aImage: PImage); cdecl; external cDllName; // Flip image vertically
