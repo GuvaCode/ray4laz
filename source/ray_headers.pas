@@ -427,20 +427,20 @@ type
 // NOTE: Every bit registers one state (use it with bit masks)
 // By default all flags are set to 0
 const
-  FLAG_VSYNC_HINT         = 00000040;   // Set to try enabling V-Sync on GPU
-  FLAG_FULLSCREEN_MODE    = 00000002;   // Set to run program in fullscreen
-  FLAG_WINDOW_RESIZABLE   = 00000004;   // Set to allow resizable window
-  FLAG_WINDOW_UNDECORATED = 00000008;   // Set to disable window decoration (frame and buttons)
-  FLAG_WINDOW_HIDDEN      = 00000080;   // Set to hide window
-  FLAG_WINDOW_MINIMIZED   = 00000200;   // Set to minimize window (iconify)
-  FLAG_WINDOW_MAXIMIZED   = 00000400;   // Set to maximize window (expanded to monitor)
-  FLAG_WINDOW_UNFOCUSED   = 00000800;   // Set to window non focused
-  FLAG_WINDOW_TOPMOST     = 00001000;   // Set to window always on top
-  FLAG_WINDOW_ALWAYS_RUN  = 00000100;   // Set to allow windows running while minimized
-  FLAG_WINDOW_TRANSPARENT = 00000010;   // Set to allow transparent framebuffer
-  FLAG_WINDOW_HIGHDPI     = 00002000;   // Set to support HighDPI
-  FLAG_MSAA_4X_HINT       = 00000020;   // Set to try enabling MSAA 4X
-  FLAG_INTERLACED_HINT    = 00010000;   // Set to try enabling interlaced video format (for V3D)
+  FLAG_VSYNC_HINT         = $00000040;   // Set to try enabling V-Sync on GPU
+  FLAG_FULLSCREEN_MODE    = $00000002;   // Set to run program in fullscreen
+  FLAG_WINDOW_RESIZABLE   = $00000004;   // Set to allow resizable window
+  FLAG_WINDOW_UNDECORATED = $00000008;   // Set to disable window decoration (frame and buttons)
+  FLAG_WINDOW_HIDDEN      = $00000080;   // Set to hide window
+  FLAG_WINDOW_MINIMIZED   = $00000200;   // Set to minimize window (iconify)
+  FLAG_WINDOW_MAXIMIZED   = $00000400;   // Set to maximize window (expanded to monitor)
+  FLAG_WINDOW_UNFOCUSED   = $00000800;   // Set to window non focused
+  FLAG_WINDOW_TOPMOST     = $00001000;   // Set to window always on top
+  FLAG_WINDOW_ALWAYS_RUN  = $00000100;   // Set to allow windows running while minimized
+  FLAG_WINDOW_TRANSPARENT = $00000010;   // Set to allow transparent framebuffer
+  FLAG_WINDOW_HIGHDPI     = $00002000;   // Set to support HighDPI
+  FLAG_MSAA_4X_HINT       = $00000020;   // Set to try enabling MSAA 4X
+  FLAG_INTERLACED_HINT    = $00010000;   // Set to try enabling interlaced video format (for V3D)
 
   // Trace log type
   LOG_ALL = 0;
