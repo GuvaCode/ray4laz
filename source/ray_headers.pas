@@ -866,10 +866,29 @@ function GetWorldToScreen2D(aPosition: TVector2; aCamera: TCamera2D): TVector2; 
 function GetScreenToWorld2D(aPosition: TVector2; aCamera: TCamera2D): TVector2; cdecl; external cDllName; // Returns the world space position for a 2d camera screen space position
 
 // Timming-related functions
-procedure SetTargetFPS(aFPS: integer); cdecl; external cDllName;
-function GetFPS(): integer; cdecl; external cDllName;
-function GetFrameTime(): single; cdecl; external cDllName;
-function GetTime(): double; cdecl; external cDllName;
+procedure SetTargetFPS(aFPS: integer); cdecl; external cDllName; // Set target FPS (maximum)
+function GetFPS(): integer; cdecl; external cDllName; // Returns current FPS
+function GetFrameTime(): single; cdecl; external cDllName; // Returns time in seconds for last frame drawn
+function GetTime(): double; cdecl; external cDllName; // Returns elapsed time in seconds since InitWindow()
+
+// Misc. functions
+procedure SetConfigFlags(aFlags: cardinal); cdecl; external cDllName; // Setup init configuration flags (view FLAGS)
+
+procedure SetTraceLogLevel(aLogType: integer); cdecl; external cDllName; // Set the current threshold (minimum) log level
+procedure SetTraceLogExit(aLogType: integer); cdecl; external cDllName; // Set the exit threshold (minimum) log level
+procedure SetTraceLogCallback(aCallback: TTraceLogCallback); cdecl; external cDllName; // Set a trace log callback to enable custom logging
+procedure TraceLog(aLogType: integer; aText: PAnsiChar); cdecl; external cDllName; // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)
+function MemAlloc(aSize:integer): Pointer; cdecl; external cDllName;   // Internal memory allocator
+procedure MemFree(aPtr:Pointer); cdecl; external cDllName; // Internal memory free
+procedure TakeScreenshot(aFilename: PAnsiChar); cdecl; external cDllName; // Takes a screenshot of current screen (saved a .png)
+function GetRandomValue(aMin: integer; aMax: integer): integer; cdecl; external cDllName; // Returns a random value between min and max (both included)
+
+
+
+
+
+
+
 
 // TColor-related functions
 function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
@@ -880,14 +899,7 @@ function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName;
 function GetColor(aHexValue: integer): TColor; cdecl; external cDllName;
 function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
 
-// Misc. functions
-procedure SetConfigFlags(aFlags: cardinal); cdecl; external cDllName;
-procedure SetTraceLogLevel(aLogType: integer); cdecl; external cDllName;
-procedure SetTraceLogExit(aLogType: integer); cdecl; external cDllName;
-procedure SetTraceLogCallback(aCallback: TTraceLogCallback); cdecl; external cDllName;
-procedure TraceLog(aLogType: integer; aText: PAnsiChar); cdecl; external cDllName;
-procedure TakeScreenshot(aFilename: PAnsiChar); cdecl; external cDllName;
-function GetRandomValue(aMin: integer; aMax: integer): integer; cdecl; external cDllName;
+
 
 // Files management functions
 function LoadFileData(aFileName: PAnsiChar; bytesRead: PCardinal): PAnsiChar; cdecl; external;
