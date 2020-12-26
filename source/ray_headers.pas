@@ -951,7 +951,7 @@ function GetMousePosition(): TVector2; cdecl; external cDllName; // Returns mous
 procedure SetMousePosition(aPosition: TVector2); cdecl; external cDllName; // Set mouse position XY
 procedure SetMouseOffset(aOffsetX, aOffsetY: integer); cdecl; external cDllName; // Set mouse offset
 procedure SetMouseScale(aScaleX, aScaleY: single); cdecl; external cDllName; // Set mouse scaling
-function GetMouseWheelMove(): integer; cdecl; external cDllName; // Returns mouse wheel movement Y
+function GetMouseWheelMove(): single; cdecl; external cDllName; // Returns mouse wheel movement Y
 
 // Input-related functions: touch
 function GetTouchX(): integer; cdecl; external cDllName; // Returns touch position X for touch point 0 (relative to screen size)

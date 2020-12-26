@@ -3,7 +3,7 @@ temp/*.o
 temp/*.ppu
 temp/*.a
 temp/*.compiled
-
+temp/
 
 binary/*
 !binary/resources/
