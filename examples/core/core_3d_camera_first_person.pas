@@ -2,7 +2,7 @@ program core_3d_camera_first_person;
 
 {$mode objfpc}{$H+}
 
-uses cmem, raylib, math;
+uses cmem, ray_headers, math;
 
 const
   screenWidth = 800;
@@ -25,7 +25,7 @@ begin
   Camera.target:=Vector3Create(0.0,1.8,0.0);
   Camera.up:=Vector3Create(0.0,1.0,0.0);
   Camera.fovy:=60.0;
-  Camera.&type:=CAMERA_PERSPECTIVE;
+  Camera._type:=CAMERA_PERSPECTIVE;
 
   // Generates some random columns
   for i:=0 to MAX_COLUMNS -1 do
