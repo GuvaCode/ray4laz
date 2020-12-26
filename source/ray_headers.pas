@@ -1292,7 +1292,7 @@ procedure DrawModelWires(aModel: TModel; aPosition: TVector3; aScale: single; aT
 procedure DrawModelWiresEx(aModel: TModel; aPosition: TVector3; aRotationAxis: TVector3; aRotationAngle: single; aScale: TVector3; aTint: TColor); cdecl; external cDllName; // Draw a model wires (with texture if set) with extended parameters
 procedure DrawBoundingBox(aBox: TBoundingBox; TColor: TColor); cdecl; external cDllName; // Draw bounding box (wires)
 procedure DrawBillboard(aCamera: TCamera; aTexture: TTexture2D; aCenter: TVector3; aSize: single; aTint: TColor); cdecl; external cDllName; // Draw a billboard texture
-procedure DrawBillboardRec(aCamera: TCamera; aTexture: TTexture2D; sourceRec: TRectangle; aCenter: TVector3; aSize: single; aTint: TColor); cdecl; external cDllName; // Draw a billboard texture defined by sourceRec
+procedure DrawBillboardRec(aCamera: TCamera; aTexture: TTexture2D; aSource: TRectangle; aCenter: TVector3; aSize: single; aTint: TColor); cdecl; external cDllName; // Draw a billboard texture defined by sourceRec
 
 // Collision detection functions
 function CheckCollisionSpheres(aCenter1: TVector3; aRadius1: single; aCenter2: TVector3; aRadius2: single): boolean; cdecl; external cDllName; // Detect collision between two spheres
