@@ -3,19 +3,9 @@
   <ProjectOptions>
     <Version Value="11"/>
     <General>
-      <Flags>
-        <UseDefaultCompilerOptions Value="True"/>
-      </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
       <Title Value="core_2d_camera"/>
-      <Scaled Value="True"/>
-      <ResourceType Value="res"/>
-      <UseXPManifest Value="True"/>
-      <XPManifest>
-        <DpiAware Value="True"/>
-      </XPManifest>
-      <Icon Value="0"/>
     </General>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
@@ -51,14 +41,12 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <UnitOutputDirectory Value="../../temp/"/>
+      <UnitOutputDirectory Value="../../temp"/>
     </SearchPaths>
     <Linking>
-      <Options>
-        <Win32>
-          <GraphicApplication Value="True"/>
-        </Win32>
-      </Options>
+      <Debugging>
+        <GenerateDebugInfo Value="False"/>
+      </Debugging>
     </Linking>
   </CompilerOptions>
   <Debugging>

@@ -19,10 +19,10 @@ var
   camera: TCamera2D;
   i: Integer;
 
-{$R *.res}
 
 begin
-//  Application.Scaled:=True;
+
+
   {$IFDEF DARWIN}
   SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,exZeroDivide]);
   {$IFEND}
