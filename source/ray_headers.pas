@@ -1316,8 +1316,9 @@ function GetShapesTexture(): TTexture2D; cdecl; external cDllName; // Get textur
 function GetShapesTextureRec(): TRectangle; cdecl; external cDllName; // Get texture rectangle to draw shapes
 procedure SetShapesTexture(aTexture: TTexture2D; aSource: TRectangle); cdecl; external cDllName; // Define default texture used to draw shapes
 
-// TShader configuration functions
+// Shader configuration functions
 function GetShaderLocation(aShader: TShader; aUniformName: PAnsiChar): integer; cdecl; external cDllName; // Get shader uniform location
+function GetShaderLocationAttrib(aShader: TShader; aAttribName: PAnsiChar):integer; cdecl; external cDllName; // Get shader attribute location
 procedure SetShaderValue(aShader: TShader; aUniformLoc: integer; aValue: Pointer; aUniformType: integer); cdecl; external cDllName; // Set shader uniform value
 procedure SetShaderValueV(aShader: TShader; aUniformLoc: integer; aValue: Pointer; aUniformType, aCount: integer); cdecl; external cDllName; // Set shader uniform value vector
 procedure SetShaderValueMatrix(TShader: TShader; aUniformLoc: integer; mat: TMatrix); cdecl; external cDllName; // Set shader uniform value (matrix 4x4)
