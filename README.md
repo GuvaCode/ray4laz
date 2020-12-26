@@ -1,4 +1,4 @@
-<img align="left" src="https://github.com/GuvaCode/Ray4Laz/tree/main/binary/resources/textures/logo.png" width=256>
+<img align="left" src="https://github.com/GuvaCode/Ray4Laz/tree/main/binary/resources/textures/logo.webp" width=256>
 
 
 
