@@ -1363,8 +1363,9 @@ procedure SetMasterVolume(aVolume: single); cdecl; external cDllName; // Set mas
 
 // TWave/TSound loading/unloading functions
 function LoadWave(aFilename: PAnsiChar): TWave; cdecl; external cDllName; // Load wave data from file
+function LoadWaveFromMemory(aFileType: PAnsiChar; aFileData: PAnsiChar; aDataSize: integer): TWave; cdecl; external cDllName; // Load wave from memory buffer, fileType refers to extension: i.e. "wav"
 function LoadSound(aFilename: PAnsiChar): TSound; cdecl; external cDllName; // Load sound from file
-// Load wave data from filefunction LoadSoundFromWave(aWave: TWave): TSound; cdecl; external cDllName; // Load sound from wave data
+function LoadSoundFromWave(aWave: TWave): TSound; cdecl; external cDllName; // Load sound from wave data
 procedure UpdateSound(aSound: TSound; aData: Pointer; samplesCount: integer); cdecl; external cDllName; // Update sound buffer with new data
 procedure UnloadWave(aWave: TWave); cdecl; external cDllName; // Unload wave data
 procedure UnloadSound(aSound: TSound); cdecl; external cDllName; // Unload sound
@@ -1385,7 +1386,8 @@ procedure SetSoundPitch(aSound: TSound; aPitch: single); cdecl; external cDllNam
 procedure WaveFormat(aWave: PWave; aSampleRate: integer; aSampleSize: integer; aChannels: integer); cdecl; external cDllName; // Convert wave data to desired format
 function WaveCopy(aWave: TWave): TWave; cdecl; external cDllName; // Copy a wave to a new wave
 procedure WaveCrop(aWave: PWave; initSample, finalSample: integer); cdecl; external cDllName; // Crop a wave to defined samples range
-function GetWaveData(aWave: TWave): PSingle; cdecl; external cDllName; // Get samples data from wave as a floats array
+function LoadWaveSamples(aWave: TWave): PSingle; cdecl; external cDllName; /// Load samples data from wave as a floats array
+procedure UnloadWaveSamples(aSample:PSingle); cdecl; external cDllName; // Unload samples data loaded with LoadWaveSamples()
 
 // aMusic management functions
 function LoadMusicStream(aFilename: PAnsiChar): TMusic; cdecl; external cDllName; // Load music stream from file
@@ -1398,7 +1400,6 @@ procedure ResumeMusicStream(aMusic: TMusic); cdecl; external cDllName; // Resume
 function IsMusicPlaying(aMusic: TMusic): boolean; cdecl; external cDllName; // Check if music is playing
 procedure SetMusicVolume(aMusic: TMusic; aVolume: single); cdecl; external cDllName; // Set volume for music (1.0 is max level)
 procedure SetMusicPitch(aMusic: TMusic; aPitch: single); cdecl; external cDllName; // Set pitch for a music (1.0 is base level)
-procedure SetMusicLoopCount(aMusic: TMusic; aCount: integer); cdecl; external cDllName; // Set music loop count (loop repeats)
 function GetMusicTimeLength(aMusic: TMusic): single; cdecl; external cDllName; // Get music time length (in seconds)
 function GetMusicTimePlayed(aMusic: TMusic): single; cdecl; external cDllName; // Get current music time played (in seconds)
 
