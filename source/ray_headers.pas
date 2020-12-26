@@ -932,7 +932,8 @@ function IsKeyDown(aKey: integer): boolean; cdecl; external cDllName; // Detect 
 function IsKeyReleased(aKey: integer): boolean; cdecl; external cDllName; // Detect if a key has been released once
 function IsKeyUp(aKey: integer): boolean; cdecl; external cDllName; // Detect if a key is NOT being pressed
 procedure SetExitKey(aKey: integer); cdecl; external cDllName; // Set a custom key to exit program (default is ESC)
-function GetKeyPressed(): integer; cdecl; external cDllName; // Get key pressed, call it multiple times for chars queued
+function GetKeyPressed(): integer; cdecl; external cDllName; // Get key pressed (keycode), call it multiple times for keys queued
+function GetCharPressed(): integer; cdecl; external cDllName; // Get char pressed (unicode), call it multiple times for chars queued
 
 // Input-related functions: gamepads
 function IsGamepadAvailable(aGamepad: integer): boolean; cdecl; external cDllName; // Detect if a gamepad is available
