@@ -14,5 +14,5 @@ You will need to source [raylib](https://github.com/raysan5/raylib/) for your pl
 - [Working on macOS](https://github.com/raysan5/raylib/wiki/Working-on-macOS)
 - [Working on Windows](https://github.com/raysan5/raylib/wiki/Working-on-Windows)
 
-[![Linux](https://github.com/GuvaCode/Ray4Laz/workflows/Linux/badge.svg)](https://github.com/raysan5/raylib/actions?query=workflow%3ALinux)
+
 
