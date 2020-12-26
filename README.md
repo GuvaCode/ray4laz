@@ -1,4 +1,4 @@
-<img align="left" src="logo.webp" width=256>
+
 
 **raylib is a simple and easy-to-use library to enjoy videogames programming.**
 
