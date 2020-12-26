@@ -991,65 +991,60 @@ procedure UpdateCamera(aCamera: PCamera); cdecl; external cDllName; // Update ca
 procedure SetCameraPanControl(aPanKey: integer); cdecl; external cDllName; // Set camera pan key to combine with mouse movement (free camera)
 procedure SetCameraAltControl(aAltKey: integer); cdecl; external cDllName; // Set camera alt key to combine with mouse movement (free camera)
 procedure SetCameraSmoothZoomControl(aszKey: integer); cdecl; external cDllName; // Set camera smooth zoom key to combine with mouse (free camera)
-procedure SetCameraMoveControls(aFrontKey, aBackKey, aRightKey, aLeftKey, aUpKey, aDownKey: integer); cdecl; external cDllName; // Set camera move controls (1st person and 3rd person cameras)
-//procedure SetCameraMoveControls(aFrontKey: integer; aBackKey: integer; aRightKey: integer; aLeftKey: integer; aUpKey: integer; aDownKey: integer); cdecl; external cDllName; // Set camera move controls (1st person and 3rd person cameras)
-
-
-
+procedure SetCameraMoveControls(aFrontKey: integer; aBackKey: integer; aRightKey: integer; aLeftKey: integer; aUpKey: integer; aDownKey: integer); cdecl; external cDllName; // Set camera move controls (1st person and 3rd person cameras)
 
 //------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
 //------------------------------------------------------------------------------------
 
 // Basic shapes drawing functions
-procedure DrawPixel(aPosX: integer; aPosY: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawPixelV(aPosition: TVector2; TColor: TColor); cdecl; external cDllName;
-procedure DrawLine(aStartPosX: integer; aStartPosY: integer; aEndPosX: integer; aEndPosY: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawLineV(aStartPos: TVector2; aEndPos: TVector2; aColor: TColor); cdecl; external cDllName;
-procedure DrawLineEx(aStartPos: TVector2; aEndPos: TVector2; aThick: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawLineBezier(aStartPos: TVector2; aEndPos: TVector2; aThick: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawLineStrip(aPoints: PVector2; aNumPoints: integer; aColor: TColor); cdecl; external cDllName;
+procedure DrawPixel(aPosX: integer; aPosY: integer; aColor: TColor); cdecl; external cDllName; // Draw a pixel
+procedure DrawPixelV(aPosition: TVector2; TColor: TColor); cdecl; external cDllName; // Draw a pixel (Vector version)
+procedure DrawLine(aStartPosX: integer; aStartPosY: integer; aEndPosX: integer; aEndPosY: integer; aColor: TColor); cdecl; external cDllName; // Draw a line
+procedure DrawLineV(aStartPos: TVector2; aEndPos: TVector2; aColor: TColor); cdecl; external cDllName; // Draw a line (Vector version)
+procedure DrawLineEx(aStartPos: TVector2; aEndPos: TVector2; aThick: single; aColor: TColor); cdecl; external cDllName; // Draw a line defining thickness
+procedure DrawLineBezier(aStartPos: TVector2; aEndPos: TVector2; aThick: single; aColor: TColor); cdecl; external cDllName; // Draw a line using cubic-bezier curves in-out
+procedure DrawLineStrip(aPoints: PVector2; aNumPoints: integer; aColor: TColor); cdecl; external cDllName; // Draw lines sequence
+procedure DrawCircle(aCenterX: integer; aCenterY: integer; aRadius: single; aColor: TColor); cdecl; external cDllName; // Draw a color-filled circle
+procedure DrawCircleSector(aCenter: TVector2; aRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName; // Draw a piece of a circle
+procedure DrawCircleSectorLines(aCenter: TVector2; aRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName; // Draw circle sector outline
+procedure DrawCircleGradient(aCenterX: integer; aCenterY: integer; aRadius: single; aColor1: TColor; aColor2: TColor); cdecl; external cDllName; // Draw a gradient-filled circle
+procedure DrawCircleV(aCenter: TVector2; aRadius: single; TColor: TColor); cdecl; external cDllName; // Draw a color-filled circle (Vector version)
+procedure DrawCircleLines(aCenterX: integer; aCenterY: integer; aRadius: single; aColor: TColor); cdecl; external cDllName; // Draw circle outline
 
-procedure DrawCircle(aCenterX: integer; aCenterY: integer; aRadius: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawCircleSector(aCenter: TVector2; aRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawCircleSectorLines(aCenter: TVector2; aRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawCircleGradient(aCenterX: integer; aCenterY: integer; aRadius: single; aColor1: TColor; aColor2: TColor); cdecl; external cDllName;
-procedure DrawCircleV(aCenter: TVector2; aRadius: single; TColor: TColor); cdecl; external cDllName;
-procedure DrawCircleLines(aCenterX: integer; aCenterY: integer; aRadius: single; aColor: TColor); cdecl; external cDllName;
+procedure DrawEllipse(aCenterX: integer; aCenterY: integer; aRadiusH: single; aRadiusV: single; aColor: TColor); cdecl; external cDllName; // Draw ellipse
+procedure DrawEllipseLines(aCenterX: integer; aCenterY: integer; aRadiusH: single; aRadiusV: single; aColor: TColor); cdecl; external cDllName; // Draw ellipse outline
 
-procedure DrawEllipse(aCenterX: integer; aCenterY: integer; aRadiusH: single; aRadiusV: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawEllipseLines(aCenterX: integer; aCenterY: integer; aRadiusH: single; aRadiusV: single; aColor: TColor); cdecl; external cDllName;
+procedure DrawRing(aCenter: TVector2; aInnerRadius, aOuterRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName; // Draw ring
+procedure DrawRingLines(aCenter: TVector2; aInnerRadius, aOuterRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName; // Draw ring outline
 
-procedure DrawRing(aCenter: TVector2; aInnerRadius, aOuterRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawRingLines(aCenter: TVector2; aInnerRadius, aOuterRadius: single; aStartAngle, aEndAngle, aSegments: integer; aColor: TColor); cdecl; external cDllName;
+procedure DrawRectangle(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; aColor: TColor); cdecl; external cDllName; // Draw a color-filled rectangle
+procedure DrawRectangleV(aPosition: TVector2; size: TVector2; TColor: TColor); cdecl; external cDllName; // Draw a color-filled rectangle (Vector version)
+procedure DrawRectangleRec(aRect: TRectangle; aColor: TColor); cdecl; external cDllName; // Draw a color-filled rectangle
+procedure DrawRectanglePro(aRect: TRectangle; origin: TVector2; aRotation: single; aColor: TColor); cdecl; external cDllName; // Draw a color-filled rectangle with pro parameters
+procedure DrawRectangleGradientV(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; aColor1: TColor; aColor2: TColor); cdecl; external cDllName; // Draw a vertical-gradient-filled rectangle
+procedure DrawRectangleGradientH(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; aColor1: TColor; aColor2: TColor); cdecl; external cDllName; // Draw a horizontal-gradient-filled rectangle
+procedure DrawRectangleGradientEx(aRect: TRectangle; aCol1: TColor; aCol2: TColor; aCol3: TColor; aCol4: TColor); cdecl; external cDllName; // Draw a gradient-filled rectangle with custom vertex colors
+procedure DrawRectangleLines(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; TColor: TColor); cdecl; external cDllName; // Draw rectangle outline
+procedure DrawRectangleLinesEx(aRect: TRectangle; lineThick: integer; TColor: TColor); cdecl; external cDllName; // Draw rectangle outline with extended parameters
+procedure DrawRectabgleRounded(aRec: TRectangle; aRoundness: single; aSegments, aLineThick: integer; aColor: TColor); cdecl; external cDllName;  // Draw rectangle with rounded edges
+procedure DrawRectabgleRoundedLines(aRec: TRectangle; aRoundness: single; aSegments, aLineThick: integer; aColor: TColor); cdecl; external cDllName; // Draw rectangle with rounded edges outline
 
-procedure DrawRectangle(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawRectangleV(aPosition: TVector2; size: TVector2; TColor: TColor); cdecl; external cDllName;
-procedure DrawRectangleRec(aRect: TRectangle; aColor: TColor); cdecl; external cDllName;
-procedure DrawRectanglePro(aRect: TRectangle; origin: TVector2; aRotation: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawRectangleGradientV(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; aColor1: TColor; aColor2: TColor); cdecl; external cDllName;
-procedure DrawRectangleGradientH(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; aColor1: TColor; aColor2: TColor); cdecl; external cDllName;
-procedure DrawRectangleGradientEx(aRect: TRectangle; aCol1: TColor; aCol2: TColor; aCol3: TColor; aCol4: TColor); cdecl; external cDllName;
-procedure DrawRectangleLines(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; TColor: TColor); cdecl; external cDllName;
-procedure DrawRectangleLinesEx(aRect: TRectangle; lineThick: integer; TColor: TColor); cdecl; external cDllName;
-procedure DrawRectabgleRounded(aRec: TRectangle; aRoundness: single; aSegments, aLineThick: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawRectabgleRoundedLines(aRec: TRectangle; aRoundness: single; aSegments, aLineThick: integer; aColor: TColor); cdecl; external cDllName;
-
-procedure DrawTriangle(aVec1: TVector2; aVec2: TVector2; aVec3: TVector2; aColor: TColor); cdecl; external cDllName;
-procedure DrawTriangleLines(aVec1: TVector2; aVec2: TVector2; aVec3: TVector2; aColor: TColor); cdecl; external cDllName;
-procedure DrawTriangleFan(aPoints: PVector2; aNumPoints: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawTriangleStrip(aPoints: PVector2; aPointsCount: integer; aColor: TColor); cdecl; external cDllName;
-procedure DrawPoly(aCenter: TVector2; aSides: integer; aRadius: single; aRotation: single; aColor: TColor); cdecl; external cDllName;
-procedure DrawPolyLines(aCenter: TVector2; aSides: integer; aRadius: single; aRotation: single; aColor: TColor); cdecl; external cDllName;
+procedure DrawTriangle(aVec1: TVector2; aVec2: TVector2; aVec3: TVector2; aColor: TColor); cdecl; external cDllName; // Draw a color-filled triangle (vertex in counter-clockwise order!)
+procedure DrawTriangleLines(aVec1: TVector2; aVec2: TVector2; aVec3: TVector2; aColor: TColor); cdecl; external cDllName; // Draw triangle outline (vertex in counter-clockwise order!)
+procedure DrawTriangleFan(aPoints: PVector2; aNumPoints: integer; aColor: TColor); cdecl; external cDllName; // Draw a triangle fan defined by points (first vertex is the center)
+procedure DrawTriangleStrip(aPoints: PVector2; aPointsCount: integer; aColor: TColor); cdecl; external cDllName; // Draw a triangle strip defined by points
+procedure DrawPoly(aCenter: TVector2; aSides: integer; aRadius: single; aRotation: single; aColor: TColor); cdecl; external cDllName; // Draw a regular polygon (Vector version)
+procedure DrawPolyLines(aCenter: TVector2; aSides: integer; aRadius: single; aRotation: single; aColor: TColor); cdecl; external cDllName; // Draw a polygon outline of n sides
 
 // Basic shapes collision detection functions
-function CheckCollisionRecs(aRect1: TRectangle; aRect2: TRectangle): boolean; cdecl; external cDllName;
-function CheckCollisionCircles(aCenter1: TVector2; aRadius1: single; aCenter2: TVector2; aRadius2: single): boolean; cdecl; external cDllName;
-function CheckCollisionCircleRec(aCenter: TVector2; aRadius: single; aRect: TRectangle): boolean; cdecl; external cDllName;
-function GetCollisionRec(aRect1: TRectangle; aRect2: TRectangle): TRectangle; cdecl; external cDllName;
-function CheckCollisionPointRec(aPoint: TVector2; aRect: TRectangle): boolean; cdecl; external cDllName;
-function CheckCollisionPointCircle(aPoint: TVector2; aCenter: TVector2; aRadius: single): boolean; cdecl; external cDllName;
-function CheckCollisionPointTriangle(aPoint: TVector2; aP1: TVector2; aP2: TVector2; aP3: TVector2): boolean; cdecl; external cDllName;
+function CheckCollisionRecs(aRect1: TRectangle; aRect2: TRectangle): boolean; cdecl; external cDllName; // Check collision between two rectangles
+function CheckCollisionCircles(aCenter1: TVector2; aRadius1: single; aCenter2: TVector2; aRadius2: single): boolean; cdecl; external cDllName; // Check collision between two circles
+function CheckCollisionCircleRec(aCenter: TVector2; aRadius: single; aRect: TRectangle): boolean; cdecl; external cDllName; // Check collision between circle and rectangle
+function GetCollisionRec(aRect1: TRectangle; aRect2: TRectangle): TRectangle; cdecl; external cDllName; // Get collision rectangle for two rectangles collision
+function CheckCollisionPointRec(aPoint: TVector2; aRect: TRectangle): boolean; cdecl; external cDllName; // Check if point is inside rectangle
+function CheckCollisionPointCircle(aPoint: TVector2; aCenter: TVector2; aRadius: single): boolean; cdecl; external cDllName; // Check if point is inside circle
+function CheckCollisionPointTriangle(aPoint: TVector2; aP1: TVector2; aP2: TVector2; aP3: TVector2): boolean; cdecl; external cDllName; // Check if point is inside a triangle
 
 //------------------------------------------------------------------------------------
 // Texture Loading and Drawing Functions (Module: textures)
