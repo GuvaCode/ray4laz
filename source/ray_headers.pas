@@ -972,7 +972,18 @@ function GetGestureDragAngle(): single; cdecl; external cDllName; // Get gesture
 function GetGesturePinchVector(): TVector2; cdecl; external cDllName; // Get gesture pinch delta
 function GetGesturePinchAngle(): single; cdecl; external cDllName; // Get gesture pinch angle
 
+//------------------------------------------------------------------------------------
+// TCamera System Functions (Module: TCamera)
+//------------------------------------------------------------------------------------
 
+procedure SetCameraMode(aCamera: TCamera; aMode: integer); cdecl; external cDllName; // Set camera mode (multiple camera modes available)
+procedure UpdateCamera(aCamera: PCamera); cdecl; external cDllName; // Update camera position for selected mode
+
+procedure SetCameraPanControl(aPanKey: integer); cdecl; external cDllName; // Set camera pan key to combine with mouse movement (free camera)
+procedure SetCameraAltControl(aAltKey: integer); cdecl; external cDllName; // Set camera alt key to combine with mouse movement (free camera)
+procedure SetCameraSmoothZoomControl(aszKey: integer); cdecl; external cDllName; // Set camera smooth zoom key to combine with mouse (free camera)
+procedure SetCameraMoveControls(aFrontKey, aBackKey, aRightKey, aLeftKey, aUpKey, aDownKey: integer); cdecl; external cDllName; // Set camera move controls (1st person and 3rd person cameras)
+//procedure SetCameraMoveControls(aFrontKey: integer; aBackKey: integer; aRightKey: integer; aLeftKey: integer; aUpKey: integer; aDownKey: integer); cdecl; external cDllName; // Set camera move controls (1st person and 3rd person cameras)
 
 // TColor-related functions
 function ColorToInt(aColor: TColor): integer; cdecl; external cDllName;
@@ -983,30 +994,6 @@ function ColorFromHSV(aHsv: TVector3): TColor; cdecl; external cDllName;
 function GetColor(aHexValue: integer): TColor; cdecl; external cDllName;
 function Fade(aColor: TColor; aAlpha: single): TColor; cdecl; external cDllName;
 
-
-
-
-
-
-
-//------------------------------------------------------------------------------------
-// Input Handling Functions (Module: core)
-//------------------------------------------------------------------------------------
-
-
-
-
-//------------------------------------------------------------------------------------
-// TCamera System Functions (Module: TCamera)
-//------------------------------------------------------------------------------------
-
-procedure SetCameraMode(aCamera: TCamera; aMode: integer); cdecl; external cDllName;
-procedure UpdateCamera(aCamera: PCamera); cdecl; external cDllName;
-
-procedure SetCameraPanControl(aPanKey: integer); cdecl; external cDllName;
-procedure SetCameraAltControl(aAltKey: integer); cdecl; external cDllName;
-procedure SetCameraSmoothZoomControl(aszKey: integer); cdecl; external cDllName;
-procedure SetCameraMoveControls(aFrontKey: integer; aBackKey: integer; aRightKey: integer; aLeftKey: integer; aUpKey: integer; aDownKey: integer); cdecl; external cDllName;
 
 //------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
