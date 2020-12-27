@@ -1543,7 +1543,6 @@ begin
   aColor^.a := aA;
 end;
 
-
 function RectangleCreate(aX: Single; aY: Single; aWidth: Single; aHeight: Single
   ): TRectangle;
 begin
