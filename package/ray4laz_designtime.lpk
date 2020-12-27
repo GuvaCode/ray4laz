@@ -11,6 +11,7 @@
       </SearchPaths>
     </CompilerOptions>
     <Description Value="Desing time package for ray4laz "/>
+    <Version Major="1" Release="1"/>
     <Files Count="1">
       <Item1>
         <Filename Value="ray4laz_descript.pas"/>
