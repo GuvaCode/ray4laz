@@ -11,28 +11,7 @@
       </SearchPaths>
     </CompilerOptions>
     <Description Value="A complete header translation (binding) of the raylib 3.0 to Pascal. Without any funky helper functions for memory alignment issues. Inspired and partially based on the drezgames/raylib-pascal binding, however a little cleaner and more recent, with FPC 3.2.0 support. "/>
-    <License Value="  LICENSE: zlib/libpng
-*
-*   raylib is licensed under an unmodified zlib/libpng license, which is an OSI-certified,
-*   BSD-like license that allows static linking with closed source software:
-*
-*   Copyright (c) 2013-2020 Ramon Santamaria (@raysan5)
-*
-*   This software is provided &quot;as-is&quot;, without any express or implied warranty. In no event
-*   will the authors be held liable for any damages arising from the use of this software.
-*
-*   Permission is granted to anyone to use this software for any purpose, including commercial
-*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
-*
-*     1. The origin of this software must not be misrepresented; you must not claim that you
-*     wrote the original software. If you use this software in a product, an acknowledgment
-*     in the product documentation would be appreciated but is not required.
-*
-*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
-*     as being the original software.
-*
-*     3. This notice may not be removed or altered from any source distribution.
-*"/>
+    <License Value="zlib License"/>
     <Version Major="1" Release="1"/>
     <Files Count="3">
       <Item1>
