@@ -24,18 +24,28 @@ Windows    | ❓ no tested|
 Linux      | :heavy_check_mark: |
 
 
+raylib binary releases for Windows, Linux and macOS are available at the Github Releases page.
 
-**Build**
+**build and installation raylib**
 
-You can execute `make` on GNU+Linux, macOS and Windows.
+raylib binary releases for Windows, Linux and macOS are available at the [Github Releases page](https://github.com/raysan5/raylib/releases).
 
-**Shared or Static Library**
+#### Building raylib on multiple platforms
 
-You will need to source [raylib](https://github.com/raysan5/raylib/) for your platform.
+[raylib Wiki](https://github.com/raysan5/raylib/wiki#development-platforms) contains detailed instructions on building and usage on multiple platforms.
 
-- [Working on GNU Linux](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux)
-- [Working on macOS](https://github.com/raysan5/raylib/wiki/Working-on-macOS)
-- [Working on Windows](https://github.com/raysan5/raylib/wiki/Working-on-Windows)
+ - [Working on Windows](https://github.com/raysan5/raylib/wiki/Working-on-Windows)
+ - [Working on macOS](https://github.com/raysan5/raylib/wiki/Working-on-macOS)
+ - [Working on GNU Linux](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux)
+ - [Working on FreeBSD](https://github.com/raysan5/raylib/wiki/Working-on-FreeBSD)
+ - [Working on Raspberry Pi](https://github.com/raysan5/raylib/wiki/Working-on-Raspberry-Pi)
+ - [Working for Android](https://github.com/raysan5/raylib/wiki/Working-for-Android)
+ - [Working for Web (HTML5)](https://github.com/raysan5/raylib/wiki/Working-for-Web-(HTML5))
+ - [Working for UWP (Universal Window Platform)](https://github.com/raysan5/raylib/wiki/Working-for-UWP)
+ - [Working anywhere with CMake](https://github.com/raysan5/raylib/wiki/Working-with-CMake)
+
+
+
 
 
 
