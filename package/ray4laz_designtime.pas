@@ -8,12 +8,13 @@ unit ray4laz_designtime;
 interface
 
 uses
-  LazarusPackageIntf;
+  ray4laz_descript, LazarusPackageIntf;
 
 implementation
 
 procedure Register;
 begin
+  RegisterUnit('ray4laz_descript', @ray4laz_descript.Register);
 end;
 
 initialization
