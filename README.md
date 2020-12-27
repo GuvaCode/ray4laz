@@ -24,8 +24,6 @@ Windows    | ❓ no tested|
 Linux      | :heavy_check_mark: |
 
 
-raylib binary releases for Windows, Linux and macOS are available at the Github Releases page.
-
 **build and installation raylib**
 
 raylib binary releases for Windows, Linux and macOS are available at the [Github Releases page](https://github.com/raysan5/raylib/releases).
