@@ -1082,7 +1082,7 @@ procedure DrawRectangleGradientV(aPosX: integer; aPosY: integer; aWidth: integer
 procedure DrawRectangleGradientH(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; aColor1: TColor; aColor2: TColor); cdecl; external cDllName; // Draw a horizontal-gradient-filled rectangle
 procedure DrawRectangleGradientEx(aRect: TRectangle; aCol1: TColor; aCol2: TColor; aCol3: TColor; aCol4: TColor); cdecl; external cDllName; // Draw a gradient-filled rectangle with custom vertex colors
 procedure DrawRectangleLines(aPosX: integer; aPosY: integer; aWidth: integer; aHeight: integer; TColor: TColor); cdecl; external cDllName; // Draw rectangle outline
-procedure DrawRectangleLinesEx(aRect: TRectangle; lineThick: integer; TColor: TColor); cdecl; external cDllName; // Draw rectangle outline with extended parameters
+procedure DrawRectangleLinesEx(aRect: TRectangle; aLineThick: integer; aColor: TColor); cdecl; external cDllName; // Draw rectangle outline with extended parameters
 procedure DrawRectabgleRounded(aRec: TRectangle; aRoundness: single; aSegments, aLineThick: integer; aColor: TColor); cdecl; external cDllName;  // Draw rectangle with rounded edges
 procedure DrawRectabgleRoundedLines(aRec: TRectangle; aRoundness: single; aSegments, aLineThick: integer; aColor: TColor); cdecl; external cDllName; // Draw rectangle with rounded edges outline
 
@@ -1490,8 +1490,9 @@ function Vector3Create(aX: single; aY: single; aZ: single): TVector3;
 procedure Vector3Set(aVec: PVector3; aX: single; aY: single; aZ: single);
 function ColorCreate(aR: byte; aG: byte; aB: byte; aA: byte): TColor;
 procedure TColorSet(aColor: PColor; aR: byte; aG: byte; aB: byte; aA: byte);
-function RectangleCreate(aX: integer; aY: integer; aWidth: integer; aHeight: integer): TRectangle;
-procedure RectangleSet(aRect: PRectangle; aX: integer; aY: integer; aWidth: integer; aHeight: integer);
+
+function RectangleCreate(aX: Single; aY: Single; aWidth: Single; aHeight: Single): TRectangle;
+procedure RectangleSet(aRect: PRectangle; aX: Single; aY: Single; aWidth: Single; aHeight: Single);
 function TCamera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer): TCamera3D;
 procedure TCamera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
 
@@ -1543,7 +1544,8 @@ begin
 end;
 
 
-function RectangleCreate(aX: integer; aY: integer; aWidth: integer; aHeight: integer): TRectangle;
+function RectangleCreate(aX: Single; aY: Single; aWidth: Single; aHeight: Single
+  ): TRectangle;
 begin
   Result.x := aX;
   Result.y := aY;
@@ -1551,7 +1553,8 @@ begin
   Result.Height := aHeight;
 end;
 
-procedure RectangleSet(aRect: PRectangle; aX: integer; aY: integer; aWidth: integer; aHeight: integer);
+procedure RectangleSet(aRect: PRectangle; aX: Single; aY: Single;
+  aWidth: Single; aHeight: Single);
 begin
   aRect^.x := aX;
   aRect^.y := aY;
