@@ -20,7 +20,7 @@ raymath.h  | :heavy_check_mark: |
 OS         | Supported          |
 ---------  | ------------------ |
 Mac        | ❓ no tested|
-Windows    | ❓ no tested|
+Windows    | :heavy_check_mark: |
 Linux      | :heavy_check_mark: |
 
 
