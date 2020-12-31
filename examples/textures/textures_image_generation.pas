@@ -2,7 +2,7 @@ program textures_image_generation;
 
 {$MODE objfpc}
 
-uses cmem, ray_headers, math;
+uses cmem, ray_headers, math, textures_particles_blending;
 
 const
   screenWidth = 800;

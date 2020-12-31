@@ -11,7 +11,7 @@
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="textures_image_generation"/>
+      <Title Value="textures_particles_blending"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -31,21 +31,17 @@
         <PackageName Value="ray4laz"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="2">
+    <Units Count="1">
       <Unit0>
-        <Filename Value="textures_image_generation.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit0>
-      <Unit1>
         <Filename Value="textures_particles_blending.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit1>
+      </Unit0>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="../../binary/textures_image_generation"/>
+      <Filename Value="../../binary/textures_particles_blending"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
