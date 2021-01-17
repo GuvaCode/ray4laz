@@ -34,7 +34,7 @@ begin
 
 	// Load Animation Data
 	animsCount := 0;
-	anims := LoadModelAnimations('resources/guy/guyanim.iqm', @animsCount);
+	anims := LoadModelAnimations('resources/guy/guy.iqm', @animsCount);
 	animFrameCounter := 0;
 
 	WriteLn('animsCount: ', animsCount);

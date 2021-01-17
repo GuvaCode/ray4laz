@@ -58,8 +58,9 @@ begin
 
     DrawModel(dwarf, position, 2.0, WHITE); // Draw 3d model with texture
     DrawGrid(10, 0.5); // Draw a grid
-
+     DrawText(Pchar('dneififnienfi'),trunc(position.x),trunc(position.y),20,black);
     EndMode3d();
+
 
     DrawText('(c) Dwarf 3D model by David Moreno', screenWidth - 200, screenHeight - 20, 10, GRAY);
     DrawFPS(10, 10);
