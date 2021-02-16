@@ -1,8 +1,48 @@
+{*********************************************************************************************
+*
+*   raymath  - Math functions to work with Vector3, Matrix and Quaternions
+*
+*   CONFIGURATION:
+*
+*   #define RAYMATH_IMPLEMENTATION
+*       Generates the implementation of the library into the included file.
+*       If not defined, the library is in header only mode and can be included in other headers
+*       or source files without problems. But only ONE file should hold the implementation.
+*
+*   #define RAYMATH_HEADER_ONLY
+*       Define static inline functions code, so #include header suffices for use.
+*       This may use up lots of memory.
+*
+*   #define RAYMATH_STANDALONE
+*       Avoid raylib.h header inclusion in this file.
+*       Vector3 and Matrix data types are defined internally in raymath module.
+*
+*
+*   LICENSE: zlib/libpng
+*
+*   Copyright (c) 2015-2021 Ramon Santamaria (@raysan5)
+*
+*   This software is provided "as-is", without any express or implied warranty. In no event
+*   will the authors be held liable for any damages arising from the use of this software.
+*
+*   Permission is granted to anyone to use this software for any purpose, including commercial
+*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
+*
+*     1. The origin of this software must not be misrepresented; you must not claim that you
+*     wrote the original software. If you use this software in a product, an acknowledgment
+*     in the product documentation would be appreciated but is not required.
+*
+*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
+*     as being the original software.
+*
+*     3. This notice may not be removed or altered from any source distribution.
+*
+**********************************************************************************************}
 unit ray_math;
 
 interface
 
-uses ray_headers;
+uses ray_header;
 
 type
     TFloat3 = record

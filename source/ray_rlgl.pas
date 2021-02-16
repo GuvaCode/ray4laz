@@ -1,10 +1,24 @@
+{
+***********************************************************************************************
+*
+*   rlgl - raylib OpenGL abstraction layer
+*
+*   rlgl is a wrapper for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0) to
+*   pseudo-OpenGL 1.1 style functions (rlVertex, rlTranslate, rlRotate...).
+*
+*   When chosing an OpenGL version greater than OpenGL 1.1, rlgl stores vertex data on internal
+*   VBO buffers (and VAOs if available). It requires calling 3 functions:
+*       rlglInit()  - Initialize internal buffers and auxiliary resources
+*       rlglDraw()  - Process internal buffers and send required draw calls
+*       rlglClose() - De-initialize internal buffers data and other auxiliar resources
+}
 unit ray_rlgl;
 
 {$mode objfpc}{$H+}
 
 interface
 
-uses ray_headers;
+uses ray_header;
 
 //------------------------------------------------------------------------------------
 // Functions Declaration - Matrix operations

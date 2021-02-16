@@ -76,7 +76,7 @@
        Version 2020.09.17 - for raylib 3.0.0
        Version 2020.12.26 - for raylib 3.5.0
 }
-unit ray_headers;
+unit ray_header;
 
 {$mode objfpc}{$H+}
 
