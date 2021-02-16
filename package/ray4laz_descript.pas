@@ -21,6 +21,11 @@ type
 
   procedure Register;
 
+  resourcestring
+  rsAboutSimplePrj = 'A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)';
+  rsNameSimplePrj = 'Raylib Simple Project';
+  rsHelpCheat = 'raylib cheatsheet';
+
 implementation
 uses lclintf;
 
@@ -32,7 +37,7 @@ end;
 procedure Register;
 begin
   RegisterProjectDescriptor(TRay4LazSimpleProjectDescriptor.Create);
-  RegisterIDEMenuCommand(itmInfoHelps, 'AboutRay4LazLibItem', 'raylib - cheatsheet',nil, @ShowCheatsheet, nil, 'menu_information');
+  RegisterIDEMenuCommand(itmInfoHelps, 'AboutRay4LazLibItem', rsHelpCheat ,nil, @ShowCheatsheet, nil, 'ce_interface');
 end;
 
 { TRay4LazSimpleProjectDescriptor }
@@ -40,19 +45,18 @@ end;
 constructor TRay4LazSimpleProjectDescriptor.Create;
 begin
   inherited Create;
-  Name := 'Raylib Simple Project';
+  Name := rsNameSimplePrj;
   Flags := Flags -[pfMainUnitHasCreateFormStatements,pfMainUnitHasTitleStatement] + [pfUseDefaultCompilerOptions];
 end;
 
 function TRay4LazSimpleProjectDescriptor.GetLocalizedName: string;
 begin
-  Result:= 'Raylib Simple Project';
+  Result:= rsNameSimplePrj;
 end;
 
 function TRay4LazSimpleProjectDescriptor.GetLocalizedDescription: string;
 begin
-  Result:=GetLocalizedName + LineEnding +  LineEnding +
-  'A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)';
+  Result:=GetLocalizedName + LineEnding +  LineEnding + rsAboutSimplePrj;
 end;
 
 function TRay4LazSimpleProjectDescriptor.InitProject(AProject: TLazProject
@@ -70,7 +74,7 @@ begin
     LineEnding +
     '{$mode objfpc}{$H+}' + LineEnding +
     LineEnding +
-    'uses ' +'cmem, ray_headers, math;' + LineEnding +  LineEnding +
+    'uses ' +'cmem, ray_header, math;' + LineEnding +  LineEnding +
     'const' +  LineEnding +
     ' screenWidth = 800;'+ LineEnding +
     ' screenHeight = 450;'+ LineEnding  + LineEnding +
