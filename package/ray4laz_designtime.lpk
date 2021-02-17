@@ -12,12 +12,17 @@
     </CompilerOptions>
     <Description Value="Desing time package for ray4laz "/>
     <Version Major="1" Release="1"/>
-    <Files Count="1">
+    <Files Count="2">
       <Item1>
-        <Filename Value="ray4laz_descript.pas"/>
+        <Filename Value="ray4laz_simpleprj.pas"/>
         <HasRegisterProc Value="True"/>
-        <UnitName Value="ray4laz_descript"/>
+        <UnitName Value="ray4laz_simpleprj"/>
       </Item1>
+      <Item2>
+        <Filename Value="ray4laz_misc.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ray4laz_misc"/>
+      </Item2>
     </Files>
     <RequiredPkgs Count="3">
       <Item1>

@@ -2,7 +2,7 @@
 program standard_game;
 
 {$mode objfpc}{$H+}
-uses cmem, ray_headers, math;
+uses cmem, ray_header;
 
 type TGameScreen = (LOGO = 0, TITLE, GAMEPLAY, ENDING);
 

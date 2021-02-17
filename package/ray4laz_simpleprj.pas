@@ -1,15 +1,12 @@
-unit ray4laz_descript;
-
+unit ray4laz_simplePrj;
 {$mode objfpc}{$H+}
-
 interface
 
 uses
-  Classes, SysUtils, Forms, LazIDEIntf, ProjectIntf, MenuIntf;
+  Classes, SysUtils, Forms, LazIDEIntf, ProjectIntf, MenuIntf, SrcEditorIntf;
 
 type
   { TRay4LazSimpleProjectDescriptor }
-
   TRay4LazSimpleProjectDescriptor = class(TProjectDescriptor)
   public
     constructor Create; override;
@@ -23,25 +20,16 @@ type
 
   resourcestring
   rsAboutSimplePrj = 'A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)';
-  rsNameSimplePrj = 'Raylib Simple Project';
-  rsHelpCheat = 'raylib cheatsheet';
+  rsNameSimplePrj  = 'Raylib Simple Project';
 
 implementation
-uses lclintf;
-
-procedure ShowCheatsheet(Sender: TObject);
-begin
-   OpenURL('https://www.raylib.com/cheatsheet/cheatsheet.html');
-end;
 
 procedure Register;
 begin
-  RegisterProjectDescriptor(TRay4LazSimpleProjectDescriptor.Create);
-  RegisterIDEMenuCommand(itmInfoHelps, 'AboutRay4LazLibItem', rsHelpCheat ,nil, @ShowCheatsheet, nil, 'ce_interface');
+ RegisterProjectDescriptor(TRay4LazSimpleProjectDescriptor.Create);
 end;
 
 { TRay4LazSimpleProjectDescriptor }
-
 constructor TRay4LazSimpleProjectDescriptor.Create;
 begin
   inherited Create;
@@ -59,11 +47,11 @@ begin
   Result:=GetLocalizedName + LineEnding +  LineEnding + rsAboutSimplePrj;
 end;
 
-function TRay4LazSimpleProjectDescriptor.InitProject(AProject: TLazProject
-  ): TModalResult;
+function TRay4LazSimpleProjectDescriptor.InitProject(AProject: TLazProject): TModalResult;
 var
   Source: string;
   MainFile: TLazProjectFile;
+
 begin
   Result := inherited InitProject(AProject);
   MainFile := AProject.CreateProjectFile('game.lpr');
@@ -94,19 +82,17 @@ begin
     'CloseWindow(); ' + LineEnding +
     LineEnding +
      'end.' + LineEnding + LineEnding;
+
   AProject.MainFile.SetSourceText(Source);
   AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)' + PathDelim+ 'ray4laz_dsgn';
   AProject.LazCompilerOptions.TargetFilename:= 'game';
   AProject.AddPackageDependency('ray4laz');
 end;
 
-function TRay4LazSimpleProjectDescriptor.CreateStartFiles(AProject: TLazProject
-  ): TModalResult;
+function TRay4LazSimpleProjectDescriptor.CreateStartFiles(AProject: TLazProject): TModalResult;
 begin
   Result:=inherited CreateStartFiles(AProject);
 end;
-
-
 
 end.
 
