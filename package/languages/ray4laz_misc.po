@@ -1,0 +1,11 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: ray4laz_misc.rshelpcheat
+msgid "Cheatsheet ..."
+msgstr ""
+
+#: ray4laz_misc.rsinsertclr
+msgid "ColorCreate from dialog"
+msgstr ""
+
