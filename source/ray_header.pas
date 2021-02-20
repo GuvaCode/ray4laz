@@ -1085,7 +1085,7 @@ procedure DrawRectangleLines(aPosX: integer; aPosY: integer; aWidth: integer; aH
 procedure DrawRectangleLinesEx(aRect: TRectangle; aLineThick: integer; aColor: TColor); cdecl; external cDllName; // Draw rectangle outline with extended parameters
 
 procedure DrawRectangleRounded(aRec: TRectangle; aRoundness: single; aSegments: integer; aColor: TColor); cdecl; external cDllName;  // Draw rectangle with rounded edges
-procedure DrawRectabgleRoundedLines(aRec: TRectangle; aRoundness: single; aSegments: integer; aLineThick: integer; aColor: TColor); cdecl; external cDllName; // Draw rectangle with rounded edges outline
+procedure DrawRectangleRoundedLines(aRec: TRectangle; aRoundness: single; aSegments: integer; aLineThick: integer; aColor: TColor); cdecl; external cDllName; // Draw rectangle with rounded edges outline
 
 procedure DrawTriangle(aVec1: TVector2; aVec2: TVector2; aVec3: TVector2; aColor: TColor); cdecl; external cDllName; // Draw a color-filled triangle (vertex in counter-clockwise order!)
 procedure DrawTriangleLines(aVec1: TVector2; aVec2: TVector2; aVec3: TVector2; aColor: TColor); cdecl; external cDllName; // Draw triangle outline (vertex in counter-clockwise order!)
