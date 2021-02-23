@@ -2,7 +2,7 @@ program core_input_keys;
 
 {$MODE objfpc}
 
-uses cmem, ray_headers, math;
+uses cmem, ray_header, math;
 
 const
   screenWidth = 800;

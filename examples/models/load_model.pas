@@ -2,7 +2,7 @@ program load_model;
 
 {$MODE objfpc}
 
-uses cmem, ray_headers, math;
+uses cmem, ray_header, math;
 
 const
   screenWidth = 800;

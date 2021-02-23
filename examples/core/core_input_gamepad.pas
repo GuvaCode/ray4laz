@@ -2,7 +2,7 @@ program core_basic_gamepad;
 
 {$MODE objfpc}
 
-uses cmem, ray_headers, math, sysutils;
+uses cmem, ray_header, math, sysutils;
 
 const
   screenWidth = 800;

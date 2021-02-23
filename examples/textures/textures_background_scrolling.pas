@@ -2,7 +2,7 @@ program textures_background_scrolling;
 
 {$MODE objfpc}
 
-uses  cmem, ray_headers, math;
+uses  cmem, ray_header, math;
 
 const screenWidth = 800;
       screenHeight = 450;

@@ -2,7 +2,7 @@ program audio_module_playing;
 
 {$MODE objfpc}
 
-uses cmem, ray_headers, math;
+uses cmem, ray_header, math;
 
 const MAX_CIRCLES=64;
       screenWidth = 800;

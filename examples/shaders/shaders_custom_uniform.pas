@@ -24,7 +24,7 @@ program shaders_custom_uniform;
 
 {$MODE objfpc}
 
-uses cmem, ray_headers, math;
+uses cmem, ray_header, math;
 
 const
   screenWidth = 800;
