@@ -62,7 +62,7 @@ begin
     LineEnding +
     '{$mode objfpc}{$H+}' + LineEnding +
     LineEnding +
-    'uses ' +'cmem, ray_header, math;' + LineEnding +  LineEnding +
+    'uses ' +'cmem, ray_header;' + LineEnding +  LineEnding +
     'const' +  LineEnding +
     ' screenWidth = 800;'+ LineEnding +
     ' screenHeight = 450;'+ LineEnding  + LineEnding +
