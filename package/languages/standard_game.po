@@ -1,0 +1,11 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: standard_game.rsabout
+msgid "A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)"
+msgstr ""
+
+#: standard_game.rsname
+msgid "Raylib Standart Game Project"
+msgstr ""
+
