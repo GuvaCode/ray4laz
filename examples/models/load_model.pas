@@ -26,12 +26,12 @@ begin
   cam.target := Vector3Create(0.0, 1.5, 0.0);
   cam.up := Vector3Create(0.0, 1.0, 0.0);
   cam.fovy := 45.0;
-  cam._type := CAMERA_PERSPECTIVE;
+  cam.projection := CAMERA_PERSPECTIVE;
 
   dwarf := LoadModel('resources/models/dwarf.obj'); // Load OBJ model
   texture := LoadTexture('resources/models/dwarf_diffuse.png');
   // Load model texture (diffuse map)
-   SetMaterialTexture(@dwarf.materials[0], MAP_DIFFUSE, texture);
+   SetMaterialTexture(@dwarf.materials[0], MATERIAL_MAP_DIFFUSE, texture);
   // Set dwarf model diffuse texture
   position := Vector3Create(0.0, 0.0, 0.0); // Set model position
 
@@ -58,7 +58,7 @@ begin
 
     DrawModel(dwarf, position, 2.0, WHITE); // Draw 3d model with texture
     DrawGrid(10, 0.5); // Draw a grid
-     DrawText(Pchar('dneififnienfi'),trunc(position.x),trunc(position.y),20,black);
+
     EndMode3d();
 
 
