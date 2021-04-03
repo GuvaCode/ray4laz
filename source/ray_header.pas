@@ -105,8 +105,6 @@ type
          m15 : single;
        end;
 
-
-
      PRectangle = ^TRectangle;
      TRectangle = record
          x : single;
@@ -177,7 +175,6 @@ type
          recs : PRectangle;
          chars : PCharInfo;
        end;
-
 
      SpriteFont = TFont;
 
@@ -305,8 +302,7 @@ type
        end;
 
      PrAudioBuffer = ^TrAudioBuffer;
-     TrAudioBuffer = record
-     end;
+     TrAudioBuffer = record end;
 
      PAudioStream = ^TAudioStream;
      TAudioStream = record
@@ -357,7 +353,8 @@ type
 
      PConfigFlags = ^TConfigFlags;
      TConfigFlags =  Longint;
-     Const
+
+   Const
        FLAG_VSYNC_HINT = $00000040;
        FLAG_FULLSCREEN_MODE = $00000002;
        FLAG_WINDOW_RESIZABLE = $00000004;
@@ -778,6 +775,7 @@ type
 //------------------------------------------------------------------------------------
 
 // Window-related functions
+
 procedure InitWindow(aWidth: integer; aHeight: integer; aTitle: PAnsiChar);cdecl;external cDllName; // Initialize window and OpenGL context
 function WindowShouldClose:boolean;cdecl;external cDllName; // Check if KEY_ESCAPE pressed or Close icon pressed
 procedure CloseWindow;cdecl;external cDllName; // Close window and unload OpenGL context
@@ -986,7 +984,6 @@ function GetVrConfig(device:TVrDeviceInfo):TVrStereoConfig;cdecl;external cDllNa
 //------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
 //------------------------------------------------------------------------------------
-
 // Basic shapes drawing functions
 procedure DrawPixel(posX:longint; posY:longint; color:TColor);cdecl;external cDllName; // Draw a pixel
 procedure DrawPixelV(position:TVector2; color:TColor);cdecl;external cDllName; // Draw a pixel (Vector version)
@@ -1037,7 +1034,6 @@ function GetCollisionRec(rec1:TRectangle; rec2:TRectangle):TRectangle;cdecl;exte
 //------------------------------------------------------------------------------------
 // Texture Loading and Drawing Functions (Module: textures)
 //------------------------------------------------------------------------------------
-
 // Image loading functions
 // NOTE: This functions do not require GPU access
 function LoadImage(fileName:Pchar):TImage;cdecl;external cDllName; // Load image from file into CPU memory (RAM)
@@ -1155,7 +1151,6 @@ function GetPixelDataSize(width:longint; height:longint; format:longint):longint
 //------------------------------------------------------------------------------------
 // TFont Loading and Text Drawing Functions (Module: text)
 //------------------------------------------------------------------------------------
-
 // TFont loading/unloading functions
 function GetFontDefault:TFont;cdecl;external cDllName; // Get the default Font
 function LoadFont(fileName:Pchar):TFont;cdecl;external cDllName; // Load font from file into GPU memory (VRAM)
@@ -1235,7 +1230,6 @@ procedure DrawGrid(slices: longint; spacing:single);cdecl;external cDllName; // 
 //------------------------------------------------------------------------------------
 // TModel 3d Loading and Drawing Functions (Module: models)
 //------------------------------------------------------------------------------------
-
 // TModel loading/unloading functions
 function LoadModel(filename: PChar): TModel;cdecl;external cDllName; // Load model from files (meshes and materials)
 function LoadModelFromMesh(mesh: TMesh): TModel;cdecl;external cDllName; // Load model from generated mesh (default material)
@@ -1326,7 +1320,6 @@ procedure SetShaderValueTexture(shader:TShader; locIndex:longint; texture:TTextu
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
 //------------------------------------------------------------------------------------
-
 // Audio device management functions
 procedure InitAudioDevice;cdecl;external cDllName; // Initialize audio device and context
 procedure CloseAudioDevice;cdecl;external cDllName; // Close the audio device and context
