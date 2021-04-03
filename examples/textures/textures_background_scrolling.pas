@@ -63,7 +63,7 @@ begin
         EndDrawing();
         //----------------------------------------------------------------------------------
     end;
-   UnloadMusicStream(music);          // Unload music stream buffers from RAM
+    UnloadMusicStream(music);          // Unload music stream buffers from RAM
     UnloadTexture(background);  // Unload background texture
     UnloadTexture(midground);   // Unload midground texture
     UnloadTexture(foreground);  // Unload foreground texture

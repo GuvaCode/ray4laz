@@ -43,7 +43,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <UnitOutputDirectory Value="../../tmp/"/>
+      <UnitOutputDirectory Value="../../tmp"/>
     </SearchPaths>
   </CompilerOptions>
   <Debugging>

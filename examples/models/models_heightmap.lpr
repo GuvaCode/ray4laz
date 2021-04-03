@@ -31,7 +31,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
  texture := LoadTextureFromImage(image);                  // Convert image to texture (VRAM)
  mesh := GenMeshHeightmap(image, Vector3Create(16,8,16)); // Generate heightmap mesh (RAM and VRAM)
  model := LoadModelFromMesh(mesh);                        // Load model from generated mesh
- model.materials[0].maps[MAP_DIFFUSE].texture := texture; // Set map diffuse texture
+ model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture := texture; // Set map diffuse texture
  Vector3Set(@mapPosition,-8.0,0.0,-8.0);                  // Define model position
 
 

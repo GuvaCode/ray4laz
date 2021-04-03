@@ -2,7 +2,7 @@ program models_first_person_maze;
 
 {$MODE objfpc}
 
-uses cmem, ray_headers, ray_math, math;
+uses cmem, ray_header, ray_math, math;
 
 const
   screenWidth = 800;
@@ -33,7 +33,7 @@ begin
   camera.target := Vector3Zero();
   camera.up := Vector3Create(0.0, 1.0, 0.0);
   camera.fovy := 45.0;
-  camera._type := CAMERA_PERSPECTIVE;
+  camera.projection := CAMERA_PERSPECTIVE;
 
   imMap := LoadImage('resources/textures/cubicmap.png');      // Load cubicmap image (RAM)
   cubicmap := LoadTextureFromImage(imMap);       // Convert image to texture to display (VRAM)
@@ -42,7 +42,7 @@ begin
 
   // NOTE: By default each cube is mapped to one part of texture atlas
   texture := LoadTexture('resources/textures/cubicmap_atlas.png');          // Load map texture
-  SetMaterialTexture(@model.materials[0], MAP_DIFFUSE, texture);      // Set map diffuse texture
+  SetMaterialTexture(model.materials[0], MATERIAL_MAP_DIFFUSE, texture);      // Set map diffuse texture
 
   // Get map image data to be used for collision detection
   mapPixels := LoadImageColors(imMap);

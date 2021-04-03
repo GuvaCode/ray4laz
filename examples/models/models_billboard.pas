@@ -24,7 +24,7 @@ begin
     cam.target := Vector3Create(0.0, 2.0, 0.0);
     cam.up := Vector3Create(0.0, 1.0, 0.0);
     cam.fovy := 45.0;
-    cam._type := CAMERA_PERSPECTIVE;
+    cam.projection := CAMERA_PERSPECTIVE;
 
     bill := LoadTexture('resources/textures/billboard.png');
     billPosition := Vector3Create(0.0, 2.0, 0.0);

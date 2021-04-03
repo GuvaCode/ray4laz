@@ -84,8 +84,9 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
                                 (y - numBlocks/2)*(scale*2.0) + scatter,
                                 (z - numBlocks/2)*(scale*3.0) + scatter);
                            // Pick a color with a hue depending on cube position for the rainbow color effect
-                             cubeColor := ColorFromHSV(Vector3Create((((x + y + z)*18)), 0.75, 0.9));
-                            // Calculate cube size
+                            // cubeColor := ColorFromHSV(Vector3Create((((x + y + z)*18)), 0.75, 0.9));
+                             cubeColor := ColorFromHSV((x + y + z)*18,0.75, 0.9);
+                             // Calculate cube size
                              cubeSize := (2.4 - scale)*blockScale;
                             // And finally, draw the cube!
                             DrawCube(cubePos, cubeSize, cubeSize, cubeSize, cubeColor);

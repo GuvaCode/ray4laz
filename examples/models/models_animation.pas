@@ -24,17 +24,17 @@ begin
 	cam.target := Vector3Zero();
 	cam.up := Vector3Create(0.0, 1.0, 0.0);
 	cam.fovy := 45.0;
-	cam._type := CAMERA_PERSPECTIVE;
+	cam.projection := CAMERA_PERSPECTIVE;
 
 	model := LoadModel('resources/guy/guy.iqm');
 	texture := LoadTexture('resources/guy/guytex.png');
-	SetMaterialTexture(@model.materials[0], MAP_DIFFUSE, texture);
+	SetMaterialTexture(model.materials[0], MATERIAL_MAP_DIFFUSE, texture);
 
 	position := Vector3Zero();
 
 	// Load Animation Data
 	animsCount := 0;
-	anims := LoadModelAnimations('resources/guy/guy.iqm', @animsCount);
+	anims := LoadModelAnimations('resources/guy/guy.iqm', animsCount);
 	animFrameCounter := 0;
 
 	WriteLn('animsCount: ', animsCount);
