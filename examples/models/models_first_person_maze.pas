@@ -63,7 +63,7 @@ begin
       //----------------------------------------------------------------------------------
       oldCamPos := camera.position;    // Store old camera position
 
-      UpdateCamera(@camera);      // Update camera
+      UpdateCamera(camera);      // Update camera
 
       // Check player collision (we simplify to 2D collision detection)
       playerPos :=  Vector2Create(camera.position.x, camera.position.z );

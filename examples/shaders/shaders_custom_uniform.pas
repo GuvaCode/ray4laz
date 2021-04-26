@@ -97,7 +97,7 @@ begin
     // Send new value to the shader to be used on drawing
     SetShaderValue(shdr, swirlCenterLoc, @swirlCenter, 2);
 
-    UpdateCamera(@cam); // Update camera
+    UpdateCamera(cam); // Update camera
     // -----------------------------------------------------------------------
 
     // Draw

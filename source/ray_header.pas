@@ -343,6 +343,8 @@ type
 
      PVrStereoConfig = ^TVrStereoConfig;
      TVrStereoConfig = record
+         projection : array [0..1] of TMatrix;           // VR projection matrices (per eye)
+         viewOffset : array [0..1] of TMatrix;           // VR view offset matrices (per eye)
          leftLensCenter : array[0..1] of single;
          rightLensCenter : array[0..1] of single;
          leftScreenCenter : array[0..1] of single;
@@ -834,8 +836,32 @@ procedure BeginMode3D(camera:TCamera3D);cdecl;external cDllName; // Initializes 
 procedure EndMode3D;cdecl;external cDllName; // Ends 3D mode and returns to default 2D orthographic mode
 procedure BeginTextureMode(target:TRenderTexture2D);cdecl;external cDllName; // Initializes render texture for drawing
 procedure EndTextureMode;cdecl;external cDllName; // Ends drawing to render texture
+procedure BeginShaderMode(shader:TShader);cdecl;external cDllName;// Begin custom shader drawing
+procedure EndShaderMode;cdecl;external cDllName;// End custom shader drawing (use default shader)
+procedure BeginBlendMode(mode: longint);cdecl;external cDllName;// Begin blending mode (alpha, additive, multiplied)
+procedure EndBlendMode;cdecl;external cDllName;// End blending mode (reset to default: alpha blending)
 procedure BeginScissorMode(x:longint; y:longint; width:longint; height:longint);cdecl;external cDllName; // Begin scissor mode (define screen area for following drawing)
 procedure EndScissorMode;cdecl;external cDllName; // End scissor mode
+
+procedure BeginVrStereoMode(config:TVrStereoConfig);cdecl;external cDllName; //Begin stereo rendering (requires VR simulator)
+procedure EndVrStereoMode;cdecl;external cDllName; // End stereo rendering (requires VR simulator)
+
+function LoadVrStereoConfig(device:TVrDeviceInfo):TVrStereoConfig;cdecl;external cDllName; //Load VR stereo config for VR simulator device parameters
+procedure UnloadVrStereoConfig(config:TVrStereoConfig);cdecl;external cDllName;//Unload VR stereo config
+
+// Shader management functions
+{ NOTE: Shader functionality is not available on OpenGL 1.1 }
+function LoadShader(vsFileName:Pchar; fsFileName:Pchar): TShader;cdecl;external cDllName; // Load shader from files and bind default locations
+function LoadShaderFromMemory(vsCode:Pchar; fsCode:Pchar):TShader; cdecl;external cDllName; // Load shader from code strings and bind default locations
+
+function GetShaderLocation(shader:TShader; uniformName:Pchar):longint;cdecl;external cDllName; // Get shader uniform location
+function GetShaderLocationAttrib(shader:TShader; attribName:Pchar):longint;cdecl;external cDllName; // Get shader attribute location
+procedure SetShaderValue(shader:TShader; locIndex:longint; value:pointer; uniformType:longint);cdecl;external cDllName; // Set shader uniform value
+procedure SetShaderValueV(shader:TShader; locIndex:longint; value:pointer; uniformType:longint; count:longint);cdecl;external cDllName; // Set shader uniform value vector
+procedure SetShaderValueMatrix(shader:TShader; locIndex:longint; mat:TMatrix);cdecl;external cDllName; // Set shader uniform value (matrix 4x4)
+procedure SetShaderValueTexture(shader:TShader; locIndex:longint; texture:TTexture2D);cdecl;external cDllName; // Set shader uniform value for texture
+procedure UnloadShader(shader:TShader);cdecl;external cDllName; // Unload shader from GPU memory (VRAM)
+
 
 // Screen-space-related functions
 function GetMouseRay(mousePosition:TVector2; camera:TCamera):TRay;cdecl;external cDllName; // Returns a ray trace from mouse position
@@ -971,19 +997,13 @@ procedure SetCameraSmoothZoomControl(keySmoothZoom:longint);cdecl;external cDllN
 procedure SetCameraMoveControls(keyFront:longint; keyBack:longint; keyRight:longint; keyLeft:longint; keyUp:longint; keyDown:longint);cdecl;external cDllName; // Set camera move controls (1st person and 3rd person cameras)
 
 //------------------------------------------------------------------------------------
-// VR Simulator Functions (Module: core)
-//------------------------------------------------------------------------------------
-procedure InitVrSimulator(device:TVrDeviceInfo);cdecl;external cDllName; // Init VR simulator for selected device parameters
-procedure CloseVrSimulator;cdecl;external cDllName; // Close VR simulator for current device
-function IsVrSimulatorReady:boolean;cdecl;external cDllName; // Detect if VR simulator is ready
-procedure UpdateVrTracking(var camera:TCamera);cdecl;external cDllName; // Update VR tracking (position and orientation) and camera
-procedure BeginVrDrawing(target:TRenderTexture2D);cdecl;external cDllName; // Begin VR simulator stereo rendering (using provided fbo)
-procedure EndVrDrawing;cdecl;external cDllName; // End VR simulator stereo rendering
-function GetVrConfig(device:TVrDeviceInfo):TVrStereoConfig;cdecl;external cDllName; // Get stereo rendering configuration parameters
-
-//------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
 //------------------------------------------------------------------------------------
+// Set texture and rectangle to be used on shapes drawing
+// NOTE: It can be useful when using basic shapes and one single font,
+// defining a font char white rectangle would allow drawing everything in a single draw call
+procedure SetShapesTexture(texture:TTexture2D; source:TRectangle);cdecl;external cDllName;
+
 // Basic shapes drawing functions
 procedure DrawPixel(posX:longint; posY:longint; color:TColor);cdecl;external cDllName; // Draw a pixel
 procedure DrawPixelV(position:TVector2; color:TColor);cdecl;external cDllName; // Draw a pixel (Vector version)
@@ -1116,7 +1136,6 @@ procedure UpdateTexture(texture:TTexture2D; pixels:pointer);cdecl;external cDllN
 procedure UpdateTextureRec(texture:TTexture2D; rec:TRectangle; pixels:pointer);cdecl;external cDllName; // Update GPU texture rectangle with new data
 function GetTextureData(texture:TTexture2D):TImage;cdecl;external cDllName; // Get pixel data from GPU texture and return an Image
 function GetScreenData:TImage;cdecl;external cDllName; // Get pixel data from screen buffer and return an Image (screenshot)
-procedure SetShapesTexture(texture:TTexture2D; source:TRectangle);cdecl;external cDllName; // Define default texture used to draw shapes
 
 // TTexture2D configuration functions
 procedure GenTextureMipmaps(var texture:TTexture2D);cdecl;external cDllName; // Generate GPU mipmaps for a texture
@@ -1296,26 +1315,6 @@ function GetCollisionRayModel(ray:TRay; model:TModel): TRayHitInfo;cdecl;externa
 function GetCollisionRayTriangle(ray:TRay; p1:TVector3; p2:TVector3; p3:TVector3): TRayHitInfo;cdecl;external cDllName; // Get collision info between ray and triangle
 function GetCollisionRayGround(ray: TRay; groundHeight: single): TRayHitInfo;cdecl;external cDllName; // Get collision info between ray and ground plane (Y-normal plane)
 
-//------------------------------------------------------------------------------------
-// Shaders System Functions (Module: rlgl)
-// NOTE: This functions are useless when using OpenGL 1.1
-//------------------------------------------------------------------------------------
-// Shading begin/end functions
-procedure BeginShaderMode(shader:TShader);cdecl;external cDllName;// Begin custom shader drawing
-procedure EndShaderMode;cdecl;external cDllName;// End custom shader drawing (use default shader)
-procedure BeginBlendMode(mode: longint);cdecl;external cDllName;// Begin blending mode (alpha, additive, multiplied)
-procedure EndBlendMode;cdecl;external cDllName;// End blending mode (reset to default: alpha blending)
-
-// Shader management functions
-function LoadShader(vsFileName:Pchar; fsFileName:Pchar): TShader;cdecl;external cDllName; // Load shader from files and bind default locations
-function LoadShaderFromMemory(vsCode:Pchar; fsCode:Pchar):TShader; cdecl;external cDllName; // Load shader from code strings and bind default locations
-procedure UnloadShader(shader:TShader);cdecl;external cDllName; // Unload shader from GPU memory (VRAM)
-function GetShaderLocation(shader:TShader; uniformName:Pchar):longint;cdecl;external cDllName; // Get shader uniform location
-function GetShaderLocationAttrib(shader:TShader; attribName:Pchar):longint;cdecl;external cDllName; // Get shader attribute location
-procedure SetShaderValue(shader:TShader; locIndex:longint; value:pointer; uniformType:longint);cdecl;external cDllName; // Set shader uniform value
-procedure SetShaderValueV(shader:TShader; locIndex:longint; value:pointer; uniformType:longint; count:longint);cdecl;external cDllName; // Set shader uniform value vector
-procedure SetShaderValueMatrix(shader:TShader; locIndex:longint; mat:TMatrix);cdecl;external cDllName; // Set shader uniform value (matrix 4x4)
-procedure SetShaderValueTexture(shader:TShader; locIndex:longint; texture:TTexture2D);cdecl;external cDllName; // Set shader uniform value for texture
 
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
@@ -1328,7 +1327,7 @@ procedure SetMasterVolume(volume:single);cdecl;external cDllName; // Set master 
 
 // TWave/TSound loading/unloading functions
 function LoadWave(fileName:Pchar):TWave;cdecl; external cDllName; // Load wave data from file
-function LoadWaveFromMemory(fileType:Pchar; var fileData:byte; dataSize:longint): TWave;cdecl;external cDllName; // Load wave from memory buffer, fileType refers to extension: i.e. "wav"
+function LoadWaveFromMemory(fileType:Pchar; var fileData:byte; dataSize:longint): TWave;cdecl;external cDllName; // Load wave from memory buffer, fileType refers to extension: i.e. ".wav"
 function LoadSound(fileName:Pchar): TSound;cdecl;external cDllName; // Load sound from file
 function LoadSoundFromWave(wave: TWave): TSound;cdecl;external cDllName; // Load sound from wave data
 procedure UpdateSound(sound:TSound; data:pointer; samplesCount:longint);cdecl;external cDllName; // Update sound buffer with new data
@@ -1356,7 +1355,7 @@ procedure UnloadWaveSamples(var samples:single);cdecl;external cDllName; // Unlo
 
 // Music management functions
 function LoadMusicStream(fileName:Pchar): TMusic;cdecl;external cDllName; // Load music stream from file
-function LoadMusicStreamFromMemory(fileType:Pchar; var data:byte; dataSize:longint): TMusic;cdecl;external cDllName; // Load module music from data
+function LoadMusicStreamFromMemory(fileType:Pchar; var data:byte; dataSize:longint): TMusic;cdecl;external cDllName; // Load music stream from data
 procedure UnloadMusicStream(music: TMusic);cdecl;external cDllName; // Unload music stream
 procedure PlayMusicStream(music: TMusic);cdecl;external cDllName; // Start music playing
 function IsMusicPlaying(music: TMusic): boolean;cdecl;external cDllName; // Check if music is playing

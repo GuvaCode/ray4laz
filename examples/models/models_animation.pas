@@ -49,7 +49,7 @@ begin
 		//mousePos := GetMousePosition();
 		//WriteLn('Mouse Pos: ', FloatToStr(mousePos.x), ', ', FloatToStr(mousePos.y));
 
-		UpdateCamera(@cam);
+		UpdateCamera(cam);
 
 		if IsKeyDown(KEY_SPACE) then
 		begin

@@ -45,7 +45,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
  begin
    // Update
  //----------------------------------------------------------------------------------
- UpdateCamera(@camera);              // Update camera
+ UpdateCamera(camera);              // Update camera
  //----------------------------------------------------------------------------------
 
 

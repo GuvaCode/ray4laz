@@ -15,7 +15,7 @@ raylib is highly inspired by Borland BGI graphics lib and by XNA framework and i
 Header     | Supported          |
 ---------  | ------------------ |
 raylib.h   | :heavy_check_mark: |
-raymath.h  | :heavy_check_mark: |
+raymath.h  | :heavy_multiplication_x: |
 
 **Platforms**
 OS         | Supported          |
