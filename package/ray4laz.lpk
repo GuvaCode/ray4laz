@@ -10,9 +10,9 @@
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Description Value="A complete header translation (binding) of the raylib 3.0 to Pascal. Without any funky helper functions for memory alignment issues. Inspired and partially based on the drezgames/raylib-pascal binding, however a little cleaner and more recent, with FPC 3.2.0 support. "/>
+    <Description Value="A complete header translation (binding) of the raylib 3.7 to Pascal. Without any funky helper functions for memory alignment issues. Inspired and partially based on the drezgames/raylib-pascal binding, however a little cleaner and more recent, with FPC 3.2.0 support. "/>
     <License Value="zlib License"/>
-    <Version Major="1" Minor="3"/>
+    <Version Major="1" Minor="4"/>
     <Files Count="3">
       <Item1>
         <Filename Value="../source/ray_header.pas"/>
