@@ -70,23 +70,44 @@ type
         f16 : single;
     end;
 
-function  Clamp(aValue, aMin, aMax : Single): Single; cdecl; external cDllName;
-function  Lerp(aStart, aEnd, aAmount : Single): Single; cdecl; external cDllName;
-function  Vector2Zero(): TVector2; cdecl; external cDllName;
-function  Vector2One(): TVector2; cdecl; external cDllName;
-function  Vector2Add(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;
-function  Vector2Subtract(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;
-function  Vector2Length(aV : TVector2): Single; cdecl; external cDllName;
-function  Vector2DotProduct(aV1, aV2 : TVector2): Single; cdecl; external cDllName;
-function  Vector2Distance(aV1, aV2 : TVector2): Single; cdecl; external cDllName;
-function  Vector2Angle(aV1, aV2 : TVector2): Single; cdecl; external cDllName;
-function  Vector2Scale(aV : TVector2; aScale : Single): TVector2; cdecl; external cDllName;
-function  Vector2MultiplyV(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;
-function  Vector2Negate(aV : TVector2): TVector2; cdecl; external cDllName;
-function  Vector2Divide(aV : TVector2; aDiv : Single): TVector2; cdecl; external cDllName;
-function  Vector2DivideV(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;
-function  Vector2Normalize(aV : TVector2): TVector2; cdecl; external cDllName;
-function  Vector2Lerp(aV1, aV2 : TVector2; aAmount : Single): TVector2; cdecl; external cDllName;
+//----------------------------------------------------------------------------------
+// Module Functions Definition - Utils math
+//----------------------------------------------------------------------------------
+
+function  Clamp(aValue, aMin, aMax : Single): Single; cdecl; external cDllName;   // Clamp float value
+function  Lerp(aStart, aEnd, aAmount : Single): Single; cdecl; external cDllName; // Calculate linear interpolation between two floats
+function  Normalize(aValue, aStart, aEnd: Single): Single; cdecl; external cDllName; // Normalize input value within input range
+function  Remap(aValue, aInputStart, aInputEnd, aOutputStart, aOutputEnd: Single); cdecl; external cDllName;// Remap input value within input range to output range
+
+//----------------------------------------------------------------------------------
+// Module Functions Definition - Vector2 math
+//----------------------------------------------------------------------------------
+
+function  Vector2Zero(): TVector2; cdecl; external cDllName;// Vector with components value 0.0
+function  Vector2One(): TVector2; cdecl; external cDllName;// Vector with components value 1.0
+function  Vector2Add(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;// Add two vectors (v1 + v2)
+function  Vector2AddValue(aV: TVector2; aAdd: Single): TVector2;cdecl; external cDllName; // Add vector and float value
+function  Vector2Subtract(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;// Subtract two vectors (v1 - v2)
+function  Vector2SubtractValue( aV: TVector2, aSub:Single): TVector2; cdecl; external cDllName;// Subtract vector by float value
+function  Vector2Length(aV : TVector2): Single; cdecl; external cDllName; // Calculate vector length
+function  Vector2LengthSqr(aV : TVector2): Single; cdecl; external cDllName; // Calculate vector square length
+function  Vector2DotProduct(aV1, aV2 : TVector2): Single; cdecl; external cDllName; // Calculate two vectors dot product
+function  Vector2Distance(aV1, aV2 : TVector2): Single; cdecl; external cDllName;// Calculate distance between two vectors
+function  Vector2Angle(aV1, aV2 : TVector2): Single; cdecl; external cDllName;// Calculate angle from two vectors in X-axis
+function  Vector2Scale(aV : TVector2; aScale : Single): TVector2; cdecl; external cDllName;// Scale vector (multiply by value)
+function  Vector2Multiply(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;// Multiply vector by vector
+function  Vector2Negate(aV : TVector2): TVector2; cdecl; external cDllName;// Negate vector
+function  Vector2Divide(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;// Divide vector by vector
+function  Vector2Normalize(aV : TVector2): TVector2; cdecl; external cDllName; // Normalize provided vector
+function  Vector2Lerp(aV1, aV2 : TVector2; aAmount : Single): TVector2; cdecl; external cDllName;// Calculate linear interpolation between two vectors
+function  Vector2Reflect(aV, aNormal : TVector2): TVector2; cdecl; external cDllName;// Calculate reflected vector to normal
+function  Vector2Rotate(aV: TVector2; aDegs:Single) :TVector2; cdecl; external cDllName;// Rotate Vector by float in Degrees.
+function  Vector2MoveTowards(aV, aTarget:Tvector2; aMaxDistance: Single): TVector2; cdecl; external cDllName; // Move Vector towards target
+
+//----------------------------------------------------------------------------------
+// Module Functions Definition - Vector3 math
+//----------------------------------------------------------------------------------
+
 function  Vector3Zero(): TVector3; cdecl; external cDllName;
 function  Vector3One(): TVector3; cdecl; external cDllName;
 function  Vector3Add(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;
