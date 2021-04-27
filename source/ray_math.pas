@@ -77,7 +77,7 @@ type
 function  Clamp(aValue, aMin, aMax : Single): Single; cdecl; external cDllName;   // Clamp float value
 function  Lerp(aStart, aEnd, aAmount : Single): Single; cdecl; external cDllName; // Calculate linear interpolation between two floats
 function  Normalize(aValue, aStart, aEnd: Single): Single; cdecl; external cDllName; // Normalize input value within input range
-function  Remap(aValue, aInputStart, aInputEnd, aOutputStart, aOutputEnd: Single): Single; cdecl; external cDllName;// Remap input value within input range to output range
+function  Remap(aValue, aInputStart, aInputEnd, aOutputStart, aOutputEnd : Single): Single; cdecl; external cDllName;// Remap input value within input range to output range
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector2 math
@@ -88,7 +88,7 @@ function  Vector2One(): TVector2; cdecl; external cDllName;// Vector with compon
 function  Vector2Add(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;// Add two vectors (v1 + v2)
 function  Vector2AddValue(aV: TVector2; aAdd: Single): TVector2;cdecl; external cDllName; // Add vector and float value
 function  Vector2Subtract(aV1, aV2 : TVector2): TVector2; cdecl; external cDllName;// Subtract two vectors (v1 - v2)
-function  Vector2SubtractValue( aV: TVector2, aSub:Single): TVector2; cdecl; external cDllName;// Subtract vector by float value
+function  Vector2SubtractValue( aV: TVector2; aSub:Single): TVector2; cdecl; external cDllName;// Subtract vector by float value
 function  Vector2Length(aV : TVector2): Single; cdecl; external cDllName; // Calculate vector length
 function  Vector2LengthSqr(aV : TVector2): Single; cdecl; external cDllName; // Calculate vector square length
 function  Vector2DotProduct(aV1, aV2 : TVector2): Single; cdecl; external cDllName; // Calculate two vectors dot product
@@ -111,10 +111,10 @@ function  Vector2MoveTowards(aV, aTarget:Tvector2; aMaxDistance: Single): TVecto
 function  Vector3Zero(): TVector3; cdecl; external cDllName;// Vector with components value 0.0
 function  Vector3One(): TVector3; cdecl; external cDllName;// Vector with components value 1.0
 function  Vector3Add(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;// Add two vectors
-function  Vector3AddValue(aV: Tvector3, aAdd: single): TVector3; cdecl; external cDllName; // Add vector and float value
+function  Vector3AddValue(aV: Tvector3; aAdd: single): TVector3; cdecl; external cDllName; // Add vector and float value
 function  Vector3Subtract(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName; // Subtract two vectors
-function  Vector3SubtractValue(aV: TVector3, aSub:Single): Tvector3;  cdecl; external cDllName; // Subtract two vectors
-function  Vector3Scale(aV: TVector3, aScalar:Single): TVector3; cdecl; external cDllName;// Multiply vector by scalar
+function  Vector3SubtractValue(aV: TVector3; aSub:Single): Tvector3;  cdecl; external cDllName; // Subtract two vectors
+function  Vector3Scale(aV: TVector3; aScalar:Single): TVector3; cdecl; external cDllName;// Multiply vector by scalar
 function  Vector3Multiply(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;// Multiply vector by vector
 function  Vector3CrossProduct(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;// Calculate two vectors cross product
 function  Vector3Perpendicular(aV : TVector3): TVector3; cdecl; external cDllName;// Calculate one vector perpendicular vector
@@ -140,27 +140,29 @@ function  Vector3ToFloatV(aV : TVector3): TFloat3; cdecl; external cDllName;// R
 //----------------------------------------------------------------------------------
 
 
-function  MatrixDeterminant(amat : TMatrix) : Single; cdecl; external cDllName;
-function  MatrixTrace(mat : TMatrix): Single; cdecl; external cDllName;
-function  MatrixTranspose(amat : TMatrix): TMatrix; cdecl; external cDllName;
-function  MatrixInvert(amat : TMatrix): TMatrix; cdecl; external cDllName;
-function  MatrixNormalize(amat : TMatrix): TMatrix; cdecl; external cDllName;
-function  MatrixIdentity(): TMatrix; cdecl; external cDllName;
-function  MatrixAdd(aleft : TMatrix; aright : TMatrix): TMatrix; cdecl; external cDllName;
-function  MatrixSubtract(aleft : TMatrix; aright : TMatrix): TMatrix; cdecl; external cDllName;
-function  MatrixTranslate(aX, aY, aZ : Single): TMatrix; cdecl; external cDllName;
-function  MatrixRotate(aAxis : TVector3; aAngle : Single): TMatrix; cdecl; external cDllName;
-function  MatrixRotateXYZ(aAng : TVector3): TMatrix; cdecl; external cDllName;
-function  MatrixRotateX(aAngle : Single): TMatrix; cdecl; external cDllName;
-function  MatrixRotateY(aAngle : Single): TMatrix; cdecl; external cDllName;
-function  MatrixRotateZ(aAngle : Single): TMatrix; cdecl; external cDllName;
-function  MatrixScale(aX, aY, aZ : Single): TMatrix; cdecl; external cDllName;
-function  MatrixMultiply(aLeft : TMatrix; aRight : TMatrix): TMatrix; cdecl; external cDllName;
-function  MatrixFrustum(aLeft, aRight, aBottom, aTop, aNear, aFar : Double): TMatrix; cdecl; external cDllName;
-function  MatrixPerspective(aFovy, aAspect, aNear, aFar : Double): TMatrix; cdecl; external cDllName;
-function  MatrixOrtho(aLeft, aRight, aBottom, aTop, aNear, aFar : Double): TMatrix; cdecl; external cDllName;
-function  MatrixLookAt(aEye, aTarget, aUp : TVector3): TMatrix; cdecl; external cDllName;
-function  MatrixToFloatV(aMat : TMatrix): TFloat16; cdecl; external cDllName;
+function  MatrixDeterminant(amat : TMatrix) : Single; cdecl; external cDllName; // Compute matrix determinant
+function  MatrixTrace(mat : TMatrix): Single; cdecl; external cDllName;// Returns the trace of the matrix (sum of the values along the diagonal)
+function  MatrixTranspose(amat : TMatrix): TMatrix; cdecl; external cDllName;// Transposes provided matrix
+function  MatrixInvert(amat : TMatrix): TMatrix; cdecl; external cDllName; // Invert provided matrix
+function  MatrixNormalize(amat : TMatrix): TMatrix; cdecl; external cDllName;// Normalize provided matrix
+function  MatrixIdentity(): TMatrix; cdecl; external cDllName;// Returns identity matrix
+function  MatrixAdd(aleft : TMatrix; aright : TMatrix): TMatrix; cdecl; external cDllName;// Add two matrices
+function  MatrixSubtract(aleft : TMatrix; aright : TMatrix): TMatrix; cdecl; external cDllName;// Subtract two matrices (left - right)
+function  MatrixMultiply(aLeft : TMatrix; aRight : TMatrix): TMatrix; cdecl; external cDllName;// Returns two matrix multiplication
+function  MatrixTranslate(aX, aY, aZ : Single): TMatrix; cdecl; external cDllName;// Returns translation matrix
+function  MatrixRotate(aAxis : TVector3; aAngle : Single): TMatrix; cdecl; external cDllName;// Create rotation matrix from axis and angle
+function  MatrixRotateX(aAngle : Single): TMatrix; cdecl; external cDllName;// Returns x-rotation matrix (angle in radians)
+function  MatrixRotateY(aAngle : Single): TMatrix; cdecl; external cDllName;// Returns y-rotation matrix (angle in radians)
+function  MatrixRotateZ(aAngle : Single): TMatrix; cdecl; external cDllName;// Returns z-rotation matrix (angle in radians)
+function  MatrixRotateXYZ(aAng : TVector3): TMatrix; cdecl; external cDllName;// Returns xyz-rotation matrix (angles in radians)
+function  MatrixRotateZYX(aAng : TVector3): TMatrix; cdecl; external cDllName;// Returns zyx-rotation matrix (angles in radians)
+function  MatrixScale(aX, aY, aZ : Single): TMatrix; cdecl; external cDllName;// Returns scaling matrix
+function  MatrixFrustum(aLeft, aRight, aBottom, aTop, aNear, aFar : Double): TMatrix; cdecl; external cDllName;// Returns perspective projection matrix
+function  MatrixPerspective(aFovy, aAspect, aNear, aFar : Double): TMatrix; cdecl; external cDllName;// Returns perspective projection matrix
+function  MatrixOrtho(aLeft, aRight, aBottom, aTop, aNear, aFar : Double): TMatrix; cdecl; external cDllName;// Returns orthographic projection matrix
+function  MatrixLookAt(aEye, aTarget, aUp : TVector3): TMatrix; cdecl; external cDllName;// Returns camera look-at matrix (view matrix)
+function  MatrixToFloatV(aMat : TMatrix): TFloat16; cdecl; external cDllName; // Returns float array of matrix data
+
 function  QuaternionIdentity(): TQuaternion; cdecl; external cDllName;
 function  QuaternionLength(aQ : TQuaternion): Single; cdecl; external cDllName;
 function  QuaternionNormalize(aQ : TQuaternion): TQuaternion; cdecl; external cDllName;
