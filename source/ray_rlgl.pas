@@ -20,96 +20,222 @@ interface
 
 uses ray_header;
 
+type
+PVertexBuffer = ^TVertexBuffer;
+TVertexBuffer = record
+    elementsCount : longint;
+    vCounter : longint;
+    tcCounter : longint;
+    cCounter : longint;
+    vertices : Psingle;
+    texcoords : Psingle;
+    colors : Pbyte;
+    indices : Pdword;
+
+  //  if defined(GRAPHICS_API_OPENGL_ES2)
+  //  indices : Pword;
+  //  todo defined seting
+    vaoId : dword;
+    vboId : array[0..3] of dword;
+  end;
+
+PDrawCall = ^TDrawCall;
+TDrawCall = record
+    mode : longint;
+    vertexCount : longint;
+    vertexAlignment : longint;
+    textureId : dword;
+  end;
+
+PRenderBatch = ^TRenderBatch;
+TRenderBatch = record
+    buffersCount : longint;
+    currentBuffer : longint;
+    vertexBuffer : PVertexBuffer;
+    draws : PDrawCall;
+    drawsCounter : longint;
+    currentDepth : single;
+  end;
+
 //------------------------------------------------------------------------------------
 // Functions Declaration - Matrix operations
 //------------------------------------------------------------------------------------
-procedure rlMatrixMode(aMode : Integer); cdecl; external cDllName;                    // Choose the current matrix to be transformed
-procedure rlPushMatrix(); cdecl; external cDllName;                        // Push the current matrix to stack
-procedure rlPopMatrix(); cdecl; external cDllName;                        // Pop lattest inserted matrix from stack
-procedure rlLoadIdentity(); cdecl; external cDllName;                      // Reset current matrix to identity matrix
-procedure rlTranslatef(aX, aY, aZ : Single); cdecl; external cDllName;   // Multiply the current matrix by a translation matrix
-procedure rlRotatef(aAngleDeg, aX, aY, aZ : Single); cdecl; external cDllName;  // Multiply the current matrix by a rotation matrix
-procedure rlScalef(aX, aY, aZ : Single); cdecl; external cDllName;       // Multiply the current matrix by a scaling matrix
-procedure rlMultMatrixf(aMatf : PSingle); cdecl; external cDllName;                // Multiply the current matrix by another matrix
-procedure rlFrustum(aLeft, aRight, aBottom, aTop, aZnear, aZfar : Double); cdecl; external cDllName;
-procedure rlOrtho(aLeft, aRight, aBottom, aTop, aZnear, aZfar : Double); cdecl; external cDllName;
-procedure rlViewport(aX, aY, aWidth, aHeight : Integer); cdecl; external cDllName; // Set the viewport area
+procedure rlMatrixMode(aMode : Integer); cdecl; external cDllName;// Choose the current matrix to be transformed
+procedure rlPopMatrix;cdecl;external cDllName;// Push the current matrix to stack
+procedure rlLoadIdentity;cdecl;external cDllName;// Reset current matrix to identity matrix
+procedure rlTranslatef(x:single; y:single; z:single);cdecl;external cDllName;
+procedure rlRotatef(angleDeg:single; x:single; y:single; z:single);cdecl;external cDllName;
+procedure rlScalef(x:single; y:single; z:single);cdecl;external cDllName;
+procedure rlMultMatrixf(var matf:single);cdecl;external cDllName;
+procedure rlFrustum(left:double; right:double; bottom:double; top:double; znear:double;zfar:double);cdecl;external cDllName;
+procedure rlOrtho(left:double; right:double; bottom:double; top:double; znear:double;zfar:double);cdecl;external cDllName;
+procedure rlViewport(x:longint; y:longint; width:longint; height:longint);cdecl;external cDllName;
 
 //------------------------------------------------------------------------------------
 // Functions Declaration - Vertex level operations
 //------------------------------------------------------------------------------------
-procedure rlBegin(mode : Integer); cdecl; external cDllName;                         // Initialize drawing mode (how to organize vertex)
-procedure rlEnd(); cdecl; external cDllName;                              // Finish vertex providing
-procedure rlVertex2i(aX, aY : Integer); cdecl; external cDllName;                  // Define one vertex (position) - 2 int
-procedure rlVertex2f(aX, aY : Single); cdecl; external cDllName;              // Define one vertex (position) - 2 float
-procedure rlVertex3f(aX, aY, aZ : Single); cdecl; external cDllName;     // Define one vertex (position) - 3 float
-procedure rlTexCoord2f(aX, aY : Single); cdecl; external cDllName;            // Define one vertex (texture coordinate) - 2 float
-procedure rlNormal3f(aX, aY, aZ : Single); cdecl; external cDllName;     // Define one vertex (normal) - 3 float
-procedure rlColor4ub(aR, aG, aB, aA : Byte); cdecl; external cDllName;    // Define one vertex (color) - 4 byte
-procedure rlColor3f(aX, aY, aZ : Single); cdecl; external cDllName;          // Define one vertex (color) - 3 float
-procedure rlColor4f(aX, aY, aZ, aW : Single); cdecl; external cDllName; // Define one vertex (color) - 4 float
+
+procedure rlBegin(mode:longint);cdecl;external cDllName;
+procedure rlEnd;cdecl;external cDllName;
+procedure rlVertex2i(x:longint; y:longint);cdecl;external cDllName;
+procedure rlVertex2f(x:single; y:single);cdecl;external cDllName;
+procedure rlVertex3f(x:single; y:single; z:single);cdecl;external cDllName;
+procedure rlTexCoord2f(x:single; y:single);cdecl;external cDllName;
+procedure rlNormal3f(x:single; y:single; z:single);cdecl;external cDllName;
+procedure rlColor4ub(r:byte; g:byte; b:byte; a:byte);cdecl;external cDllName;
+procedure rlColor3f(x:single; y:single; z:single);cdecl;external cDllName;
+procedure rlColor4f(x:single; y:single; z:single; w:single);cdecl;external cDllName;
 
 //------------------------------------------------------------------------------------
-// Functions Declaration - OpenGL equivalent functions (common to 1.1, 3.3+, ES2)
-// NOTE: This functions are used to completely abstract raylib code from OpenGL layer
+// Functions Declaration - OpenGL style functions (common to 1.1, 3.3+, ES2)
+// NOTE: This functions are used to completely abstract raylib code from OpenGL layer,
+// some of them are direct wrappers over OpenGL calls, some others are custom
 //------------------------------------------------------------------------------------
-procedure rlEnableTexture(aId : Cardinal); cdecl; external cDllName;                  // Enable texture usage
-procedure rlDisableTexture(); cdecl; external cDllName;                            // Disable texture usage
-procedure rlTextureParameters(aId : Cardinal; aParam, aValue : Integer); cdecl; external cDllName; // Set texture parameters (filter, wrap)
-procedure rlEnableRenderTexture(aId : Cardinal); cdecl; external cDllName;            // Enable render texture (fbo)
-procedure rlDisableRenderTexture(); cdecl; external cDllName;                      // Disable render texture (fbo), return to default framebuffer
-procedure rlEnableDepthTest(); cdecl; external cDllName;                           // Enable depth test
-procedure rlDisableDepthTest(); cdecl; external cDllName;                          // Disable depth test
-procedure rlEnableBackfaceCulling(); cdecl; external cDllName;                     // Enable backface culling
-procedure rlDisableBackfaceCulling(); cdecl; external cDllName;                    // Disable backface culling
-procedure rlEnableWireMode(); cdecl; external cDllName;                            // Enable wire mode
-procedure rlDisableWireMode(); cdecl; external cDllName;                           // Disable wire mode
-procedure rlDeleteTextures(aId : Cardinal); cdecl; external cDllName;                 // Delete OpenGL texture from GPU
-procedure rlDeleteRenderTextures(aTarget : TRenderTexture2D); cdecl; external cDllName;    // Delete render textures (fbo) from GPU
-procedure rlDeleteShader(aId : Cardinal); cdecl; external cDllName;                   // Delete OpenGL shader program from GPU
-procedure rlDeleteVertexArrays(aId : Cardinal); cdecl; external cDllName;             // Unload vertex data (VAO) from GPU memory
-procedure rlDeleteBuffers(aId : Cardinal); cdecl; external cDllName;                  // Unload vertex data (VBO) from GPU memory
-procedure rlClearColor(aR, aG, aB, aA : Byte); cdecl; external cDllName;      // Clear color buffer with color
-procedure rlClearScreenBuffers(); cdecl; external cDllName;                        // Clear used screen buffers (color and depth)
-procedure rlUpdateBuffer(aBufferId : Integer; aData : Pointer; aDataSize : Integer); cdecl; external cDllName; // Update GPU buffer with new data
-function  rlLoadAttribBuffer(aVaoId : Cardinal; aShaderLoc : Integer; aBuffer : Pointer; aSize : Integer; aDynamic : Boolean): Cardinal; cdecl; external cDllName;   // Load a new attributes buffer
+
+// Vertex buffers state
+function rlEnableVertexArray(vaoId:dword):boolean;cdecl;external cDllName;
+procedure rlDisableVertexArray;cdecl;external cDllName;
+procedure rlEnableVertexBuffer(id:dword);cdecl;external cDllName;
+procedure rlDisableVertexBuffer;cdecl;external cDllName;
+procedure rlEnableVertexBufferElement(id:dword);cdecl;external cDllName;
+procedure rlDisableVertexBufferElement;cdecl;external cDllName;
+procedure rlEnableVertexAttribute(index:dword);cdecl;external cDllName;
+procedure rlDisableVertexAttribute(index:dword);cdecl;external cDllName;
+{$if defined(GRAPHICS_API_OPENGL_11)}
+procedure rlEnableStatePointer(vertexAttribType:longint; buffer:pointer);cdecl;external cDllName;
+procedure rlDisableStatePointer(vertexAttribType:longint);cdecl;external cDllName;
+{$endif}
+
+// Textures state
+procedure rlActiveTextureSlot(slot:longint);cdecl;external cDllName;
+procedure rlEnableTexture(id:dword);cdecl;external cDllName;
+procedure rlDisableTexture;cdecl;external cDllName;
+procedure rlEnableTextureCubemap(id:dword);cdecl;external cDllName;
+procedure rlDisableTextureCubemap;cdecl;external cDllName;
+procedure rlTextureParameters(id:dword; param:longint; value:longint);cdecl;external cDllName;
+
+// Shader state
+procedure rlEnableShader(id:dword);cdecl;external cDllName;
+procedure rlDisableShader;cdecl;external cDllName;
+
+// Framebuffer state
+procedure rlEnableFramebuffer(id:dword);cdecl;external cDllName;
+procedure rlDisableFramebuffer;cdecl;external cDllName;
+
+
+// General render state
+procedure rlEnableDepthTest;cdecl;external  cDllName;
+procedure rlDisableDepthTest;cdecl;external cDllName;
+procedure rlEnableDepthMask;cdecl;external  cDllName;
+procedure rlDisableDepthMask;cdecl;external cDllName;
+procedure rlEnableBackfaceCulling;cdecl;external cDllName;
+procedure rlDisableBackfaceCulling;cdecl;external cDllName;
+procedure rlEnableScissorTest;cdecl;external cDllName;
+procedure rlDisableScissorTest;cdecl;external cDllName;
+procedure rlScissor(x:longint; y:longint; width:longint; height:longint);cdecl;external cDllName;
+procedure rlEnableWireMode;cdecl;external cDllName;
+procedure rlDisableWireMode;cdecl;external cDllName;
+procedure rlSetLineWidth(width:single);cdecl;external cDllName;
+function rlGetLineWidth:single;cdecl;external cDllName;
+procedure rlEnableSmoothLines;cdecl;external cDllName;
+procedure rlDisableSmoothLines;cdecl;external cDllName;
+procedure rlEnableStereoRender;cdecl;external cDllName;
+procedure rlDisableStereoRender;cdecl;external cDllName;
+function rlIsStereoRenderEnabled:boolean;cdecl;external cDllName;
+
+procedure rlClearColor(r:byte; g:byte; b:byte; a:byte);cdecl;external cDllName;
+procedure rlClearScreenBuffers;cdecl;external cDllName;
+procedure rlCheckErrors;cdecl;external cDllName;
+procedure rlSetBlendMode(mode:longint);cdecl;external cDllName;
+procedure rlSetBlendFactors(glSrcFactor:longint; glDstFactor:longint; glEquation:longint);cdecl;external cDllName;
 
 //------------------------------------------------------------------------------------
 // Functions Declaration - rlgl functionality
 //------------------------------------------------------------------------------------
-procedure rlglInit(aWidth, aHeight : Integer); cdecl; external cDllName;           // Initialize rlgl (buffers, shaders, textures, states)
-procedure rlglClose(); cdecl; external cDllName;                           // De-inititialize rlgl (buffers, shaders, textures)
-procedure rlglDraw(); cdecl; external cDllName;                            // Update and draw default internal buffers
+// rlgl initialization functions
+procedure rlglInit(width:longint; height:longint);cdecl;external cDllName;
+procedure rlglClose;cdecl;external cDllName;
+procedure rlLoadExtensions(loader:pointer);cdecl;external cDllName;
+function rlGetVersion:longint;cdecl;external cDllName;
+function rlGetFramebufferWidth:longint;cdecl;external cDllName;
+function rlGetFramebufferHeight:longint;cdecl;external cDllName;
 
-function  rlGetVersion(): Integer; cdecl; external cDllName;                         // Returns current OpenGL version
-function  rlCheckBufferLimit(aVCount : Integer): Boolean; cdecl; external cDllName;            // Check internal buffer overflow for a given number of vertex
-procedure rlSetDebugMarker(aText : PAnsiChar); cdecl; external cDllName;        // Set debug marker for analysis
-procedure rlLoadExtensions(aLoader : Pointer); cdecl; external cDllName;            // Load OpenGL extensions
-function  rlUnproject(aSource : TVector3; aProj, aView : TMatrix): TVector3; cdecl; external cDllName;  // Get world coordinates from screen coordinates
+function rlGetShaderDefault:TShader;cdecl;external cDllName;
+function rlGetTextureDefault:TTexture2D;cdecl;external cDllName;
 
-// Textures data management
-function  rlLoadTexture(aData : Pointer; aWidth, aHeight, aFormat, aMipmapCount : Integer): Cardinal; cdecl; external cDllName; // Load texture in GPU
-function  rlLoadTextureDepth(aWidth, aHeight, aBits : Integer; aUseRenderBuffer : Boolean): Cardinal; cdecl; external cDllName;     // Load depth texture/renderbuffer (to be attached to fbo)
-function  rlLoadTextureCubemap(aData : Pointer; aSize, aFormat : Integer): Cardinal; cdecl; external cDllName;                        // Load texture cubemap
-procedure rlUpdateTexture(aId, aWidth, aHeight, aFormat : Integer; aData : Pointer); cdecl; external cDllName; // Update GPU texture with new data
-procedure rlGetGlTextureFormats(aFormat : Integer; aGlInternalFormat, aGlFormat, aGlType : PCardinal); cdecl; external cDllName;  // Get OpenGL internal formats
-procedure rlUnloadTexture(aId : Cardinal); cdecl; external cDllName;                              // Unload texture from GPU memory
+// Render batch management
+// NOTE: rlgl provides a default render batch to behave like OpenGL 1.1 immediate mode
+// but this render batch API is exposed in case of custom batches are required
+function rlLoadRenderBatch(numBuffers:longint; bufferElements:longint):TRenderBatch;cdecl;external cDllName;
+procedure rlUnloadRenderBatch(batch:TRenderBatch);cdecl;external cDllName;
+procedure rlDrawRenderBatch(var batch:TRenderBatch);cdecl;external cDllName;
+procedure rlSetRenderBatchActive(var batch:TRenderBatch);cdecl;external cDllName;
+procedure rlDrawRenderBatchActive;cdecl;external cDllName;
+function rlCheckRenderBatchLimit(vCount:longint):boolean;cdecl;external cDllName;
+procedure rlSetTexture(id:dword);cdecl;external cDllName;
 
-procedure rlGenerateMipmaps(aTexture : PTexture2D); cdecl; external cDllName;                         // Generate mipmap data for selected texture
-function  rlReadTexturePixels(aTexture : TTexture2D): Pointer; cdecl; external cDllName;                       // Read texture pixel data
-function  rlReadScreenPixels(aWidth, aHeight : Integer): PAnsiChar; cdecl; external cDllName;           // Read screen pixel data (color buffer)
+//------------------------------------------------------------------------------------------------------------------------
 
-// Render texture management (fbo)
-function  rlLoadRenderTexture(aWidth, aHeight, aFormat, aDepthBits : Integer; aUseDepthTexture : Boolean): TRenderTexture2D; cdecl; external cDllName;    // Load a render texture (with color and depth attachments)
-procedure rlRenderTextureAttach(aTarget : TRenderTexture; aId : Cardinal; aAttachType : Integer); cdecl; external cDllName;  // Attach texture/renderbuffer to an fbo
-function  rlRenderTextureComplete(aTarget : TRenderTexture): Boolean; cdecl; external cDllName;                 // Verify render texture is complete
+// Vertex buffers management
+function rlLoadVertexArray:dword;cdecl;external cDllName;
+function rlLoadVertexBuffer(buffer:pointer; size:longint; _dynamic:boolean):dword;cdecl;external cDllName;
+function rlLoadVertexBufferElement(buffer:pointer; size:longint; _dynamic:boolean):dword;cdecl;external cDllName;
+procedure rlUpdateVertexBuffer(bufferId:longint; data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName;
+procedure rlUnloadVertexArray(vaoId:dword);cdecl;external cDllName;
+procedure rlUnloadVertexBuffer(vboId:dword);cdecl;external cDllName;
+procedure rlSetVertexAttribute(index:dword; compSize:longint; _type:longint; normalized:boolean; stride:longint;_pointer:pointer);cdecl;external cDllName;
+procedure rlSetVertexAttributeDivisor(index:dword; divisor:longint);cdecl;external cDllName;
+procedure rlSetVertexAttributeDefault(locIndex:longint; value:pointer; attribType:longint; count:longint);cdecl;external cDllName;
+procedure rlDrawVertexArray(offset:longint; count:longint);cdecl;external cDllName;
+procedure rlDrawVertexArrayElements(offset:longint; count:longint; buffer:pointer);cdecl;external cDllName;
+procedure rlDrawVertexArrayInstanced(offset:longint; count:longint; instances:longint);cdecl;external cDllName;
+procedure rlDrawVertexArrayElementsInstanced(offset:longint; count:longint; buffer:pointer; instances:longint);cdecl;external cDllName;
 
-// Vertex data management
-procedure rlLoadMesh(aMesh : PMesh; aDynamic : Boolean); cdecl; external cDllName;                          // Upload vertex data into GPU and provided VAO/VBO ids
-procedure rlUpdateMesh(aMesh : TMesh; aBuffer, aNumVertex : Integer); cdecl; external cDllName;            // Update vertex data on GPU (upload new data to one buffer)
-procedure rlDrawMesh(aMesh : TMesh; aMaterial : TMaterial; aTransform : TMatrix); cdecl; external cDllName;    // Draw a 3d mesh with material and transform
-procedure rlUnloadMesh(aMesh : PMesh); cdecl; external cDllName;                                      // Unload mesh data from CPU and GPU
+// Textures management
+function rlLoadTexture(data:pointer; width:longint; height:longint; format:longint; mipmapCount:longint):dword;cdecl;external cDllName;
+function rlLoadTextureDepth(width:longint; height:longint; useRenderBuffer:boolean):dword;cdecl;external cDllName;
+function rlLoadTextureCubemap(data:pointer; size:longint; format:longint):dword;cdecl;external cDllName;
 
+procedure rlUpdateTexture(id:dword; offsetX:longint; offsetY:longint; width:longint; height:longint;format:longint; data:pointer);cdecl;external cDllName;
+procedure rlGetGlTextureFormats(format:longint; var glInternalFormat:dword; var glFormat:dword; var glType:dword);cdecl;external cDllName;
+procedure rlUnloadTexture(id:dword);cdecl;external cDllName;
+procedure rlGenerateMipmaps(var texture:TTexture2D);cdecl;external cDllName;
+function rlReadTexturePixels(texture:TTexture2D):pointer;cdecl;external cDllName;
+function rlReadScreenPixels(width:longint; height:longint):Pbyte;cdecl;external cDllName;
+
+// Framebuffer management (fbo)
+function rlLoadFramebuffer(width:longint; height:longint):dword;cdecl;external cDllName;
+procedure rlFramebufferAttach(fboId:dword; texId:dword; attachType:longint; texType:longint; mipLevel:longint);cdecl;external cDllName;
+function rlFramebufferComplete(id:dword):boolean;cdecl;external cDllName;
+procedure rlUnloadFramebuffer(id:dword);cdecl;external cDllName;
+
+// Shaders management
+function rlLoadShaderCode(vsCode:Pchar; fsCode:Pchar):dword;cdecl;external cDllName;
+function rlCompileShader(shaderCode:Pchar; _type:longint):dword;cdecl;external cDllName;
+function rlLoadShaderProgram(vShaderId:dword; fShaderId:dword):dword;cdecl;external cDllName;
+procedure rlUnloadShaderProgram(id:dword);cdecl;external cDllName;
+
+function rlGetLocationUniform(shaderId:dword; uniformName:Pchar):longint;cdecl;external cDllName;
+function rlGetLocationAttrib(shaderId:dword; attribName:Pchar):longint;cdecl;external cDllName;
+procedure rlSetUniform(locIndex:longint; value:pointer; uniformType:longint; count:longint);cdecl;external cDllName;
+procedure rlSetUniformMatrix(locIndex:longint; mat:TMatrix);cdecl;external cDllName;
+procedure rlSetUniformSampler(locIndex:longint; textureId:dword);cdecl;external cDllName;
+procedure rlSetShader(shader:TShader);cdecl;external cDllName;
+
+// Matrix state management
+function rlGetMatrixModelview:TMatrix;cdecl;external cDllName;
+function rlGetMatrixProjection:TMatrix;cdecl;external cDllName;
+function rlGetMatrixTransform:TMatrix;cdecl;external cDllName;
+function rlGetMatrixProjectionStereo(eye:longint):TMatrix;cdecl;external cDllName;
+function rlGetMatrixViewOffsetStereo(eye:longint):TMatrix;cdecl;external cDllName;
+procedure rlSetMatrixProjection(proj:TMatrix);cdecl;external cDllName;
+procedure rlSetMatrixModelview(view:TMatrix);cdecl;external cDllName;
+procedure rlSetMatrixProjectionStereo(right:TMatrix; left:TMatrix);cdecl;external cDllName;
+procedure rlSetMatrixViewOffsetStereo(right:TMatrix; left:TMatrix);cdecl;external cDllName;
+
+// Quick and dirty cube/quad buffers load->draw->unload
+procedure rlLoadDrawCube;cdecl;external cDllName;
+procedure rlLoadDrawQuad;cdecl;external cDllName;
 
 implementation
 

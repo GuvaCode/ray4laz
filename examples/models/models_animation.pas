@@ -2,7 +2,7 @@ program animation_test;
 
 {$MODE objfpc}
 
-uses cmem, ray_header, ray_rlgl, ray_math;
+uses cmem, ray_header, ray_rlgl;
 
 const
 	screenWidth = 800;
