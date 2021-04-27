@@ -1,7 +1,6 @@
-{
-***********************************************************************************************
+{**********************************************************************************************
 *
-*   rlgl - raylib OpenGL abstraction layer
+*   rlgl v3.7 - raylib OpenGL abstraction layer
 *
 *   rlgl is a wrapper for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0) to
 *   pseudo-OpenGL 1.1 style functions (rlVertex, rlTranslate, rlRotate...).
@@ -9,9 +8,55 @@
 *   When chosing an OpenGL version greater than OpenGL 1.1, rlgl stores vertex data on internal
 *   VBO buffers (and VAOs if available). It requires calling 3 functions:
 *       rlglInit()  - Initialize internal buffers and auxiliary resources
-*       rlglDraw()  - Process internal buffers and send required draw calls
 *       rlglClose() - De-initialize internal buffers data and other auxiliar resources
-}
+*
+*   CONFIGURATION:
+*
+*   #define GRAPHICS_API_OPENGL_11
+*   #define GRAPHICS_API_OPENGL_21
+*   #define GRAPHICS_API_OPENGL_33
+*   #define GRAPHICS_API_OPENGL_ES2
+*       Use selected OpenGL graphics backend, should be supported by platform
+*       Those preprocessor defines are only used on rlgl module, if OpenGL version is
+*       required by any other module, use rlGetVersion() to check it
+*
+*   #define RLGL_IMPLEMENTATION
+*       Generates the implementation of the library into the included file.
+*       If not defined, the library is in header only mode and can be included in other headers
+*       or source files without problems. But only ONE file should hold the implementation.
+*
+*   #define RLGL_STANDALONE
+*       Use rlgl as standalone library (no raylib dependency)
+*
+*   #define SUPPORT_GL_DETAILS_INFO
+*       Show OpenGL extensions and capabilities detailed logs on init
+*
+*   DEPENDENCIES:
+*       raymath     - 3D math functionality (Vector3, Matrix, Quaternion)
+*       GLAD        - OpenGL extensions loading (OpenGL 3.3 Core only)
+*
+*
+*   LICENSE: zlib/libpng
+*
+*   Copyright (c) 2014-2021 Ramon Santamaria (@raysan5)
+*
+*   This software is provided "as-is", without any express or implied warranty. In no event
+*   will the authors be held liable for any damages arising from the use of this software.
+*
+*   Permission is granted to anyone to use this software for any purpose, including commercial
+*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
+*
+*     1. The origin of this software must not be misrepresented; you must not claim that you
+*     wrote the original software. If you use this software in a product, an acknowledgment
+*     in the product documentation would be appreciated but is not required.
+*
+*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
+*     as being the original software.
+*
+*     3. This notice may not be removed or altered from any source distribution.
+*
+**********************************************************************************************}
+
 unit ray_rlgl;
 
 {$mode objfpc}{$H+}
