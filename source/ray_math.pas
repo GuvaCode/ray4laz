@@ -163,22 +163,35 @@ function  MatrixOrtho(aLeft, aRight, aBottom, aTop, aNear, aFar : Double): TMatr
 function  MatrixLookAt(aEye, aTarget, aUp : TVector3): TMatrix; cdecl; external cDllName;// Returns camera look-at matrix (view matrix)
 function  MatrixToFloatV(aMat : TMatrix): TFloat16; cdecl; external cDllName; // Returns float array of matrix data
 
-function  QuaternionIdentity(): TQuaternion; cdecl; external cDllName;
-function  QuaternionLength(aQ : TQuaternion): Single; cdecl; external cDllName;
-function  QuaternionNormalize(aQ : TQuaternion): TQuaternion; cdecl; external cDllName;
-function  QuaternionInvert(aQ : TQuaternion): TQuaternion; cdecl; external cDllName;
-function  QuaternionMultiply(aQ1, aQ2 : TQuaternion): TQuaternion; cdecl; external cDllName;
-function  QuaternionLerp(aQ1, aQ2 : TQuaternion; aAmount : Single): TQuaternion; cdecl; external cDllName;
-function  QuaternionNlerp(aQ1, aQ2 : TQuaternion; aAmount : Single): TQuaternion; cdecl; external cDllName;
-function  QuaternionSlerp(aQ1, aQ2 : TQuaternion; aAmount : Single): TQuaternion; cdecl; external cDllName;
-function  QuaternionFromVector3ToVector3(aFrom, aTo : TVector3): TQuaternion; cdecl; external cDllName;
-function  QuaternionFromMatrix(aMat : TMatrix): TQuaternion; cdecl; external cDllName;
-function  QuaternionToMatrix(aQ : TQuaternion): TMatrix; cdecl; external cDllName;
-function  QuaternionFromAxisAngle(aAxis : TVector3; aAngle : Single): TQuaternion; cdecl; external cDllName;
-procedure QuaternionToAxisAngle(aQ : TQuaternion; aOutAxis : PVector3; aOutAngle : PSingle); cdecl; external cDllName;
-function  QuaternionFromEuler(aRoll, aPitch, aYaw : Single): TQuaternion; cdecl; external cDllName;
-function  QuaternionToEuler(aQ : TQuaternion): TVector3; cdecl; external cDllName;
-function  QuaternionTransform(aQ : TQuaternion; aMat : TMatrix): TQuaternion; cdecl; external cDllName;
+//----------------------------------------------------------------------------------
+// Module Functions Definition - Quaternion math
+//----------------------------------------------------------------------------------
+
+function  QuaternionAdd(q1, q2: TQuaternion): TQuaternion; cdecl; external cDllName;// Add two quaternions
+function  QuaternionAddValue(q: TQuaternion ; aAdd: single): TQuaternion; cdecl; external cDllName;// Add quaternion and float value
+function  QuaternionSubtract(q1, q2: TQuaternion): TQuaternion; cdecl; external cDllName;// Subtract two quaternions
+function  QuaternionSubtractValue(q:TQuaternion; aSub:single): TQuaternion; cdecl; external cDllName;// Subtract quaternion and float value
+function  QuaternionIdentity(): TQuaternion; cdecl; external cDllName;// Returns identity quaternion
+function  QuaternionLength(aQ : TQuaternion): Single; cdecl; external cDllName;// Computes the length of a quaternion
+function  QuaternionNormalize(aQ : TQuaternion): TQuaternion; cdecl; external cDllName;// Normalize provided quaternion
+function  QuaternionInvert(aQ : TQuaternion): TQuaternion; cdecl; external cDllName;// Invert provided quaternion
+function  QuaternionMultiply(aQ1, aQ2 : TQuaternion): TQuaternion; cdecl; external cDllName;// Calculate two quaternion multiplication
+function  QuaternionScale(q:TQuaternion;mul:single): TQuaternion; cdecl; external cDllName;// Scale quaternion by float value
+function  QuaternionDivide( q1, q2: TQuaternion): TQuaternion; cdecl; external cDllName;// Divide two quaternions
+function  QuaternionLerp(aQ1, aQ2 : TQuaternion; aAmount : Single): TQuaternion; cdecl; external cDllName;// Calculate linear interpolation between two quaternions
+function  QuaternionNlerp(aQ1, aQ2 : TQuaternion; aAmount : Single): TQuaternion; cdecl; external cDllName;// Calculate slerp-optimized interpolation between two quaternions
+function  QuaternionSlerp(aQ1, aQ2 : TQuaternion; aAmount : Single): TQuaternion; cdecl; external cDllName;// Calculates spherical linear interpolation between two quaternions
+function  QuaternionFromVector3ToVector3(aFrom, aTo : TVector3): TQuaternion; cdecl; external cDllName;// Calculate quaternion based on the rotation from one vector to another
+function  QuaternionFromMatrix(aMat : TMatrix): TQuaternion; cdecl; external cDllName;// Returns a quaternion for a given rotation matrix
+function  QuaternionToMatrix(aQ : TQuaternion): TMatrix; cdecl; external cDllName;// Returns a matrix for a given quaternion
+function  QuaternionFromAxisAngle(aAxis : TVector3; aAngle : Single): TQuaternion; cdecl; external cDllName;// Returns rotation quaternion for an angle and axis
+procedure QuaternionToAxisAngle(aQ : TQuaternion; aOutAxis : PVector3; aOutAngle : PSingle); cdecl; external cDllName;// Returns the rotation angle and axis for a given quaternion
+function  QuaternionFromEuler(aRoll, aPitch, aYaw : Single): TQuaternion; cdecl; external cDllName;// Returns the quaternion equivalent to Euler angles
+function  QuaternionToEuler(aQ : TQuaternion): TVector3; cdecl; external cDllName;// Return the Euler angles equivalent to quaternion (roll, pitch, yaw)
+function  QuaternionTransform(aQ : TQuaternion; aMat : TMatrix): TQuaternion; cdecl; external cDllName;// Transform a quaternion given a transformation matrix
+
+// Projects a Vector3 from screen space into object space
+function Vector3Unproject(source:TVector3; projection:TMatrix; view:TMatrix):TVector3; cdecl; external cDllName;
 
 implementation
 
