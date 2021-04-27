@@ -815,6 +815,7 @@ function GetMonitorRefreshRate(monitor:longint):longint;cdecl;external cDllName;
 function GetWindowPosition:TVector2;cdecl;external cDllName; // Get window position XY on monitor
 function GetWindowScaleDPI:TVector2;cdecl;external cDllName; // Get window scale DPI factor
 function GetMonitorName(monitor:longint):Pchar;cdecl;external cDllName; // Get the human-readable, UTF-8 encoded name of the primary monitor
+
 procedure SetClipboardText(text:Pchar);cdecl;external cDllName; // Set clipboard text content
 function GetClipboardText:Pchar;cdecl;external cDllName; // Get clipboard text content
 
@@ -883,6 +884,7 @@ function GetRandomValue(min:longint; max:longint):longint;cdecl;external cDllNam
 procedure TakeScreenshot(fileName:Pchar);cdecl;external cDllName; // Takes a screenshot of current screen (filename extension defines format)
 procedure SetConfigFlags(flags:dword);cdecl;external cDllName; // Setup init configuration flags (view FLAGS)
 procedure TraceLog(logLevel:longint; text:Pchar; args:array of const);cdecl;external cDllName; // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)
+procedure TraceLog(logLevel:longint; text:Pchar); cdecl;external cDllName;
 procedure SetTraceLogLevel(logLevel:longint);cdecl;external cDllName; // Set the current threshold (minimum) log level
 function MemAlloc(size:longint):pointer;cdecl;external cDllName;   // Internal memory allocator
 function MemRealloc(ptr:pointer; size:longint):pointer;cdecl;external cDllName; // Internal memory reallocator
@@ -1200,13 +1202,11 @@ function TextCopy(dst:Pchar; src:Pchar):longint;cdecl;external cDllName; // Copy
 function TextIsEqual(text1:Pchar; text2:Pchar):boolean;cdecl;external cDllName; // Check if two text string are equal
 function TextLength(text:Pchar):dword;cdecl;external cDllName; // Get text length, checks for '\0' ending
 function TextFormat(text:Pchar; args: array of const):Pchar;cdecl;external cDllName; //// Text formatting with variables (sprintf style)
-//function TextFormat(text:Pchar):Pchar;cdecl;external cDllName; // Text formatting with variables (sprintf style)
-// чет запуталься нахрен
+function TextFormat(text:Pchar):Pchar;cdecl;external cDllName; // Text formatting with variables (sprintf style)
 function TextSubtext(text:Pchar; position:longint; length:longint):Pchar;cdecl;external cDllName; // Get a piece of a text string
 function TextReplace(text:Pchar; replace:Pchar; by:Pchar):Pchar;cdecl;external cDllName; // Replace text string (memory must be freed!)
 function TextInsert(text:Pchar; insert:Pchar; position:longint):Pchar;cdecl;external cDllName; // Insert text in a position (memory should be freed!)
 function TextJoin(textList:PPchar; count:longint; delimiter:Pchar):Pchar;cdecl;external cDllName; // Join text strings with delimiter
-{ TODO : проверить ppchar / ^PChar}
 function TextSplit(text:Pchar; delimiter:char; var count:longint):PPchar;cdecl;external cDllName; // Split text into multiple strings
 procedure TextAppend(text:Pchar; append:Pchar; var position:longint);cdecl;external cDllName; // Append text at specific position and move cursor!
 function TextFindIndex(text:Pchar; find:Pchar):longint;cdecl;external cDllName; // Find first text occurrence within a string
@@ -1257,6 +1257,7 @@ procedure UnloadModelKeepMeshes(model:TModel);cdecl;external cDllName; // Unload
 
 // TMesh loading/unloading functions
 procedure UploadMesh(var mesh:TMesh; dynamic_: boolean);cdecl;external cDllName; // Upload vertex data into GPU and provided VAO/VBO ids
+procedure UpdateMeshBuffer(mesh:TMesh; index:longint; data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName; // Update mesh vertex data in GPU for a specific buffer index
 procedure DrawMesh(mesh:TMesh; material:TMaterial; transform:TMatrix);cdecl;external cDllName; // Draw a 3d mesh with material and transform
 procedure DrawMeshInstanced(mesh:TMesh; material:TMaterial; var transforms:TMatrix; instances:longint);cdecl;external cDllName;  // Draw multiple mesh instances with material and different transforms
 procedure UnloadMesh(mesh:TMesh);cdecl;external cDllName; // Unload mesh data from CPU and GPU
