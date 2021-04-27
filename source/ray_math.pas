@@ -77,7 +77,7 @@ type
 function  Clamp(aValue, aMin, aMax : Single): Single; cdecl; external cDllName;   // Clamp float value
 function  Lerp(aStart, aEnd, aAmount : Single): Single; cdecl; external cDllName; // Calculate linear interpolation between two floats
 function  Normalize(aValue, aStart, aEnd: Single): Single; cdecl; external cDllName; // Normalize input value within input range
-function  Remap(aValue, aInputStart, aInputEnd, aOutputStart, aOutputEnd: Single); cdecl; external cDllName;// Remap input value within input range to output range
+function  Remap(aValue, aInputStart, aInputEnd, aOutputStart, aOutputEnd: Single): Single; cdecl; external cDllName;// Remap input value within input range to output range
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector2 math
@@ -108,31 +108,38 @@ function  Vector2MoveTowards(aV, aTarget:Tvector2; aMaxDistance: Single): TVecto
 // Module Functions Definition - Vector3 math
 //----------------------------------------------------------------------------------
 
-function  Vector3Zero(): TVector3; cdecl; external cDllName;
-function  Vector3One(): TVector3; cdecl; external cDllName;
-function  Vector3Add(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3Subtract(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3Multiply(aV : TVector3; aScalar : Single): TVector3; cdecl; external cDllName;
-function  Vector3MultiplyV(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3CrossProduct(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3Perpendicular(aV : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3Length(aV : TVector3): Single; cdecl; external cDllName;
-function  Vector3DotProduct(aV1, aV2 : TVector3): Single; cdecl; external cDllName;
-function  Vector3Distance(aV1, aV2 : TVector3): Single; cdecl; external cDllName;
-function  Vector3Scale(aV : TVector3; aScale : Single): TVector3; cdecl; external cDllName;
-function  Vector3Negate(aV : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3Divide(aV : TVector3; aDiv : Single): TVector3; cdecl; external cDllName;
-function  Vector3DivideV(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3Normalize(aV : TVector3): TVector3; cdecl; external cDllName;
-procedure Vector3OrthoNormalize(aV1, aV2 : PVector3); cdecl; external cDllName;
-function  Vector3Transform(aV : TVector3; aMat : TMatrix): TVector3; cdecl; external cDllName;
-function  Vector3RotateByQuaternion(aV : TVector3; aQ : TQuaternion): TVector3; cdecl; external cDllName;
-function  Vector3Lerp(aV1, aV2 : TVector3; aAmount : Single): TVector3; cdecl; external cDllName;
-function  Vector3Reflect(aV, aNormal : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3Min(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3Max(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3Barycenter(aP, aA, aB, aC : TVector3): TVector3; cdecl; external cDllName;
-function  Vector3ToFloatV(aV : TVector3): TFloat3; cdecl; external cDllName;
+function  Vector3Zero(): TVector3; cdecl; external cDllName;// Vector with components value 0.0
+function  Vector3One(): TVector3; cdecl; external cDllName;// Vector with components value 1.0
+function  Vector3Add(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;// Add two vectors
+function  Vector3AddValue(aV: Tvector3, aAdd: single): TVector3; cdecl; external cDllName; // Add vector and float value
+function  Vector3Subtract(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName; // Subtract two vectors
+function  Vector3SubtractValue(aV: TVector3, aSub:Single): Tvector3;  cdecl; external cDllName; // Subtract two vectors
+function  Vector3Scale(aV: TVector3, aScalar:Single): TVector3; cdecl; external cDllName;// Multiply vector by scalar
+function  Vector3Multiply(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;// Multiply vector by vector
+function  Vector3CrossProduct(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;// Calculate two vectors cross product
+function  Vector3Perpendicular(aV : TVector3): TVector3; cdecl; external cDllName;// Calculate one vector perpendicular vector
+function  Vector3Length(aV : TVector3): Single; cdecl; external cDllName;// Calculate vector length
+function  Vector3LengthSqr(aV: TVector3): Single; cdecl; external cDllName;// Calculate vector square length
+function  Vector3DotProduct(aV1, aV2 : TVector3): Single; cdecl; external cDllName;// Calculate two vectors dot product
+function  Vector3Distance(aV1, aV2 : TVector3): Single; cdecl; external cDllName;// Calculate distance between two vectors
+function  Vector3Negate(aV : TVector3): TVector3; cdecl; external cDllName;// Negate provided vector (invert direction)
+function  Vector3Divide(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;// Divide vector by vector
+function  Vector3Normalize(aV : TVector3): TVector3; cdecl; external cDllName; // Normalize provided vector
+procedure Vector3OrthoNormalize(aV1, aV2 : PVector3); cdecl; external cDllName;// Orthonormalize provided vectors
+function  Vector3Transform(aV : TVector3; aMat : TMatrix): TVector3; cdecl; external cDllName;// Transforms a Vector3 by a given Matrix
+function  Vector3RotateByQuaternion(aV : TVector3; aQ : TQuaternion): TVector3; cdecl; external cDllName;// Transform a vector by quaternion rotation
+function  Vector3Lerp(aV1, aV2 : TVector3; aAmount : Single): TVector3; cdecl; external cDllName;// Calculate linear interpolation between two vectors
+function  Vector3Reflect(aV, aNormal : TVector3): TVector3; cdecl; external cDllName;// Calculate reflected vector to normal
+function  Vector3Min(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;// Return min value for each pair of components
+function  Vector3Max(aV1, aV2 : TVector3): TVector3; cdecl; external cDllName;// Return max value for each pair of components
+function  Vector3Barycenter(aP, aA, aB, aC : TVector3): TVector3; cdecl; external cDllName;// Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
+function  Vector3ToFloatV(aV : TVector3): TFloat3; cdecl; external cDllName;// Returns Vector3 as float array
+
+//----------------------------------------------------------------------------------
+// Module Functions Definition - Matrix math
+//----------------------------------------------------------------------------------
+
+
 function  MatrixDeterminant(amat : TMatrix) : Single; cdecl; external cDllName;
 function  MatrixTrace(mat : TMatrix): Single; cdecl; external cDllName;
 function  MatrixTranspose(amat : TMatrix): TMatrix; cdecl; external cDllName;
