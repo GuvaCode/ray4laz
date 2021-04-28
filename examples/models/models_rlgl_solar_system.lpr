@@ -17,9 +17,6 @@ program models_rlgl_solar_system;
 
 uses cmem, ray_header, ray_rlgl;
 
-
-
-
 const
  screenWidth = 800;
  screenHeight = 450;
@@ -96,12 +93,6 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
  camera.projection := CAMERA_PERSPECTIVE;
 
  SetCameraMode(camera, CAMERA_FREE);
-
- rotationSpeed := 0.2;         // General system rotation speed
- earthRotation := 0.0;         // Rotation of earth around itself (days) in degrees
- earthOrbitRotation := 0.0;    // Rotation of earth around the Sun (years) in degrees
- moonRotation := 0.0;          // Rotation of moon around itself
- moonOrbitRotation := 0.0;     // Rotation of moon around earth in degrees
 
 SetTargetFPS(60);
 
