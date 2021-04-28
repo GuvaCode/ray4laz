@@ -65,6 +65,10 @@ interface
 
 uses ray_header;
 
+const
+  RL_TRIANGLES=4;      // GL_TRIANGLES
+
+
 type
 PVertexBuffer = ^TVertexBuffer;
 TVertexBuffer = record
@@ -106,6 +110,7 @@ TRenderBatch = record
 // Functions Declaration - Matrix operations
 //------------------------------------------------------------------------------------
 procedure rlMatrixMode(aMode : Integer); cdecl; external cDllName;// Choose the current matrix to be transformed
+procedure rlPushMatrix; cdecl; external cDllName;// Choose the current matrix to be transformed
 procedure rlPopMatrix;cdecl;external cDllName;// Push the current matrix to stack
 procedure rlLoadIdentity;cdecl;external cDllName;// Reset current matrix to identity matrix
 procedure rlTranslatef(x:single; y:single; z:single);cdecl;external cDllName;
