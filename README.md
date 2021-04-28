@@ -16,7 +16,7 @@ Header     | Supported          |
 ---------  | ------------------ |
 raylib.h   | :heavy_check_mark: |
 raymath.h  | :heavy_check_mark: |
-rlgl.h     | ❓ no tested       |
+rlgl.h     | :heavy_check_mark: |
 
 **Platforms**
 OS         | Supported          |
