@@ -64,9 +64,76 @@ unit ray_rlgl;
 interface
 
 uses ray_header;
-
+(*
 const
-  RL_TRIANGLES=4;      // GL_TRIANGLES
+{$ifndef DEFAULT_BATCH_BUFFER_ELEMENTS}
+{$ifdef GRAPHICS_API_OPENGL_11 or GRAPHICS_API_OPENGL_33}
+    DEFAULT_BATCH_BUFFER_ELEMENTS = 8192;
+{$endif}
+
+{$IFDEF GRAPHICS_API_OPENGL_ES2}
+   DEFAULT_BATCH_BUFFER_ELEMENTS = 2048;
+{$endif}
+
+{$endif}
+
+{$ifndef DEFAULT_BATCH_BUFFERS}
+    DEFAULT_BATCH_BUFFERS = 1;
+{$endif}
+{$ifndef DEFAULT_BATCH_DRAWCALLS}
+  DEFAULT_BATCH_DRAWCALLS = 256;
+{$endif}
+{$ifndef MAX_BATCH_ACTIVE_TEXTURES}
+    MAX_BATCH_ACTIVE_TEXTURES = 4;
+{$endif}
+{$ifndef MAX_MATRIX_STACK_SIZE}
+    MAX_MATRIX_STACK_SIZE = 32;
+{$endif}
+
+{$ifndef MAX_MESH_VERTEX_BUFFERS}
+    MAX_MESH_VERTEX_BUFFERS = 7;
+{$endif}
+
+{$ifndef MAX_SHADER_LOCATIONS}
+    MAX_SHADER_LOCATIONS = 32;
+{$endif}
+{$ifndef MAX_MATERIAL_MAPS}
+    MAX_MATERIAL_MAPS = 12;
+{$endif}
+
+{$ifndef RL_CULL_DISTANCE_NEAR}
+    RL_CULL_DISTANCE_NEAR = 0.01;
+{$endif}
+
+{$ifndef RL_CULL_DISTANCE_FAR}
+    RL_CULL_DISTANCE_FAR = 1000.0;
+{$endif}
+*)
+
+  const
+    RL_TEXTURE_WRAP_S = $2802;
+    RL_TEXTURE_WRAP_T = $2803;
+    RL_TEXTURE_MAG_FILTER = $2800;
+    RL_TEXTURE_MIN_FILTER = $2801;
+    RL_TEXTURE_FILTER_NEAREST = $2600;
+    RL_TEXTURE_FILTER_LINEAR = $2601;
+    RL_TEXTURE_FILTER_MIP_NEAREST = $2700;
+    RL_TEXTURE_FILTER_NEAREST_MIP_LINEAR = $2702;
+    RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST = $2701;
+    RL_TEXTURE_FILTER_MIP_LINEAR = $2703;
+    RL_TEXTURE_FILTER_ANISOTROPIC = $3000;
+    RL_TEXTURE_WRAP_REPEAT = $2901;
+    RL_TEXTURE_WRAP_CLAMP = $812F;
+    RL_TEXTURE_WRAP_MIRROR_REPEAT = $8370;
+    RL_TEXTURE_WRAP_MIRROR_CLAMP = $8742;
+    RL_MODELVIEW = $1700;
+    RL_PROJECTION = $1701;
+    RL_TEXTURE = $1702;
+    RL_LINES = $0001;
+    RL_TRIANGLES = $0004;
+    RL_QUADS = $0007;
+    RL_UNSIGNED_BYTE = $1401;
+    RL_FLOAT = $1406;
 
 
 type
@@ -79,11 +146,12 @@ TVertexBuffer = record
     vertices : Psingle;
     texcoords : Psingle;
     colors : Pbyte;
+    //{$ifdef GRAPHICS_API_OPENGL_11 or GRAPHICS_API_OPENGL_33}
     indices : Pdword;
-
-  //  if defined(GRAPHICS_API_OPENGL_ES2)
-  //  indices : Pword;
-  //  todo defined seting
+    //{$endif}
+    //{$ifdef GRAPHICS_API_OPENGL_ES2}
+    //indices : Pword;
+    //{$endif}
     vaoId : dword;
     vboId : array[0..3] of dword;
   end;
