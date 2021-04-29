@@ -62,14 +62,18 @@ begin
     LineEnding +
     '{$mode objfpc}{$H+}' + LineEnding +
     LineEnding +
-    'uses ' +'cmem, ray_header;' + LineEnding +  LineEnding +
+    'uses ' +'cmem,' + LineEnding +
+    '{uncomment if necessary}' + LineEnding +
+    '//ray_math, ' + LineEnding +
+    '//ray_rlgl, ' + LineEnding +
+    'ray_header; ' + LineEnding + LineEnding +
     'const' +  LineEnding +
     ' screenWidth = 800;'+ LineEnding +
     ' screenHeight = 450;'+ LineEnding  + LineEnding +
-    'begin' + LineEnding +
-    '{$IFDEF DARWIN}' + LineEnding +
-    'SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,exZeroDivide]);' + LineEnding +
-    '{$IFEND}' + LineEnding + LineEnding +
+    'begin' + LineEnding + LineEnding +
+   // '{$IFDEF DARWIN}' + LineEnding +
+   // 'SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,exZeroDivide]);' + LineEnding +
+   // '{$IFEND}' + LineEnding + LineEnding +
     ' InitWindow(screenWidth, screenHeight, ''raylib pascal - basic window'');' + LineEnding +
     ' SetTargetFPS(60);' + LineEnding + LineEnding +
     ' while not WindowShouldClose() do ' + LineEnding +
@@ -84,7 +88,7 @@ begin
      'end.' + LineEnding + LineEnding;
 
   AProject.MainFile.SetSourceText(Source);
-  AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)' + PathDelim+ 'ray4laz_dsgn';
+  AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)';// + PathDelim+ 'ray4laz_dsgn';
   AProject.LazCompilerOptions.TargetFilename:= 'game';
   AProject.AddPackageDependency('ray4laz');
 end;

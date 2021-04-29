@@ -64,7 +64,7 @@ end;
   'Vector2Create'     : insertXY('Vector2Create()');
   'Vector2Set'        : insertXY('Vector2Set()');
   'Vector3Create'     : insertXY('Vector3Create()');
-  'Vector3Set'        : insertXY('Vector2Set()');
+  'Vector3Set'        : insertXY('Vector3Set()');
   'ColorCreate'       : insertXY('ColorCreate()');
   'TColorSet'         : insertXY('TColorSet()');
   'RectangleCreate'   : insertXY('RectangleCreate()');
