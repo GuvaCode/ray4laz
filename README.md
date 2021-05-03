@@ -42,8 +42,8 @@ raylib binary releases for Windows, Linux and macOS are available at the [Github
  - [Working on Raspberry Pi](https://github.com/raysan5/raylib/wiki/Working-on-Raspberry-Pi)
  - [Working for Android](https://github.com/raysan5/raylib/wiki/Working-for-Android)
  - [Working for Web (HTML5)](https://github.com/raysan5/raylib/wiki/Working-for-Web-(HTML5))
- - [Working for UWP (Universal Window Platform)](https://github.com/raysan5/raylib/wiki/Working-for-UWP)
  - [Working anywhere with CMake](https://github.com/raysan5/raylib/wiki/Working-with-CMake)
+ - [CMake Build Options](https://github.com/raysan5/raylib/wiki/CMake-Build-Options)
 
 
 
