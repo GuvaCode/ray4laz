@@ -21,7 +21,7 @@ begin
 	InitWindow(screenWidth, screenHeight, 'Animation Test');	
 
 	cam.position := Vector3Create(15.0, 15.0, 15.0);
-	cam.target := Vector3Zero();
+	cam.target := Vector3Create(0.0,0.0,0.0);
 	cam.up := Vector3Create(0.0, 1.0, 0.0);
 	cam.fovy := 45.0;
 	cam.projection := CAMERA_PERSPECTIVE;
@@ -30,7 +30,7 @@ begin
 	texture := LoadTexture('resources/guy/guytex.png');
 	SetMaterialTexture(model.materials[0], MATERIAL_MAP_DIFFUSE, texture);
 
-	position := Vector3Zero();
+	position := Vector3Create(0.0,0.0,0.0);
 
 	// Load Animation Data
 	animsCount := 0;
