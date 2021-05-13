@@ -60,7 +60,7 @@ begin
     sar y,7
   end;
  Y := CenterY + YCenter + Y;
-  if (X < screenWidth ) and ( Y < screenHeight ) then  DrawPixel(X,Y,BLUE);
+  if (X < screenWidth ) and ( Y < screenHeight ) then DrawPixel(X,Y,RED);
 end;
 
 
