@@ -31,14 +31,14 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
     camera.fovy := 45.0;                              // Camera field-of-view Y
     camera.projection := CAMERA_PERSPECTIVE;           // Camera mode type
 
-    model := LoadModel('resources/test/Burtsa.glb'); // Load the animated model mesh and basic data
+    model := LoadModel('resources/gltf/rigged_figure.glb'); // Load the animated model mesh and basic data
     position:=Vector3Create(0.0,0.0,0.0);     // Set model position
 
 
      // Load animation data
     animsCount := 0;
     //ModelAnimation
-    anims := LoadModelAnimations('resources/test/Burtsa.gltf', animsCount);
+    anims := LoadModelAnimations('resources/gltf/rigged_figure.glb', animsCount);
     animFrameCounter := 0;
     animationDirection := 1;
     
