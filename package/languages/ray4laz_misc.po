@@ -9,3 +9,11 @@ msgstr ""
 msgid "ColorCreate from dialog"
 msgstr ""
 
+#: ray4laz_misc.rsmnumisc
+msgid "Raylib Misc ..."
+msgstr ""
+
+#: ray4laz_misc.rsraywiki
+msgid "Raylib Wiki"
+msgstr ""
+

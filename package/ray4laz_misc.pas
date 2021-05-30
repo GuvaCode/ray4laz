@@ -25,8 +25,10 @@ procedure Register;
 
 
  resourcestring
+   rsMnuMisc        = 'Raylib Misc ...';
    rsHelpCheat      = 'Cheatsheet ...';
    rsInsertClr      = 'ColorCreate from dialog';
+   rsRayWiki        = 'Raylib Wiki';
 
 implementation
 
@@ -52,14 +54,17 @@ end;
 
 procedure RayFunction(Sender: TObject);
 var  Editor: TSourceEditorInterface;
-procedure insertXY(Text:String);
-begin
- Editor.CutToClipboard;
- Editor.ReplaceText(editor.CursorTextXY,editor.CursorTextXY,Text);
-end;
+
+  procedure insertXY(Text:String);
+   begin
+    Editor.CutToClipboard;
+    Editor.ReplaceText(editor.CursorTextXY,editor.CursorTextXY,Text);
+   end;
+
  begin
   Editor:=SourceEditorManagerIntf.ActiveEditor;
   if Editor=nil then exit;
+
   case (sender as TIDEMenuItem).Name of
   'Vector2Create'     : insertXY('Vector2Create()');
   'Vector2Set'        : insertXY('Vector2Set()');
@@ -72,7 +77,9 @@ end;
   'TCamera3DCreate'   : insertXY('TCamera3DCreate()');
   'TCamera3DSet'      : insertXY('TCamera3DSet()');
   'ShowCheatsheet'    : OpenURL('https://www.raylib.com/cheatsheet/cheatsheet.html');
+  'ShowWiki'          : OpenURL('https://github.com/raysan5/raylib/wiki');
   end;
+
  end;
 
 procedure ShowColorDialog(Sender: TObject);
@@ -86,21 +93,17 @@ begin
   ColorDialog:=TColorDialog.Create(nil);
   if ColorDialog.Execute then
   begin
-     //function ColorCreate(aR: byte; aG: byte; aB: byte; aA: byte): TColor;
-     //procedure TColorSet(aColor: PColor; aR: byte; aG: byte; aB: byte; aA: byte);
-
      c := ColorToRGB(ColorDialog.Color);
      Txt:=Format('ColorCreate(%d,%d,%d,255)', [Red(c), Green(c), Blue(c)]);
      Editor.CutToClipboard;
      Editor.ReplaceText(editor.CursorTextXY,editor.CursorTextXY,Txt);
-
      end;
 end;
 
 procedure Register;
 begin
-  SectionRay:=RegisterIDEMenuSection(SrcEditMenuSectionFirstStatic,'RayTool');
- SectionRayMenu:= RegisterIDESubMenu(SectionRay,'RayTool','Raylib Misc ...',nil ,nil,'cc_class');
+ SectionRay:=RegisterIDEMenuSection(SrcEditMenuSectionFirstStatic,'RayTool');
+ SectionRayMenu:= RegisterIDESubMenu(SectionRay,'RayTool',rsMnuMisc,nil ,nil,'cc_class');
 
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector2Create', 'Vector2Create', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector3Create', 'Vector3Create', nil, @RayFunction,nil, 'cc_procedure');
@@ -118,6 +121,7 @@ begin
  RegisterIDEMenuCommand(SectionRayMenu, 'InsertColor', rsInsertClr , nil, @ShowColorDialog, nil, 'tcolordialog');
  RegisterIDEMenuCommand(SectionRayMenu, 'Spl1','-',nil,nil);
  RegisterIDEMenuCommand(SectionRayMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
+ RegisterIDEMenuCommand(SectionRayMenu, 'ShowWiki', rsRayWiki , nil, @RayFunction, nil, 'menu_information');
 
  SectionRay.AddHandlerOnShow(@EventCode.DoSomething,true);
 end;
