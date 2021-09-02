@@ -105,6 +105,7 @@ type
          m15 : single;
        end;
 
+     PPRectangle = ^PRectangle;
      PRectangle = ^TRectangle;
      TRectangle = record
          x : single;
@@ -1191,24 +1192,24 @@ function GetPixelDataSize(width:longint; height:longint; format:longint):longint
 //------------------------------------------------------------------------------------
 // TFont Loading and Text Drawing Functions (Module: text)
 //------------------------------------------------------------------------------------
-// TFont loading/unloading functions
-function GetFontDefault:TFont;cdecl;external cDllName; // Get the default Font
-function LoadFont(fileName:Pchar):TFont;cdecl;external cDllName; // Load font from file into GPU memory (VRAM)
-function LoadFontEx(fileName:Pchar; fontSize:longint; var fontChars:longint; charsCount:longint): TFont;cdecl;external cDllName; // Load font from file with extended parameters
-function LoadFontFromImage(image:TImage; key:TColor; firstChar:longint):TFont;cdecl;external cDllName; // Load font from Image (XNA style)
-function LoadFontFromMemory(fileType:Pchar; var fileData:byte; dataSize:longint; fontSize:longint; var fontChars:longint; charsCount:longint):TFont;cdecl;external cDllName; // Load font from memory buffer, fileType refers to extension: i.e. "ttf"
-function LoadFontData(var fileData:byte; dataSize:longint; fontSize:longint; var fontChars:longint; charsCount:longint; _type:longint): PCharInfo;cdecl;external cDllName; // Load font data for further use
-function GenImageFontAtlas(chars:PCharInfo; var recs:PRectangle; charsCount:longint; fontSize:longint; padding:longint; packMethod:longint):TImage;cdecl;external cDllName; // Generate image font atlas using chars info
-procedure UnloadFontData(chars:PCharInfo; charsCount:longint);cdecl;external cDllName; // Unload font chars info data (RAM)
-procedure UnloadFont(font:TFont);cdecl;external cDllName; // Unload Font from GPU memory (VRAM)
 
-// aText drawing functions
-procedure DrawFPS(posX:longint; posY:longint);cdecl;external cDllName; // Draw current FPS
-procedure DrawText(text:Pchar; posX:longint; posY:longint; fontSize:longint; color:TColor);cdecl;external cDllName; // Draw text (using default font)
-procedure DrawTextEx(font:TFont; text:Pchar; position:TVector2; fontSize:single; spacing:single; tint:TColor);cdecl;external cDllName; // Draw text using font and additional parameters
-procedure DrawTextRec(font:TFont; text:Pchar; rec:TRectangle; fontSize:single; spacing:single; wordWrap:boolean; tint:TColor);cdecl;external cDllName; // Draw text using font inside rectangle limits
-procedure DrawTextRecEx(font:TFont; text:Pchar; rec:TRectangle; fontSize:single; spacing:single; wordWrap:boolean; tint:TColor; selectStart:longint; selectLength:longint; selectTint:TColor; selectBackTint:TColor);cdecl;external cDllName; // Draw text using font inside rectangle limits with support for text selection
-procedure DrawTextCodepoint(font:TFont; codepoint:longint; position:TVector2; fontSize:single; tint:TColor);cdecl;external cDllName; // Draw one character (codepoint)
+(* Font loading/unloading functions *)
+function GetFontDefault:TFont;cdecl;external cDllName;//Get the default Font
+function LoadFont(fileName:Pchar):TFont;cdecl;external cDllName;//Load font from file into GPU memory (VRAM)
+function LoadFontEx(fileName:Pchar; fontSize:longint; fontChars:Plongint; charsCount:longint):TFont;cdecl;external cDllName;//Load font from file with extended parameters
+function LoadFontFromImage(image:TImage; key:TColor; firstChar:longint):TFont;cdecl;external cDllName;//Load font from Image (XNA style)
+function LoadFontFromMemory(fileType:Pchar; fileData:Pbyte; dataSize:longint; fontSize:longint; fontChars:Plongint; charsCount:longint):TFont;cdecl;external cDllName;//Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
+function LoadFontData(fileData:Pbyte; dataSize:longint; fontSize:longint; fontChars:Plongint; charsCount:longint; _type:longint):PGlyphInfo;cdecl;external cDllName;//Load font data for further use
+function GenImageFontAtlas(chars:PGlyphInfo; recs:PPRectangle; charsCount:longint; fontSize:longint; padding:longint; packMethod:longint):TImage;cdecl;external cDllName;//Generate image font atlas using chars info
+procedure UnloadFontData(chars:PGlyphInfo; charsCount:longint);cdecl;external cDllName;//Unload font chars info data (RAM)
+procedure UnloadFont(font:TFont);cdecl;external cDllName;//Unload Font from GPU memory (VRAM)
+
+(* Text drawing functions *)
+procedure DrawFPS(posX:longint; posY:longint);cdecl;external cDllName;//Draw current FPS
+procedure DrawText(text:Pchar; posX:longint; posY:longint; fontSize:longint; color:TColor);cdecl;external cDllName;//Draw text (using default font)
+procedure DrawTextEx(font:TFont; text:Pchar; position:TVector2; fontSize:single; spacing:single; tint:TColor);cdecl;external cDllName;//Draw text using font and additional parameters
+procedure DrawTextPro(font:TFont; text:Pchar; position:TVector2; origin:TVector2; rotation:single; fontSize:single; spacing:single; tint:TColor);cdecl;external cDllName;//Draw text using Font and pro parameters (rotation)
+procedure DrawTextCodepoint(font:TFont; codepoint:longint; position:TVector2; fontSize:single; tint:TColor);cdecl;external cDllName;//Draw one character (codepoint)
 
 (* Text font info functions *)
 function MeasureText(text:Pchar; fontSize:longint):longint;cdecl;external cDllName;//Measure string width for default font
