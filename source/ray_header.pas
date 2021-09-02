@@ -796,158 +796,164 @@ type
 // Window and Graphics Device Functions (Module: core)
 //------------------------------------------------------------------------------------
 
-// Window-related functions
+(* Window-related function *)
+procedure InitWindow(width:longint; height:longint; title:Pchar);cdecl;external cDllName;//Initialize window and OpenGL context
+function WindowShouldClose:boolean;cdecl;external cDllName;//Check if KEY_ESCAPE pressed or Close icon pressed
+procedure CloseWindow;cdecl;external cDllName;//Close window and unload OpenGL context
+function IsWindowReady:boolean;cdecl;external cDllName;//Check if window has been initialized successfully
+function IsWindowFullscreen:boolean;cdecl;external cDllName;//Check if window is currently fullscreen
+function IsWindowHidden:boolean;cdecl;external cDllName;//Check if window is currently hidden (only PLATFORM_DESKTOP)
+function IsWindowMinimized:boolean;cdecl;external cDllName;//Check if window is currently minimized (only PLATFORM_DESKTOP)
+function IsWindowMaximized:boolean;cdecl;external cDllName;//Check if window is currently maximized (only PLATFORM_DESKTOP)
+function IsWindowFocused:boolean;cdecl;external cDllName;//Check if window is currently focused (only PLATFORM_DESKTOP)
+function IsWindowResized:boolean;cdecl;external cDllName;//Check if window has been resized last frame
+function IsWindowState(flag:dword):boolean;cdecl;external cDllName;//Check if one specific window flag is enabled
+procedure SetWindowState(flags:dword);cdecl;external cDllName;//Set window configuration state using flags
+procedure ClearWindowState(flags:dword);cdecl;external cDllName;//Clear window configuration state flags
+procedure ToggleFullscreen;cdecl;external cDllName;//Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+procedure MaximizeWindow;cdecl;external cDllName;//Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
+procedure MinimizeWindow;cdecl;external cDllName;//Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
+procedure RestoreWindow;cdecl;external cDllName;//Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
+procedure SetWindowIcon(image:TImage);cdecl;external cDllName;//Set icon for window (only PLATFORM_DESKTOP)
+procedure SetWindowTitle(title:Pchar);cdecl;external cDllName;//Set title for window (only PLATFORM_DESKTOP)
+procedure SetWindowPosition(x:longint; y:longint);cdecl;external cDllName;//Set window position on screen (only PLATFORM_DESKTOP)
+procedure SetWindowMonitor(monitor:longint);cdecl;external cDllName;//Set monitor for the current window (fullscreen mode)
+procedure SetWindowMinSize(width:longint; height:longint);cdecl;external cDllName;//Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+procedure SetWindowSize(width:longint; height:longint);cdecl;external cDllName;//Set window dimensions
+function GetWindowHandle:pointer;cdecl;external cDllName;//Get native window handle
+function GetScreenWidth:longint;cdecl;external cDllName;//Get current screen width
+function GetScreenHeight:longint;cdecl;external cDllName;//Get current screen height
+function GetMonitorCount:longint;cdecl;external cDllName;//Get number of connected monitors
+function GetCurrentMonitor:longint;cdecl;external cDllName;//Get current connected monitor
+function GetMonitorPosition(monitor:longint):TVector2;cdecl;external cDllName;//Get specified monitor position
+function GetMonitorWidth(monitor:longint):longint;cdecl;external cDllName;//Get specified monitor width (max available by monitor)
+function GetMonitorHeight(monitor:longint):longint;cdecl;external cDllName;//Get specified monitor height (max available by monitor)
+function GetMonitorPhysicalWidth(monitor:longint):longint;cdecl;external cDllName;//Get specified monitor physical width in millimetres
+function GetMonitorPhysicalHeight(monitor:longint):longint;cdecl;external cDllName;//Get specified monitor physical height in millimetres
+function GetMonitorRefreshRate(monitor:longint):longint;cdecl;external cDllName;//Get specified monitor refresh rate
+function GetWindowPosition:TVector2;cdecl;external cDllName;//Get window position XY on monitor
+function GetWindowScaleDPI:TVector2;cdecl;external cDllName;//Get window scale DPI factor
+function GetMonitorName(monitor:longint):Pchar;cdecl;external cDllName;//Get the human-readable, UTF-8 encoded name of the primary monitor
 
-procedure InitWindow(aWidth: integer; aHeight: integer; aTitle: PAnsiChar);cdecl;external cDllName; // Initialize window and OpenGL context
-function WindowShouldClose:boolean;cdecl;external cDllName; // Check if KEY_ESCAPE pressed or Close icon pressed
-procedure CloseWindow;cdecl;external cDllName; // Close window and unload OpenGL context
-function IsWindowReady:boolean;cdecl;external cDllName; // Check if window has been initialized successfully                                              // Check if window has been initialized successfully
-function IsWindowFullscreen:boolean;cdecl;external cDllName; // Check if window is currently fullscreen
-function IsWindowHidden:boolean;cdecl;external cDllName; // Check if window is currently hidden (only PLATFORM_DESKTOP)
-function IsWindowMinimized:boolean;cdecl;external cDllName; // Check if window is currently minimized (only PLATFORM_DESKTOP)
-function IsWindowMaximized:boolean;cdecl;external cDllName; // Check if window is currently maximized (only PLATFORM_DESKTOP)
-function IsWindowFocused:boolean;cdecl;external cDllName; // Check if window is currently focused (only PLATFORM_DESKTOP)
-function IsWindowResized:boolean;cdecl;external cDllName; // Check if window has been resized last frame
-function IsWindowState(flag:dword):boolean;cdecl;external cDllName; // Check if one specific window flag is enabled
-procedure SetWindowState(flags:dword);cdecl;external cDllName; // Set window configuration state using flags
-procedure ClearWindowState(flags:dword);cdecl;external cDllName; // Clear window configuration state flags
-procedure ToggleFullscreen;cdecl;external cDllName; // Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
-procedure MaximizeWindow;cdecl;external cDllName; // Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
-procedure MinimizeWindow;cdecl;external cDllName; // Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
-procedure RestoreWindow;cdecl;external cDllName; // Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
-procedure SetWindowIcon(image:TImage);cdecl;external cDllName; // Set icon for window (only PLATFORM_DESKTOP)
-procedure SetWindowTitle(title:Pchar);cdecl;external cDllName; // Set title for window (only PLATFORM_DESKTOP)
-procedure SetWindowPosition(x:longint; y:longint);cdecl;external cDllName; // Set window position on screen (only PLATFORM_DESKTOP)
-procedure SetWindowMonitor(monitor:longint);cdecl;external cDllName; // Set monitor for the current window (fullscreen mode)
-procedure SetWindowMinSize(width:longint; height:longint);cdecl;external cDllName; // Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
-procedure SetWindowSize(width:longint; height:longint);cdecl;external cDllName; // Set window dimensions
-function GetWindowHandle:pointer;cdecl;external cDllName; // Get native window handle
-function GetScreenWidth:longint;cdecl;external cDllName;  // Get current screen width
-function GetScreenHeight:longint;cdecl;external cDllName; // Get current screen height
-function GetMonitorCount:longint;cdecl;external cDllName; // Get number of connected monitors
-function GetCurrentMonitor:longint;cdecl;external cDllName;// Get current connected monitor
-function GetMonitorPosition(aMonitor:longint):TVector2;cdecl;external cDllName; // Get specified monitor position
-function GetMonitorWidth(monitor:longint):longint;cdecl;external cDllName; // Get specified monitor width (max available by monitor)
-function GetMonitorHeight(monitor:longint):longint;cdecl;external cDllName; // Get specified monitor height (max available by monitor)
-function GetMonitorPhysicalWidth(monitor:longint):longint;cdecl;external cDllName; // Get specified monitor physical width in millimetres
-function GetMonitorPhysicalHeight(monitor:longint):longint;cdecl;external cDllName; // Get specified monitor physical height in millimetres
-function GetMonitorRefreshRate(monitor:longint):longint;cdecl;external cDllName; // Get specified monitor refresh rate
-function GetWindowPosition:TVector2;cdecl;external cDllName; // Get window position XY on monitor
-function GetWindowScaleDPI:TVector2;cdecl;external cDllName; // Get window scale DPI factor
-function GetMonitorName(monitor:longint):Pchar;cdecl;external cDllName; // Get the human-readable, UTF-8 encoded name of the primary monitor
+procedure SetClipboardText(text:Pchar);cdecl;external cDllName;//Set clipboard text content
+function GetClipboardText:Pchar;cdecl;external cDllName;//Get clipboard text content
 
-procedure SetClipboardText(text:Pchar);cdecl;external cDllName; // Set clipboard text content
-function GetClipboardText:Pchar;cdecl;external cDllName; // Get clipboard text content
+(* Custom frame control functions *)
+// NOTE: Those functions are intended for advance users that want full control over the frame processing
+// By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timming + PollInputEvents()
+// To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
+procedure SwapScreenBuffer;cdecl;external cDllName;//Swap back buffer with front buffer (screen drawing)
+procedure PollInputEvents;cdecl;external cDllName;//Register all input events
+procedure WaitTime(ms:single);cdecl;external cDllName;//Wait for some milliseconds (halt program execution)
 
-// Cursor-related functions
-procedure ShowCursor;cdecl;external cDllName; // Shows cursor
-procedure HideCursor;cdecl;external cDllName; // Hides cursor
-function IsCursorHidden:boolean;cdecl;external cDllName; // Check if cursor is not visible
-procedure EnableCursor;cdecl;external cDllName; // Enables cursor (unlock cursor)
-procedure DisableCursor;cdecl;external cDllName; // Disables cursor (lock cursor)
-function IsCursorOnScreen:boolean;cdecl;external cDllName; // Check if cursor is on the current screen.
+(* Cursor-related functions *)
+procedure ShowCursor;cdecl;external cDllName;//Shows cursor
+procedure HideCursor;cdecl;external cDllName;//Hides cursor
+function IsCursorHidden:boolean;cdecl;external cDllName;//Check if cursor is not visible
+procedure EnableCursor;cdecl;external cDllName;//Enables cursor (unlock cursor)
+procedure DisableCursor;cdecl;external cDllName;//Disables cursor (lock cursor)
+function IsCursorOnScreen:boolean;cdecl;external cDllName;//Check if cursor is on the current screen.
 
-// Drawing-related functions
-procedure ClearBackground(color:TColor);cdecl;external cDllName; // Set background color (framebuffer clear color)
-procedure BeginDrawing;cdecl;external cDllName; // Setup canvas (framebuffer) to start drawing
-procedure EndDrawing;cdecl;external cDllName; // End canvas drawing and swap buffers (double buffering)
-procedure BeginMode2D(camera:TCamera2D);cdecl;external cDllName; // Initialize 2D mode with custom camera (2D)
-procedure EndMode2D;cdecl;external cDllName; // Ends 2D mode with custom camera
-procedure BeginMode3D(camera:TCamera3D);cdecl;external cDllName; // Initializes 3D mode with custom camera (3D)
-procedure EndMode3D;cdecl;external cDllName; // Ends 3D mode and returns to default 2D orthographic mode
-procedure BeginTextureMode(target:TRenderTexture2D);cdecl;external cDllName; // Initializes render texture for drawing
-procedure EndTextureMode;cdecl;external cDllName; // Ends drawing to render texture
-procedure BeginShaderMode(shader:TShader);cdecl;external cDllName;// Begin custom shader drawing
-procedure EndShaderMode;cdecl;external cDllName;// End custom shader drawing (use default shader)
-procedure BeginBlendMode(mode: longint);cdecl;external cDllName;// Begin blending mode (alpha, additive, multiplied)
-procedure EndBlendMode;cdecl;external cDllName;// End blending mode (reset to default: alpha blending)
-procedure BeginScissorMode(x:longint; y:longint; width:longint; height:longint);cdecl;external cDllName; // Begin scissor mode (define screen area for following drawing)
-procedure EndScissorMode;cdecl;external cDllName; // End scissor mode
+(* Drawing-related functions *)
+procedure ClearBackground(color:TColor);cdecl;external cDllName;//Set background color (framebuffer clear color)
+procedure BeginDrawing;cdecl;external cDllName;//Setup canvas (framebuffer) to start drawing
+procedure EndDrawing;cdecl;external cDllName;//End canvas drawing and swap buffers (double buffering)
+procedure BeginMode2D(camera:TCamera2D);cdecl;external cDllName;//Initialize 2D mode with custom camera (2D)
+procedure EndMode2D;cdecl;external cDllName;//Ends 2D mode with custom camera
+procedure BeginMode3D(camera:TCamera3D);cdecl;external cDllName;//Initializes 3D mode with custom camera (3D)
+procedure EndMode3D;cdecl;external cDllName;//Ends 3D mode and returns to default 2D orthographic mode
+procedure BeginTextureMode(target:TRenderTexture2D);cdecl;external cDllName;//Initializes render texture for drawing
+procedure EndTextureMode;cdecl;external cDllName;//Ends drawing to render texture
+procedure BeginShaderMode(shader:TShader);cdecl;external cDllName;//Begin custom shader drawing
+procedure EndShaderMode;cdecl;external cDllName;//End custom shader drawing (use default shader)
+procedure BeginBlendMode(mode: longint);cdecl;external cDllName;//Begin blending mode (alpha, additive, multiplied)
+procedure EndBlendMode;cdecl;external cDllName;//End blending mode (reset to default: alpha blending)
+procedure BeginScissorMode(x:longint; y:longint; width:longint; height:longint);cdecl;external cDllName;//Begin scissor mode (define screen area for following drawing)
+procedure EndScissorMode;cdecl;external cDllName;//End scissor mode
+procedure BeginVrStereoMode(config:TVrStereoConfig);cdecl;external cDllName;//Begin stereo rendering (requires VR simulator)
+procedure EndVrStereoMode;cdecl;external cDllName;//End stereo rendering (requires VR simulator)
 
-procedure BeginVrStereoMode(config:TVrStereoConfig);cdecl;external cDllName; //Begin stereo rendering (requires VR simulator)
-procedure EndVrStereoMode;cdecl;external cDllName; // End stereo rendering (requires VR simulator)
-
-function LoadVrStereoConfig(device:TVrDeviceInfo):TVrStereoConfig;cdecl;external cDllName; //Load VR stereo config for VR simulator device parameters
+(* VR stereo config functions for VR simulator *)
+function LoadVrStereoConfig(device:TVrDeviceInfo):TVrStereoConfig;cdecl;external cDllName;//Load VR stereo config for VR simulator device parameters
 procedure UnloadVrStereoConfig(config:TVrStereoConfig);cdecl;external cDllName;//Unload VR stereo config
 
-// Shader management functions
-{ NOTE: Shader functionality is not available on OpenGL 1.1 }
-function LoadShader(vsFileName:Pchar; fsFileName:Pchar): TShader;cdecl;external cDllName; // Load shader from files and bind default locations
-function LoadShaderFromMemory(vsCode:Pchar; fsCode:Pchar):TShader; cdecl;external cDllName; // Load shader from code strings and bind default locations
+(* Shader management functions *)
+// NOTE: Shader functionality is not available on OpenGL 1.1
+function LoadShader(vsFileName:Pchar; fsFileName:Pchar):TShader;cdecl;external cDllName;//Load shader from files and bind default locations
+function LoadShaderFromMemory(vsCode:Pchar; fsCode:Pchar):TShader;cdecl;external cDllName;//Load shader from code strings and bind default locations
+function GetShaderLocation(shader:TShader; uniformName:Pchar):longint;cdecl;external cDllName;//Get shader uniform location
+function GetShaderLocationAttrib(shader:TShader; attribName:Pchar):longint;cdecl;external cDllName;//Get shader attribute location
+procedure SetShaderValue(shader:TShader; locIndex:longint; value:pointer; uniformType:longint);cdecl;external cDllName;//Set shader uniform value
+procedure SetShaderValueV(shader:TShader; locIndex:longint; value:pointer; uniformType:longint; count:longint);cdecl;external cDllName;//Set shader uniform value vector
+procedure SetShaderValueMatrix(shader:TShader; locIndex:longint; mat:TMatrix);cdecl;external cDllName;//Set shader uniform value (matrix 4x4)
+procedure SetShaderValueTexture(shader:TShader; locIndex:longint; texture:TTexture2D);cdecl;external cDllName;//Set shader uniform value for texture (sampler2d)
+procedure UnloadShader(shader:TShader);cdecl;external cDllName;//Unload shader from GPU memory (VRAM)
 
-function GetShaderLocation(shader:TShader; uniformName:Pchar):longint;cdecl;external cDllName; // Get shader uniform location
-function GetShaderLocationAttrib(shader:TShader; attribName:Pchar):longint;cdecl;external cDllName; // Get shader attribute location
-procedure SetShaderValue(shader:TShader; locIndex:longint; value:pointer; uniformType:longint);cdecl;external cDllName; // Set shader uniform value
-procedure SetShaderValueV(shader:TShader; locIndex:longint; value:pointer; uniformType:longint; count:longint);cdecl;external cDllName; // Set shader uniform value vector
-procedure SetShaderValueMatrix(shader:TShader; locIndex:longint; mat:TMatrix);cdecl;external cDllName; // Set shader uniform value (matrix 4x4)
-procedure SetShaderValueTexture(shader:TShader; locIndex:longint; texture:TTexture2D);cdecl;external cDllName; // Set shader uniform value for texture
-procedure UnloadShader(shader:TShader);cdecl;external cDllName; // Unload shader from GPU memory (VRAM)
+(* Screen-space-related functions *)
+function GetMouseRay(mousePosition:TVector2; camera:TCamera):TRay;cdecl;external cDllName;//Get a ray trace from mouse position
+function GetCameraMatrix(camera:TCamera):TMatrix;cdecl;external cDllName;//Get camera transform matrix (view matrix)
+function GetCameraMatrix2D(camera:TCamera2D):TMatrix;cdecl;external cDllName;//Get camera 2d transform matrix
+function GetWorldToScreen(position:TVector3; camera:TCamera):TVector2;cdecl;external cDllName;//Get the screen space position for a 3d world space position
+function GetWorldToScreenEx(position:TVector3; camera:TCamera; width:longint; height:longint):TVector2;cdecl;external cDllName;//Get size position for a 3d world space position
+function GetWorldToScreen2D(position:TVector2; camera:TCamera2D):TVector2;cdecl;external cDllName;//Get the screen space position for a 2d camera world space position
+function GetScreenToWorld2D(position:TVector2; camera:TCamera2D):TVector2;cdecl;external cDllName;//Get the world space position for a 2d camera screen space position
 
+(* Timing-related functions *)
+procedure SetTargetFPS(fps:longint);cdecl;external cDllName;//Set target FPS (maximum)
+function GetFPS:longint;cdecl;external cDllName;//Returns current FPS
+function GetFrameTime:single;cdecl;external cDllName;//Returns time in seconds for last frame drawn (delta time)
+function GetTime:double;cdecl;external cDllName;//Returns elapsed time in seconds since InitWindow()
 
-// Screen-space-related functions
-function GetMouseRay(mousePosition:TVector2; camera:TCamera):TRay;cdecl;external cDllName; // Returns a ray trace from mouse position
-function GetCameraMatrix(camera:TCamera):TMatrix;cdecl;external cDllName; // Returns camera transform matrix (view matrix)
-function GetCameraMatrix2D(camera:TCamera2D):TMatrix;cdecl;external cDllName; // Returns camera 2d transform matrix
-function GetWorldToScreen(position:TVector3; camera:TCamera):TVector2;cdecl;external cDllName; // Returns the screen space position for a 3d world space position
-function GetWorldToScreenEx(position:TVector3; camera:TCamera; width:longint; height:longint): TVector2;cdecl;external cDllName; // Returns size position for a 3d world space position
-function GetWorldToScreen2D(position:TVector2; camera:TCamera2D):TVector2;cdecl;external cDllName; // Returns the screen space position for a 2d camera world space position
-function GetScreenToWorld2D(position:TVector2; camera:TCamera2D):TVector2;cdecl;external cDllName; // Returns the world space position for a 2d camera screen space position
+(* Misc. functions *)
+function GetRandomValue(min:longint; max:longint):longint;cdecl;external cDllName;//Get a random value between min and max (both included)
+procedure TakeScreenshot(fileName:Pchar);cdecl;external cDllName;//Takes a screenshot of current screen (filename extension defines format)
+procedure SetConfigFlags(flags:dword);cdecl;external cDllName;//Setup init configuration flags (view FLAGS)
+procedure TraceLog(logLevel:longint; text:Pchar; args:array of const);cdecl;external cDllName;
+procedure TraceLog(logLevel:longint; text:Pchar);cdecl;external cDllName;//Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
+procedure SetTraceLogLevel(logLevel:longint);cdecl;external cDllName;//Set the current threshold (minimum) log level
+function MemAlloc(size:longint):pointer;cdecl;external cDllName;//Internal memory allocator
+function MemRealloc(ptr:pointer; size:longint):pointer;cdecl;external cDllName;//Internal memory reallocator
+procedure MemFree(ptr:pointer);cdecl;external cDllName;//Internal memory free
 
-// Timming-related functions
-procedure SetTargetFPS(fps:longint);cdecl;external cDllName; // Set target FPS (maximum)
-function GetFPS:longint;cdecl;external cDllName; // Returns current FPS
-function GetFrameTime:single;cdecl;external cDllName; // Returns time in seconds for last frame drawn (delta time)
-function GetTime:double;cdecl;external cDllName; // Returns elapsed time in seconds since InitWindow()
-
-// Misc. functions
-function GetRandomValue(min:longint; max:longint):longint;cdecl;external cDllName; // Returns a random value between min and max (both included)
-procedure TakeScreenshot(fileName:Pchar);cdecl;external cDllName; // Takes a screenshot of current screen (filename extension defines format)
-procedure SetConfigFlags(flags:dword);cdecl;external cDllName; // Setup init configuration flags (view FLAGS)
-procedure TraceLog(logLevel:longint; text:Pchar; args:array of const);cdecl;external cDllName; // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)
-procedure TraceLog(logLevel:longint; text:Pchar); cdecl;external cDllName;
-procedure SetTraceLogLevel(logLevel:longint);cdecl;external cDllName; // Set the current threshold (minimum) log level
-function MemAlloc(size:longint):pointer;cdecl;external cDllName;   // Internal memory allocator
-function MemRealloc(ptr:pointer; size:longint):pointer;cdecl;external cDllName; // Internal memory reallocator
-procedure MemFree(ptr:pointer);cdecl;external cDllName; // Internal memory free
-
-// Set custom callbacks
+(* Set custom callbacks *)
 // WARNING: Callbacks setup is intended for advance users
-procedure SetTraceLogCallback(callback:TTraceLogCallback);cdecl;external cDllName;       // Set custom trace log
-procedure SetLoadFileDataCallback(callback:TLoadFileDataCallback);cdecl;external cDllName; // Set custom file binary data loader
-procedure SetSaveFileDataCallback(callback:TSaveFileDataCallback);cdecl;external cDllName;  // Set custom file binary data saver
-procedure SetLoadFileTextCallback(callback:TLoadFileTextCallback);cdecl;external cDllName;  // Set custom file text data loader
-procedure SetSaveFileTextCallback(callback:TSaveFileTextCallback);cdecl;external cDllName;  // Set custom file text data saver
+procedure SetTraceLogCallback(callback:TTraceLogCallback);cdecl;external cDllName;//Set custom trace log
+procedure SetLoadFileDataCallback(callback:TLoadFileDataCallback);cdecl;external cDllName;//Set custom file binary data loader
+procedure SetSaveFileDataCallback(callback:TSaveFileDataCallback);cdecl;external cDllName;//Set custom file binary data saver
+procedure SetLoadFileTextCallback(callback:TLoadFileTextCallback);cdecl;external cDllName;//Set custom file text data loader
+procedure SetSaveFileTextCallback(callback:TSaveFileTextCallback);cdecl;external cDllName;//Set custom file text data saver
 
-// Files management functions
-function LoadFileData(fileName:Pchar; var bytesRead:dword):Pbyte;cdecl;external; // Load file data as byte array (read)
-procedure UnloadFileData(var data:byte);cdecl;external; // Unload file data allocated by LoadFileData()
-function SaveFileData(fileName:Pchar; data:pointer; bytesToWrite:dword):boolean;cdecl;external; // Save data to file from byte array (write), returns true on success
-function LoadFileText(fileName:Pchar):Pchar;cdecl;external cDllName; // Load text data from file (read), returns a '\0' terminated string
-procedure UnloadFileText(var text:byte);cdecl;external cDllName; // Unload file text data allocated by LoadFileText()
-function SaveFileText(fileName:Pchar; text:Pchar):boolean;cdecl;external cDllName; // Save text data to file (write), string must be '\0' terminated
-function FileExists(fileName:Pchar):boolean;cdecl;external cDllName; // Check if file exists
-function DirectoryExists(dirPath:Pchar):boolean;cdecl;external cDllName; // Check if a directory path exists
-function IsFileExtension(fileName:Pchar; ext:Pchar):boolean;cdecl;external cDllName; // Check file extension
-function GetFileExtension(fileName:Pchar):Pchar;cdecl;external cDllName; // Get pointer to extension for a filename string (includes dot: ".png")
-function GetFileName(filePath:Pchar):Pchar;cdecl;external cDllName;  // Get pointer to filename for a path string
-function GetFileNameWithoutExt(filePath:Pchar):Pchar;cdecl;external cDllName; // Get filename string without extension (uses static string)
-function GetDirectoryPath(filePath:Pchar):Pchar;cdecl;external cDllName; // Get full path for a given fileName with path (uses static string)
-function GetPrevDirectoryPath(dirPath:Pchar):Pchar;cdecl;external cDllName; // Get previous directory path for a given path (uses static string)
-function GetWorkingDirectory:Pchar;cdecl;external cDllName; // Get current working directory (uses static string)
-function GetDirectoryFiles(dirPath:Pchar; var count:longint):PPchar;cdecl;external cDllName; // Get filenames in a directory path (memory should be freed)
-procedure ClearDirectoryFiles;cdecl;external cDllName; // Clear directory files paths buffers (free memory)
-function ChangeDirectory(dir:Pchar):boolean;cdecl;external cDllName; // Change working directory, return true on success
-function IsFileDropped:boolean;cdecl;external cDllName;  // Check if a file has been dropped into window
-function GetDroppedFiles(var count:longint):PPchar;cdecl;external cDllName; // Get dropped files names (memory should be freed)
-procedure ClearDroppedFiles;cdecl;external cDllName; // Clear dropped files paths buffer (free memory)
-function GetFileModTime(fileName:Pchar):longint;cdecl;external cDllName; // Get file modification time (last write time)
-function CompressData(var data:byte; dataLength:longint; var compDataLength:longint):Pbyte;cdecl;external cDllName; // Compress data (DEFLATE algorythm)
-function DecompressData(var compData:byte; compDataLength:longint; var dataLength:longint):Pbyte;cdecl;external cDllName; // Decompress data (DEFLATE algorythm)
+(* Files management functions *)
+function LoadFileData(fileName:Pchar; bytesRead:Pdword):Pbyte;cdecl;external cDllName;//Load file data as byte array (read)
+procedure UnloadFileData(data:Pbyte);cdecl;external cDllName;//Unload file data allocated by LoadFileData()
+function SaveFileData(fileName:Pchar; data:pointer; bytesToWrite:dword):boolean;cdecl;external cDllName;//Save data to file from byte array (write), returns true on success
+function LoadFileText(fileName:Pchar):Pchar;cdecl;external cDllName;//Load text data from file (read), returns a '\0' terminated string
+procedure UnloadFileText(text:Pchar);cdecl;external cDllName;//Unload file text data allocated by LoadFileText()
+function SaveFileText(fileName:Pchar; boolean:Pchar):boolean;cdecl;external cDllName;//Save text data to file (write), string must be '\0' terminated, returns true on success
+function FileExists(fileName:Pchar):boolean;cdecl;external cDllName;//Check if file exists
+function DirectoryExists(dirPath:Pchar):boolean;cdecl;external cDllName;//Check if a directory path exists
+function IsFileExtension(fileName:Pchar; ext:Pchar):boolean;cdecl;external cDllName;//Check file extension (including point: .png, .wav)
+function GetFileExtension(fileName:Pchar):Pchar;cdecl;external cDllName;//Get pointer to extension for a filename string (includes dot: '.png')
+function GetFileName(filePath:Pchar):Pchar;cdecl;external cDllName;//Get pointer to filename for a path string
+function GetFileNameWithoutExt(filePath:Pchar):Pchar;cdecl;external cDllName;//Get filename string without extension (uses static string)
+function GetDirectoryPath(filePath:Pchar):Pchar;cdecl;external cDllName;//Get full path for a given fileName with path (uses static string)
+function GetPrevDirectoryPath(dirPath:Pchar):Pchar;cdecl;external cDllName;//Get previous directory path for a given path (uses static string)
+function GetWorkingDirectory:Pchar;cdecl;external cDllName;//Get current working directory (uses static string)
+function GetDirectoryFiles(dirPath:Pchar; count:Plongint):PPchar;cdecl;external cDllName;//Get filenames in a directory path (memory should be freed)
+procedure ClearDirectoryFiles;cdecl;external cDllName;//Clear directory files paths buffers (free memory)
+function ChangeDirectory(dir:Pchar):boolean;cdecl;external cDllName;//Change working directory, return true on success
+function IsFileDropped:boolean;cdecl;external cDllName;//Check if a file has been dropped into window
+function GetDroppedFiles(count:Plongint):PPchar;cdecl;external cDllName;//Get dropped files names (memory should be freed)
+procedure ClearDroppedFiles;cdecl;external cDllName;//Clear dropped files paths buffer (free memory)
+function GetFileModTime(fileName:Pchar):longint;cdecl;external cDllName;//Get file modification time (last write time)
+function CompressData(data:Pbyte; dataLength:longint; compDataLength:Plongint):Pbyte;cdecl;external cDllName;//Compress data (DEFLATE algorithm)
+function DecompressData(compData:Pbyte; compDataLength:longint; dataLength:Plongint):Pbyte;cdecl;external cDllName;//Decompress data (DEFLATE algorithm)
 
-// Persistent storage management
-function SaveStorageValue(position:dword; value:longint):boolean;cdecl;external cDllName; // Save integer value to storage file (to defined position)
-function LoadStorageValue(position:dword):longint;cdecl;external cDllName;
-procedure OpenURL(url:Pchar);cdecl;external cDllName; // Open URL with default system browser (if available)
+(* Persistent storage management *)
+function SaveStorageValue(position:dword; value:longint):boolean;cdecl;external cDllName;//Save integer value to storage file (to defined position), returns true on success
+function LoadStorageValue(position:dword):longint;cdecl;external cDllName;//Load integer value from storage file (from defined position)
+procedure OpenURL(url:Pchar);cdecl;external cDllName;//Open URL with default system browser (if available)
+
 
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
