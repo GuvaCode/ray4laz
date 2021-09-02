@@ -1008,15 +1008,15 @@ function GetGesturePinchVector:TVector2;cdecl;external cDllName; // Get gesture 
 function GetGesturePinchAngle:single;cdecl;external cDllName; // Get gesture pinch angle
 
 //------------------------------------------------------------------------------------
-// TCamera System Functions (Module: TCamera)
+// Camera System Functions (Module: Camera)
 //------------------------------------------------------------------------------------
 
-procedure SetCameraMode(camera:TCamera; mode:longint);cdecl;external cDllName; // Set camera mode (multiple camera modes available)
-procedure UpdateCamera(var camera:TCamera);cdecl;external cDllName; // Update camera position for selected mode
-procedure SetCameraPanControl(keyPan:longint);cdecl;external cDllName; // Set camera pan key to combine with mouse movement (free camera)
-procedure SetCameraAltControl(keyAlt:longint);cdecl;external cDllName; // Set camera alt key to combine with mouse movement (free camera)
-procedure SetCameraSmoothZoomControl(keySmoothZoom:longint);cdecl;external cDllName; // Set camera smooth zoom key to combine with mouse (free camera)
-procedure SetCameraMoveControls(keyFront:longint; keyBack:longint; keyRight:longint; keyLeft:longint; keyUp:longint; keyDown:longint);cdecl;external cDllName; // Set camera move controls (1st person and 3rd person cameras)
+procedure SetCameraMode(camera:TCamera; mode:longint);cdecl;external cDllName;//Set camera mode (multiple camera modes available)
+procedure UpdateCamera(camera:PCamera);cdecl;external cDllName;//Update camera position for selected mode
+procedure SetCameraPanControl(keyPan:longint);cdecl;external cDllName;//Set camera pan key to combine with mouse movement (free camera)
+procedure SetCameraAltControl(keyAlt:longint);cdecl;external cDllName;//Set camera alt key to combine with mouse movement (free camera)
+procedure SetCameraSmoothZoomControl(keySmoothZoom:longint);cdecl;external cDllName;//Set camera smooth zoom key to combine with mouse (free camera)
+procedure SetCameraMoveControls(keyFront:longint; keyBack:longint; keyRight:longint; keyLeft:longint; keyUp:longint; keyDown:longint);cdecl;external cDllName;//Set camera move controls (1st person and 3rd person cameras)
 
 //------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
