@@ -952,46 +952,49 @@ procedure OpenURL(url:Pchar);cdecl;external cDllName; // Open URL with default s
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
 //------------------------------------------------------------------------------------
-// Input-related functions: keyboard
-function IsKeyPressed(key: longint):boolean;cdecl;external cDllName;  // Detect if a key has been pressed once
-function IsKeyDown(key: longint):boolean;cdecl;external cDllName; // Detect if a key is being pressed
-function IsKeyReleased(key:longint):boolean;cdecl;external cDllName; // Detect if a key has been released once
-function IsKeyUp(key:longint):boolean;cdecl;external cDllName; // Detect if a key is NOT being pressed
-procedure SetExitKey(key:longint);cdecl;external cDllName; // Set a custom key to exit program (default is ESC)
-function GetKeyPressed:longint;cdecl;external cDllName; // Get key pressed (keycode), call it multiple times for keys queued
-function GetCharPressed:longint;cdecl;external cDllName; // Get char pressed (unicode), call it multiple times for chars queued
 
-// Input-related functions: gamepads
-function IsGamepadAvailable(gamepad:longint):boolean;cdecl;external cDllName; // Detect if a gamepad is available
-function IsGamepadName(gamepad:longint; name:Pchar):boolean;cdecl;external cDllName; // Check gamepad name (if available)
-function GetGamepadName(gamepad:longint):Pchar;cdecl;external cDllName; // Return gamepad internal name id
-function IsGamepadButtonPressed(gamepad:longint; button:longint):boolean;cdecl;external cDllName; // Detect if a gamepad button has been pressed once
-function IsGamepadButtonDown(gamepad:longint; button:longint):boolean;cdecl;external cDllName; // Detect if a gamepad button is being pressed
-function IsGamepadButtonReleased(gamepad:longint; button:longint):boolean;cdecl;external cDllName; // Detect if a gamepad button has been released once
-function IsGamepadButtonUp(gamepad:longint; button:longint):boolean;cdecl;external cDllName; // Detect if a gamepad button is NOT being pressed
-function GetGamepadButtonPressed:longint;cdecl;external cDllName; // Get the last gamepad button pressed
-function GetGamepadAxisCount(gamepad:longint):longint;cdecl;external cDllName; // Return gamepad axis count for a gamepad
-function GetGamepadAxisMovement(gamepad:longint; axis:longint):single;cdecl;external cDllName; // Return axis movement value for a gamepad axis
-function SetGamepadMappings(mappings:Pchar):longint;cdecl;external cDllName; // Set internal gamepad mappings (SDL_GameControllerDB)
+(* Input-related functions: keyboard *)
+function IsKeyPressed(key:longint):boolean;cdecl;external cDllName;//Check if a key has been pressed once
+function IsKeyDown(key:longint):boolean;cdecl;external cDllName;//Check if a key is being pressed
+function IsKeyReleased(key:longint):boolean;cdecl;external cDllName;//Check if a key has been released once
+function IsKeyUp(key:longint):boolean;cdecl;external cDllName;//Check if a key is NOT being pressed
+procedure SetExitKey(key:longint);cdecl;external cDllName;//Set a custom key to exit program (default is ESC)
+function GetKeyPressed:longint;cdecl;external cDllName;//Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
+function GetCharPressed:longint;cdecl;external cDllName;//Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
 
-// Input-related functions: mouse
-function IsMouseButtonPressed(button:longint):boolean;cdecl;external cDllName; // Detect if a mouse button has been pressed once
-function IsMouseButtonDown(button:longint):boolean;cdecl;external cDllName; // Detect if a mouse button is being pressed
-function IsMouseButtonReleased(button:longint):boolean;cdecl;external cDllName; // Detect if a mouse button has been released once
-function IsMouseButtonUp(button:longint):boolean;cdecl;external cDllName; // Detect if a mouse button is NOT being pressed
-function GetMouseX: longint;cdecl;external cDllName; // Returns mouse position X
-function GetMouseY: longint;cdecl;external cDllName; // Returns mouse position Y
-function GetMousePosition:TVector2;cdecl;external cDllName; // Returns mouse position XY
-procedure SetMousePosition(x:longint; y:longint);cdecl;external cDllName; // Set mouse position XY
-procedure SetMouseOffset(offsetX:longint; offsetY:longint);cdecl;external cDllName; // Set mouse offset
-procedure SetMouseScale(scaleX:single; scaleY:single);cdecl;external cDllName; // Set mouse scaling
-function GetMouseWheelMove:single;cdecl;external cDllName; // Returns mouse wheel movement Y
-procedure SetMouseCursor(cursor:longint);cdecl;external cDllName; // Set mouse cursor
 
-// Input-related functions: touch
-function GetTouchX: longint;cdecl;external cDllName; // Returns touch position X for touch point 0 (relative to screen size)
-function GetTouchY: longint;cdecl;external cDllName; // Returns touch position Y for touch point 0 (relative to screen size)
-function GetTouchPosition(index:longint):TVector2;cdecl;external cDllName; // Returns touch position XY for a touch point index (relative to screen size)
+(* Input-related functions: gamepads *)
+function IsGamepadAvailable(gamepad:longint):boolean;cdecl;external cDllName;//Check if a gamepad is available
+function IsGamepadName(gamepad:longint; name:Pchar):boolean;cdecl;external cDllName;//Check gamepad name (if available)
+function GetGamepadName(gamepad:longint):Pchar;cdecl;external cDllName;//Get gamepad internal name id
+function IsGamepadButtonPressed(gamepad:longint; button:longint):boolean;cdecl;external cDllName;//Check if a gamepad button has been pressed once
+function IsGamepadButtonDown(gamepad:longint; button:longint):boolean;cdecl;external cDllName;//Check if a gamepad button is being pressed
+function IsGamepadButtonReleased(gamepad:longint; button:longint):boolean;cdecl;external cDllName;//Check if a gamepad button has been released once
+function IsGamepadButtonUp(gamepad:longint; button:longint):boolean;cdecl;external cDllName;//Check if a gamepad button is NOT being pressed
+function GetGamepadButtonPressed:longint;cdecl;external cDllName;//Get the last gamepad button pressed
+function GetGamepadAxisCount(gamepad:longint):longint;cdecl;external cDllName;//Get gamepad axis count for a gamepad
+function GetGamepadAxisMovement(gamepad:longint; axis:longint):single;cdecl;external cDllName;//Get axis movement value for a gamepad axis
+function SetGamepadMappings(mappings:Pchar):longint;cdecl;external cDllName;//Set internal gamepad mappings (SDL_GameControllerDB)
+
+(* Input-related functions: mouse *)
+function IsMouseButtonPressed(button:longint):boolean;cdecl;external cDllName;//Check if a mouse button has been pressed once
+function IsMouseButtonDown(button:longint):boolean;cdecl;external cDllName;//Check if a mouse button is being pressed
+function IsMouseButtonReleased(button:longint):boolean;cdecl;external cDllName;//Check if a mouse button has been released once
+function IsMouseButtonUp(button:longint):boolean;cdecl;external cDllName;//Check if a mouse button is NOT being pressed
+function GetMouseX:longint;cdecl;external cDllName;//Get mouse position X
+function GetMouseY:longint;cdecl;external cDllName;//Get mouse position Y
+function GetMousePosition:TVector2;cdecl;external cDllName;//Get mouse position XY
+function GetMouseDelta:TVector2;cdecl;external cDllName;//Get mouse delta between frames
+procedure SetMousePosition(x:longint; y:longint);cdecl;external cDllName;//Set mouse position XY
+procedure SetMouseOffset(offsetX:longint; offsetY:longint);cdecl;external cDllName;//Set mouse offset
+procedure SetMouseScale(scaleX:single; scaleY:single);cdecl;external cDllName;//Set mouse scaling
+function GetMouseWheelMove:single;cdecl;external cDllName;//Get mouse wheel movement Y
+procedure SetMouseCursor(cursor:longint);cdecl;external cDllName;// Set mouse cursor
+
+(* Input-related functions: touch *)
+function GetTouchX:longint;cdecl;external cDllName;//Get touch position X for touch point 0 (relative to screen size)
+function GetTouchY:longint;cdecl;external cDllName;//Get touch position Y for touch point 0 (relative to screen size)
+function GetTouchPosition(index:longint):TVector2;cdecl;external cDllName;//Get touch position XY for a touch point index (relative to screen size)
 
 //------------------------------------------------------------------------------------
 // Gestures and Touch Handling Functions (Module: gestures)
