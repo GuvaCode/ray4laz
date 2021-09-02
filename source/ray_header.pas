@@ -166,6 +166,16 @@ type
          image : TImage;
        end;
 
+      PGlyphInfo = ^TGlyphInfo;
+      TGlyphInfo = record
+          value : longint;
+          offsetX : longint;
+          offsetY : longint;
+          advanceX : longint;
+          image : TImage;
+        end;
+
+
      PFont = ^TFont;
      TFont = record
          baseSize : longint;
@@ -285,6 +295,15 @@ type
          position : TVector3;
          normal : TVector3;
        end;
+
+      PRayCollision = ^TRayCollision;
+      TRayCollision = record
+          hit : boolean;
+          distance : single;
+          point : TVector3;
+          normal : TVector3;
+        end;
+
 
      PBoundingBox = ^TBoundingBox;
      TBoundingBox = record
@@ -1191,197 +1210,201 @@ procedure DrawTextRec(font:TFont; text:Pchar; rec:TRectangle; fontSize:single; s
 procedure DrawTextRecEx(font:TFont; text:Pchar; rec:TRectangle; fontSize:single; spacing:single; wordWrap:boolean; tint:TColor; selectStart:longint; selectLength:longint; selectTint:TColor; selectBackTint:TColor);cdecl;external cDllName; // Draw text using font inside rectangle limits with support for text selection
 procedure DrawTextCodepoint(font:TFont; codepoint:longint; position:TVector2; fontSize:single; tint:TColor);cdecl;external cDllName; // Draw one character (codepoint)
 
-// Text misc. functions
-function MeasureText(text:Pchar; fontSize:longint):longint;cdecl;external cDllName; // Measure string width for default font
-function MeasureTextEx(font:TFont; text:Pchar; fontSize:single; spacing:single):TVector2;cdecl;external cDllName; // Measure string size for Font
-function GetGlyphIndex(font:TFont; codepoint:longint):longint;cdecl;external cDllName; // Get index position for a unicode character on font
+(* Text font info functions *)
+function MeasureText(text:Pchar; fontSize:longint):longint;cdecl;external cDllName;//Measure string width for default font
+function MeasureTextEx(font:TFont; text:Pchar; fontSize:single; spacing:single):TVector2;cdecl;external cDllName;//Measure string size for Font
+function GetGlyphIndex(font:TFont; codepoint:longint):longint;cdecl;external cDllName;//Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found
+function GetGlyphInfo(font:TFont; codepoint:longint):TGlyphInfo;cdecl;external cDllName;//Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
+function GetGlyphAtlasRec(font:TFont; codepoint:longint):TRectangle;cdecl;external cDllName;//Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
 
-// Text strings management functions (no utf8 strings, only byte chars)
+(* Text codepoints management functions (unicode characters) *)
+function LoadCodepoints(text:Pchar; count:Plongint):Plongint;cdecl;external cDllName;//Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
+procedure UnloadCodepoints(codepoints:Plongint);cdecl;external cDllName;//Unload codepoints data from memory
+function GetCodepointsCount(text:Pchar):longint;cdecl;external cDllName;//Get total number of codepoints in a UTF-8 encoded string
+function GetCodepoint(text:Pchar; bytesProcessed:Plongint):longint;cdecl;external cDllName;//Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+function CodepointToUTF8(codepoint:longint; byteLength:Plongint):Pchar;cdecl;external cDllName;//Encode one codepoint into UTF-8 byte array (array length returned as parameter)
+function TextCodepointsToUTF8(codepoints:Plongint; length:longint):Pchar;cdecl;external cDllName;//Encode text as codepoints array into UTF-8 text string (WARNING: memory must be freed!)
+
+(* Text strings management functions (no UTF-8 strings, only byte chars) *)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
-function TextCopy(dst:Pchar; src:Pchar):longint;cdecl;external cDllName; // Copy one string to another, returns bytes copied
-function TextIsEqual(text1:Pchar; text2:Pchar):boolean;cdecl;external cDllName; // Check if two text string are equal
-function TextLength(text:Pchar):dword;cdecl;external cDllName; // Get text length, checks for '\0' ending
-function TextFormat(text:Pchar; args: array of const):Pchar;cdecl;external cDllName; //// Text formatting with variables (sprintf style)
-function TextFormat(text:Pchar):Pchar;cdecl;external cDllName; // Text formatting with variables (sprintf style)
-function TextSubtext(text:Pchar; position:longint; length:longint):Pchar;cdecl;external cDllName; // Get a piece of a text string
-function TextReplace(text:Pchar; replace:Pchar; by:Pchar):Pchar;cdecl;external cDllName; // Replace text string (memory must be freed!)
-function TextInsert(text:Pchar; insert:Pchar; position:longint):Pchar;cdecl;external cDllName; // Insert text in a position (memory should be freed!)
-function TextJoin(textList:PPchar; count:longint; delimiter:Pchar):Pchar;cdecl;external cDllName; // Join text strings with delimiter
-function TextSplit(text:Pchar; delimiter:char; var count:longint):PPchar;cdecl;external cDllName; // Split text into multiple strings
-procedure TextAppend(text:Pchar; append:Pchar; var position:longint);cdecl;external cDllName; // Append text at specific position and move cursor!
-function TextFindIndex(text:Pchar; find:Pchar):longint;cdecl;external cDllName; // Find first text occurrence within a string
-function TextToUpper(text:Pchar):Pchar;cdecl;external cDllName; // Get upper case version of provided string
-function TextToLower(text:Pchar):Pchar;cdecl;external cDllName; // Get lower case version of provided string
-function TextToPascal(text:Pchar):Pchar;cdecl;external cDllName; // Get Pascal case notation version of provided string
-function TextToInteger(text:Pchar):longint;cdecl;external cDllName; // Get integer value from text (negative values not supported)
-function TextToUtf8(var codepoints:longint; length:longint):Pchar;cdecl;external cDllName; // Encode text codepoint into utf8 text (memory must be freed!)
-
-// UTF8 text strings management functions
-function GetCodepoints(text:Pchar; var count:longint):Plongint;cdecl;external cDllName;// Get all codepoints in a string, codepoints count returned by parameters
-function GetCodepointsCount(text:Pchar):longint;cdecl;external cDllName;// Get total number of characters (codepoints) in a UTF8 encoded string
-function GetNextCodepoint(text:Pchar; var bytesProcessed:longint):longint;cdecl;external cDllName;// Returns next codepoint in a UTF8 encoded string; 0x3f('?') is returned on failure
-function CodepointToUtf8(codepoint:longint; var byteLength:longint):PChar;cdecl;external cDllName;// Encode codepoint into utf8 text (char array length returned as parameter)
+function TextCopy(dst:Pchar; src:Pchar):longint;cdecl;external cDllName;//Copy one string to another, returns bytes copied
+function TextIsEqual(text1:Pchar; text2:Pchar):boolean;cdecl;external cDllName;//Check if two text string are equal
+function TextLength(text:Pchar):dword;cdecl;external cDllName;//Get text length, checks for '\0' ending
+function TextFormat(text:Pchar; args:array of const):Pchar;cdecl;external cDllName;
+function TextFormat(text:Pchar):Pchar;cdecl;external cDllName;//Text formatting with variables (sprintf() style)
+function TextSubtext(text:Pchar; position:longint; length:longint):Pchar;cdecl;external cDllName;//Get a piece of a text string
+function TextReplace(text:Pchar; replace:Pchar; by:Pchar):Pchar;cdecl;external cDllName;//Replace text string (WARNING: memory must be freed!)
+function TextInsert(text:Pchar; insert:Pchar; position:longint):Pchar;cdecl;external cDllName;//Insert text in a position (WARNING: memory must be freed!)
+function TextJoin(textList:PPchar; count:longint; delimiter:Pchar):Pchar;cdecl;external cDllName;//Join text strings with delimiter
+function TextSplit(text:Pchar; delimiter:char; count:Plongint):PPchar;cdecl;external cDllName;//Split text into multiple strings
+procedure TextAppend(text:Pchar; append:Pchar; position:Plongint);cdecl;external cDllName;//Append text at specific position and move cursor!
+function TextFindIndex(text:Pchar; find:Pchar):longint;cdecl;external cDllName;//Find first text occurrence within a string
+function TextToUpper(text:Pchar):Pchar;cdecl;external cDllName;//Get upper case version of provided string
+function TextToLower(text:Pchar):Pchar;cdecl;external cDllName;//Get lower case version of provided string
+function TextToPascal(text:Pchar):Pchar;cdecl;external cDllName;//Get Pascal case notation version of provided string
+function TextToInteger(text:Pchar):longint;cdecl;external cDllName;//Get integer value from text (negative values not supported)
 
 //------------------------------------------------------------------------------------
 // Basic 3d Shapes Drawing Functions (Module: models)
 //------------------------------------------------------------------------------------
 
-// Basic geometric 3D shapes drawing functions
-procedure DrawLine3D(startPos:TVector3; endPos:TVector3; color:TColor);cdecl;external cDllName;  // Draw a line in 3D world space
-procedure DrawPoint3D(position:TVector3; color:TColor);cdecl;external cDllName; // Draw a point in 3D space, actually a small line
-procedure DrawCircle3D(center:TVector3; radius:single; rotationAxis:TVector3; rotationAngle:single; color:TColor);cdecl;external cDllName; // Draw a circle in 3D world space
-procedure DrawTriangle3D(v1:TVector3; v2:TVector3; v3:TVector3; color:TColor);cdecl;external cDllName; // Draw a color-filled triangle (vertex in counter-clockwise order!)
-procedure DrawTriangleStrip3D(var points:TVector3; pointsCount:longint; color:TColor);cdecl;external cDllName; // Draw a triangle strip defined by points
-procedure DrawCube(position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName; // Draw cube
-procedure DrawCubeV(position:TVector3; size:TVector3; color:TColor);cdecl;external cDllName; // Draw cube (Vector version)
-procedure DrawCubeWires(position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName; // Draw cube wires
-procedure DrawCubeWiresV(position:TVector3; size:TVector3; color:TColor);cdecl;external cDllName; // Draw cube wires (Vector version)
-procedure DrawCubeTexture(texture:TTexture2D; position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName; // Draw cube textured
-procedure DrawSphere(centerPos:TVector3; radius:single; color:TColor);cdecl;external cDllName; // Draw sphere
-procedure DrawSphereEx(centerPos:TVector3; radius:single; rings:longint; slices:longint; color:TColor);cdecl;external cDllName; // Draw sphere with extended parameters
-procedure DrawSphereWires(centerPos:TVector3; radius:single; rings:longint; slices:longint; color:TColor);cdecl;external cDllName; // Draw sphere wires
-procedure DrawCylinder(position:TVector3; radiusTop:single; radiusBottom:single; height:single; slices:longint; color:TColor);cdecl;external cDllName; // Draw a cylinder/cone
-procedure DrawCylinderWires(position:TVector3; radiusTop:single; radiusBottom:single; height:single; slices:longint;color:TColor);cdecl;external cDllName; // Draw a cylinder/cone wires
-procedure DrawPlane(centerPos:TVector3; size:TVector2; color:TColor);cdecl;external cDllName; // Draw a plane XZ
-procedure DrawRay(ray:TRay; color:TColor);cdecl;external cDllName; // Draw a ray line
-procedure DrawGrid(slices: longint; spacing:single);cdecl;external cDllName; // Draw a grid (centered at (0, 0, 0))
+(* Basic geometric 3D shapes drawing functions *)
+procedure DrawLine3D(startPos:TVector3; endPos:TVector3; color:TColor);cdecl;external cDllName;//Draw a line in 3D world space
+procedure DrawPoint3D(position:TVector3; color:TColor);cdecl;external cDllName;//Draw a point in 3D space, actually a small line
+procedure DrawCircle3D(center:TVector3; radius:single; rotationAxis:TVector3; rotationAngle:single; color:TColor);cdecl;external cDllName;//Draw a circle in 3D world space
+procedure DrawTriangle3D(v1:TVector3; v2:TVector3; v3:TVector3; color:TColor);cdecl;external cDllName;//Draw a color-filled triangle (vertex in counter-clockwise order!)
+procedure DrawTriangleStrip3D(points:PVector3; pointsCount:longint; color:TColor);cdecl;external cDllName;//Draw a triangle strip defined by points
+procedure DrawCube(position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName;//Draw cube
+procedure DrawCubeV(position:TVector3; size:TVector3; color:TColor);cdecl;external cDllName;//Draw cube (Vector version)
+procedure DrawCubeWires(position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName;//Draw cube wires
+procedure DrawCubeWiresV(position:TVector3; size:TVector3; color:TColor);cdecl;external cDllName;//Draw cube wires (Vector version)
+procedure DrawCubeTexture(texture:TTexture2D; position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName;//Draw cube textured
+procedure DrawSphere(centerPos:TVector3; radius:single; color:TColor);cdecl;external cDllName;//Draw sphere
+procedure DrawSphereEx(centerPos:TVector3; radius:single; rings:longint; slices:longint; color:TColor);cdecl;external cDllName;//Draw sphere with extended parameters }
+procedure DrawSphereWires(centerPos:TVector3; radius:single; rings:longint; slices:longint; color:TColor);cdecl;external cDllName;//Draw sphere wires
+procedure DrawCylinder(position:TVector3; radiusTop:single; radiusBottom:single; height:single; slices:longint; color:TColor);cdecl;external cDllName;//Draw a cylinder/cone
+procedure DrawCylinderWires(position:TVector3; radiusTop:single; radiusBottom:single; height:single; slices:longint; color:TColor);cdecl;external cDllName;//Draw a cylinder/cone wires
+procedure DrawPlane(centerPos:TVector3; size:TVector2; color:TColor);cdecl;external cDllName;//Draw a plane XZ
+procedure DrawRay(ray:TRay; color:TColor);cdecl;external cDllName;//Draw a ray line
+procedure DrawGrid(slices:longint; spacing:single);cdecl;external cDllName;//Draw a grid (centered at (0, 0, 0))
 
 //------------------------------------------------------------------------------------
 // TModel 3d Loading and Drawing Functions (Module: models)
 //------------------------------------------------------------------------------------
-// TModel loading/unloading functions
-function LoadModel(filename: PChar): TModel;cdecl;external cDllName; // Load model from files (meshes and materials)
-function LoadModelFromMesh(mesh: TMesh): TModel;cdecl;external cDllName; // Load model from generated mesh (default material)
-procedure UnloadModel(model: TModel);cdecl;external cDllName; // Unload model from memory (RAM and/or VRAM)
-procedure UnloadModelKeepMeshes(model:TModel);cdecl;external cDllName; // Unload model (but not meshes) from memory (RAM and/or VRAM)
 
-// TMesh loading/unloading functions
-procedure UploadMesh(var mesh:TMesh; dynamic_: boolean);cdecl;external cDllName; // Upload vertex data into GPU and provided VAO/VBO ids
-procedure UpdateMeshBuffer(mesh:TMesh; index:longint; data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName; // Update mesh vertex data in GPU for a specific buffer index
-procedure DrawMesh(mesh:TMesh; material:TMaterial; transform:TMatrix);cdecl;external cDllName; // Draw a 3d mesh with material and transform
-procedure DrawMeshInstanced(mesh:TMesh; material:TMaterial; var transforms:TMatrix; instances:longint);cdecl;external cDllName;  // Draw multiple mesh instances with material and different transforms
-procedure UnloadMesh(mesh:TMesh);cdecl;external cDllName; // Unload mesh data from CPU and GPU
-function ExportMesh(mesh:TMesh; fileName:Pchar):boolean;cdecl;external cDllName;  // Export mesh data to file, returns true on success
+(* Model management functions *)
+function LoadModel(fileName:Pchar):TModel;cdecl;external cDllName;//Load model from files (meshes and materials)
+function LoadModelFromMesh(mesh:TMesh):TModel;cdecl;external cDllName;//Load model from generated mesh (default material)
+procedure UnloadModel(model:TModel);cdecl;external cDllName;//Unload model (including meshes) from memory (RAM and/or VRAM)
+procedure UnloadModelKeepMeshes(model:TModel);cdecl;external cDllName;//Unload model (but not meshes) from memory (RAM and/or VRAM)
+function GetModelBoundingBox(model:TModel):TBoundingBox;cdecl;external cDllName;//Compute model bounding box limits (considers all meshes)
 
-// Material loading/unloading functions
-function LoadMaterials(fileName:Pchar; var materialCount:longint): PMaterial;cdecl;external cDllName; // Load materials from model file
-function LoadMaterialDefault:TMaterial;cdecl;external cDllName; // Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)
-procedure UnloadMaterial(material:TMaterial);cdecl;external cDllName; // Unload material from GPU memory (VRAM)
-procedure SetMaterialTexture(var material:TMaterial; mapType:longint; texture:TTexture2D);cdecl;external cDllName; // Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)
-procedure SetModelMeshMaterial(var model:TModel; meshId:longint; materialId:longint);cdecl;external cDllName; // Check model animation skeleton match
+(* Model drawing functions *)
+procedure DrawModel(model:TModel; position:TVector3; scale:single; tint:TColor);cdecl;external cDllName;//Draw a model (with texture if set)
+procedure DrawModelEx(model:TModel; position:TVector3; rotationAxis:TVector3; rotationAngle:single; scale:TVector3; tint:TColor);cdecl;external cDllName;//Draw a model with extended parameters
+procedure DrawModelWires(model:TModel; position:TVector3; scale:single; tint:TColor);cdecl;external cDllName;//Draw a model wires (with texture if set)
+procedure DrawModelWiresEx(model:TModel; position:TVector3; rotationAxis:TVector3; rotationAngle:single; scale:TVector3; tint:TColor);cdecl;external cDllName;//Draw a model wires (with texture if set) with extended parameters
+procedure DrawBoundingBox(box:TBoundingBox; color:TColor);cdecl;external cDllName;//Draw bounding box (wires)
+procedure DrawBillboard(camera:TCamera; texture:TTexture2D; position:TVector3; size:single; tint:TColor);cdecl;external cDllName;//Draw a billboard texture
+procedure DrawBillboardRec(camera:TCamera; texture:TTexture2D; source:TRectangle; position:TVector3; size:TVector2; tint:TColor);cdecl;external cDllName;//Draw a billboard texture defined by source
+procedure DrawBillboardPro(camera:TCamera; texture:TTexture2D; source:TRectangle; position:TVector3; size:TVector2; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName;//Draw a billboard texture defined by source and rotation
 
-// Model animations loading/unloading functions
-function LoadModelAnimations(fileName:Pchar; var animsCount:longint):PModelAnimation;cdecl;external cDllName; // Load model animations from file
-procedure UpdateModelAnimation(model:TModel; anim:TModelAnimation; frame:longint);cdecl;external cDllName ;// Update model animation pose
-procedure UnloadModelAnimation(anim:TModelAnimation);cdecl;external cDllName; // Unload animation data
-procedure UnloadModelAnimations(var animations:TModelAnimation; count:dword);cdecl; external cDllName; // Unload animation array data
-function IsModelAnimationValid(model:TModel; anim:TModelAnimation):boolean;cdecl;external cDllName; // Check model animation skeleton match
+(* Mesh management functions *)
+procedure UploadMesh(mesh:PMesh; dynamic:boolean);cdecl;external cDllName;//Upload mesh vertex data in GPU and provide VAO/VBO ids
+procedure UpdateMeshBuffer(mesh:TMesh; index:longint; data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName;//Update mesh vertex data in GPU for a specific buffer index
+procedure UnloadMesh(mesh:TMesh);cdecl;external cDllName;//Unload mesh data from CPU and GPU
+procedure DrawMesh(mesh:TMesh; material:TMaterial; transform:TMatrix);cdecl;external cDllName;//Draw a 3d mesh with material and transform
+procedure DrawMeshInstanced(mesh:TMesh; material:TMaterial; transforms:PMatrix; instances:longint);cdecl;external cDllName;//Draw multiple mesh instances with material and different transforms
+function ExportMesh(mesh:TMesh; fileName:Pchar):boolean;cdecl;external cDllName;//Export mesh data to file, returns true on success
+function GetMeshBoundingBox(mesh:TMesh):TBoundingBox;cdecl;external cDllName;//Compute mesh bounding box limits
+procedure GenMeshTangents(mesh:PMesh);cdecl;external cDllName;//Compute mesh tangents
+procedure GenMeshBinormals(mesh:PMesh);cdecl;external cDllName;//Compute mesh binormals
 
-// TMesh generation functions
-function GenMeshCustom(vertexCount:longint; flags:longint):TMesh;cdecl;external cDllName; // Generate custom empty mesh (data initialized to 0)
-function GenMeshPoly(sides:longint; radius:single):TMesh;cdecl;external cDllName; // Generate polygonal mesh
-function GenMeshPlane(width:single; length:single; resX:longint; resZ:longint):TMesh;cdecl;external cDllName; // Generate plane mesh (with subdivisions)
-function GenMeshCube(width:single; height:single; length:single):TMesh;cdecl;external cDllName; // Generate cuboid mesh
-function GenMeshSphere(radius:single; rings:longint; slices:longint):TMesh;cdecl;external cDllName; // Generate sphere mesh (standard sphere)
-function GenMeshHemiSphere(radius:single; rings:longint; slices:longint):TMesh;cdecl;external cDllName; // Generate half-sphere mesh (no bottom cap)
-function GenMeshCylinder(radius:single; height:single; slices:longint):TMesh;cdecl;external cDllName; // Generate cylinder mesh
-function GenMeshTorus(radius:single; size:single; radSeg:longint; sides:longint):TMesh;cdecl;external cDllName; // Generate torus mesh
-function GenMeshKnot(radius:single; size:single; radSeg:longint; sides:longint):TMesh;cdecl;external cDllName; // Generate trefoil knot mesh
-function GenMeshHeightmap(heightMap:TImage; size:TVector3):TMesh;cdecl;external cDllName; // Generate heightmap mesh from image data
-function GenMeshCubicmap(cubicmap:TImage; cubeSize:TVector3):TMesh;cdecl;external cDllName; // Generate cubes-based map mesh from image data
+(* Mesh generation functions *)
+function GenMeshPoly(sides:longint; radius:single):TMesh;cdecl;external cDllName;//Generate polygonal mesh
+function GenMeshPlane(width:single; length:single; resX:longint; resZ:longint):TMesh;cdecl;external cDllName;//Generate plane mesh (with subdivisions)
+function GenMeshCube(width:single; height:single; length:single):TMesh;cdecl;external cDllName;//Generate cuboid mesh
+function GenMeshSphere(radius:single; rings:longint; slices:longint):TMesh;cdecl;external cDllName;//Generate sphere mesh (standard sphere)
+function GenMeshHemiSphere(radius:single; rings:longint; slices:longint):TMesh;cdecl;external cDllName;//Generate half-sphere mesh (no bottom cap)
+function GenMeshCylinder(radius:single; height:single; slices:longint):TMesh;cdecl;external cDllName;//Generate cylinder mesh
+function GenMeshCone(radius:single; height:single; slices:longint):TMesh;cdecl;external cDllName;//Generate cone/pyramid mesh
+function GenMeshTorus(radius:single; size:single; radSeg:longint; sides:longint):TMesh;cdecl;external cDllName;//Generate torus mesh
+function GenMeshKnot(radius:single; size:single; radSeg:longint; sides:longint):TMesh;cdecl;external cDllName;//Generate trefoil knot mesh
+function GenMeshHeightmap(heightmap:TImage; size:TVector3):TMesh;cdecl;external cDllName;//Generate heightmap mesh from image data
+function GenMeshCubicmap(cubicmap:TImage; cubeSize:TVector3):TMesh;cdecl;external cDllName;//Generate cubes-based map mesh from image data
 
-// TMesh manipulation functions
-function MeshBoundingBox(mesh:TMesh): TBoundingBox;cdecl;external cDllName;// Compute mesh bounding box limits
-procedure MeshTangents(var mesh:TMesh);cdecl;external cDllName; // Compute mesh tangents
-procedure MeshBinormals(var mesh:TMesh);cdecl;external cDllName; // Compute mesh binormals
+(* Material loading/unloading functions *)
+function LoadMaterials(fileName:Pchar; materialCount:Plongint):PMaterial;cdecl;external cDllName;//Load materials from model file
+function LoadMaterialDefault:TMaterial;cdecl;external cDllName;//Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)
+procedure UnloadMaterial(material:TMaterial);cdecl;external cDllName;//Unload material from GPU memory (VRAM)
+procedure SetMaterialTexture(material:PMaterial; mapType:longint; texture:TTexture2D);cdecl;external cDllName;//Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...) }
+procedure SetModelMeshMaterial(model:PModel; meshId:longint; materialId:longint);cdecl;external cDllName;//Set material for a mesh
 
-// TModel drawing functions
-procedure DrawModel(model:TModel; position:TVector3; scale:single; tint:TColor);cdecl;external cDllName; // Draw a model (with texture if set)
-procedure DrawModelEx(model:TModel; position:TVector3; rotationAxis:TVector3; rotationAngle:single; scale:TVector3; tint:TColor);cdecl;external cDllName; // Draw a model with extended parameters
-procedure DrawModelWires(model:TModel; position:TVector3; scale:single; tint:TColor);cdecl;external cDllName;  // Draw a model wires (with texture if set)
-procedure DrawModelWiresEx(model:TModel; position:TVector3; rotationAxis:TVector3; rotationAngle:single; scale:TVector3; tint:TColor);cdecl;external cDllName; // Draw a model wires (with texture if set) with extended parameters
-procedure DrawBoundingBox(box:TBoundingBox; color:TColor);cdecl;external cDllName; // Draw bounding box (wires)
-procedure DrawBillboard(camera:TCamera; texture:TTexture2D; center:TVector3; size:single; tint:TColor);cdecl;external cDllName; // Draw a billboard texture
-procedure DrawBillboardRec(camera:TCamera; texture:TTexture2D; source:TRectangle; center:TVector3; size:single; tint:TColor);cdecl;external cDllName; // Draw a billboard texture defined by sourceRec
+(* Model animations loading/unloading functions *)
+function LoadModelAnimations(fileName:Pchar; animsCount:Plongint):PModelAnimation;cdecl;external cDllName;//Load model animations from file
+procedure UpdateModelAnimation(model:TModel; anim:TModelAnimation; frame:longint);cdecl;external cDllName;//Update model animation pose
+procedure UnloadModelAnimation(anim:TModelAnimation);cdecl;external cDllName;//Unload animation data
+procedure UnloadModelAnimations(animations:PModelAnimation; count:dword);cdecl;external cDllName;//Unload animation array data
+function IsModelAnimationValid(model:TModel; anim:TModelAnimation):boolean;cdecl;external cDllName;//Check model animation skeleton match
 
-// Collision detection functions
-function CheckCollisionSpheres(center1:TVector3; radius1:single; center2:TVector3; radius2:single): boolean;cdecl;external cDllName; // Detect collision between two spheres
-function CheckCollisionBoxes(box1:TBoundingBox; box2:TBoundingBox): boolean;cdecl;external cDllName; // Detect collision between two bounding boxes
-function CheckCollisionBoxSphere(box:TBoundingBox; center:TVector3; radius:single): boolean;cdecl;external cDllName; // Detect collision between box and sphere
-function CheckCollisionRaySphere(ray:TRay; center:TVector3; radius:single): boolean;cdecl;external cDllName; // Detect collision between ray and sphere
-function CheckCollisionRaySphereEx(ray:TRay; center:TVector3; radius:single; var collisionPoint:TVector3): boolean;cdecl;external cDllName; // Detect collision between ray and sphere, returns collision point
-function CheckCollisionRayBox(ray:TRay; box: TBoundingBox): boolean;cdecl;external cDllName; // Detect collision between ray and box
-function GetCollisionRayMesh(ray:TRay; mesh:TMesh; transform:TMatrix):TRayHitInfo;cdecl;external cDllName; // Get collision info between ray and mesh
-function GetCollisionRayModel(ray:TRay; model:TModel): TRayHitInfo;cdecl;external cDllName; // Get collision info between ray and model
-function GetCollisionRayTriangle(ray:TRay; p1:TVector3; p2:TVector3; p3:TVector3): TRayHitInfo;cdecl;external cDllName; // Get collision info between ray and triangle
-function GetCollisionRayGround(ray: TRay; groundHeight: single): TRayHitInfo;cdecl;external cDllName; // Get collision info between ray and ground plane (Y-normal plane)
-
+(* Collision detection functions *)
+function CheckCollisionSpheres(center1:TVector3; radius1:single; center2:TVector3; radius2:single):boolean;cdecl;external cDllName;//Check collision between two spheres
+function CheckCollisionBoxes(box1:TBoundingBox; box2:TBoundingBox):boolean;cdecl;external cDllName;//Check collision between two bounding boxes
+function CheckCollisionBoxSphere(box:TBoundingBox; center:TVector3; radius:single):boolean;cdecl;external cDllName;//Check collision between box and sphere
+function GetRayCollisionSphere(ray:TRay; center:TVector3; radius:single):TRayCollision;cdecl;external cDllName;//Get collision info between ray and sphere
+function GetRayCollisionBox(ray:TRay; box:TBoundingBox):TRayCollision;cdecl;external cdllName;//Get collision info between ray and box
+function GetRayCollisionModel(ray:TRay; model:TModel):TRayCollision;cdecl;external cdllName;//Get collision info between ray and model
+function GetRayCollisionMesh(ray:TRay; mesh:TMesh; transform:TMatrix):TRayCollision;cdecl;external cdllName;//Get collision info between ray and mesh
+function GetRayCollisionTriangle(ray:TRay; p1:TVector3; p2:TVector3; p3:TVector3):TRayCollision;cdecl;external cDllName;//Get collision info between ray and triangle
+function GetRayCollisionQuad(ray:TRay; p1:TVector3; p2:TVector3; p3:TVector3; p4:TVector3):TRayCollision;cdecl;external cDllName;//Get collision info between ray and quad
 
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
 //------------------------------------------------------------------------------------
-// Audio device management functions
-procedure InitAudioDevice;cdecl;external cDllName; // Initialize audio device and context
-procedure CloseAudioDevice;cdecl;external cDllName; // Close the audio device and context
-function IsAudioDeviceReady: boolean;cdecl;external cDllName; // Check if audio device has been initialized successfully
-procedure SetMasterVolume(volume:single);cdecl;external cDllName; // Set master volume (listener)
 
-// TWave/TSound loading/unloading functions
-function LoadWave(fileName:Pchar):TWave;cdecl; external cDllName; // Load wave data from file
-function LoadWaveFromMemory(fileType:Pchar; var fileData:byte; dataSize:longint): TWave;cdecl;external cDllName; // Load wave from memory buffer, fileType refers to extension: i.e. ".wav"
-function LoadSound(fileName:Pchar): TSound;cdecl;external cDllName; // Load sound from file
-function LoadSoundFromWave(wave: TWave): TSound;cdecl;external cDllName; // Load sound from wave data
-procedure UpdateSound(sound:TSound; data:pointer; samplesCount:longint);cdecl;external cDllName; // Update sound buffer with new data
-procedure UnloadWave(wave: TWave);cdecl;external cDllName; // Unload wave data
-procedure UnloadSound(sound: TSound);cdecl;external cDllName; // Unload sound
-function ExportWave(wave:TWave; fileName:Pchar): boolean;cdecl;external cDllName;// Export wave data to file
-function ExportWaveAsCode(wave: TWave; fileName: Pchar):boolean ;cdecl;external cDllName; // Export wave sample data to code (.h)
+(* Audio device management functions *)
+procedure InitAudioDevice;cdecl;external cDllName;//Initialize audio device and context
+procedure CloseAudioDevice;cdecl;external cDllName;//Close the audio device and context
+function IsAudioDeviceReady:boolean;cdecl;external cDllName;//Check if audio device has been initialized successfully
+procedure SetMasterVolume(volume:single);cdecl;external cDllName;//Set master volume (listener)
 
-// TWave/TSound management functions
-procedure PlaySound(sound: TSound);cdecl;external cDllName; // Play a sound
-procedure StopSound(sound: TSound);cdecl;external cDllName; // Stop playing a sound
-procedure PauseSound(sound: TSound);cdecl;external cDllName; // Pause a sound
-procedure ResumeSound(sound: TSound);cdecl;external cDllName; // Resume a paused sound
-procedure PlaySoundMulti(sound: TSound);cdecl;external cDllName; // Play a sound (using multichannel buffer pool)
-procedure StopSoundMulti;cdecl;external cDllName; // Stop any sound playing (using multichannel buffer pool)
-function GetSoundsPlaying: longint;cdecl;external cDllName; // Get number of sounds playing in the multichannel
-function IsSoundPlaying(sound: TSound): boolean;cdecl;external cDllName; // Check if a sound is currently playing
-procedure SetSoundVolume(sound:TSound; volume:single);cdecl;external cDllName; // Set volume for a sound (1.0 is max level)
-procedure SetSoundPitch(sound:TSound; pitch:single);cdecl;external cDllName; // Set pitch for a sound (1.0 is base level)
-procedure WaveFormat(var wave:TWave; sampleRate:longint; sampleSize:longint; channels:longint);cdecl;external cDllName; // Convert wave data to desired format
-function WaveCopy(wave: TWave): TWave;cdecl;external cDllName; // Copy a wave to a new wave
-procedure WaveCrop(var wave:TWave; initSample:longint; finalSample:longint);cdecl;external cDllName; // Crop a wave to defined samples range
-function LoadWaveSamples(wave: TWave): PSingle;cdecl;external cDllName; /// Load samples data from wave as a floats array
-procedure UnloadWaveSamples(var samples:single);cdecl;external cDllName; // Unload samples data loaded with LoadWaveSamples()
+(* Wave/Sound loading/unloading functions *)
+function LoadWave(fileName:Pchar):TWave;cdecl;external cDllName;//Load wave data from file
+function LoadWaveFromMemory(fileType:Pchar; fileData:Pbyte; dataSize:longint):TWave;cdecl;external cdllName;//Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
+function LoadSound(fileName:Pchar):TSound;cdecl;external cDllName;//Load sound from file
+function LoadSoundFromWave(wave:TWave):TSound;cdecl;external cDllName;//Load sound from wave data
+procedure UpdateSound(sound:TSound; data:pointer; samplesCount:longint);cdecl;external cdllName;//Update sound buffer with new data
+procedure UnloadWave(wave:TWave);cdecl;external cDllName;//Unload wave data
+procedure UnloadSound(sound:TSound);cdecl;external cDllName;//Unload sound
+function ExportWave(wave:TWave; fileName:Pchar):boolean;cdecl;external cDllName;//Export wave data to file, returns true on success
+function ExportWaveAsCode(wave:TWave; fileName:Pchar):boolean;cdecl;external cDllName;//Export wave sample data to code (.h), returns true on success
 
-// Music management functions
-function LoadMusicStream(fileName:Pchar): TMusic;cdecl;external cDllName; // Load music stream from file
-function LoadMusicStreamFromMemory(fileType:Pchar; var data:byte; dataSize:longint): TMusic;cdecl;external cDllName; // Load music stream from data
-procedure UnloadMusicStream(music: TMusic);cdecl;external cDllName; // Unload music stream
-procedure PlayMusicStream(music: TMusic);cdecl;external cDllName; // Start music playing
-function IsMusicPlaying(music: TMusic): boolean;cdecl;external cDllName; // Check if music is playing
-procedure UpdateMusicStream(music: TMusic);cdecl;external cDllName; // Updates buffers for music streaming
-procedure StopMusicStream(music: TMusic);cdecl;external cDllName; // Stop music playing
-procedure PauseMusicStream(music: TMusic);cdecl;external cDllName; // Pause music playing
-procedure ResumeMusicStream(music: TMusic);cdecl;external cDllName; // Resume playing paused music
-procedure SetMusicVolume(music: TMusic; volume: single);cdecl;external cDllName; // Set volume for music (1.0 is max level)
-procedure SetMusicPitch(music: TMusic; pitch: single);cdecl;external cDllName; // Set pitch for a music (1.0 is base level)
-function GetMusicTimeLength(music: TMusic): single;cdecl;external cDllName; // Get music time length (in seconds)
-function GetMusicTimePlayed(music: TMusic): single;cdecl;external cDllName; // Get current music time played (in seconds)
+(* Wave/Sound management functions *)
+procedure PlaySound(sound:TSound);cdecl;external cDllName;//Play a sound
+procedure StopSound(sound:TSound);cdecl;external cDllName;//Stop playing a sound
+procedure PauseSound(sound:TSound);cdecl;external cDllName;//Pause a sound
+procedure ResumeSound(sound:TSound);cdecl;external cDllName;//Resume a paused sound
+procedure PlaySoundMulti(sound:TSound);cdecl;external cDllName;//Play a sound (using multichannel buffer pool)
+procedure StopSoundMulti;cdecl;external cDllName;//Stop any sound playing (using multichannel buffer pool)
+function GetSoundsPlaying:longint;cdecl;external cDllName;//Get number of sounds playing in the multichannel
+function IsSoundPlaying(sound:TSound):boolean;cdecl;external cDllName;//Check if a sound is currently playing
+procedure SetSoundVolume(sound:TSound; volume:single);cdecl;external cDllName;//Set volume for a sound (1.0 is max level)
+procedure SetSoundPitch(sound:TSound; pitch:single);cdecl;external cDllName;//Set pitch for a sound (1.0 is base level)
+procedure WaveFormat(wave:PWave; sampleRate:longint; sampleSize:longint; channels:longint);cdecl;external cDllName;//Convert wave data to desired format
+function WaveCopy(wave:TWave):TWave;cdecl;external cDllName;//Copy a wave to a new wave
+procedure WaveCrop(wave:PWave; initSample:longint; finalSample:longint);cdecl;external cDllName; //Crop a wave to defined samples range
+function LoadWaveSamples(wave:TWave):Psingle;cdecl;external cDllName;//Load samples data from wave as a floats array
+procedure UnloadWaveSamples(samples:Psingle);cdecl;external cDllName;//Unload samples data loaded with LoadWaveSamples()
 
-// TAudioStream management functions
-function InitAudioStream(sampleRate:dword; sampleSize:dword; channels: dword): TAudioStream;cdecl;external cDllName; // Init audio stream (to stream raw audio pcm data)
-procedure UpdateAudioStream(stream: TAudioStream; data: Pointer; samplesCount: longint);cdecl;external cDllName; // Update audio stream buffers with data
-procedure CloseAudioStream(stream: TAudioStream);cdecl;external cDllName; // Close audio stream and free memory
-function IsAudioStreamProcessed(stream: TAudioStream): boolean;cdecl;external cDllName; // Check if any audio stream buffers requires refill
-procedure PlayAudioStream(stream: TAudioStream);cdecl;external cDllName; // Play audio stream
-procedure PauseAudioStream(stream: TAudioStream);cdecl;external cDllName; // Pause audio stream
-procedure ResumeAudioStream(stream: TAudioStream);cdecl;external cDllName; // Resume audio stream
-function IsAudioStreamPlaying(stream: TAudioStream): boolean;cdecl;external cDllName; // Check if audio stream is playing
-procedure StopAudioStream(stream: TAudioStream);cdecl;external cDllName; // Stop audio stream
-procedure SetAudioStreamVolume(stream: TAudioStream; volume: single);cdecl;external cDllName; // Set volume for audio stream (1.0 is max level)
-procedure SetAudioStreamPitch(stream: TAudioStream; pitch: single);cdecl;external cDllName; // Set pitch for audio stream (1.0 is base level)
-procedure SetAudioStreamBufferSizeDefault(size:longint);cdecl;external cDllName; // Default size for new audio streams
+(* Music management functions *)
+function LoadMusicStream(fileName:Pchar):TMusic;cdecl;external cDllName;//Load music stream from file
+function LoadMusicStreamFromMemory(fileType:Pchar; data:Pbyte; dataSize:longint):TMusic;cdecl;external cDllName;//Load music stream from data
+procedure UnloadMusicStream(music:TMusic);cdecl;external cDllName;//Unload music stream
+procedure PlayMusicStream(music:TMusic);cdecl;external cDllName;//Start music playing
+function IsMusicStreamPlaying(music:TMusic):boolean;cdecl;external cDllName;//Check if music is playing
+procedure UpdateMusicStream(music:TMusic);cdecl;external cDllName;//Updates buffers for music streaming
+procedure StopMusicStream(music:TMusic);cdecl;external cDllName;//Stop music playing
+procedure PauseMusicStream(music:TMusic);cdecl;external cDllName;//Pause music playing
+procedure ResumeMusicStream(music:TMusic);cdecl;external cDllName;//Resume playing paused music
+procedure SetMusicVolume(music:TMusic; volume:single);cdecl;external cDllName;//Set volume for music (1.0 is max level)
+procedure SetMusicPitch(music:TMusic; pitch:single);cdecl;external cDllName;//Set pitch for a music (1.0 is base level)
+function GetMusicTimeLength(music:TMusic):single;cdecl;external cDllName;//Get music time length (in seconds)
+function GetMusicTimePlayed(music:TMusic):single;cdecl;external cDllName;//Get current music time played (in seconds)
+
+(* AudioStream management functions *)
+function LoadAudioStream(sampleRate:dword; sampleSize:dword; channels:dword):TAudioStream;cdecl;external cDllName;//Load audio stream (to stream raw audio pcm data) }
+procedure UnloadAudioStream(stream:TAudioStream);cdecl;external cDllName;//Unload audio stream and free memory
+procedure UpdateAudioStream(stream:TAudioStream; data:pointer; framesCount:longint);cdecl;external cDllName;// Update audio stream buffers with data
+function IsAudioStreamProcessed(stream:TAudioStream):boolean;cdecl;external cDllName;// Check if any audio stream buffers requires refill
+procedure PlayAudioStream(stream:TAudioStream);cdecl;external cDllName;// Play audio stream
+procedure PauseAudioStream(stream:TAudioStream);cdecl;external cDllName;// Pause audio stream
+procedure ResumeAudioStream(stream:TAudioStream);cdecl;external cDllName;//Resume audio stream
+function IsAudioStreamPlaying(stream:TAudioStream):boolean;cdecl;external cDllName;// Check if audio stream is playing
+procedure StopAudioStream(stream:TAudioStream);cdecl;external cDllName;// Stop audio stream
+procedure SetAudioStreamVolume(stream:TAudioStream; volume:single);cdecl;external cDllName;// Set volume for audio stream (1.0 is max level)
+procedure SetAudioStreamPitch(stream:TAudioStream; pitch:single);cdecl;external cDllName;// Set pitch for audio stream (1.0 is base level)
+procedure SetAudioStreamBufferSizeDefault(size:longint);cdecl;external cDllName;// Default size for new audio streams
+
 
 // Custom Misc Functions to help simplify a few things
 function Vector2Create(aX: single; aY: single): TVector2;
