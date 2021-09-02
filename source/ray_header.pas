@@ -997,18 +997,18 @@ function GetTouchPosition(index:longint):TVector2;cdecl;external cDllName; // Re
 // Gestures and Touch Handling Functions (Module: gestures)
 //------------------------------------------------------------------------------------
 
-procedure SetGesturesEnabled(flags:dword);cdecl;external cDllName; // Enable a set of gestures using flags
-function IsGestureDetected(gesture:longint):boolean;cdecl;external cDllName; // Check if a gesture have been detected
-function GetGestureDetected:longint;cdecl;external cDllName; // Get latest detected gesture
-function GetTouchPointsCount:longint;cdecl;external cDllName; // Get touch points count
-function GetGestureHoldDuration:single;cdecl;external cDllName; // Get gesture hold time in milliseconds
-function GetGestureDragVector:TVector2;cdecl;external cDllName; // Get gesture drag vector
-function GetGestureDragAngle:single;cdecl;external cDllName; // Get gesture drag angle
-function GetGesturePinchVector:TVector2;cdecl;external cDllName; // Get gesture pinch delta
-function GetGesturePinchAngle:single;cdecl;external cDllName; // Get gesture pinch angle
+procedure SetGesturesEnabled(flags:dword);cdecl;external cDllName;//Enable a set of gestures using flags
+function IsGestureDetected(gesture:longint):boolean;cdecl;external cDllName;//Check if a gesture have been detected
+function GetGestureDetected:longint;cdecl;external cDllName;//Get latest detected gesture
+function GetTouchPointsCount:longint;cdecl;external cDllName;//Get touch points count
+function GetGestureHoldDuration:single;cdecl;external cDllName;//Get gesture hold time in milliseconds
+function GetGestureDragVector:TVector2;cdecl;external cDllName;//Get gesture drag vector
+function GetGestureDragAngle:single;cdecl;external cDllName;//Get gesture drag angle
+function GetGesturePinchVector:TVector2;cdecl;external cDllName;//Get gesture pinch delta
+function GetGesturePinchAngle:single;cdecl;external cDllName;//Get gesture pinch angle
 
 //------------------------------------------------------------------------------------
-// Camera System Functions (Module: Camera)
+// Camera System Functions (Module: camera)
 //------------------------------------------------------------------------------------
 
 procedure SetCameraMode(camera:TCamera; mode:longint);cdecl;external cDllName;//Set camera mode (multiple camera modes available)
