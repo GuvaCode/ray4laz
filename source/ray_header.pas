@@ -1024,170 +1024,172 @@ procedure SetCameraMoveControls(keyFront:longint; keyBack:longint; keyRight:long
 // Set texture and rectangle to be used on shapes drawing
 // NOTE: It can be useful when using basic shapes and one single font,
 // defining a font char white rectangle would allow drawing everything in a single draw call
-procedure SetShapesTexture(texture:TTexture2D; source:TRectangle);cdecl;external cDllName;
+procedure SetShapesTexture(texture:TTexture2D; source:TRectangle);cdecl;external cDllName;//Set texture and rectangle to be used on shapes drawing
 
-// Basic shapes drawing functions
-procedure DrawPixel(posX:longint; posY:longint; color:TColor);cdecl;external cDllName; // Draw a pixel
-procedure DrawPixelV(position:TVector2; color:TColor);cdecl;external cDllName; // Draw a pixel (Vector version)
-procedure DrawLine(startPosX:longint; startPosY:longint; endPosX:longint; endPosY:longint; color:TColor);cdecl;external cDllName; // Draw a line
-procedure DrawLineV(startPos:TVector2; endPos:TVector2; color:TColor);cdecl;external cDllName; // Draw a line (Vector version)
-procedure DrawLineEx(startPos:TVector2; endPos:TVector2; thick:single; color:TColor);cdecl;external cDllName; // Draw a line defining thickness
-procedure DrawLineBezier(startPos:TVector2; endPos:TVector2; thick:single; color:TColor);cdecl;external cDllName; // Draw a line using cubic-bezier curves in-out
-procedure DrawLineBezierQuad(startPos:TVector2; endPos:TVector2; controlPos:TVector2; thick:single; color:TColor);cdecl;external cDllName; //Draw line using quadratic bezier curves with a control point
-procedure DrawLineStrip(var points:TVector2; pointsCount:longint; color:TColor);cdecl;external cDllName; // Draw lines sequence
-procedure DrawCircle(centerX:longint; centerY:longint; radius:single; color:TColor);cdecl;external cDllName; // Draw a color-filled circle
-procedure DrawCircleSector(center:TVector2; radius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName; // Draw a piece of a circle
-procedure DrawCircleSectorLines(center:TVector2; radius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName; // Draw circle sector outline
-procedure DrawCircleGradient(centerX:longint; centerY:longint; radius:single; color1:TColor; color2:TColor);cdecl;external cDllName; // Draw a gradient-filled circle
-procedure DrawCircleV(center:TVector2; radius:single; color:TColor);cdecl;external cDllName; // Draw a color-filled circle (Vector version)
-procedure DrawCircleLines(centerX:longint; centerY:longint; radius:single; color:TColor);cdecl;external cDllName; // Draw circle outline
-procedure DrawEllipse(centerX:longint; centerY:longint; radiusH:single; radiusV:single; color:TColor);cdecl;external cDllName; // Draw ellipse
-procedure DrawEllipseLines(centerX:longint; centerY:longint; radiusH:single; radiusV:single; color:TColor);cdecl;external cDllName; // Draw ellipse outline
-procedure DrawRing(center:TVector2; innerRadius:single; outerRadius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName; // Draw ring
-procedure DrawRingLines(center:TVector2; innerRadius:single; outerRadius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName; // Draw ring outline
-procedure DrawRectangle(posX:longint; posY:longint; width:longint; height:longint; color:TColor);cdecl;external cDllName; // Draw a color-filled rectangle
-procedure DrawRectangleV(position:TVector2; size:TVector2; color:TColor);cdecl;external cDllName; // Draw a color-filled rectangle (Vector version)
-procedure DrawRectangleRec(rec:TRectangle; color:TColor);cdecl;external cDllName; // Draw a color-filled rectangle
-procedure DrawRectanglePro(rec:TRectangle; origin:TVector2; rotation:single; color:TColor);cdecl;external cDllName; // Draw a color-filled rectangle with pro parameters
-procedure DrawRectangleGradientV(posX:longint; posY:longint; width:longint; height:longint; color1:TColor; color2:TColor);cdecl;external cDllName; // Draw a vertical-gradient-filled rectangle
-procedure DrawRectangleGradientH(posX:longint; posY:longint; width:longint; height:longint; color1:TColor; color2:TColor);cdecl;external cDllName; // Draw a horizontal-gradient-filled rectangle
-procedure DrawRectangleGradientEx(rec:TRectangle; col1:TColor; col2:TColor; col3:TColor; col4:TColor);cdecl;external cDllName; // Draw a gradient-filled rectangle with custom vertex colors
-procedure DrawRectangleLines(posX:longint; posY:longint; width:longint; height:longint; color:TColor);cdecl;external cDllName; // Draw rectangle outline
-procedure DrawRectangleLinesEx(rec:TRectangle; lineThick:longint; color:TColor);cdecl;external cDllName; // Draw rectangle outline with extended parameters
-procedure DrawRectangleRounded(rec:TRectangle; roundness:single; segments:longint; color:TColor);cdecl;external cDllName;  // Draw rectangle with rounded edges
-procedure DrawRectangleRoundedLines(rec:TRectangle; roundness:single; segments:longint; lineThick:longint; color:TColor);cdecl;external cDllName; // Draw rectangle with rounded edges outline
-procedure DrawTriangle(v1:TVector2; v2:TVector2; v3:TVector2; color:TColor);cdecl;external cDllName; // Draw a color-filled triangle (vertex in counter-clockwise order!)
-procedure DrawTriangleLines(v1:TVector2; v2:TVector2; v3:TVector2; color:TColor);cdecl;external cDllName; // Draw triangle outline (vertex in counter-clockwise order!)
-procedure DrawTriangleFan(var points:TVector2; pointsCount:longint; color:TColor);cdecl;external cDllName; // Draw a triangle fan defined by points (first vertex is the center)
-procedure DrawTriangleStrip(var points:TVector2; pointsCount:longint; color:TColor);cdecl;external cDllName; // Draw a triangle strip defined by points
-procedure DrawPoly(center:TVector2; sides:longint; radius:single; rotation:single; color:TColor);cdecl;external cDllName; // Draw a regular polygon (Vector version)
-procedure DrawPolyLines(center:TVector2; sides:longint; radius:single; rotation:single; color:TColor);cdecl;external cDllName; // Draw a polygon outline of n sides
+(* Basic shapes drawing functions *)
+procedure DrawPixel(posX:longint; posY:longint; color:TColor);cdecl;external cDllName;//Draw a pixel
+procedure DrawPixelV(position:TVector2; color:TColor);cdecl;external cDllName;//Draw a pixel (Vector version)
+procedure DrawLine(startPosX:longint; startPosY:longint; endPosX:longint; endPosY:longint; color:TColor);cdecl;external cDllName;//Draw a line
+procedure DrawLineV(startPos:TVector2; endPos:TVector2; color:TColor);cdecl;external cDllName;//Draw a line (Vector version)
+procedure DrawLineEx(startPos:TVector2; endPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;//Draw a line defining thickness
+procedure DrawLineBezier(startPos:TVector2; endPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;//Draw a line using cubic-bezier curves in-out
+procedure DrawLineBezierQuad(startPos:TVector2; endPos:TVector2; controlPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;//Draw line using quadratic bezier curves with a control point
+procedure DrawLineStrip(points:PVector2; pointsCount:longint; color:TColor);cdecl;external cDllName;//Draw lines sequence
+procedure DrawCircle(centerX:longint; centerY:longint; radius:single; color:TColor);cdecl;external cDllName;//Draw a color-filled circle
+procedure DrawCircleSector(center:TVector2; radius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName;//Draw a piece of a circle
+procedure DrawCircleSectorLines(center:TVector2; radius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName;//Draw circle sector outline
+procedure DrawCircleGradient(centerX:longint; centerY:longint; radius:single; color1:TColor; color2:TColor);cdecl;external cDllName;//Draw a gradient-filled circle
+procedure DrawCircleV(center:TVector2; radius:single; color:TColor);cdecl;external cDllName;//Draw a color-filled circle (Vector version)
+procedure DrawCircleLines(centerX:longint; centerY:longint; radius:single; color:TColor);cdecl;external cDllName;//Draw circle outline
+procedure DrawEllipse(centerX:longint; centerY:longint; radiusH:single; radiusV:single; color:TColor);cdecl;external cDllName;//Draw ellipse
+procedure DrawEllipseLines(centerX:longint; centerY:longint; radiusH:single; radiusV:single; color:TColor);cdecl;external cDllName;//Draw ellipse outline
+procedure DrawRing(center:TVector2; innerRadius:single; outerRadius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName;//Draw ring
+procedure DrawRingLines(center:TVector2; innerRadius:single; outerRadius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName;//Draw ring outline
+procedure DrawRectangle(posX:longint; posY:longint; width:longint; height:longint; color:TColor);cdecl;external cDllName;//Draw a color-filled rectangle
+procedure DrawRectangleV(position:TVector2; size:TVector2; color:TColor);cdecl;external cDllName;//Draw a color-filled rectangle (Vector version)
+procedure DrawRectangleRec(rec:TRectangle; color:TColor);cdecl;external cDllName;//Draw a color-filled rectangle
+procedure DrawRectanglePro(rec:TRectangle; origin:TVector2; rotation:single; color:TColor);cdecl;external cDllName;//Draw a color-filled rectangle with pro parameters
+procedure DrawRectangleGradientV(posX:longint; posY:longint; width:longint; height:longint; color1:TColor; color2:TColor);cdecl;external cDllName;//Draw a vertical-gradient-filled rectangle
+procedure DrawRectangleGradientH(posX:longint; posY:longint; width:longint; height:longint; color1:TColor; color2:TColor);cdecl;external cDllName;//Draw a horizontal-gradient-filled rectangle
+procedure DrawRectangleGradientEx(rec:TRectangle; col1:TColor; col2:TColor; col3:TColor; col4:TColor);cdecl;external cDllName;//Draw a gradient-filled rectangle with custom vertex colors
+procedure DrawRectangleLines(posX:longint; posY:longint; width:longint; height:longint; color:TColor);cdecl;external cDllName;//Draw rectangle outline
+procedure DrawRectangleLinesEx(rec:TRectangle; lineThick:single; color:TColor);cdecl;external cDllName;//Draw rectangle outline with extended parameters
+procedure DrawRectangleRounded(rec:TRectangle; roundness:single; segments:longint; color:TColor);cdecl;external cDllName;//Draw rectangle with rounded edges
+procedure DrawRectangleRoundedLines(rec:TRectangle; roundness:single; segments:longint; lineThick:single; color:TColor);cdecl;external cDllName;//Draw rectangle with rounded edges outline
+procedure DrawTriangle(v1:TVector2; v2:TVector2; v3:TVector2; color:TColor);cdecl;external cDllName;//Draw a color-filled triangle (vertex in counter-clockwise order!)
+procedure DrawTriangleLines(v1:TVector2; v2:TVector2; v3:TVector2; color:TColor);cdecl;external cDllName;//Draw triangle outline (vertex in counter-clockwise order!)
+procedure DrawTriangleFan(points:PVector2; pointsCount:longint; color:TColor);cdecl;external cDllName;//Draw a triangle fan defined by points (first vertex is the center)
+procedure DrawTriangleStrip(points:PVector2; pointsCount:longint; color:TColor);cdecl;external cDllName;//Draw a triangle strip defined by points
+procedure DrawPoly(center:TVector2; sides:longint; radius:single; rotation:single; color:TColor);cdecl;external cDllName;//Draw a regular polygon (Vector version)
+procedure DrawPolyLines(center:TVector2; sides:longint; radius:single; rotation:single; color:TColor);cdecl;external cDllName;//Draw a polygon outline of n sides
+procedure DrawPolyLinesEx(center:TVector2; sides:longint; radius:single; rotation:single; lineThick:single; color:TColor);cdecl;external cDllName;//Draw a polygon outline of n sides with extended parameters
 
-// Basic shapes collision detection functions
-function CheckCollisionRecs(rec1:TRectangle; rec2:TRectangle):boolean;cdecl;external cDllName; // Check collision between two rectangles
-function CheckCollisionCircles(center1:TVector2; radius1:single; center2:TVector2; radius2:single):boolean;cdecl;external cDllName; // Check collision between two circles
-function CheckCollisionCircleRec(center:TVector2; radius:single; rec:TRectangle):boolean;cdecl;external cDllName; // Check collision between circle and rectangle
-function CheckCollisionPointRec(point:TVector2; rec:TRectangle):boolean;cdecl;external cDllName; // Check if point is inside rectangle
-function CheckCollisionPointCircle(point:TVector2; center:TVector2; radius:single):boolean;cdecl;external cDllName; // Check if point is inside circle
-function CheckCollisionPointTriangle(point:TVector2; p1:TVector2; p2:TVector2; p3:TVector2):boolean;cdecl;external cDllName; // Check if point is inside a triangle
-function CheckCollisionLines(startPos1:TVector2; endPos1:TVector2; startPos2:TVector2; endPos2:TVector2; var collisionPoint:TVector2):boolean;cdecl;external cDllName; // Check the collision between two lines defined by two points each, returns collision point by reference
-function GetCollisionRec(rec1:TRectangle; rec2:TRectangle):TRectangle;cdecl;external cDllName; // Get collision rectangle for two rectangles collision
+(* Basic shapes collision detection functions *)
+function CheckCollisionRecs(rec1:TRectangle; rec2:TRectangle):boolean;cdecl;external cDllName;//Check collision between two rectangles
+function CheckCollisionCircles(center1:TVector2; radius1:single; center2:TVector2; radius2:single):boolean;cdecl;external cDllName;//Check collision between two circles
+function CheckCollisionCircleRec(center:TVector2; radius:single; rec:TRectangle):boolean;cdecl;external cDllName;//Check collision between circle and rectangle
+function CheckCollisionPointRec(point:TVector2; rec:TRectangle):boolean;cdecl;external cDllName;//Check if point is inside rectangle
+function CheckCollisionPointCircle(point:TVector2; center:TVector2; radius:single):boolean;cdecl;external cDllName;//Check if point is inside circle
+function CheckCollisionPointTriangle(point:TVector2; p1:TVector2; p2:TVector2; p3:TVector2):boolean;cdecl;external cDllName;//Check if point is inside a triangle
+function CheckCollisionLines(startPos1:TVector2; endPos1:TVector2; startPos2:TVector2; endPos2:TVector2; collisionPoint:PVector2):boolean;cdecl;external cDllName;//Check the collision between two lines defined by two points each, returns collision point by reference
+function GetCollisionRec(rec1:TRectangle; rec2:TRectangle):TRectangle;cdecl;external cDllName;//Get collision rectangle for two rectangles collision
 
 //------------------------------------------------------------------------------------
 // Texture Loading and Drawing Functions (Module: textures)
 //------------------------------------------------------------------------------------
-// Image loading functions
+
+(* Image loading functions *)
 // NOTE: This functions do not require GPU access
-function LoadImage(fileName:Pchar):TImage;cdecl;external cDllName; // Load image from file into CPU memory (RAM)
-function LoadImageRaw(fileName:Pchar; width:longint; height:longint; format:longint; headerSize:longint):TImage;cdecl;external cDllName; // Load image from RAW file data
-function LoadImageAnim(fileName:Pchar; var frames:longint):TImage;cdecl;external cDllName; // Load image sequence from file (frames appended to image.data)
-function LoadImageFromMemory(fileType:Pchar; var fileData:byte; dataSize:longint):TImage;cdecl;external cDllName; // Load image from memory buffer, fileType refers to extension: i.e. "png"
-procedure UnloadImage(image:TImage);cdecl;external cDllName; // Unload image from CPU memory (RAM)
-function ExportImage(image:TImage; fileName:Pchar):boolean;cdecl;external cDllName; // Export image data to file
-function ExportImageAsCode(image:TImage; fileName:Pchar):boolean;cdecl;external cDllName; // Export image as code file defining an array of bytes
+function LoadImage(fileName:Pchar):TImage;cdecl;external cDllName;//Load image from file into CPU memory (RAM)
+function LoadImageRaw(fileName:Pchar; width:longint; height:longint; format:longint; headerSize:longint):TImage;cdecl;external cDllName;//Load image from RAW file data
+function LoadImageAnim(fileName:Pchar; frames:Plongint):TImage;cdecl;external cDllName;//Load image sequence from file (frames appended to image.data)
+function LoadImageFromMemory(fileType:Pchar; fileData:Pbyte; dataSize:longint):TImage;cdecl;external cDllName;//Load image from memory buffer, fileType refers to extension: i.e. '.png'
+function LoadImageFromTexture(texture:TTexture2D):TImage;cdecl;external cDllName;//Load image from GPU texture data
+function LoadImageFromScreen:TImage;cdecl;external cDllName;//Load image from screen buffer and (screenshot)
+procedure UnloadImage(image:TImage);cdecl;external cDllName;//Unload image from CPU memory (RAM)
+function ExportImage(image:TImage; fileName:Pchar):boolean;cdecl;external cDllName;//Export image data to file, returns true on success
+function ExportImageAsCode(image:TImage; fileName:Pchar):boolean;cdecl;external cDllName;//Export image as code file defining an array of bytes, returns true on success
 
-// TImage generation functions
-function GenImageColor(width:longint; height:longint; color:TColor):TImage;cdecl;external cDllName; // Generate image: plain color
-function GenImageGradientV(width:longint; height:longint; top:TColor; bottom:TColor):TImage;cdecl;external cDllName; // Generate image: vertical gradient
-function GenImageGradientH(width:longint; height:longint; left:TColor; right:TColor):TImage;cdecl;external cDllName; // Generate image: horizontal gradient
-function GenImageGradientRadial(width:longint; height:longint; density:single; inner:TColor; outer:TColor):TImage;cdecl;external cDllName; // Generate image: radial gradient
-function GenImageChecked(width:longint; height:longint; checksX:longint; checksY:longint; col1:TColor; col2:TColor):TImage;cdecl;external cDllName; // Generate image: checked
-function GenImageWhiteNoise(width:longint; height:longint; factor:single):TImage;cdecl;external cDllName; // Generate image: white noise
-function GenImagePerlinNoise(width:longint; height:longint; offsetX:longint; offsetY:longint; scale:single):TImage;cdecl;external cDllName; // Generate image: perlin noise
-function GenImageCellular(width:longint; height:longint; tileSize:longint):TImage;cdecl;external cDllName; // Generate image: cellular algorithm. Bigger tileSize means bigger cells
+(* Image generation functions *)
+function GenImageColor(width:longint; height:longint; color:TColor):TImage;cdecl;external cDllName;//Generate image: plain color
+function GenImageGradientV(width:longint; height:longint; top:TColor; bottom:TColor):TImage;cdecl;external cDllName;//Generate image: vertical gradient
+function GenImageGradientH(width:longint; height:longint; left:TColor; right:TColor):TImage;cdecl;external cDllName;//Generate image: horizontal gradient
+function GenImageGradientRadial(width:longint; height:longint; density:single; inner:TColor; outer:TColor):TImage;cdecl;external cDllName;//Generate image: radial gradient
+function GenImageChecked(width:longint; height:longint; checksX:longint; checksY:longint; col1:TColor; col2:TColor):TImage;cdecl;external cDllName;//Generate image: checked
+function GenImageWhiteNoise(width:longint; height:longint; factor:single):TImage;cdecl;external cDllName;//Generate image: white noise
+function GenImagePerlinNoise(width:longint; height:longint; offsetX:longint; offsetY:longint; scale:single):TImage;cdecl;external cDllName;//Generate image: perlin noise
+function GenImageCellular(width:longint; height:longint; tileSize:longint):TImage;cdecl;external cDllName;//Generate image: cellular algorithm, bigger tileSize means bigger cells
 
-// TImage manipulation functions
-function ImageCopy(image:TImage):TImage;cdecl;external cDllName; // Create an image duplicate (useful for transformations)
-function ImageFromImage(image:TImage; rec:TRectangle):TImage;cdecl;external cDllName; // Create an image from another image piece
-function ImageText(text:Pchar; fontSize:longint; color:TColor):TImage;cdecl;external cDllName; // Create an image from text (default font)
-function ImageTextEx(font:TFont; text:Pchar; fontSize:single; spacing:single; tint:TColor):TImage;cdecl;external cDllName; // Create an image from text (custom sprite font)
-procedure ImageFormat(var image:TImage; newFormat:longint);cdecl;external cDllName; // Convert image data to desired format
-procedure ImageToPOT(var image:TImage; fill:TColor);cdecl;external cDllName; // Convert image to POT (power-of-two)
-procedure ImageCrop(var image:TImage; crop:TRectangle);cdecl;external cDllName; // Crop an image to a defined rectangle
-procedure ImageAlphaCrop(var image:TImage; threshold:single);cdecl;external cDllName; // Crop image depending on alpha value
-procedure ImageAlphaClear(var image:TImage; color:TColor; threshold:single);cdecl;external cDllName; // Clear alpha channel to desired color
-procedure ImageAlphaMask(var image:TImage; alphaMask:TImage);cdecl;external cDllName; // Apply alpha mask to image
-procedure ImageAlphaPremultiply(var image:TImage);cdecl;external cDllName; // Premultiply alpha channel
-procedure ImageResize(var image:TImage; newWidth:longint; newHeight:longint);cdecl;external cDllName; // Resize image (Bicubic scaling algorithm)
-procedure ImageResizeNN(var image:TImage; newWidth:longint; newHeight:longint);cdecl;external cDllName; // Resize image (Nearest-Neighbor scaling algorithm)
-procedure ImageResizeCanvas(var image:TImage; newWidth:longint; newHeight:longint; offsetX:longint; offsetY:longint; fill:TColor);cdecl;external cDllName; // Resize canvas and fill with color
-procedure ImageMipmaps(var image:TImage);cdecl;external cDllName; // Generate all mipmap levels for a provided image
-procedure ImageDither(var image:TImage; rBpp:longint; gBpp:longint; bBpp:longint; aBpp:longint);cdecl;external cDllName; // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
-procedure ImageFlipVertical(var image:TImage);cdecl;external cDllName; // Flip image vertically
-procedure ImageFlipHorizontal(var image:TImage);cdecl;external cDllName; // Flip image horizontally
-procedure ImageRotateCW(var image:TImage);cdecl;external cDllName; // Rotate image clockwise 90deg
-procedure ImageRotateCCW(var image:TImage);cdecl;external cDllName; // Rotate image counter-clockwise 90deg
-procedure ImageColorTint(var image:TImage; color:TColor);cdecl;external cDllName; // Modify image color: tint
-procedure ImageColorInvert(var image:TImage);cdecl;external cDllName; // Modify image color: invert
-procedure ImageColorGrayscale(var image:TImage);cdecl;external cDllName; // Modify image color: grayscale
-procedure ImageColorContrast(var image:TImage; contrast:single);cdecl;external cDllName; // Modify image color: contrast (-100 to 100)
-procedure ImageColorBrightness(var image:TImage; brightness:longint);cdecl;external cDllName; // Modify image color: brightness (-255 to 255)
-procedure ImageColorReplace(var image:TImage; color:TColor; replace:TColor);cdecl;external cDllName; // Modify image color: replace color
-function LoadImageColors(image:TImage):PColor;cdecl;external cDllName; // Load color data from image as a Color array (RGBA - 32bit)
-function LoadImagePalette(image:TImage; maxPaletteSize:longint; var colorsCount:longint):PColor;cdecl;external cDllName; // Load colors palette from image as a Color array (RGBA - 32bit)
-procedure UnloadImageColors(var colors:TColor);cdecl;external cDllName; // Unload color data loaded with LoadImageColors()
-procedure UnloadImagePalette(var colors:TColor);cdecl;external cDllName; // Unload colors palette loaded with LoadImagePalette()
-function GetImageAlphaBorder(image:TImage; threshold:single):TRectangle;cdecl;external cDllName; // Get image alpha border rectangle
+(* Image manipulation functions *)
+function ImageCopy(image:TImage):TImage;cdecl;external cDllName;//Create an image duplicate (useful for transformations)
+function ImageFromImage(image:TImage; rec:TRectangle):TImage;cdecl;external cDllName;//Create an image from another image piece
+function ImageText(text:Pchar; fontSize:longint; color:TColor):TImage;cdecl;external cDllName;//Create an image from text (default font)
+function ImageTextEx(font:TFont; text:Pchar; fontSize:single; spacing:single; tint:TColor):TImage;cdecl;external cDllName;//Create an image from text (custom sprite font)
+procedure ImageFormat(image:PImage; newFormat:longint);cdecl;external cDllName;//Convert image data to desired format
+procedure ImageToPOT(image:PImage; fill:TColor);cdecl;external cDllName;//Convert image to POT (power-of-two)
+procedure ImageCrop(image:PImage; crop:TRectangle);cdecl;external cDllName;//Crop an image to a defined rectangle
+procedure ImageAlphaCrop(image:PImage; threshold:single);cdecl;external cDllName;//Crop image depending on alpha value
+procedure ImageAlphaClear(image:PImage; color:TColor; threshold:single);cdecl;external cDllName;//Clear alpha channel to desired color
+procedure ImageAlphaMask(image:PImage; alphaMask:TImage);cdecl;external cDllName;//Apply alpha mask to image
+procedure ImageAlphaPremultiply(image:PImage);cdecl;external cDllName;//Premultiply alpha channel
+procedure ImageResize(image:PImage; newWidth:longint; newHeight:longint);cdecl;external cDllName;//Resize image (Bicubic scaling algorithm)
+procedure ImageResizeNN(image:PImage; newWidth:longint; newHeight:longint);cdecl;external cDllName;//Resize image (Nearest-Neighbor scaling algorithm)
+procedure ImageResizeCanvas(image:PImage; newWidth:longint; newHeight:longint; offsetX:longint; offsetY:longint; fill:TColor);cdecl;external cDllName;//Resize canvas and fill with color
+procedure ImageMipmaps(image:PImage);cdecl;external cDllName;//Compute all mipmap levels for a provided image
+procedure ImageDither(image:PImage; rBpp:longint; gBpp:longint; bBpp:longint; aBpp:longint);cdecl;external cDllName;//Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
+procedure ImageFlipVertical(image:PImage);cdecl;external cDllName;//Flip image vertically
+procedure ImageFlipHorizontal(image:PImage);cdecl;external cDllName;//Flip image horizontally
+procedure ImageRotateCW(image:PImage);cdecl;external cDllName;//Rotate image clockwise 90deg
+procedure ImageRotateCCW(image:PImage);cdecl;external cDllName;//Rotate image counter-clockwise 90deg
+procedure ImageColorTint(image:PImage; color:TColor);cdecl;external cDllName;//Modify image color: tint
+procedure ImageColorInvert(image:PImage);cdecl;external cDllName;//Modify image color: invert
+procedure ImageColorGrayscale(image:PImage);cdecl;external cDllName;//Modify image color: grayscale
+procedure ImageColorContrast(image:PImage; contrast:single);cdecl;external cDllName;//Modify image color: contrast (-100 to 100)
+procedure ImageColorBrightness(image:PImage; brightness:longint);cdecl;external cDllName;//Modify image color: brightness (-255 to 255)
+procedure ImageColorReplace(image:PImage; color:TColor; replace:TColor);cdecl;external cDllName;//Modify image color: replace color
+function LoadImageColors(image:TImage):PColor;cdecl;external cDllName;//Load color data from image as a Color array (RGBA - 32bit)
+function LoadImagePalette(image:TImage; maxPaletteSize:longint; colorsCount:Plongint):PColor;cdecl;external cDllName;//Load colors palette from image as a Color array (RGBA - 32bit)
+procedure UnloadImageColors(colors:PColor);cdecl;external cDllName;//Unload color data loaded with LoadImageColors()
+procedure UnloadImagePalette(colors:PColor);cdecl;external cDllName;//Unload colors palette loaded with LoadImagePalette()
+function GetImageAlphaBorder(image:TImage; threshold:single):TRectangle;cdecl;external cDllName;//Get image alpha border rectangle
 
-// Image drawing functions
+(* Image drawing functions *)
 // NOTE: Image software-rendering functions (CPU)
-procedure ImageClearBackground(var dst:TImage; color:TColor);cdecl;external cDllName; // Clear image background with given color
-procedure ImageDrawPixel(var dst:TImage; posX:longint; posY:longint; color:TColor);cdecl;external cDllName; // Draw pixel within an image
-procedure ImageDrawPixelV(var dst:TImage; position:TVector2; color:TColor);cdecl;external cDllName; // Draw pixel within an image (Vector version)
-procedure ImageDrawLine(var dst:TImage; startPosX:longint; startPosY:longint; endPosX:longint; endPosY:longint; color:TColor);cdecl;external cDllName; // Draw line within an image
-procedure ImageDrawLineV(var dst:TImage; start:TVector2; _end:TVector2; color:TColor);cdecl;external cDllName; // Draw line within an image (Vector version)
-procedure ImageDrawCircle(var dst:TImage; centerX:longint; centerY:longint; radius:longint; color:TColor);cdecl;external cDllName; // Draw circle within an image
-procedure ImageDrawCircleV(var dst:TImage; center:TVector2; radius:longint; color:TColor);cdecl;external cDllName; // Draw circle within an image (Vector version)
-procedure ImageDrawRectangle(var dst:TImage; posX:longint; posY:longint; width:longint; height:longint; color:TColor);cdecl;external cDllName; // Draw rectangle within an image
-procedure ImageDrawRectangleV(var dst:TImage; position:TVector2; size:TVector2; color:TColor);cdecl;external cDllName; // Draw rectangle within an image (Vector version)
-procedure ImageDrawRectangleRec(var dst:TImage; rec:TRectangle; color:TColor);cdecl;external cDllName; // Draw rectangle within an image
-procedure ImageDrawRectangleLines(var dst:TImage; rec:TRectangle; thick:longint; color:TColor);cdecl;external cDllName; // Draw rectangle lines within an image
-procedure ImageDraw(var dst:TImage; src:TImage; srcRec:TRectangle; dstRec:TRectangle; tint:TColor);cdecl;external cDllName; // Draw a source image within a destination image (tint applied to source)
-procedure ImageDrawText(var dst:TImage; text:Pchar; posX:longint; posY:longint; fontSize:longint; color:TColor);cdecl;external cDllName; // Draw text (using default font) within an image (destination)
-procedure ImageDrawTextEx(var dst:TImage; font:TFont; text:Pchar; position:TVector2; fontSize:single; spacing:single; tint:TColor);cdecl;external cDllName; // Draw text (custom sprite font) within an image (destination)
+procedure ImageClearBackground(dst:PImage; color:TColor);cdecl;external cDllName;//Clear image background with given color
+procedure ImageDrawPixel(dst:PImage; posX:longint; posY:longint; color:TColor);cdecl;external cDllName;//Draw pixel within an image
+procedure ImageDrawPixelV(dst:PImage; position:TVector2; color:TColor);cdecl;external cDllName;//Draw pixel within an image (Vector version)
+procedure ImageDrawLine(dst:PImage; startPosX:longint; startPosY:longint; endPosX:longint; endPosY:longint; color:TColor);cdecl;external cDllName;//Draw line within an image
+procedure ImageDrawLineV(dst:PImage; start:TVector2; end_:TVector2; color:TColor);cdecl;external cDllName;//Draw line within an image (Vector version)
+procedure ImageDrawCircle(dst:PImage; centerX:longint; centerY:longint; radius:longint; color:TColor);cdecl;external cDllName;//Draw circle within an image
+procedure ImageDrawCircleV(dst:PImage; center:TVector2; radius:longint; color:TColor);cdecl;external cDllName;//Draw circle within an image (Vector version)
+procedure ImageDrawRectangle(dst:PImage; posX:longint; posY:longint; width:longint; height:longint; color:TColor);cdecl;external cDllName;//Draw rectangle within an image
+procedure ImageDrawRectangleV(dst:PImage; position:TVector2; size:TVector2; color:TColor);cdecl;external cDllName;//Draw rectangle within an image (Vector version)
+procedure ImageDrawRectangleRec(dst:PImage; rec:TRectangle; color:TColor);cdecl;external cDllName;//Draw rectangle within an image
+procedure ImageDrawRectangleLines(dst:PImage; rec:TRectangle; thick:longint; color:TColor);cdecl;external cDllName;//Draw rectangle lines within an image
+procedure ImageDraw(dst:PImage; src:TImage; srcRec:TRectangle; dstRec:TRectangle; tint:TColor);cdecl;external cDllName;//Draw a source image within a destination image (tint applied to source)
+procedure ImageDrawText(dst:PImage; text:Pchar; posX:longint; posY:longint; fontSize:longint; color:TColor);cdecl;external cDllName;//Draw text (using default font) within an image (destination)
+procedure ImageDrawTextEx(dst:PImage; font:TFont; text:Pchar; position:TVector2; fontSize:single; spacing:single; tint:TColor);cdecl;external cDllName;//Draw text (custom sprite font) within an image (destination)
 
-// Texture loading functions
+(* Texture loading functions *)
 // NOTE: These functions require GPU access
-function LoadTexture(fileName:Pchar):TTexture2D;cdecl;external cDllName; // Load texture from file into GPU memory (VRAM)
-function LoadTextureFromImage(image:TImage):TTexture2D;cdecl;external cDllName; // Load texture from image data
-function LoadTextureCubemap(image:TImage; layout:longint): TTextureCubemap;cdecl;external cDllName; // Load cubemap from image, multiple image cubemap layouts supported
-function LoadRenderTexture(width:longint; height:longint):TRenderTexture2D;cdecl;external cDllName; // Load texture for rendering (framebuffer)
-procedure UnloadTexture(texture:TTexture2D);cdecl;external cDllName; // Unload texture from GPU memory (VRAM)
-procedure UnloadRenderTexture(target:TRenderTexture2D);cdecl;external cDllName; // Unload render texture from GPU memory (VRAM)
-procedure UpdateTexture(texture:TTexture2D; pixels:pointer);cdecl;external cDllName; // Update GPU texture with new data
-procedure UpdateTextureRec(texture:TTexture2D; rec:TRectangle; pixels:pointer);cdecl;external cDllName; // Update GPU texture rectangle with new data
-function GetTextureData(texture:TTexture2D):TImage;cdecl;external cDllName; // Get pixel data from GPU texture and return an Image
-function GetScreenData:TImage;cdecl;external cDllName; // Get pixel data from screen buffer and return an Image (screenshot)
+function LoadTexture(fileName:Pchar):TTexture2D;cdecl;external cDllName;//Load texture from file into GPU memory (VRAM)
+function LoadTextureFromImage(image:TImage):TTexture2D;cdecl;external cDllName;//Load texture from image data
+function LoadTextureCubemap(image:TImage; layout:longint):TTextureCubemap;cdecl;external cDllName;//Load cubemap from image, multiple image cubemap layouts supported
+function LoadRenderTexture(width:longint; height:longint):TRenderTexture2D;cdecl;external cDllName;//Load texture for rendering (framebuffer)
+procedure UnloadTexture(texture:TTexture2D);cdecl;external cDllName;//Unload texture from GPU memory (VRAM)
+procedure UnloadRenderTexture(target:TRenderTexture2D);cdecl;external cDllName;//Unload render texture from GPU memory (VRAM)
+procedure UpdateTexture(texture:TTexture2D; pixels:pointer);cdecl;external cDllName;//Update GPU texture with new data
+procedure UpdateTextureRec(texture:TTexture2D; rec:TRectangle; pixels:pointer);cdecl;external cDllName;//Update GPU texture rectangle with new data
 
-// TTexture2D configuration functions
-procedure GenTextureMipmaps(var texture:TTexture2D);cdecl;external cDllName; // Generate GPU mipmaps for a texture
-procedure SetTextureFilter(texture:TTexture2D; filter:longint);cdecl;external cDllName; // Set texture scaling filter mode
-procedure SetTextureWrap(texture:TTexture2D; wrap:longint);cdecl;external cDllName; // Set texture wrapping mode
+(* Texture configuration functions *)
+procedure GenTextureMipmaps(texture:PTexture2D);cdecl;external cDllName;//Generate GPU mipmaps for a texture
+procedure SetTextureFilter(texture:TTexture2D; filter:longint);cdecl;external cDllName;//Set texture scaling filter mode
+procedure SetTextureWrap(texture:TTexture2D; wrap:longint);cdecl;external cDllName;//Set texture wrapping mode
 
-// TTexture2D drawing functions
-procedure DrawTexture(texture:TTexture2D; posX:longint; posY:longint; tint:TColor);cdecl;external cDllName; // Draw a Texture2D
-procedure DrawTextureV(texture:TTexture2D; position:TVector2; tint:TColor);cdecl;external cDllName; // Draw a Texture2D with position defined as Vector2
-procedure DrawTextureEx(texture:TTexture2D; position:TVector2; rotation:single; scale:single; tint:TColor);cdecl;external cDllName; // Draw a Texture2D with extended parameters
-procedure DrawTextureRec(texture:TTexture2D; source:TRectangle; position:TVector2; tint:TColor);cdecl;external cDllName; // Draw a part of a texture defined by a rectangle
-procedure DrawTextureQuad(texture:TTexture2D; tiling:TVector2; offset:TVector2; quad:TRectangle; tint:TColor);cdecl;external cDllName; // Draw texture quad with tiling and offset parameters
-procedure DrawTextureTiled(texture:TTexture2D; source:TRectangle; dest:TRectangle; origin:TVector2; rotation:single; scale:single; tint:TColor);cdecl;external cDllName; // Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.
-procedure DrawTexturePro(texture:TTexture2D; source:TRectangle; dest:TRectangle; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName; // Draw a part of a texture defined by a rectangle with 'pro' parameters
-procedure DrawTextureNPatch(texture:TTexture2D; nPatchInfo:TNPatchInfo; dest:TRectangle; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName; // Draws a texture (or part of it) that stretches or shrinks nicely
-procedure DrawTexturePoly(texture:TTexture2D; center:TVector2; var points:TVector2; var texcoords:TVector2; pointsCount:longint; tint:TColor);cdecl;external cDllName; // Draw a textured polygon
+(* Texture drawing functions *)
+procedure DrawTexture(texture:TTexture2D; posX:longint; posY:longint; tint:TColor);cdecl;external cDllName;//Draw a Texture2D
+procedure DrawTextureV(texture:TTexture2D; position:TVector2; tint:TColor);cdecl;external cDllName;//Draw a Texture2D with position defined as Vector2
+procedure DrawTextureEx(texture:TTexture2D; position:TVector2; rotation:single; scale:single; tint:TColor);cdecl;external cDllName;//Draw a Texture2D with extended parameters
+procedure DrawTextureRec(texture:TTexture2D; source:TRectangle; position:TVector2; tint:TColor);cdecl;external cDllName;//Draw a part of a texture defined by a rectangle
+procedure DrawTextureQuad(texture:TTexture2D; tiling:TVector2; offset:TVector2; quad:TRectangle; tint:TColor);cdecl;external cDllName;//Draw texture quad with tiling and offset parameters
+procedure DrawTextureTiled(texture:TTexture2D; source:TRectangle; dest:TRectangle; origin:TVector2; rotation:single; scale:single; tint:TColor);cdecl;external cDllName;//Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.
+procedure DrawTexturePro(texture:TTexture2D; source:TRectangle; dest:TRectangle; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName;//Draw a part of a texture defined by a rectangle with 'pro' parameters
+procedure DrawTextureNPatch(texture:TTexture2D; nPatchInfo:TNPatchInfo; dest:TRectangle; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName;//Draws a texture (or part of it) that stretches or shrinks nicely
+procedure DrawTexturePoly(texture:TTexture2D; center:TVector2; points:PVector2; texcoords:PVector2; pointsCount:longint; tint:TColor);cdecl;external cDllName;//Draw a textured polygon
 
-// Color/pixel related functions
-function Fade(color:TColor; alpha:single):TColor;cdecl;external cDllName; /// Returns color with alpha applied, alpha goes from 0.0f to 1.0f
-function ColorToInt(color:TColor):longint;cdecl;external cDllName; // Returns hexadecimal value for a Color
-function ColorNormalize(color:TColor):TVector4;cdecl;external cDllName; // Returns color normalized as float [0..1]
-function ColorFromNormalized(normalized:TVector4):TColor;cdecl;external cDllName; // Returns color from normalized values [0..1]
-function ColorToHSV(color:TColor):TVector3;cdecl;external cDllName; // Returns HSV values for a Color
-function ColorFromHSV(hue:single; saturation:single; value:single):TColor;cdecl;external cDllName; // Returns a Color from HSV values
-function ColorAlpha(color:TColor; alpha:single):TColor;cdecl;external cDllName; // Returns color with alpha applied, alpha goes from 0.0f to 1.0f
-function ColorAlphaBlend(dst:TColor; src:TColor; tint:TColor):TColor;cdecl;external cDllName; // Returns src alpha-blended into dst color with tint
-function GetColor(hexValue:longint):TColor;cdecl;external cDllName; // Get Color structure from hexadecimal value
-function GetPixelColor(srcPtr:pointer; format:longint):TColor;cdecl;external cDllName; // Get Color from a source pixel pointer of certain format
-procedure SetPixelColor(dstPtr:pointer; color:TColor; format:longint);cdecl;external cDllName; // Set color formatted into destination pixel pointer
-function GetPixelDataSize(width:longint; height:longint; format:longint):longint;cdecl;external cDllName; // Get pixel data size in bytes (image or texture)
+(* Color/pixel related functions *)
+function Fade(color:TColor; alpha:single):TColor;cdecl;external cDllName;//Get color with alpha applied, alpha goes from 0.0f to 1.0f
+function ColorToInt(color:TColor):longint;cdecl;external cDllName;//Get hexadecimal value for a Color
+function ColorNormalize(color:TColor):TVector4;cdecl;external cDllName;//Get Color normalized as float [0..1]
+function ColorFromNormalized(normalized:TVector4):TColor;cdecl;external cDllName;//Get Color from normalized values [0..1]
+function ColorToHSV(color:TColor):TVector3;cdecl;external cDllName;//Get HSV values for a Color, hue [0..360], saturation/value [0..1]
+function ColorFromHSV(hue:single; saturation:single; value:single):TColor;cdecl;external cDllName;//Get a Color from HSV values, hue [0..360], saturation/value [0..1]
+function ColorAlpha(color:TColor; alpha:single):TColor;cdecl;external cDllName;//Get color with alpha applied, alpha goes from 0.0f to 1.0f
+function ColorAlphaBlend(dst:TColor; src:TColor; tint:TColor):TColor;cdecl;external cDllName;//Get src alpha-blended into dst color with tint
+function GetColor(hexValue:dword):TColor;cdecl;external cDllName;//Get Color structure from hexadecimal value
+function GetPixelColor(srcPtr:pointer; format:longint):TColor;cdecl;external cDllName;//Get Color from a source pixel pointer of certain format
+procedure SetPixelColor(dstPtr:pointer; color:TColor; format:longint);cdecl;external cDllName;//Set color formatted into destination pixel pointer
+function GetPixelDataSize(width:longint; height:longint; format:longint):longint;cdecl;external cDllName;//Get pixel data size in bytes for certain format
 
 //------------------------------------------------------------------------------------
 // TFont Loading and Text Drawing Functions (Module: text)
