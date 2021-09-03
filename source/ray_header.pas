@@ -1303,8 +1303,7 @@ function TextCodepointsToUTF8(codepoints:Plongint; length:longint):Pchar;cdecl;e
 function TextCopy(dst:Pchar; src:Pchar):longint;cdecl;external cDllName;// Copy one string to another, returns bytes copied
 function TextIsEqual(text1:Pchar; text2:Pchar):boolean;cdecl;external cDllName;// Check if two text string are equal
 function TextLength(text:Pchar):dword;cdecl;external cDllName;// Get text length, checks for '\0' ending
-function TextFormat(text:Pchar; args:array of const):Pchar;cdecl;external cDllName;
-function TextFormat(text:Pchar):Pchar;cdecl;external cDllName;// Text formatting with variables (sprintf() style)
+function TextFormat(text:PChar; args:array of const):PChar;cdecl;external cDllName; // Text formatting with variables (sprintf() style)
 function TextSubtext(text:Pchar; position:longint; length:longint):Pchar;cdecl;external cDllName;// Get a piece of a text string
 function TextReplace(text:Pchar; replace:Pchar; by:Pchar):Pchar;cdecl;external cDllName;// Replace text string (WARNING: memory must be freed!)
 function TextInsert(text:Pchar; insert:Pchar; position:longint):Pchar;cdecl;external cDllName;// Insert text in a position (WARNING: memory must be freed!)
