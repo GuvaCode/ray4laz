@@ -187,11 +187,11 @@ const
       PFont = ^TFont;
       TFont = record
           baseSize     : longint;    // Base size (default chars height)
-          charsCount   : longint;    // Number of characters
-          charsPadding : longint;    // Padding around the chars
-          texture      : TTexture2D; // Characters texture atlas
-          recs         : PRectangle; // Characters rectangles in texture
-          chars        : PGlyphInfo; // Characters glyphs info data
+          glyphCount   : longint;    // Number of glyph characters
+          glyphPadding : longint;    // Padding around the glyph characters
+          texture      : TTexture2D; // Texture atlas containing the glyphs
+          recs         : PRectangle; // Rectangles in texture for the glyphs
+          glyphs       : PGlyphInfo; // Glyphs info data
         end;
 
    (* Camera, defines position/orientation in 3d space *)
@@ -261,7 +261,7 @@ const
      TMaterial = record
          shader  : TShader;                // Material shader
          maps    : PMaterialMap;           // Material maps array (MAX_MATERIAL_MAPS)
-         params  : array[0..3] of single;  // Material generic parameters (if required)
+         params  : array[0..4] of single;  // Material generic parameters (if required)
        end;
 
      (* Transform, vectex transformation data *)
@@ -1070,7 +1070,7 @@ function GetTouchPosition(index:longint):TVector2;cdecl;external cDllName;// Get
 procedure SetGesturesEnabled(flags:dword);cdecl;external cDllName;// Enable a set of gestures using flags
 function IsGestureDetected(gesture:longint):boolean;cdecl;external cDllName;// Check if a gesture have been detected
 function GetGestureDetected:longint;cdecl;external cDllName;// Get latest detected gesture
-function GetTouchPointsCount:longint;cdecl;external cDllName;// Get touch points count
+function GetTouchPointCount:longint;cdecl;external cDllName;// Get touch points count
 function GetGestureHoldDuration:single;cdecl;external cDllName;// Get gesture hold time in milliseconds
 function GetGestureDragVector:TVector2;cdecl;external cDllName;// Get gesture drag vector
 function GetGestureDragAngle:single;cdecl;external cDllName;// Get gesture drag angle
@@ -1104,7 +1104,7 @@ procedure DrawLineV(startPos:TVector2; endPos:TVector2; color:TColor);cdecl;exte
 procedure DrawLineEx(startPos:TVector2; endPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;// Draw a line defining thickness
 procedure DrawLineBezier(startPos:TVector2; endPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;// Draw a line using cubic-bezier curves in-out
 procedure DrawLineBezierQuad(startPos:TVector2; endPos:TVector2; controlPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;// Draw line using quadratic bezier curves with a control point
-procedure DrawLineStrip(points:PVector2; pointsCount:longint; color:TColor);cdecl;external cDllName;// Draw lines sequence
+procedure DrawLineStrip(points:PVector2; pointCount:longint; color:TColor);cdecl;external cDllName;// Draw lines sequence
 procedure DrawCircle(centerX:longint; centerY:longint; radius:single; color:TColor);cdecl;external cDllName;// Draw a color-filled circle
 procedure DrawCircleSector(center:TVector2; radius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName;// Draw a piece of a circle
 procedure DrawCircleSectorLines(center:TVector2; radius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName;// Draw circle sector outline
@@ -1128,8 +1128,8 @@ procedure DrawRectangleRounded(rec:TRectangle; roundness:single; segments:longin
 procedure DrawRectangleRoundedLines(rec:TRectangle; roundness:single; segments:longint; lineThick:single; color:TColor);cdecl;external cDllName;// Draw rectangle with rounded edges outline
 procedure DrawTriangle(v1:TVector2; v2:TVector2; v3:TVector2; color:TColor);cdecl;external cDllName;// Draw a color-filled triangle (vertex in counter-clockwise order!)
 procedure DrawTriangleLines(v1:TVector2; v2:TVector2; v3:TVector2; color:TColor);cdecl;external cDllName;// Draw triangle outline (vertex in counter-clockwise order!)
-procedure DrawTriangleFan(points:PVector2; pointsCount:longint; color:TColor);cdecl;external cDllName;// Draw a triangle fan defined by points (first vertex is the center)
-procedure DrawTriangleStrip(points:PVector2; pointsCount:longint; color:TColor);cdecl;external cDllName;// Draw a triangle strip defined by points
+procedure DrawTriangleFan(points:PVector2; pointCount:longint; color:TColor);cdecl;external cDllName;// Draw a triangle fan defined by points (first vertex is the center)
+procedure DrawTriangleStrip(points:PVector2; pointCount:longint; color:TColor);cdecl;external cDllName;// Draw a triangle strip defined by points
 procedure DrawPoly(center:TVector2; sides:longint; radius:single; rotation:single; color:TColor);cdecl;external cDllName;// Draw a regular polygon (Vector version)
 procedure DrawPolyLines(center:TVector2; sides:longint; radius:single; rotation:single; color:TColor);cdecl;external cDllName;// Draw a polygon outline of n sides
 procedure DrawPolyLinesEx(center:TVector2; sides:longint; radius:single; rotation:single; lineThick:single; color:TColor);cdecl;external cDllName;// Draw a polygon outline of n sides with extended parameters
@@ -1198,7 +1198,7 @@ procedure ImageColorContrast(image:PImage; contrast:single);cdecl;external cDllN
 procedure ImageColorBrightness(image:PImage; brightness:longint);cdecl;external cDllName;// Modify image color: brightness (-255 to 255)
 procedure ImageColorReplace(image:PImage; color:TColor; replace:TColor);cdecl;external cDllName;// Modify image color: replace color
 function LoadImageColors(image:TImage):PColor;cdecl;external cDllName;// Load color data from image as a Color array (RGBA - 32bit)
-function LoadImagePalette(image:TImage; maxPaletteSize:longint; colorsCount:Plongint):PColor;cdecl;external cDllName;// Load colors palette from image as a Color array (RGBA - 32bit)
+function LoadImagePalette(image:TImage; maxPaletteSize:longint; colorCount:Plongint):PColor;cdecl;external cDllName;// Load colors palette from image as a Color array (RGBA - 32bit)
 procedure UnloadImageColors(colors:PColor);cdecl;external cDllName;// Unload color data loaded with LoadImageColors()
 procedure UnloadImagePalette(colors:PColor);cdecl;external cDllName;// Unload colors palette loaded with LoadImagePalette()
 function GetImageAlphaBorder(image:TImage; threshold:single):TRectangle;cdecl;external cDllName;// Get image alpha border rectangle
@@ -1245,7 +1245,7 @@ procedure DrawTextureQuad(texture:TTexture2D; tiling:TVector2; offset:TVector2; 
 procedure DrawTextureTiled(texture:TTexture2D; source:TRectangle; dest:TRectangle; origin:TVector2; rotation:single; scale:single; tint:TColor);cdecl;external cDllName;// Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.
 procedure DrawTexturePro(texture:TTexture2D; source:TRectangle; dest:TRectangle; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName;// Draw a part of a texture defined by a rectangle with 'pro' parameters
 procedure DrawTextureNPatch(texture:TTexture2D; nPatchInfo:TNPatchInfo; dest:TRectangle; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName;// Draws a texture (or part of it) that stretches or shrinks nicely
-procedure DrawTexturePoly(texture:TTexture2D; center:TVector2; points:PVector2; texcoords:PVector2; pointsCount:longint; tint:TColor);cdecl;external cDllName;// Draw a textured polygon
+procedure DrawTexturePoly(texture:TTexture2D; center:TVector2; points:PVector2; texcoords:PVector2; pointCount:longint; tint:TColor);cdecl;external cDllName;// Draw a textured polygon
 
 (* Color/pixel related functions *)
 function Fade(color:TColor; alpha:single):TColor;cdecl;external cDllName;// Get color with alpha applied, alpha goes from 0.0f to 1.0f
@@ -1268,12 +1268,12 @@ function GetPixelDataSize(width:longint; height:longint; format:longint):longint
 (* Font loading/unloading functions *)
 function GetFontDefault:TFont;cdecl;external cDllName;// Get the default Font
 function LoadFont(fileName:Pchar):TFont;cdecl;external cDllName;// Load font from file into GPU memory (VRAM)
-function LoadFontEx(fileName:Pchar; fontSize:longint; fontChars:Plongint; charsCount:longint):TFont;cdecl;external cDllName;// Load font from file with extended parameters
+function LoadFontEx(fileName:Pchar; fontSize:longint; fontChars:Plongint; glyphCount:longint):TFont;cdecl;external cDllName;// Load font from file with extended parameters
 function LoadFontFromImage(image:TImage; key:TColor; firstChar:longint):TFont;cdecl;external cDllName;// Load font from Image (XNA style)
-function LoadFontFromMemory(fileType:Pchar; fileData:Pbyte; dataSize:longint; fontSize:longint; fontChars:Plongint; charsCount:longint):TFont;cdecl;external cDllName;// Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
-function LoadFontData(fileData:Pbyte; dataSize:longint; fontSize:longint; fontChars:Plongint; charsCount:longint; _type:longint):PGlyphInfo;cdecl;external cDllName;// Load font data for further use
-function GenImageFontAtlas(chars:PGlyphInfo; recs:PPRectangle; charsCount:longint; fontSize:longint; padding:longint; packMethod:longint):TImage;cdecl;external cDllName;// Generate image font atlas using chars info
-procedure UnloadFontData(chars:PGlyphInfo; charsCount:longint);cdecl;external cDllName;// Unload font chars info data (RAM)
+function LoadFontFromMemory(fileType:Pchar; fileData:Pbyte; dataSize:longint; fontSize:longint; fontChars:Plongint; glyphCount:longint):TFont;cdecl;external cDllName;// Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
+function LoadFontData(fileData:Pbyte; dataSize:longint; fontSize:longint; fontChars:Plongint; glyphCount:longint; _type:longint):PGlyphInfo;cdecl;external cDllName;// Load font data for further use
+function GenImageFontAtlas(chars:PGlyphInfo; recs:PPRectangle; glyphCount:longint; fontSize:longint; padding:longint; packMethod:longint):TImage;cdecl;external cDllName;// Generate image font atlas using chars info
+procedure UnloadFontData(chars:PGlyphInfo; glyphCount:longint);cdecl;external cDllName;// Unload font chars info data (RAM)
 procedure UnloadFont(font:TFont);cdecl;external cDllName;// Unload Font from GPU memory (VRAM)
 
 (* Text drawing functions *)
@@ -1293,9 +1293,9 @@ function GetGlyphAtlasRec(font:TFont; codepoint:longint):TRectangle;cdecl;extern
 (* Text codepoints management functions (unicode characters) *)
 function LoadCodepoints(text:Pchar; count:Plongint):Plongint;cdecl;external cDllName;// Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
 procedure UnloadCodepoints(codepoints:Plongint);cdecl;external cDllName;// Unload codepoints data from memory
-function GetCodepointsCount(text:Pchar):longint;cdecl;external cDllName;// Get total number of codepoints in a UTF-8 encoded string
+function GetCodepointCount(text:Pchar):longint;cdecl;external cDllName;// Get total number of codepoints in a UTF-8 encoded string
 function GetCodepoint(text:Pchar; bytesProcessed:Plongint):longint;cdecl;external cDllName;// Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
-function CodepointToUTF8(codepoint:longint; byteLength:Plongint):Pchar;cdecl;external cDllName;// Encode one codepoint into UTF-8 byte array (array length returned as parameter)
+function CodepointToUTF8(codepoint:longint; byteSize:Plongint):Pchar;cdecl;external cDllName;// Encode one codepoint into UTF-8 byte array (array length returned as parameter)
 function TextCodepointsToUTF8(codepoints:Plongint; length:longint):Pchar;cdecl;external cDllName;// Encode text as codepoints array into UTF-8 text string (WARNING: memory must be freed!)
 
 (* Text strings management functions (no UTF-8 strings, only byte chars) *)
@@ -1325,7 +1325,7 @@ procedure DrawLine3D(startPos:TVector3; endPos:TVector3; color:TColor);cdecl;ext
 procedure DrawPoint3D(position:TVector3; color:TColor);cdecl;external cDllName;// Draw a point in 3D space, actually a small line
 procedure DrawCircle3D(center:TVector3; radius:single; rotationAxis:TVector3; rotationAngle:single; color:TColor);cdecl;external cDllName;// Draw a circle in 3D world space
 procedure DrawTriangle3D(v1:TVector3; v2:TVector3; v3:TVector3; color:TColor);cdecl;external cDllName;// Draw a color-filled triangle (vertex in counter-clockwise order!)
-procedure DrawTriangleStrip3D(points:PVector3; pointsCount:longint; color:TColor);cdecl;external cDllName;// Draw a triangle strip defined by points
+procedure DrawTriangleStrip3D(points:PVector3; pointCount:longint; color:TColor);cdecl;external cDllName;// Draw a triangle strip defined by points
 procedure DrawCube(position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName;// Draw cube
 procedure DrawCubeV(position:TVector3; size:TVector3; color:TColor);cdecl;external cDllName;// Draw cube (Vector version)
 procedure DrawCubeWires(position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName;// Draw cube wires
@@ -1393,7 +1393,7 @@ procedure SetMaterialTexture(material:PMaterial; mapType:longint; texture:TTextu
 procedure SetModelMeshMaterial(model:PModel; meshId:longint; materialId:longint);cdecl;external cDllName;// Set material for a mesh
 
 (* Model animations loading/unloading functions *)
-function LoadModelAnimations(fileName:Pchar; animsCount:Plongint):PModelAnimation;cdecl;external cDllName;// Load model animations from file
+function LoadModelAnimations(fileName:Pchar; animCount:Plongint):PModelAnimation;cdecl;external cDllName;// Load model animations from file
 procedure UpdateModelAnimation(model:TModel; anim:TModelAnimation; frame:longint);cdecl;external cDllName;// Update model animation pose
 procedure UnloadModelAnimation(anim:TModelAnimation);cdecl;external cDllName;// Unload animation data
 procedure UnloadModelAnimations(animations:PModelAnimation; count:dword);cdecl;external cDllName;// Unload animation array data
@@ -1425,7 +1425,7 @@ function LoadWave(fileName:Pchar):TWave;cdecl;external cDllName;// Load wave dat
 function LoadWaveFromMemory(fileType:Pchar; fileData:Pbyte; dataSize:longint):TWave;cdecl;external cdllName;// Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
 function LoadSound(fileName:Pchar):TSound;cdecl;external cDllName;// Load sound from file
 function LoadSoundFromWave(wave:TWave):TSound;cdecl;external cDllName;// Load sound from wave data
-procedure UpdateSound(sound:TSound; data:pointer; samplesCount:longint);cdecl;external cdllName;// Update sound buffer with new data
+procedure UpdateSound(sound:TSound; data:pointer; sampleCount:longint);cdecl;external cdllName;// Update sound buffer with new data
 procedure UnloadWave(wave:TWave);cdecl;external cDllName;// Unload wave data
 procedure UnloadSound(sound:TSound);cdecl;external cDllName;// Unload sound
 function ExportWave(wave:TWave; fileName:Pchar):boolean;cdecl;external cDllName;// Export wave data to file, returns true on success
@@ -1466,7 +1466,7 @@ function GetMusicTimePlayed(music:TMusic):single;cdecl;external cDllName;// Get 
 (* AudioStream management functions *)
 function LoadAudioStream(sampleRate:dword; sampleSize:dword; channels:dword):TAudioStream;cdecl;external cDllName;// Load audio stream (to stream raw audio pcm data) }
 procedure UnloadAudioStream(stream:TAudioStream);cdecl;external cDllName;// Unload audio stream and free memory
-procedure UpdateAudioStream(stream:TAudioStream; data:pointer; framesCount:longint);cdecl;external cDllName;//  Update audio stream buffers with data
+procedure UpdateAudioStream(stream:TAudioStream; data:pointer; frameCount:longint);cdecl;external cDllName;//  Update audio stream buffers with data
 function IsAudioStreamProcessed(stream:TAudioStream):boolean;cdecl;external cDllName;//  Check if any audio stream buffers requires refill
 procedure PlayAudioStream(stream:TAudioStream);cdecl;external cDllName;//  Play audio stream
 procedure PauseAudioStream(stream:TAudioStream);cdecl;external cDllName;//  Pause audio stream
@@ -1492,6 +1492,7 @@ function TCamera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType
 procedure TCamera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
 
 implementation
+uses ray_gui;
 
 function Vector2Create(aX: single; aY: single): TVector2;
 begin
