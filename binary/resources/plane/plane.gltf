@@ -3,23 +3,98 @@
         "generator" : "Khronos glTF Blender I/O v1.1.46",
         "version" : "2.0"
     },
+    "extensionsUsed" : [
+        "KHR_lights_punctual"
+    ],
+    "extensionsRequired" : [
+        "KHR_lights_punctual"
+    ],
+    "extensions" : {
+        "KHR_lights_punctual" : {
+            "lights" : [
+                {
+                    "color" : [
+                        1,
+                        1,
+                        1
+                    ],
+                    "intensity" : 1000,
+                    "type" : "point",
+                    "name" : "Light"
+                }
+            ]
+        }
+    },
     "scene" : 0,
     "scenes" : [
         {
             "name" : "Scene",
             "nodes" : [
-                0
+                1,
+                2,
+                3
             ]
         }
     ],
     "nodes" : [
         {
+            "extensions" : {
+                "KHR_lights_punctual" : {
+                    "light" : 0
+                }
+            },
+            "name" : "Light_Orientation",
+            "rotation" : [
+                -0.7071067690849304,
+                0,
+                0,
+                0.7071067690849304
+            ]
+        },
+        {
+            "children" : [
+                0
+            ],
+            "name" : "Light",
+            "rotation" : [
+                0.16907575726509094,
+                0.7558803558349609,
+                -0.27217137813568115,
+                0.570947527885437
+            ],
+            "translation" : [
+                4.076245307922363,
+                5.903861999511719,
+                -1.0054539442062378
+            ]
+        },
+        {
+            "name" : "Camera",
+            "rotation" : [
+                0.483536034822464,
+                0.33687159419059753,
+                -0.20870360732078552,
+                0.7804827094078064
+            ],
+            "translation" : [
+                7.358891487121582,
+                4.958309173583984,
+                6.925790786743164
+            ]
+        },
+        {
             "mesh" : 0,
             "name" : "BODY",
+            "rotation" : [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071067094802856
+            ],
             "scale" : [
                 0.009999999776482582,
-                0.009999999776482582,
-                0.009999999776482582
+                0.010000000707805157,
+                0.010000000707805157
             ]
         }
     ],
@@ -31,7 +106,7 @@
                 0,
                 0
             ],
-            "name" : "Material #24",
+            "name" : "Material #24_COLOR_0",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
                     "index" : 0,
@@ -75,35 +150,35 @@
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 3238,
+            "count" : 4328,
             "max" : [
                 143.9960479736328,
-                75.31597900390625,
-                43.94732666015625
+                43.94732666015625,
+                49.556678771972656
             ],
             "min" : [
                 -143.9960479736328,
-                -49.556678771972656,
-                -168.74668884277344
+                -168.74668884277344,
+                -75.31597900390625
             ],
             "type" : "VEC3"
         },
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 3238,
+            "count" : 4328,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 3238,
+            "count" : 4328,
             "type" : "VEC2"
         },
         {
             "bufferView" : 3,
             "componentType" : 5126,
-            "count" : 3238,
+            "count" : 4328,
             "type" : "VEC4"
         },
         {
@@ -116,33 +191,33 @@
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 38856,
+            "byteLength" : 51936,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 38856,
-            "byteOffset" : 38856
+            "byteLength" : 51936,
+            "byteOffset" : 51936
         },
         {
             "buffer" : 0,
-            "byteLength" : 25904,
-            "byteOffset" : 77712
+            "byteLength" : 34624,
+            "byteOffset" : 103872
         },
         {
             "buffer" : 0,
-            "byteLength" : 51808,
-            "byteOffset" : 103616
+            "byteLength" : 69248,
+            "byteOffset" : 138496
         },
         {
             "buffer" : 0,
             "byteLength" : 15384,
-            "byteOffset" : 155424
+            "byteOffset" : 207744
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 170808,
+            "byteLength" : 223128,
             "uri" : "plane.bin"
         }
     ]

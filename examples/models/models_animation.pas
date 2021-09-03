@@ -28,13 +28,13 @@ begin
 
 	model := LoadModel('resources/guy/guy.iqm');
 	texture := LoadTexture('resources/guy/guytex.png');
-	SetMaterialTexture(model.materials[0], MATERIAL_MAP_DIFFUSE, texture);
+	SetMaterialTexture(@model.materials[0], MATERIAL_MAP_DIFFUSE, texture);
 
 	position := Vector3Create(0.0,0.0,0.0);
 
 	// Load Animation Data
 	animsCount := 0;
-	anims := LoadModelAnimations('resources/guy/guy.iqm', animsCount);
+	anims := LoadModelAnimations('resources/guy/guy.iqm', @animsCount);
 	animFrameCounter := 0;
 
 	WriteLn('animsCount: ', animsCount);
@@ -49,7 +49,7 @@ begin
 		//mousePos := GetMousePosition();
 		//WriteLn('Mouse Pos: ', FloatToStr(mousePos.x), ', ', FloatToStr(mousePos.y));
 
-		UpdateCamera(cam);
+		UpdateCamera(@cam);
 
 		if IsKeyDown(KEY_SPACE) then
 		begin

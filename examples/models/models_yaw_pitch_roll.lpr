@@ -25,6 +25,7 @@ const
      roll  : single = 0.0;
      yaw   : single = 0.0;
      model : TModel;
+     texture: TTexture2d;
      camera: TCamera;
 begin
 {$IFDEF DARWIN}
@@ -34,17 +35,23 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
 
     InitWindow(screenWidth, screenHeight, 'raylib [models] example - plane rotations (yaw, pitch, roll)');
 
-    SetCameraMode(&camera, CAMERA_THIRD_PERSON); // Set an orbital camera mode
+ //   SetCameraMode(camera, CAMERA_THIRD_PERSON); // Set an orbital camera mode
 
     camera.position := Vector3Create( 0.0, 50.0, -120.0);// Camera position perspective
-    camera.target   := Vector3Create( 0.0, 1.0, 0.0 );      // Camera looking at point
+    camera.target   := Vector3Create( 0.0, 0.0, 0.0 );      // Camera looking at point
     camera.up := Vector3Create (0.0, 1.0, 0.0 );          // Camera up vector (rotation towards target)
-    camera.fovy := 50.0;                                // Camera field-of-view Y
+    camera.fovy := 30.0;                                // Camera field-of-view Y
     camera.projection := CAMERA_PERSPECTIVE;             // Camera type
-
+    // Model loading
+    // NOTE: Diffuse map loaded automatically
     model := LoadModel('resources/plane/plane.gltf');
 
+    texture := LoadTexture('resources/plane/plane_diffuse.png');
+    model.materials[0].maps[MATERIAL_MAP_NORMAL].texture:= texture; // Set map diffuse texture
+
+    //SetMaterialTexture(@model.materials[0], MATERIAL_MAP_DIFFUSE, texture);
     SetTargetFPS(60);
+
 
  // Main game loop
  while not WindowShouldClose() do
@@ -87,7 +94,8 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
    ClearBackground(RAYWHITE);
                // Draw 3D model (recomended to draw 3D always before 2D)
             BeginMode3D(camera);
-                DrawModel(model, Vector3Create( 0.0, 0.0, 15.0 ), 20.0, WHITE);   // Draw 3d model with texture
+                DrawModel(model, Vector3Create( 0.0, 0.0, 15.0 ), 0.25, WHITE);   // Draw 3d model with texture
+                //DrawModel(model, (Vector3){ 0.0f, 0.0f, 15.0f }, 0.25f, WHITE);   // Draw 3d model with texture
                 DrawGrid(10, 10.0);
             EndMode3D();
 

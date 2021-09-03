@@ -9,7 +9,7 @@ const
  screenHeight = 450;
 
 var i,
-    animsCount,
+    animsCount:longint;
     animFrameCounter,
     animationDirection:integer;
     anims:PModelAnimation;
@@ -31,17 +31,18 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
     camera.fovy := 45.0;                              // Camera field-of-view Y
     camera.projection := CAMERA_PERSPECTIVE;           // Camera mode type
 
-    model := LoadModel('resources/gltf/rigged_figure.glb'); // Load the animated model mesh and basic data
+    model := LoadModel('resources/gltf/rigged_figure.glb');               // Load the animated model mesh and
+
     position:=Vector3Create(0.0,0.0,0.0);     // Set model position
 
 
      // Load animation data
-    animsCount := 0;
+    animsCount:= 0;
     //ModelAnimation
-    anims := LoadModelAnimations('resources/gltf/rigged_figure.glb', animsCount);
+    anims := LoadModelAnimations('resources/gltf/rigged_figure.glb', @animsCount);
     animFrameCounter := 0;
     animationDirection := 1;
-    
+
     SetCameraMode(camera, CAMERA_FREE); // Set free camera mode
     SetTargetFPS(30);
 
@@ -51,7 +52,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
 
     // Update
     //----------------------------------------------------------------------------------
-        UpdateCamera(camera);
+        UpdateCamera(@camera);
         // Play animation when spacebar is held down
         if IsKeyDown(KEY_SPACE) then
         begin
@@ -67,7 +68,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
         BeginDrawing();
            ClearBackground(RAYWHITE);
             BeginMode3D(camera);
-                DrawModelEx(model, position, Vector3Create(1.0, 0.0, 0.0), -90.0, Vector3Create(1.0,1.0,1.0), WHITE);
+                DrawModelEx(model, position, Vector3Create(1.0, 0.0, 0.0), 0.0, Vector3Create(1.0,1.0,1.0), WHITE);
 
              for i:=0 to model.boneCount -1 do
                     DrawSphere(anims[0].framePoses[animFrameCounter][i].translation, 0.01, RED);
@@ -81,7 +82,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
 
     // De-Initialization
     for i:=0 to animsCount -1  do  UnloadModelAnimation(anims[i]);
-        free(anims);
+    free(anims);
          UnloadModel(model);         // Unload model
 
 

@@ -31,7 +31,11 @@ begin
   dwarf := LoadModel('resources/models/dwarf.obj'); // Load OBJ model
   texture := LoadTexture('resources/models/dwarf_diffuse.png');
   // Load model texture (diffuse map)
-  SetMaterialTexture(dwarf.materials[0], MATERIAL_MAP_DIFFUSE, texture);
+
+  //dwarf.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture:= texture; // Set map diffuse texture
+
+  //SetMaterialTexture(@dwarf.materials[0], MATERIAL_MAP_DIFFUSE, texture); // Set map diffuse texture alt
+
   // Set dwarf model diffuse texture
   position := Vector3Create(0.0, 0.0, 0.0); // Set model position
 
@@ -46,7 +50,7 @@ begin
   begin
     // Update
     // -----------------------------------------------------------------------
-    UpdateCamera(cam); // Update camera
+    UpdateCamera(@cam); // Update camera
     // -----------------------------------------------------------------------
     // Draw
     // -----------------------------------------------------------------------

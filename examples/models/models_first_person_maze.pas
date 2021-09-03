@@ -42,7 +42,7 @@ begin
 
   // NOTE: By default each cube is mapped to one part of texture atlas
   texture := LoadTexture('resources/textures/cubicmap_atlas.png');          // Load map texture
-  SetMaterialTexture(model.materials[0], MATERIAL_MAP_DIFFUSE, texture);      // Set map diffuse texture
+  SetMaterialTexture(@model.materials[0], MATERIAL_MAP_DIFFUSE, texture);      // Set map diffuse texture
 
   // Get map image data to be used for collision detection
   mapPixels := LoadImageColors(imMap);
@@ -63,7 +63,7 @@ begin
       //----------------------------------------------------------------------------------
       oldCamPos := camera.position;    // Store old camera position
 
-      UpdateCamera(camera);      // Update camera
+      UpdateCamera(@camera);      // Update camera
 
       // Check player collision (we simplify to 2D collision detection)
       playerPos :=  Vector2Create(camera.position.x, camera.position.z );

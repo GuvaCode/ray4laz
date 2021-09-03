@@ -34,7 +34,7 @@ begin
 
     while not WindowShouldClose() do
     begin
-      UpdateCamera(cam);
+      UpdateCamera(@cam);
       BeginDrawing();
       ClearBackground(RAYWHITE);
       BeginMode3d(cam);

@@ -52,7 +52,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
 
     // Update
     //----------------------------------------------------------------------------------
-        UpdateCamera(camera);
+        UpdateCamera(@camera);
       if IsKeyReleased(KEY_RIGHT) then
         begin
             inc(currentModel);//++;

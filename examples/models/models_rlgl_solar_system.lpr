@@ -101,7 +101,7 @@ SetTargetFPS(60);
 
   // Update
   //----------------------------------------------------------------------------------
-   UpdateCamera(camera);
+   UpdateCamera(@camera);
    earthRotation += (5.0*rotationSpeed);
    earthOrbitRotation += (365/360.0*(5.0*rotationSpeed)*rotationSpeed);
    moonRotation += (2.0*rotationSpeed);
