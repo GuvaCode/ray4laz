@@ -9,7 +9,6 @@ const
   cDllName = {$IFDEF WINDOWS} 'raylib.dll' {$IFEND}
              {$IFDEF DARWIN} 'libraylib.dylib' {$IFEND}
              {$IFDEF LINUX} 'libraylib.so' {$IFEND};
-//{$ENDIF}
 
 const
   DEG2RAD = (PI / 180.0);
@@ -18,16 +17,19 @@ const
   MAX_SHADER_LOCATIONS = 32;
   MAX_MATERIAL_MAPS = 12;
 
+//----------------------------------------------------------------------------------
+// Some basic Defines }
+//----------------------------------------------------------------------------------
 
-type
-  // Color type, RGBA (32bit)
-  PColor = ^TColor;
-  TColor = record
-    r: byte;
-    g: byte;
-    b: byte;
-    a: byte;
-  end;
+ (* Color, 4 components, R8G8B8A8 (32bit) *)
+ type
+   PColor = ^TColor;
+   TColor = record
+       r : byte; // Color red value
+       g : byte; // Color green value
+       b : byte; // Color blue value
+       a : byte; // Color alpha value
+      end;
 
 const
   // Some Basic Colors
@@ -60,475 +62,492 @@ const
   MAGENTA:        TColor = (r: 255; g: 0; b: 255; a: 255);    // Magenta
   RAYWHITE:       TColor = (r: 245; g: 245; b: 245; a: 255);  // My own White (raylib logo)
 
-type
+   (* Vector2, 2 components *)
+   type
      PVector2 = ^TVector2;
      TVector2 = record
-         x : single;
-         y : single;
+         x : single; // Vector x component
+         y : single; // Vector y component
        end;
 
+     (* Vector3, 3 components *)
      PVector3 = ^TVector3;
      TVector3 = record
-         x : single;
-         y : single;
-         z : single;
+         x : single; // Vector x component
+         y : single; // Vector y component
+         z : single; // Vector z component
        end;
 
+     (* Vector4, 4 components *)
      PVector4 = ^TVector4;
      TVector4 = record
-         x : single;
-         y : single;
-         z : single;
-         w : single;
+         x : single; // Vector x component
+         y : single; // Vector y component
+         z : single; // Vector z component
+         w : single; // Vector w component
        end;
 
+     (* Quaternion, 4 components (Vector4 alias) *)
      PQuaternion = ^TQuaternion;
      TQuaternion = TVector4;
 
+     (* Matrix, 4x4 components, column major, OpenGL style, right handed *)
      PMatrix = ^TMatrix;
      TMatrix = record
-         m0 : single;
-         m4 : single;
-         m8 : single;
-         m12 : single;
-         m1 : single;
-         m5 : single;
-         m9 : single;
-         m13 : single;
-         m2 : single;
-         m6 : single;
-         m10 : single;
-         m14 : single;
-         m3 : single;
-         m7 : single;
-         m11 : single;
-         m15 : single;
+         m0  : single; // Matrix first row (4 components)
+         m4  : single; // Matrix first row (4 components)
+         m8  : single; // Matrix first row (4 components)
+         m12 : single; // Matrix first row (4 components)
+         m1  : single; // Matrix second row (4 components)
+         m5  : single; // Matrix second row (4 components)
+         m9  : single; // Matrix second row (4 components)
+         m13 : single; // Matrix second row (4 components)
+         m2  : single; // Matrix third row (4 components)
+         m6  : single; // Matrix third row (4 components)
+         m10 : single; // Matrix third row (4 components)
+         m14 : single; // Matrix third row (4 components)
+         m3  : single; // Matrix fourth row (4 components)
+         m7  : single; // Matrix fourth row (4 components)
+         m11 : single; // Matrix fourth row (4 components)
+         m15 : single; // Matrix fourth row (4 components)
        end;
 
+     (* Rectangle, 4 components *)
      PPRectangle = ^PRectangle;
      PRectangle = ^TRectangle;
      TRectangle = record
-         x : single;
-         y : single;
-         width : single;
-         height : single;
+         x      : single; // Rectangle top-left corner position x
+         y      : single; // Rectangle top-left corner position y
+         width  : single; // Rectangle width
+         height : single; // Rectangle height
        end;
 
+     (* Image, pixel data stored in CPU memory (RAM) *)
      PImage = ^TImage;
      TImage = record
-         data : pointer;
-         width : longint;
-         height : longint;
-         mipmaps : longint;
-         format : longint;
+         data    : pointer; // Image raw data
+         width   : longint; // Image base width
+         height  : longint; // Image base height
+         mipmaps : longint; // Mipmap levels, 1 by default
+         format  : longint; // Data format (PixelFormat type)
        end;
 
+     (* Texture, tex data stored in GPU memory (VRAM) *)
      PTexture = ^TTexture;
      TTexture = record
-         id : dword;
-         width : longint;
-         height : longint;
-         mipmaps : longint;
-         format : longint;
+         id      : dword;   // OpenGL texture id
+         width   : longint; // Texture base width
+         height  : longint; // Texture base height
+         mipmaps : longint; // Mipmap levels, 1 by default
+         format  : longint; // Data format (PixelFormat type)
        end;
 
+     (* Texture2D, same as Texture *)
      PTexture2D = ^TTexture2D;
      TTexture2D = TTexture;
 
+     (* TextureCubemap, same as Texture *)
      PTextureCubemap = ^TTextureCubemap;
      TTextureCubemap = TTexture;
 
+     (* RenderTexture, fbo for texture rendering *)
      PRenderTexture = ^TRenderTexture;
      TRenderTexture = record
-         id : dword;
-         texture : TTexture;
-         depth : TTexture;
+         id      : dword;    // OpenGL framebuffer object id
+         texture : TTexture; // Color buffer attachment texture
+         depth   : TTexture; // Depth buffer attachment texture
        end;
 
+     (* RenderTexture2D, same as RenderTexture *)
      PRenderTexture2D = ^TRenderTexture2D;
      TRenderTexture2D = TRenderTexture;
 
+     (* NPatchInfo, n-patch layout info *)
      PNPatchInfo = ^TNPatchInfo;
      TNPatchInfo = record
-         source : TRectangle;
-         left : longint;
-         top : longint;
-         right : longint;
-         bottom : longint;
-         layout : longint;
+         source : TRectangle; // Texture source rectangle
+         left   : longint;    // Left border offset
+         top    : longint;    // Top border offset
+         right  : longint;    // Right border offset
+         bottom : longint;    // Bottom border offset
+         layout : longint;    // Layout of the n-patch: 3x3, 1x3 or 3x1
        end;
 
-     PCharInfo = ^TCharInfo;
-     TCharInfo = record
-         value : longint;
-         offsetX : longint;
-         offsetY : longint;
-         advanceX : longint;
-         image : TImage;
+     (* GlyphInfo, font characters glyphs info *)
+     PGlyphInfo = ^TGlyphInfo;
+     TGlyphInfo = record
+         value    : longint; // Character value (Unicode)
+         offsetX  : longint; // Character offset X when drawing
+         offsetY  : longint; // Character offset Y when drawing
+         advanceX : longint; // Character advance position X
+         image    : TImage;  // Character image data
        end;
 
-      PGlyphInfo = ^TGlyphInfo;
-      TGlyphInfo = record
-          value : longint;
-          offsetX : longint;
-          offsetY : longint;
-          advanceX : longint;
-          image : TImage;
+      (* Font, font texture and GlyphInfo array data *)
+      PFont = ^TFont;
+      TFont = record
+          baseSize     : longint;    // Base size (default chars height)
+          charsCount   : longint;    // Number of characters
+          charsPadding : longint;    // Padding around the chars
+          texture      : TTexture2D; // Characters texture atlas
+          recs         : PRectangle; // Characters rectangles in texture
+          chars        : PGlyphInfo; // Characters glyphs info data
         end;
 
-
-     PFont = ^TFont;
-     TFont = record
-         baseSize : longint;
-         charsCount : longint;
-         charsPadding : longint;
-         texture : TTexture2D;
-         recs : PRectangle;
-         chars : PCharInfo;
-       end;
-
-     SpriteFont = TFont;
-
+   (* Camera, defines position/orientation in 3d space *)
    type
      PCamera3D = ^TCamera3D;
      TCamera3D = record
-         position : TVector3;
-         target : TVector3;
-         up : TVector3;
-         fovy : single;
-         projection : longint;
+         position   : TVector3; // Camera position
+         target     : TVector3; // Camera target it looks-at
+         up         : TVector3; // Camera up vector (rotation over its axis)
+         fovy       : single;   // Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
+         projection : longint;  // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
        end;
 
+     (* Camera type fallback, defaults to Camera3D *)
      PCamera = ^TCamera;
      TCamera = TCamera3D;
 
+     (* Camera2D, defines position/orientation in 2d space *)
      PCamera2D = ^TCamera2D;
      TCamera2D = record
-         offset : TVector2;
-         target : TVector2;
-         rotation : single;
-         zoom : single;
+         offset   : TVector2; // Camera offset (displacement from target)
+         target   : TVector2; // Camera target (rotation and zoom origin)
+         rotation : single;   // Camera rotation in degrees
+         zoom     : single;   // Camera zoom (scaling), should be 1.0f by default
        end;
 
+     (* Mesh, vertex data and vao/vbo *)
      PMesh = ^TMesh;
      TMesh = record
-         vertexCount : longint;
-         triangleCount : longint;
-         vertices : Psingle;
-         texcoords : Psingle;
-         texcoords2 : Psingle;
-         normals : Psingle;
-         tangents : Psingle;
-         colors : Pbyte;
-         indices : Pword;
-         animVertices : Psingle;
-         animNormals : Psingle;
-         boneIds : Plongint;
-         boneWeights : Psingle;
-         vaoId : dword;
-         vboId : Pdword;
+         vertexCount   : longint;  // Number of vertices stored in arrays
+         triangleCount : longint;  // Number of triangles stored (indexed or not)
+         // Vertex attributes data
+         vertices      : Psingle;  // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+         texcoords     : Psingle;  // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+         texcoords2    : Psingle;  // Vertex second texture coordinates (useful for lightmaps) (shader-location = 5)
+         normals       : Psingle;  // Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
+         tangents      : Psingle;  // Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
+         colors        : Pbyte;    // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+         indices       : Pword;    // Vertex indices (in case vertex data comes indexed)
+         // Animation vertex data
+         animVertices  : Psingle;  // Animated vertex positions (after bones transformations)
+         animNormals   : Psingle;  // Animated normals (after bones transformations)
+         boneIds       : Plongint; // Vertex bone ids, up to 4 bones influence by vertex (skinning)
+         boneWeights   : Psingle;  // Vertex bone weight, up to 4 bones influence by vertex (skinning)
+         // OpenGL identifiers
+         vaoId         : dword;    // OpenGL Vertex Array Object id
+         vboId         : Pdword;   // OpenGL Vertex Buffer Objects id (default vertex data)
        end;
 
+     (* Shader *)
      PShader = ^TShader;
      TShader = record
-         id : dword;
-         locs : Plongint;
+         id    : dword;    // Shader program id
+         locs  : Plongint; // Shader locations array (RL_MAX_SHADER_LOCATIONS)
        end;
 
+     (* MaterialMap *)
      PMaterialMap = ^TMaterialMap;
      TMaterialMap = record
-         texture : TTexture2D;
-         color : TColor;
-         value : single;
+         texture : TTexture2D; // Material map texture
+         color   : TColor;     // Material map color
+         value   : single;     // Material map value
        end;
 
+     (* Material, includes shader and maps *)
      PMaterial = ^TMaterial;
      TMaterial = record
-         shader : TShader;
-         maps : PMaterialMap;
-         params : array[0..3] of single;
+         shader  : TShader;                // Material shader
+         maps    : PMaterialMap;           // Material maps array (MAX_MATERIAL_MAPS)
+         params  : array[0..3] of single;  // Material generic parameters (if required)
        end;
 
+     (* Transform, vectex transformation data *)
      PTransform = ^TTransform;
      TTransform = record
-         translation : TVector3;
-         rotation : TQuaternion;
-         scale : TVector3;
+         translation : TVector3;     // Translation
+         rotation    : TQuaternion;  // Rotation
+         scale       : TVector3;     // Scale
        end;
 
+     (* Bone, skeletal animation bone *)
      PBoneInfo = ^TBoneInfo;
      TBoneInfo = record
-         name : array[0..31] of char;
-         parent : longint;
+         name    : array[0..31] of char; // Bone name
+         parent  : longint;              // Bone parent
        end;
 
+     (* Model, meshes, materials and animation data *)
      PModel = ^TModel;
      TModel = record
-         transform : TMatrix;
-         meshCount : longint;
-         materialCount : longint;
-         meshes : PMesh;
-         materials : PMaterial;
-         meshMaterial : Plongint;
-         boneCount : longint;
-         bones : PBoneInfo;
-         bindPose : PTransform;
+         transform        : TMatrix;     // Local transform matrix
+         meshCount        : longint;     // Number of meshes
+         materialCount    : longint;     // Number of materials
+         meshes           : PMesh;       // Meshes array
+         materials        : PMaterial;   // Materials array
+         meshMaterial     : Plongint;    // Mesh material number
+         // Animation data
+         boneCount        : longint;     // Number of bones
+         bones            : PBoneInfo;   // Bones information (skeleton)
+         bindPose         : PTransform;  // Bones base transformation (pose)
        end;
 
+     (* ModelAnimation *)
      PModelAnimation = ^TModelAnimation;
      TModelAnimation = record
-         boneCount : longint;
-         frameCount : longint;
-         bones : PBoneInfo;
-         framePoses : ^PTransform;
+         boneCount : longint;      // Number of bones
+         frameCount : longint;     // Number of animation frames
+         bones : PBoneInfo;        // Bones information (skeleton)
+         framePoses : ^PTransform; // Poses array by frame
        end;
 
-     PRay = ^TRay;
-     TRay = record
-         position : TVector3;
-         direction : TVector3;
+      (* Ray, ray for raycasting *)
+      PRay = ^TRay;
+      TRay = record
+         position  : TVector3; // Ray position (origin)
+         direction : TVector3; // Ray direction
        end;
 
-     PRayHitInfo = ^TRayHitInfo;
-     TRayHitInfo = record
-         hit : boolean;
-         distance : single;
-         position : TVector3;
-         normal : TVector3;
-       end;
-
+      (* RayCollision, ray hit information *)
       PRayCollision = ^TRayCollision;
       TRayCollision = record
-          hit : boolean;
-          distance : single;
-          point : TVector3;
-          normal : TVector3;
+          hit       : boolean;  // Did the ray hit something?
+          distance  : single;   // Distance to nearest hit
+          point     : TVector3; // Point of nearest hit
+          normal    : TVector3; // Surface normal of hit
         end;
 
-
+     (* BoundingBox *)
      PBoundingBox = ^TBoundingBox;
      TBoundingBox = record
-         min : TVector3;
-         max : TVector3;
+         min : TVector3; // Minimum vertex box-corner
+         max : TVector3; // Maximum vertex box-corner
        end;
 
+     (* Wave, audio wave data *)
      PWave = ^TWave;
      TWave = record
-         sampleCount : dword;
-         sampleRate : dword;
-         sampleSize : dword;
-         channels : dword;
-         data : pointer;
+         frameCount : dword;   // Total number of frames (considering channels)
+         sampleRate : dword;   // Frequency (samples per second)
+         sampleSize : dword;   // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
+         channels   : dword;   // Number of channels (1-mono, 2-stereo, ...)
+         data       : pointer; // Buffer data pointer
        end;
 
      PrAudioBuffer = ^TrAudioBuffer;
      TrAudioBuffer = record end;
 
+     (* AudioStream, custom audio stream *)
      PAudioStream = ^TAudioStream;
      TAudioStream = record
-         buffer : PrAudioBuffer;
-         sampleRate : dword;
-         sampleSize : dword;
-         channels : dword;
+         buffer     : PrAudioBuffer; // Pointer to internal data used by the audio system
+         sampleRate : dword;         // Frequency (samples per second)
+         sampleSize : dword;         // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
+         channels   : dword;         // Number of channels (1-mono, 2-stereo, ...)
        end;
 
+     (* Sound *)
      PSound = ^TSound;
      TSound = record
-         stream : TAudioStream;
-         sampleCount : dword;
+         stream     : TAudioStream; // Audio stream
+         frameCount : dword;        // Total number of frames (considering channels)
        end;
 
+     (*Music, audio stream, anything longer than ~10 seconds should be streamed *)
      PMusic = ^TMusic;
      TMusic = record
-         stream : TAudioStream;
-         sampleCount : dword;
-         looping : boolean;
-         ctxType : longint;
-         ctxData : pointer;
+         stream     : TAudioStream; // Audio stream
+         frameCount : dword;        // Total number of frames (considering channels)
+         looping    : boolean;      // Music looping enable
+         ctxType    : longint;      // Type of music context (audio filetype)
+         ctxData    : pointer;      // Audio context data, depends on type
        end;
 
-     PVrDeviceInfo = ^TVrDeviceInfo;
-     TVrDeviceInfo = record
-         hResolution : longint;
-         vResolution : longint;
-         hScreenSize : single;
-         vScreenSize : single;
-         vScreenCenter : single;
-         eyeToScreenDistance : single;
-         lensSeparationDistance : single;
-         interpupillaryDistance : single;
-         lensDistortionValues : array[0..3] of single;
-         chromaAbCorrection : array[0..3] of single;
-       end;
+      (* VrDeviceInfo, Head-Mounted-Display device parameters *)
+      PVrDeviceInfo = ^TVrDeviceInfo;
+      TVrDeviceInfo = record
+          hResolution            : longint;               // Horizontal resolution in pixels
+          vResolution            : longint;               // Vertical resolution in pixels
+          hScreenSize            : single;                // Horizontal size in meters
+          vScreenSize            : single;                // Vertical size in meters
+          vScreenCenter          : single;                // Screen center in meters
+          eyeToScreenDistance    : single;                // Distance between eye and display in meters
+          lensSeparationDistance : single;                // Lens separation distance in meters
+          interpupillaryDistance : single;                // IPD (distance between pupils) in meters
+          lensDistortionValues   : array[0..3] of single; // Lens distortion constant parameters
+          chromaAbCorrection     : array[0..3] of single; // Chromatic aberration correction parameters
+        end;
 
+     (* VrStereoConfig, VR stereo rendering configuration for simulator *)
      PVrStereoConfig = ^TVrStereoConfig;
      TVrStereoConfig = record
-         projection : array [0..1] of TMatrix;           // VR projection matrices (per eye)
-         viewOffset : array [0..1] of TMatrix;           // VR view offset matrices (per eye)
-         leftLensCenter : array[0..1] of single;
-         rightLensCenter : array[0..1] of single;
-         leftScreenCenter : array[0..1] of single;
-         rightScreenCenter : array[0..1] of single;
-         scale : array[0..1] of single;
-         scaleIn : array[0..1] of single;
+         projection          : array[0..1] of TMatrix; // VR projection matrices (per eye)
+         viewOffset          : array[0..1] of TMatrix; // VR view offset matrices (per eye)
+         leftLensCenter      : array[0..1] of single;  // VR left lens center
+         rightLensCenter     : array[0..1] of single;  // VR right lens center
+         leftScreenCenter    : array[0..1] of single;  // VR left screen center
+         rightScreenCenter   : array[0..1] of single;  // VR right screen center
+         scale               : array[0..1] of single;  // VR distortion scale
+         scaleIn             : array[0..1] of single;  // VR distortion scale in
        end;
 
+//----------------------------------------------------------------------------------
+// Enumerators Definition
+//----------------------------------------------------------------------------------
+
+     (* System/Window config flags *)
+     // NOTE: Every bit registers one state (use it with bit masks)
+     // By default all flags are set to 0
      PConfigFlags = ^TConfigFlags;
      TConfigFlags =  Longint;
+       const
+         FLAG_VSYNC_HINT            = $00000040; // Set to try enabling V-Sync on GPU
+         FLAG_FULLSCREEN_MODE       = $00000002; // Set to run program in fullscreen
+         FLAG_WINDOW_RESIZABLE      = $00000004; // Set to allow resizable window
+         FLAG_WINDOW_UNDECORATED    = $00000008; // Set to disable window decoration (frame and buttons)
+         FLAG_WINDOW_HIDDEN         = $00000080; // Set to hide window
+         FLAG_WINDOW_MINIMIZED      = $00000200; // Set to minimize window (iconify)
+         FLAG_WINDOW_MAXIMIZED      = $00000400; // Set to maximize window (expanded to monitor)
+         FLAG_WINDOW_UNFOCUSED      = $00000800; // Set to window non focused
+         FLAG_WINDOW_TOPMOST        = $00001000; // Set to window always on top
+         FLAG_WINDOW_ALWAYS_RUN     = $00000100; // Set to allow windows running while minimized
+         FLAG_WINDOW_TRANSPARENT    = $00000010; // Set to allow transparent framebuffer
+         FLAG_WINDOW_HIGHDPI        = $00002000; // Set to support HighDPI
+         FLAG_MSAA_4X_HINT          = $00000020; // Set to try enabling MSAA 4X
+         FLAG_INTERLACED_HINT       = $00010000; // Set to try enabling interlaced video format (for V3D)
 
-   Const
-       FLAG_VSYNC_HINT = $00000040;
-       FLAG_FULLSCREEN_MODE = $00000002;
-       FLAG_WINDOW_RESIZABLE = $00000004;
-       FLAG_WINDOW_UNDECORATED = $00000008;
-       FLAG_WINDOW_HIDDEN = $00000080;
-       FLAG_WINDOW_MINIMIZED = $00000200;
-       FLAG_WINDOW_MAXIMIZED = $00000400;
-       FLAG_WINDOW_UNFOCUSED = $00000800;
-       FLAG_WINDOW_TOPMOST = $00001000;
-       FLAG_WINDOW_ALWAYS_RUN = $00000100;
-       FLAG_WINDOW_TRANSPARENT = $00000010;
-       FLAG_WINDOW_HIGHDPI = $00002000;
-       FLAG_MSAA_4X_HINT = $00000020;
-       FLAG_INTERLACED_HINT = $00010000;
+     (* Trace log level *)
+     // NOTE: Organized by priority level
+     type
+       PTraceLogLevel = ^TTraceLogLevel;
+       TTraceLogLevel =  Longint;
+       const
+         LOG_ALL      = 0; // Display all logs
+         LOG_TRACE    = 1; // Trace logging, intended for internal use only
+         LOG_DEBUG    = 2; // Debug logging, used for internal debugging, it should be disabled on release builds
+         LOG_INFO     = 3; // Info logging, used for program execution info
+         LOG_WARNING  = 4; // Warning logging, used on recoverable failures
+         LOG_ERROR    = 5; // Error logging, used on unrecoverable failures
+         LOG_FATAL    = 6; // Fatal logging, used to abort program: exit(EXIT_FAILURE)
+         LOG_NONE     = 7; // Disable logging
 
-   type
-     PTraceLogLevel = ^TTraceLogLevel;
-     TTraceLogLevel =  Longint;
-     Const
-       LOG_ALL = 0;
-       LOG_TRACE = 1;
-       LOG_DEBUG = 2;
-       LOG_INFO = 3;
-       LOG_WARNING = 4;
-       LOG_ERROR = 5;
-       LOG_FATAL = 6;
-       LOG_NONE = 7;
-
-
-        type
-     PMeshVertexAttributes = ^TMeshVertexAttributes;
-     TMeshVertexAttributes =  Longint;
-     Const
-       MESH_VERTEX_POSITION = 1;
-       MESH_VERTEX_TEXCOORD1 = 2;
-       MESH_VERTEX_TEXCOORD2 = 4;
-       MESH_VERTEX_NORMAL = 8;
-       MESH_VERTEX_TANGENT = 16;
-       MESH_VERTEX_COLOR = 32;
-       MESH_VERTEX_INDEX = 64;
-
-
-
+     (* Keyboard keys (US keyboard layout) *)
+     // NOTE: Use GetKeyPressed() to allow redefining
+     // required keys for alternative layouts
      type
        PKeyboardKey = ^TKeyboardKey;
        TKeyboardKey =  Longint;
        const
-         KEY_NULL              = 0;
-         KEY_APOSTROPHE        = 39;
-         KEY_COMMA             = 44;
-         KEY_MINUS             = 45;
-         KEY_PERIOD            = 46;
-         KEY_SLASH             = 47;
-         KEY_ZERO              = 48;
-         KEY_ONE               = 49;
-         KEY_TWO               = 50;
-         KEY_THREE             = 51;
-         KEY_FOUR              = 52;
-         KEY_FIVE              = 53;
-         KEY_SIX               = 54;
-         KEY_SEVEN             = 55;
-         KEY_EIGHT             = 56;
-         KEY_NINE              = 57;
-         KEY_SEMICOLON         = 59;
-         KEY_EQUAL             = 61;
-         KEY_A                 = 65;
-         KEY_B                 = 66;
-         KEY_C                 = 67;
-         KEY_D                 = 68;
-         KEY_E                 = 69;
-         KEY_F                 = 70;
-         KEY_G                 = 71;
-         KEY_H                 = 72;
-         KEY_I                 = 73;
-         KEY_J                 = 74;
-         KEY_K                 = 75;
-         KEY_L                 = 76;
-         KEY_M                 = 77;
-         KEY_N                 = 78;
-         KEY_O                 = 79;
-         KEY_P                 = 80;
-         KEY_Q                 = 81;
-         KEY_R                 = 82;
-         KEY_S                 = 83;
-         KEY_T                 = 84;
-         KEY_U                 = 85;
-         KEY_V                 = 86;
-         KEY_W                 = 87;
-         KEY_X                 = 88;
-         KEY_Y                 = 89;
-         KEY_Z                 = 90;
-         KEY_LEFT_BRACKET      = 91;
-         KEY_BACKSLASH         = 92;
-         KEY_RIGHT_BRACKET     = 93;
-         KEY_GRAVE             = 96;
-         KEY_SPACE             = 32;
-         KEY_ESCAPE            = 256;
-         KEY_ENTER             = 257;
-         KEY_TAB               = 258;
-         KEY_BACKSPACE         = 259;
-         KEY_INSERT            = 260;
-         KEY_DELETE            = 261;
-         KEY_RIGHT             = 262;
-         KEY_LEFT              = 263;
-         KEY_DOWN              = 264;
-         KEY_UP                = 265;
-         KEY_PAGE_UP           = 266;
-         KEY_PAGE_DOWN         = 267;
-         KEY_HOME              = 268;
-         KEY_END               = 269;
-         KEY_CAPS_LOCK         = 280;
-         KEY_SCROLL_LOCK       = 281;
-         KEY_NUM_LOCK          = 282;
-         KEY_PRINT_SCREEN      = 283;
-         KEY_PAUSE             = 284;
-         KEY_F1                = 290;
-         KEY_F2                = 291;
-         KEY_F3                = 292;
-         KEY_F4                = 293;
-         KEY_F5                = 294;
-         KEY_F6                = 295;
-         KEY_F7                = 296;
-         KEY_F8                = 297;
-         KEY_F9                = 298;
-         KEY_F10               = 299;
-         KEY_F11               = 300;
-         KEY_F12               = 301;
-         KEY_LEFT_SHIFT        = 340;
-         KEY_LEFT_CONTROL      = 341;
-         KEY_LEFT_ALT          = 342;
-         KEY_LEFT_SUPER        = 343;
-         KEY_RIGHT_SHIFT       = 344;
-         KEY_RIGHT_CONTROL     = 345;
-         KEY_RIGHT_ALT         = 346;
-         KEY_RIGHT_SUPER       = 347;
-         KEY_KB_MENU           = 348;
-         KEY_KP_0              = 320;
-         KEY_KP_1              = 321;
-         KEY_KP_2              = 322;
-         KEY_KP_3              = 323;
-         KEY_KP_4              = 324;
-         KEY_KP_5              = 325;
-         KEY_KP_6              = 326;
-         KEY_KP_7              = 327;
-         KEY_KP_8              = 328;
-         KEY_KP_9              = 329;
-         KEY_KP_DECIMAL        = 330;
-         KEY_KP_DIVIDE         = 331;
-         KEY_KP_MULTIPLY       = 332;
-         KEY_KP_SUBTRACT       = 333;
-         KEY_KP_ADD            = 334;
-         KEY_KP_ENTER          = 335;
+         (* Alphanumeric keys *)
+         KEY_NULL              = 0;    // Key: NULL, used for no key pressed
+         KEY_APOSTROPHE        = 39;   // Key: '
+         KEY_COMMA             = 44;   // Key: ,
+         KEY_MINUS             = 45;   // Key: -
+         KEY_PERIOD            = 46;   // Key: .
+         KEY_SLASH             = 47;   // Key: /
+         KEY_ZERO              = 48;   // Key: 0
+         KEY_ONE               = 49;   // Key: 1
+         KEY_TWO               = 50;   // Key: 2
+         KEY_THREE             = 51;   // Key: 3
+         KEY_FOUR              = 52;   // Key: 4
+         KEY_FIVE              = 53;   // Key: 5
+         KEY_SIX               = 54;   // Key: 6
+         KEY_SEVEN             = 55;   // Key: 7
+         KEY_EIGHT             = 56;   // Key: 8
+         KEY_NINE              = 57;   // Key: 9
+         KEY_SEMICOLON         = 59;   // Key: ;
+         KEY_EQUAL             = 61;   // Key: =
+         KEY_A                 = 65;   // Key: A | a
+         KEY_B                 = 66;   // Key: B | b
+         KEY_C                 = 67;   // Key: C | c
+         KEY_D                 = 68;   // Key: D | d
+         KEY_E                 = 69;   // Key: E | e
+         KEY_F                 = 70;   // Key: F | f
+         KEY_G                 = 71;   // Key: G | g
+         KEY_H                 = 72;   // Key: H | h
+         KEY_I                 = 73;   // Key: I | i
+         KEY_J                 = 74;   // Key: J | j
+         KEY_K                 = 75;   // Key: K | k
+         KEY_L                 = 76;   // Key: L | l
+         KEY_M                 = 77;   // Key: M | m
+         KEY_N                 = 78;   // Key: N | n
+         KEY_O                 = 79;   // Key: O | o
+         KEY_P                 = 80;   // Key: P | p
+         KEY_Q                 = 81;   // Key: Q | q
+         KEY_R                 = 82;   // Key: R | r
+         KEY_S                 = 83;   // Key: S | s
+         KEY_T                 = 84;   // Key: T | t
+         KEY_U                 = 85;   // Key: U | u
+         KEY_V                 = 86;   // Key: V | v
+         KEY_W                 = 87;   // Key: W | w
+         KEY_X                 = 88;   // Key: X | x
+         KEY_Y                 = 89;   // Key: Y | y
+         KEY_Z                 = 90;   // Key: Z | z
+         KEY_LEFT_BRACKET      = 91;   // Key: [
+         KEY_BACKSLASH         = 92;   // Key: '\'
+         KEY_RIGHT_BRACKET     = 93;   // Key: ]
+         KEY_GRAVE             = 96;   // Key: `
+         (* Function keys *)
+         KEY_SPACE             = 32;   // Key: Space
+         KEY_ESCAPE            = 256;  // Key: Esc
+         KEY_ENTER             = 257;  // Key: Enter
+         KEY_TAB               = 258;  // Key: Tab
+         KEY_BACKSPACE         = 259;  // Key: Backspace
+         KEY_INSERT            = 260;  // Key: Ins
+         KEY_DELETE            = 261;  // Key: Del
+         KEY_RIGHT             = 262;  // Key: Cursor right
+         KEY_LEFT              = 263;  // Key: Cursor left
+         KEY_DOWN              = 264;  // Key: Cursor down
+         KEY_UP                = 265;  // Key: Cursor up
+         KEY_PAGE_UP           = 266;  // Key: Page up
+         KEY_PAGE_DOWN         = 267;  // Key: Page down
+         KEY_HOME              = 268;  // Key: Home
+         KEY_END               = 269;  // Key: End
+         KEY_CAPS_LOCK         = 280;  // Key: Caps lock
+         KEY_SCROLL_LOCK       = 281;  // Key: Scroll down
+         KEY_NUM_LOCK          = 282;  // Key: Num lock
+         KEY_PRINT_SCREEN      = 283;  // Key: Print screen
+         KEY_PAUSE             = 284;  // Key: Pause
+         KEY_F1                = 290;  // Key: F1
+         KEY_F2                = 291;  // Key: F2
+         KEY_F3                = 292;  // Key: F3
+         KEY_F4                = 293;  // Key: F4
+         KEY_F5                = 294;  // Key: F5
+         KEY_F6                = 295;  // Key: F6
+         KEY_F7                = 296;  // Key: F7
+         KEY_F8                = 297;  // Key: F8
+         KEY_F9                = 298;  // Key: F9
+         KEY_F10               = 299;  // Key: F10
+         KEY_F11               = 300;  // Key: F11
+         KEY_F12               = 301;  // Key: F12
+         KEY_LEFT_SHIFT        = 340;  // Key: Shift left
+         KEY_LEFT_CONTROL      = 341;  // Key: Control left
+         KEY_LEFT_ALT          = 342;  // Key: Alt left
+         KEY_LEFT_SUPER        = 343;  // Key: Super left
+         KEY_RIGHT_SHIFT       = 344;  // Key: Shift right
+         KEY_RIGHT_CONTROL     = 345;  // Key: Control right
+         KEY_RIGHT_ALT         = 346;  // Key: Alt right
+         KEY_RIGHT_SUPER       = 347;  // Key: Super right
+         KEY_KB_MENU           = 348;  // Key: KB menu
+         (* Keypad keys *)
+         KEY_KP_0              = 320;  // Key: Keypad 0
+         KEY_KP_1              = 321;  // Key: Keypad 1
+         KEY_KP_2              = 322;  // Key: Keypad 2
+         KEY_KP_3              = 323;  // Key: Keypad 3
+         KEY_KP_4              = 324;  // Key: Keypad 4
+         KEY_KP_5              = 325;  // Key: Keypad 5
+         KEY_KP_6              = 326;  // Key: Keypad 6
+         KEY_KP_7              = 327;  // Key: Keypad 7
+         KEY_KP_8              = 328;  // Key: Keypad 8
+         KEY_KP_9              = 329;  // Key: Keypad 9
+         KEY_KP_DECIMAL        = 330;  // Key: Keypad .
+         KEY_KP_DIVIDE         = 331;  // Key: Keypad /
+         KEY_KP_MULTIPLY       = 332;  // Key: Keypad *
+         KEY_KP_SUBTRACT       = 333;  // Key: Keypad -
+         KEY_KP_ADD            = 334;  // Key: Keypad +
+         KEY_KP_ENTER          = 335;  // Key: Keypad Enter
          KEY_KP_EQUAL          = 336;  // Key: Keypad =
          // Android key buttons
          KEY_BACK              = 4;    // Key: Android back button
