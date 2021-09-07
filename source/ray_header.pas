@@ -1492,7 +1492,7 @@ function TCamera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType
 procedure TCamera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
 
 implementation
-uses ray_gui;
+
 
 function Vector2Create(aX: single; aY: single): TVector2;
 begin
