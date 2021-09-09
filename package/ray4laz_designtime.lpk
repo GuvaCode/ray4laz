@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="4">
+  <Package Version="5">
     <Name Value="ray4laz_designtime"/>
     <Type Value="RunAndDesignTime"/>
     <Author Value="Gunko Vadim guvacode@gmail.com"/>
@@ -25,6 +25,7 @@
         <UnitName Value="ray4laz_misc"/>
       </Item2>
     </Files>
+    <CompatibilityMode Value="True"/>
     <i18n>
       <EnableI18N Value="True"/>
       <OutDir Value="languages"/>
@@ -41,6 +42,7 @@
       </Item3>
     </RequiredPkgs>
     <UsageOptions>
+      <CustomOptions Value="-dUseCThreads"/>
       <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>
