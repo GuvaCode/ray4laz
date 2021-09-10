@@ -12,6 +12,7 @@ raylib is highly inspired by Borland BGI graphics lib and by XNA framework and i
 
 
 **Bindings**
+
 Header     | Supported          |
 ---------  | ------------------ |
 raylib.h   | :heavy_check_mark: |
@@ -44,6 +45,24 @@ raylib binary releases for Windows, Linux and macOS are available at the [Github
  - [Working for Web (HTML5)](https://github.com/raysan5/raylib/wiki/Working-for-Web-(HTML5))
  - [Working anywhere with CMake](https://github.com/raysan5/raylib/wiki/Working-with-CMake)
  - [CMake Build Options](https://github.com/raysan5/raylib/wiki/CMake-Build-Options)
+
+**Installation in Lazarus.** 
+
+Select the package menu, open the network package manager. 
+
+![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/1_openpkg.png)
+
+Select ray4laz package and install. 
+
+![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/3_opm.png)
+
+Create a new project (Ray Simple Project). 
+
+![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/2_newproject.png)
+
+Enjoy !!!
+
+![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/4_enjoy.png)
 
 
 
