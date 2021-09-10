@@ -794,8 +794,8 @@ const
    (* Gestures *)
    //  NOTE: It could be used as flags to enable only some gestures
    type
-     PGestures = ^TGestures;
-     TGestures =  Longint;
+     PGesture = ^TGesture;
+     TGesture =  Longint;
      Const
        GESTURE_NONE          = 0;    // No gesture
        GESTURE_TAP           = 1;    // Tap gesture

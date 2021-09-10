@@ -105,7 +105,7 @@ begin
           BeginMode3D(camera);
 
               DrawModel(model, mapPosition, 1.0, WHITE);                     // Draw maze map
-              //DrawCubeV(playerPosition, (Vector3){ 0.2f, 0.4f, 0.2f }, RED);  // Draw player
+
 
           EndMode3D();
 

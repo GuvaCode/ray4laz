@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stylized WW1 Plane
+* source:	https://sketchfab.com/3d-models/stylized-ww1-plane-c4edeb0e410f46e8a4db320879f0a1db
+* author:	AntijnvanderGun (https://sketchfab.com/AntijnvanderGun)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stylized WW1 Plane" (https://sketchfab.com/3d-models/stylized-ww1-plane-c4edeb0e410f46e8a4db320879f0a1db) by AntijnvanderGun (https://sketchfab.com/AntijnvanderGun) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

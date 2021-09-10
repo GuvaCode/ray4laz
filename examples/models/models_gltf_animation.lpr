@@ -68,7 +68,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
         BeginDrawing();
            ClearBackground(RAYWHITE);
             BeginMode3D(camera);
-                DrawModelEx(model, position, Vector3Create(1.0, 0.0, 0.0), 0.0, Vector3Create(1.0,1.0,1.0), WHITE);
+                DrawModelEx(model, position, Vector3Create(1.0, 0.0, 0.0), -90.0, Vector3Create(1.0,1.0,1.0), WHITE);
 
              for i:=0 to model.boneCount -1 do
                     DrawSphere(anims[0].framePoses[animFrameCounter][i].translation, 0.01, RED);

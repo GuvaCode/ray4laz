@@ -23,16 +23,16 @@ begin
 
   // Define the camera to look into our 3d world
   cam.position := Vector3Create(3.0, 3.0, 3.0);
-  cam.target := Vector3Create(0.0, 1.5, 0.0);
+  cam.target := Vector3Create(0.0, 0, 0.0);
   cam.up := Vector3Create(0.0, 1.0, 0.0);
   cam.fovy := 45.0;
   cam.projection := CAMERA_PERSPECTIVE;
 
-  dwarf := LoadModel('resources/models/dwarf.obj'); // Load OBJ model
-  texture := LoadTexture('resources/models/dwarf_diffuse.png');
+  dwarf := LoadModel('resources/models/castle.obj'); // Load OBJ model
+  texture := LoadTexture('resources/models/castle_diffuse.png');
   // Load model texture (diffuse map)
 
-  //dwarf.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture:= texture; // Set map diffuse texture
+  dwarf.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture:= texture; // Set map diffuse texture
 
   //SetMaterialTexture(@dwarf.materials[0], MATERIAL_MAP_DIFFUSE, texture); // Set map diffuse texture alt
 
@@ -60,7 +60,7 @@ begin
 
     BeginMode3d(cam);
 
-    DrawModel(dwarf, position, 2.0, WHITE); // Draw 3d model with texture
+    DrawModel(dwarf, position, 0.050, WHITE); // Draw 3d model with texture
     DrawGrid(10, 0.5); // Draw a grid
 
     EndMode3d();
