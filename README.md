@@ -20,6 +20,7 @@ raymath.h  | :heavy_check_mark: |
 rlgl.h     | :heavy_check_mark: |
 
 **Platforms**
+
 OS         | Supported          |
 ---------  | ------------------ |
 Mac        | ❓ no tested|
