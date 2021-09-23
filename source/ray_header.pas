@@ -967,6 +967,7 @@ function GetTime:double;cdecl;external cDllName;// Returns elapsed time in secon
 
 (* Misc. functions *)
 function GetRandomValue(min:longint; max:longint):longint;cdecl;external cDllName;// Get a random value between min and max (both included)
+procedure SetRandomSeed(seed:Pdword);cdecl;external cDllName;// Set the seed for the random number generator
 procedure TakeScreenshot(fileName:Pchar);cdecl;external cDllName;// Takes a screenshot of current screen (filename extension defines format)
 procedure SetConfigFlags(flags:dword);cdecl;external cDllName;// Setup init configuration flags (view FLAGS)
 procedure TraceLog(logLevel:longint; text:Pchar; args:array of const);cdecl;external cDllName;
@@ -1061,16 +1062,18 @@ procedure SetMouseCursor(cursor:longint);cdecl;external cDllName;//  Set mouse c
 (* Input-related functions: touch *)
 function GetTouchX:longint;cdecl;external cDllName;// Get touch position X for touch point 0 (relative to screen size)
 function GetTouchY:longint;cdecl;external cDllName;// Get touch position Y for touch point 0 (relative to screen size)
+function GetTouchPointId(index:longint):longint;cdecl;external cDllName;// Get touch point identifier for given index
 function GetTouchPosition(index:longint):TVector2;cdecl;external cDllName;// Get touch position XY for a touch point index (relative to screen size)
+function GetTouchPointCount:longint;cdecl;external cDllName;// Get touch points count
+function GetTouchEvent:longint;cdecl;external cDllName;// Get last touch event registered
 
 //------------------------------------------------------------------------------------
-// Gestures and Touch Handling Functions (Module: gestures)
+// Gestures and Touch Handling Functions (Module: rgestures)
 //------------------------------------------------------------------------------------
 
 procedure SetGesturesEnabled(flags:dword);cdecl;external cDllName;// Enable a set of gestures using flags
 function IsGestureDetected(gesture:longint):boolean;cdecl;external cDllName;// Check if a gesture have been detected
 function GetGestureDetected:longint;cdecl;external cDllName;// Get latest detected gesture
-function GetTouchPointCount:longint;cdecl;external cDllName;// Get touch points count
 function GetGestureHoldDuration:single;cdecl;external cDllName;// Get gesture hold time in milliseconds
 function GetGestureDragVector:TVector2;cdecl;external cDllName;// Get gesture drag vector
 function GetGestureDragAngle:single;cdecl;external cDllName;// Get gesture drag angle
@@ -1078,7 +1081,7 @@ function GetGesturePinchVector:TVector2;cdecl;external cDllName;// Get gesture p
 function GetGesturePinchAngle:single;cdecl;external cDllName;// Get gesture pinch angle
 
 //------------------------------------------------------------------------------------
-// Camera System Functions (Module: camera)
+// Camera System Functions (Module: rcamera)
 //------------------------------------------------------------------------------------
 
 procedure SetCameraMode(camera:TCamera; mode:longint);cdecl;external cDllName;// Set camera mode (multiple camera modes available)
@@ -1331,6 +1334,7 @@ procedure DrawCubeV(position:TVector3; size:TVector3; color:TColor);cdecl;extern
 procedure DrawCubeWires(position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName;// Draw cube wires
 procedure DrawCubeWiresV(position:TVector3; size:TVector3; color:TColor);cdecl;external cDllName;// Draw cube wires (Vector version)
 procedure DrawCubeTexture(texture:TTexture2D; position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName;// Draw cube textured
+procedure DrawCubeTextureRec(texture:TTexture2D; source:TRectangle; position:TVector3; width:single; height:single; length:single; color:TColor);cdecl;external cDllName;// Draw cube with a region of a texture
 procedure DrawSphere(centerPos:TVector3; radius:single; color:TColor);cdecl;external cDllName;// Draw sphere
 procedure DrawSphereEx(centerPos:TVector3; radius:single; rings:longint; slices:longint; color:TColor);cdecl;external cDllName;// Draw sphere with extended parameters }
 procedure DrawSphereWires(centerPos:TVector3; radius:single; rings:longint; slices:longint; color:TColor);cdecl;external cDllName;// Draw sphere wires
@@ -1359,8 +1363,7 @@ procedure DrawModelWiresEx(model:TModel; position:TVector3; rotationAxis:TVector
 procedure DrawBoundingBox(box:TBoundingBox; color:TColor);cdecl;external cDllName;// Draw bounding box (wires)
 procedure DrawBillboard(camera:TCamera; texture:TTexture2D; position:TVector3; size:single; tint:TColor);cdecl;external cDllName;// Draw a billboard texture
 procedure DrawBillboardRec(camera:TCamera; texture:TTexture2D; source:TRectangle; position:TVector3; size:TVector2; tint:TColor);cdecl;external cDllName;// Draw a billboard texture defined by source
-procedure DrawBillboardPro(camera:TCamera; texture:TTexture2D; source:TRectangle; position:TVector3; size:TVector2; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName;// Draw a billboard texture defined by source and rotation
-
+procedure DrawBillboardPro(camera:TCamera; texture:TTexture2D; source:TRectangle; position:TVector3; up:TVector3; size:TVector2; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName;// Draw a billboard texture defined by source and rotation
 (* Mesh management functions *)
 procedure UploadMesh(mesh:PMesh; dynamic:boolean);cdecl;external cDllName;// Upload mesh vertex data in GPU and provide VAO/VBO ids
 procedure UpdateMeshBuffer(mesh:TMesh; index:longint; data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName;// Update mesh vertex data in GPU for a specific buffer index
@@ -1393,7 +1396,7 @@ procedure SetMaterialTexture(material:PMaterial; mapType:longint; texture:TTextu
 procedure SetModelMeshMaterial(model:PModel; meshId:longint; materialId:longint);cdecl;external cDllName;// Set material for a mesh
 
 (* Model animations loading/unloading functions *)
-function LoadModelAnimations(fileName:Pchar; animCount:Plongint):PModelAnimation;cdecl;external cDllName;// Load model animations from file
+function LoadModelAnimations(fileName:Pchar; animCount:Pdword):PModelAnimation;cdecl;external cDllName;// Load model animations from file
 procedure UpdateModelAnimation(model:TModel; anim:TModelAnimation; frame:longint);cdecl;external cDllName;// Update model animation pose
 procedure UnloadModelAnimation(anim:TModelAnimation);cdecl;external cDllName;// Unload animation data
 procedure UnloadModelAnimations(animations:PModelAnimation; count:dword);cdecl;external cDllName;// Unload animation array data
@@ -1458,6 +1461,7 @@ procedure UpdateMusicStream(music:TMusic);cdecl;external cDllName;// Updates buf
 procedure StopMusicStream(music:TMusic);cdecl;external cDllName;// Stop music playing
 procedure PauseMusicStream(music:TMusic);cdecl;external cDllName;// Pause music playing
 procedure ResumeMusicStream(music:TMusic);cdecl;external cDllName;// Resume playing paused music
+procedure SeekMusicStream(music:TMusic; position:single);cdecl;external cDllName;// Seek music to a position (in seconds)
 procedure SetMusicVolume(music:TMusic; volume:single);cdecl;external cDllName;// Set volume for music (1.0 is max level)
 procedure SetMusicPitch(music:TMusic; pitch:single);cdecl;external cDllName;// Set pitch for a music (1.0 is base level)
 function GetMusicTimeLength(music:TMusic):single;cdecl;external cDllName;// Get music time length (in seconds)
