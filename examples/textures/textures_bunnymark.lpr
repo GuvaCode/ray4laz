@@ -17,7 +17,7 @@ const
  MAX_BUNNIES = 50000;    // 50K bunnies limit
  MAX_BATCH_ELEMENTS=8192;
 var
-  bunnies: array [0 .. (MAX_BUNNIES) - 1] of TBunny; // Bunnies array
+  bunnies: array [0 .. (MAX_BUNNIES) ] of TBunny; // Bunnies array
   bunniesCount:integer=0; // Bunnies counter
   texBunny: TTexture2d;
   i:integer;
@@ -51,7 +51,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
                     GetRandomValue(50, 240),
                     GetRandomValue(80, 240),
                     GetRandomValue(100, 240), 255) ;
-                    if bunniesCount < MAX_BUNNIES -1 then inc(bunniesCount);
+                    if bunniesCount < MAX_BUNNIES  then inc(bunniesCount);
                 end;
           end;
         end;
