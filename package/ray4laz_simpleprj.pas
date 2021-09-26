@@ -44,7 +44,7 @@ end;
 
 function TRay4LazSimpleProjectDescriptor.GetLocalizedDescription: string;
 begin
-  Result:=GetLocalizedName + LineEnding +  LineEnding + rsAboutSimplePrj;
+  Result:= rsAboutSimplePrj;
 end;
 
 function TRay4LazSimpleProjectDescriptor.InitProject(AProject: TLazProject): TModalResult;
