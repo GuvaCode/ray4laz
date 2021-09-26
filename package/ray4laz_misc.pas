@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Graphics, LCLIntf, LazFileUtils, PackageIntf, LazIDEIntf,
-  ProjectIntf, MenuIntf, SrcEditorIntf, Dialogs;
+  ProjectIntf, MenuIntf, SrcEditorIntf, Dialogs, Forms;
 
 type
   { TEventClass }
@@ -22,15 +22,16 @@ procedure Register;
      SectionRay: TIDEMenuSection;
      SectionRayMenu: TIDEMenuSection;
 
-
-
  resourcestring
    rsMnuMisc        = 'Raylib Misc ...';
    rsHelpCheat      = 'Cheatsheet ...';
    rsInsertClr      = 'ColorCreate from dialog';
+   rsCamSet         = 'Camera3DSet from dialog';
+   rsCamCreate      = 'Camera3DCreate from dialog';
    rsRayWiki        = 'Raylib Wiki';
 
 implementation
+uses cam_unit;
 
 function RayUsed: boolean;
 var
@@ -97,7 +98,23 @@ begin
      Txt:=Format('ColorCreate(%d,%d,%d,255)', [Red(c), Green(c), Blue(c)]);
      Editor.CutToClipboard;
      Editor.ReplaceText(editor.CursorTextXY,editor.CursorTextXY,Txt);
-     end;
+  end;
+end;
+
+procedure CameraSetFromDlg(Sender: TObject);
+var CamSetFrm: TcamFrm;
+begin
+  CamSetFrm:=TcamFrm.Create(nil);
+  CamSetFrm.DialogMode:=dmProcedure;
+  CamSetFrm.Show;
+end;
+
+procedure CameraCreateFromDlg(Sender: TObject);
+var CamCreateFrm: TcamFrm;
+begin
+  CamCreateFrm:=TcamFrm.Create(nil);
+  CamCreateFrm.DialogMode:=dmFunction;
+  CamCreateFrm.Show;
 end;
 
 procedure Register;
@@ -105,21 +122,24 @@ begin
  SectionRay:=RegisterIDEMenuSection(SrcEditMenuSectionFirstStatic,'RayTool');
  SectionRayMenu:= RegisterIDESubMenu(SectionRay,'RayTool',rsMnuMisc,nil ,nil,'cc_class');
 
- RegisterIDEMenuCommand(SectionRayMenu, 'Vector2Create', 'Vector2Create', nil, @RayFunction,nil, 'cc_procedure');
- RegisterIDEMenuCommand(SectionRayMenu, 'Vector3Create', 'Vector3Create', nil, @RayFunction,nil, 'cc_procedure');
- RegisterIDEMenuCommand(SectionRayMenu, 'ColorCreate', 'ColorCreate', nil, @RayFunction,nil, 'cc_procedure');
- RegisterIDEMenuCommand(SectionRayMenu, 'RectangleCreate', 'RectangleCreate', nil, @RayFunction,nil, 'cc_procedure');
- RegisterIDEMenuCommand(SectionRayMenu, 'TCamera3DCreate', 'TCamera3DCreate', nil, @RayFunction,nil, 'cc_procedure');
+ RegisterIDEMenuCommand(SectionRayMenu, 'Vector2Create', 'Vector2Create', nil, @RayFunction,nil, 'cc_function');
+ RegisterIDEMenuCommand(SectionRayMenu, 'Vector3Create', 'Vector3Create', nil, @RayFunction,nil, 'cc_function');
+ RegisterIDEMenuCommand(SectionRayMenu, 'ColorCreate', 'ColorCreate', nil, @RayFunction,nil, 'cc_function');
+ RegisterIDEMenuCommand(SectionRayMenu, 'RectangleCreate', 'RectangleCreate', nil, @RayFunction,nil, 'cc_function');
+ RegisterIDEMenuCommand(SectionRayMenu, 'TCamera3DCreate', 'TCamera3DCreate', nil, @RayFunction,nil, 'cc_function');
 
- RegisterIDEMenuCommand(SectionRayMenu, 'Vector2Set', 'Vector2Set', nil, @RayFunction,nil, 'cc_function');
- RegisterIDEMenuCommand(SectionRayMenu, 'Vector3Set', 'Vector3Set', nil, @RayFunction,nil, 'cc_function');
- RegisterIDEMenuCommand(SectionRayMenu, 'TColorSet', 'TColorSet', nil, @RayFunction,nil, 'cc_function');
- RegisterIDEMenuCommand(SectionRayMenu, 'RectangleSet', 'RectangleSet', nil, @RayFunction,nil, 'cc_function');
- RegisterIDEMenuCommand(SectionRayMenu, 'TCamera3DSet', 'TCamera3DSet', nil, @RayFunction,nil, 'cc_function');
+ RegisterIDEMenuCommand(SectionRayMenu, 'Vector2Set', 'Vector2Set', nil, @RayFunction,nil, 'cc_procedure');
+ RegisterIDEMenuCommand(SectionRayMenu, 'Vector3Set', 'Vector3Set', nil, @RayFunction,nil, 'cc_procedure');
+ RegisterIDEMenuCommand(SectionRayMenu, 'TColorSet', 'TColorSet', nil, @RayFunction,nil, 'cc_procedure');
+ RegisterIDEMenuCommand(SectionRayMenu, 'RectangleSet', 'RectangleSet', nil, @RayFunction,nil, 'cc_procedure');
+ RegisterIDEMenuCommand(SectionRayMenu, 'TCamera3DSet', 'TCamera3DSet', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'Spl0','-',nil,nil);
 
+ RegisterIDEMenuCommand(SectionRayMenu, 'CreateCameraFromDialog', rsCamCreate, nil, @CameraCreateFromDlg,nil, 'cc_function');
+ RegisterIDEMenuCommand(SectionRayMenu, 'SetCameraFromDialog', rsCamSet, nil, @CameraSetFromDlg,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'InsertColor', rsInsertClr , nil, @ShowColorDialog, nil, 'tcolordialog');
  RegisterIDEMenuCommand(SectionRayMenu, 'Spl1','-',nil,nil);
+
  RegisterIDEMenuCommand(SectionRayMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
  RegisterIDEMenuCommand(SectionRayMenu, 'ShowWiki', rsRayWiki , nil, @RayFunction, nil, 'menu_information');
 

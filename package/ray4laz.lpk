@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="4">
+  <Package Version="5">
     <Name Value="ray4laz"/>
     <Author Value="Gunko Vadim"/>
     <CompilerOptions>
@@ -10,9 +10,9 @@
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Description Value="A complete header translation (binding) of the raylib 3.7 to Pascal. Without any funky helper functions for memory alignment issues. Inspired and partially based on the drezgames/raylib-pascal binding, however a little cleaner and more recent, with FPC 3.2.0 support. "/>
+    <Description Value="A complete header translation (binding) of the raylib 4.0 to Pascal. Without any funky helper functions for memory alignment issues. Inspired and partially based on the drezgames/raylib-pascal binding, however a little cleaner and more recent, with FPC 3.2.0 support. "/>
     <License Value="zlib License"/>
-    <Version Major="3" Minor="7"/>
+    <Version Major="4"/>
     <Files Count="3">
       <Item1>
         <Filename Value="../source/ray_header.pas"/>
@@ -27,6 +27,7 @@
         <UnitName Value="ray_rlgl"/>
       </Item3>
     </Files>
+    <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="1">
       <Item1>
         <PackageName Value="FCL"/>
