@@ -1,15 +1,6 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: ray4laz_misc.rscamcreate
-msgid "Camera3DCreate from dialog"
-msgstr ""
-
-#: ray4laz_misc.rscamset
-msgctxt "ray4laz_misc.rscamset"
-msgid "Camera3DSet from dialog"
-msgstr ""
-
 #: ray4laz_misc.rshelpcheat
 msgid "Cheatsheet ..."
 msgstr ""

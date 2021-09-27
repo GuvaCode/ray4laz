@@ -26,8 +26,6 @@ procedure Register;
    rsMnuMisc        = 'Raylib Misc ...';
    rsHelpCheat      = 'Cheatsheet ...';
    rsInsertClr      = 'ColorCreate from dialog';
-   rsCamSet         = 'Camera3DSet from dialog';
-   rsCamCreate      = 'Camera3DCreate from dialog';
    rsRayWiki        = 'Raylib Wiki';
 
 implementation
@@ -101,21 +99,6 @@ begin
   end;
 end;
 
-procedure CameraSetFromDlg(Sender: TObject);
-var CamSetFrm: TcamFrm;
-begin
-  CamSetFrm:=TcamFrm.Create(nil);
-  CamSetFrm.DialogMode:=dmProcedure;
-  CamSetFrm.Show;
-end;
-
-procedure CameraCreateFromDlg(Sender: TObject);
-var CamCreateFrm: TcamFrm;
-begin
-  CamCreateFrm:=TcamFrm.Create(nil);
-  CamCreateFrm.DialogMode:=dmFunction;
-  CamCreateFrm.Show;
-end;
 
 procedure Register;
 begin
@@ -135,8 +118,6 @@ begin
  RegisterIDEMenuCommand(SectionRayMenu, 'TCamera3DSet', 'TCamera3DSet', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'Spl0','-',nil,nil);
 
- RegisterIDEMenuCommand(SectionRayMenu, 'CreateCameraFromDialog', rsCamCreate, nil, @CameraCreateFromDlg,nil, 'cc_function');
- RegisterIDEMenuCommand(SectionRayMenu, 'SetCameraFromDialog', rsCamSet, nil, @CameraSetFromDlg,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'InsertColor', rsInsertClr , nil, @ShowColorDialog, nil, 'tcolordialog');
  RegisterIDEMenuCommand(SectionRayMenu, 'Spl1','-',nil,nil);
 
