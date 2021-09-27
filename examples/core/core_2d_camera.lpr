@@ -13,7 +13,7 @@ program core_2d_camara;
 
 {$MODE objfpc}
 
-uses cmem, ray_header, math;
+uses cmem, ray_header, ray_math, math;
 
 const
   screenWidth = 800;
