@@ -62,30 +62,39 @@ begin
     LineEnding +
     '{$mode objfpc}{$H+}' + LineEnding +
     LineEnding +
-    'uses ' +'cmem,' + LineEnding +
+    'uses ' + LineEnding +
     '{uncomment if necessary}' + LineEnding +
     '//ray_math, ' + LineEnding +
     '//ray_rlgl, ' + LineEnding +
     'ray_header; ' + LineEnding + LineEnding +
     'const' +  LineEnding +
-    ' screenWidth = 800;'+ LineEnding +
-    ' screenHeight = 450;'+ LineEnding  + LineEnding +
-    'begin' + LineEnding + LineEnding +
-   // '{$IFDEF DARWIN}' + LineEnding +
-   // 'SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,exZeroDivide]);' + LineEnding +
-   // '{$IFEND}' + LineEnding + LineEnding +
-    ' InitWindow(screenWidth, screenHeight, ''raylib pascal - basic window'');' + LineEnding +
-    ' SetTargetFPS(60);' + LineEnding + LineEnding +
-    ' while not WindowShouldClose() do ' + LineEnding +
-    ' begin'+ LineEnding +
-    '  BeginDrawing();' + LineEnding +
-    '  ClearBackground(RAYWHITE);' + LineEnding  + LineEnding +
-    '  DrawText(''raylib in lazarus !!!'', 20, 20, 20, SKYBLUE);'   + LineEnding +   LineEnding +
-    '  EndDrawing(); '   + LineEnding +
-    ' end;' + LineEnding +
-    'CloseWindow(); ' + LineEnding +
-    LineEnding +
-     'end.' + LineEnding + LineEnding;
+    '  screenWidth = 800;'+ LineEnding +
+    '  screenHeight = 450;'+ LineEnding  + LineEnding +
+    'begin' + LineEnding +
+    '  // Initialization'+ LineEnding +
+    '  //--------------------------------------------------------------------------------------' + LineEnding +
+    '  InitWindow(screenWidth, screenHeight, ''raylib - simple project'');'+ LineEnding +
+    '  SetTargetFPS(60);// Set our game to run at 60 frames-per-second'+ LineEnding +
+    '  //--------------------------------------------------------------------------------------'+ LineEnding +
+    '  // Main game loop'+ LineEnding +
+    '  while not WindowShouldClose() do'+ LineEnding +
+    '    begin'+ LineEnding +
+    '      // Update'+ LineEnding +
+    '      //----------------------------------------------------------------------------------'+ LineEnding +
+    '      // TODO: Update your variables here'+ LineEnding +
+    '      //----------------------------------------------------------------------------------'+ LineEnding + LineEnding +
+    '      // Draw'+ LineEnding +
+    '      //----------------------------------------------------------------------------------'+ LineEnding +
+    '      BeginDrawing();'+ LineEnding +
+    '        ClearBackground(RAYWHITE);'+ LineEnding +
+    '        DrawText(''raylib in lazarus !!!'', 20, 20, 10, DARKGRAY);'+ LineEnding +
+    '      EndDrawing();'+ LineEnding +
+    '    end;'+ LineEnding +
+    '  // De-Initialization'+ LineEnding +
+    '  //--------------------------------------------------------------------------------------'+ LineEnding +
+    '  CloseWindow();        // Close window and OpenGL context'+ LineEnding +
+    '  //--------------------------------------------------------------------------------------'+ LineEnding +
+    'end.'+ LineEnding + LineEnding;
 
   AProject.MainFile.SetSourceText(Source);
   AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)';// + PathDelim+ 'ray4laz_dsgn';
