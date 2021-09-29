@@ -26,7 +26,7 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib - simple project');
 
   // Define the camera to look into our 3d world
-  TCamera3DSet(@camera,
+  Camera3DSet(@camera,
   Vector3Create(2.0, 2.0, 6.0), // position
   Vector3Create(0.0, 0.5, 0.0), // target
   Vector3Create(0.0, 1.0, 0.0), // up

@@ -69,7 +69,7 @@ begin
   SetConfigFlags(FLAG_MSAA_4X_HINT);      // Enable Multi Sampling Anti Aliasing 4x (if available)
   InitWindow(screenWidth, screenHeight, 'raylib - simple project');
   // Define the camera to look into our 3d world
-  TCamera3DSet(@camera,Vector3Create(2.0,3.0,2.0),Vector3Create(0.0,1.0,0.0),Vector3Create(0.0,1.0,0.0),45.0,0);
+  Camera3DSet(@camera,Vector3Create(2.0,3.0,2.0),Vector3Create(0.0,1.0,0.0),Vector3Create(0.0,1.0,0.0),45.0,0);
 
   model := LoadModel('resources/models/church.obj'); // Load OBJ model
   texture := LoadTexture('resources/models/church_diffuse.png'); // Load model texture (diffuse map)

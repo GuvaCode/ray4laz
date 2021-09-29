@@ -1488,12 +1488,12 @@ procedure Vector2Set(aVec: PVector2; aX: single; aY: single);
 function Vector3Create(aX: single; aY: single; aZ: single): TVector3;
 procedure Vector3Set(aVec: PVector3; aX: single; aY: single; aZ: single);
 function ColorCreate(aR: byte; aG: byte; aB: byte; aA: byte): TColor;
-procedure TColorSet(aColor: PColor; aR: byte; aG: byte; aB: byte; aA: byte);
+procedure ColorSet(aColor: PColor; aR: byte; aG: byte; aB: byte; aA: byte);
 
 function RectangleCreate(aX: Single; aY: Single; aWidth: Single; aHeight: Single): TRectangle;
 procedure RectangleSet(aRect: PRectangle; aX: Single; aY: Single; aWidth: Single; aHeight: Single);
-function TCamera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer): TCamera3D;
-procedure TCamera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
+function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer): TCamera3D;
+procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
 
 implementation
 
@@ -1532,7 +1532,7 @@ begin
   Result.a := aA;
 end;
 
-procedure TColorSet(aColor: PColor; aR: byte; aG: byte; aB: byte; aA: byte);
+procedure ColorSet(aColor: PColor; aR: byte; aG: byte; aB: byte; aA: byte);
 begin
   aColor^.r := aR;
   aColor^.g := aG;
@@ -1556,7 +1556,7 @@ begin
   aRect^.Height := aHeight;
 end;
 
-function TCamera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer): TCamera3D;
+function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer): TCamera3D;
 begin
   Result.position := aPosition;
   Result.target := aTarget;
@@ -1565,7 +1565,7 @@ begin
   Result.projection := aType;
 end;
 
-procedure TCamera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
+procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
 begin
   aCam^.position := aPosition;
   aCam^.target := aTarget;

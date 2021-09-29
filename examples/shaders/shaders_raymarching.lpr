@@ -36,7 +36,7 @@ const
 begin
  SetConfigFlags(FLAG_WINDOW_RESIZABLE);
  InitWindow(screenWidth, screenHeight, 'raylib [shaders] example - raymarching shapes');
- TCamera3DSet(@camera,Vector3Create(2.5,2.5,3.0),Vector3Create(0.0,0.0,0.7),Vector3Create(0.0,1.0,00.0),65,CAMERA_PERSPECTIVE);
+ Camera3DSet(@camera,Vector3Create(2.5,2.5,3.0),Vector3Create(0.0,0.0,0.7),Vector3Create(0.0,1.0,00.0),65,CAMERA_PERSPECTIVE);
  SetCameraMode(camera, CAMERA_FREE); // Set camera mode
  // Load raymarching shader
  // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
