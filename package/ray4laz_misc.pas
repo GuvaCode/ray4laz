@@ -29,7 +29,6 @@ procedure Register;
    rsRayWiki        = 'Raylib Wiki';
 
 implementation
-uses cam_unit;
 
 function RayUsed: boolean;
 var
