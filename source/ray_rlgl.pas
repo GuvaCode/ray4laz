@@ -1,44 +1,34 @@
 {**********************************************************************************************
 *
-*   rlgl v3.7 - raylib OpenGL abstraction layer
+*   rlgl v4.0 - A multi-OpenGL abstraction layer with an immediate-mode style API
 *
-*   rlgl is a wrapper for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0) to
-*   pseudo-OpenGL 1.1 style functions (rlVertex, rlTranslate, rlRotate...).
+*   An abstraction layer for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0)
+*   that provides a pseudo-OpenGL 1.1 immediate-mode style API (rlVertex, rlTranslate, rlRotate...)
 *
-*   When chosing an OpenGL version greater than OpenGL 1.1, rlgl stores vertex data on internal
-*   VBO buffers (and VAOs if available). It requires calling 3 functions:
-*       rlglInit()  - Initialize internal buffers and auxiliary resources
-*       rlglClose() - De-initialize internal buffers data and other auxiliar resources
+*   When chosing an OpenGL backend different than OpenGL 1.1, some internal buffer are
+*   initialized on rlglInit() to accumulate vertex data.
 *
-*   CONFIGURATION:
+*   When an internal state change is required all the stored vertex data is renderer in batch,
+*   additioanlly, rlDrawRenderBatchActive() could be called to force flushing of the batch.
 *
-*   #define GRAPHICS_API_OPENGL_11
-*   #define GRAPHICS_API_OPENGL_21
-*   #define GRAPHICS_API_OPENGL_33
-*   #define GRAPHICS_API_OPENGL_ES2
-*       Use selected OpenGL graphics backend, should be supported by platform
-*       Those preprocessor defines are only used on rlgl module, if OpenGL version is
-*       required by any other module, use rlGetVersion() to check it
+*   Some additional resources are also loaded for convenience, here the complete list:
+*      - Default batch (RLGL.defaultBatch): RenderBatch system to accumulate vertex data
+*      - Default texture (RLGL.defaultTextureId): 1x1 white pixel R8G8B8A8
+*      - Default shader (RLGL.State.defaultShaderId, RLGL.State.defaultShaderLocs)
 *
-*   #define RLGL_IMPLEMENTATION
-*       Generates the implementation of the library into the included file.
-*       If not defined, the library is in header only mode and can be included in other headers
-*       or source files without problems. But only ONE file should hold the implementation.
+*   Internal buffer (and additional resources) must be manually unloaded calling rlglClose().
 *
-*   #define RLGL_STANDALONE
-*       Use rlgl as standalone library (no raylib dependency)
-*
-*   #define SUPPORT_GL_DETAILS_INFO
-*       Show OpenGL extensions and capabilities detailed logs on init
 *
 *   DEPENDENCIES:
-*       raymath     - 3D math functionality (Vector3, Matrix, Quaternion)
-*       GLAD        - OpenGL extensions loading (OpenGL 3.3 Core only)
+*
+*      - OpenGL libraries (depending on platform and OpenGL version selected)
+*      - GLAD OpenGL extensions loading library (only for OpenGL 3.3 Core)
 *
 *
 *   LICENSE: zlib/libpng
 *
 *   Copyright (c) 2014-2021 Ramon Santamaria (@raysan5)
+*   Pascal header 2021 Gunko Vadim (@guvacode)
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
 *   will the authors be held liable for any damages arising from the use of this software.
@@ -57,6 +47,7 @@
 *
 **********************************************************************************************}
 
+
 unit ray_rlgl;
 
 {$mode objfpc}{$H+}
@@ -66,8 +57,11 @@ interface
 uses ray_header;
 
 const
+      {$IFnDEF Arm}
       RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 8192;
-     // RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 2048;
+      {$Else}
+      RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 2048;
+      {$ENDIF}
       RL_DEFAULT_BATCH_BUFFERS = 1;
       RL_DEFAULT_BATCH_DRAWCALLS = 256;
       RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS = 4;
@@ -145,14 +139,17 @@ type
   PrlVertexBuffer = ^TrlVertexBuffer;
   TrlVertexBuffer = record
       elementCount : longint;
-      vCounter : longint;
+     { vCounter : longint;
       tcCounter : longint;
-      cCounter : longint;
+      cCounter : longint; }
       vertices : Psingle;
       texcoords : Psingle;
       colors : Pbyte;
+      {$IFnDEF Arm}
       indices : Pdword; // open gl 1.1 to 3.0
-     // indices : Pword;//GRAPHICS_API_OPENGL_ES2
+      {$Else}
+      indices : Pword;//GRAPHICS_API_OPENGL_ES2
+      {$ENDIF}
       vaoId : dword;
       vboId : array[0..3] of dword;
     end;
