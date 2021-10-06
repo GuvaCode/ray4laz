@@ -1,13 +1,22 @@
-{*********************************************************************************************
+{**********************************************************************************************
 *
-*   raymath  - Math functions to work with Vector3, Matrix and Quaternions
+*   raymath v1.5 - Math functions to work with Vector2, Vector3, Matrix and Quaternions
 *
+*
+*   CONVENTIONS:
+*
+*     - Functions are always self-contained, no function use another raymath function inside,
+*       required code is directly re-implemented inside
+*     - Functions input parameters are always received by value (2 unavoidable exceptions)
+*     - Functions use always a "result" anmed variable for return
+*     - Functions are always defined inline
+*     - Angles are always in radians (DEG2RAD/RAD2DEG macros provided for convenience)
 *
 *
 *   LICENSE: zlib/libpng
 *
 *   Copyright (c) 2015-2021 Ramon Santamaria (@raysan5)
-*   Conversion to pascal 2021 Gunko Vadim (@guvacode)
+*   Pascal header 2021 Gunko Vadim (@guvacode)
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
 *   will the authors be held liable for any damages arising from the use of this software.
@@ -25,6 +34,7 @@
 *     3. This notice may not be removed or altered from any source distribution.
 *
 **********************************************************************************************}
+
 unit ray_math;
 
 interface
@@ -60,7 +70,6 @@ type
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Utils math
 //----------------------------------------------------------------------------------
-
 function  Clamp(value, min, max : Single): Single; cdecl; external cDllName;   // Clamp float value
 function  Lerp(start, end_, amount : Single): Single; cdecl; external cDllName; // Calculate linear interpolation between two floats
 function  Normalize(value, start, end_: Single): Single; cdecl; external cDllName; // Normalize input value within input range
@@ -69,7 +78,6 @@ function  Remap(value, inputStart, inputEnd, outputStart, outputEnd : Single): S
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector2 math
 //----------------------------------------------------------------------------------
-
 function  Vector2Zero: TVector2; cdecl; external cDllName;// Vector with components value 0.0
 function  Vector2One: TVector2; cdecl; external cDllName;// Vector with components value 1.0
 function  Vector2Add(v1, v2 : TVector2): TVector2; cdecl; external cDllName;// Add two vectors (v1 + v2)
@@ -88,13 +96,12 @@ function  Vector2Divide(v1, v2 : TVector2): TVector2; cdecl; external cDllName;/
 function  Vector2Normalize(v : TVector2): TVector2; cdecl; external cDllName; // Normalize provided vector
 function  Vector2Lerp(v1, v2 : TVector2; amount : Single): TVector2; cdecl; external cDllName;// Calculate linear interpolation between two vectors
 function  Vector2Reflect(v, normal : TVector2): TVector2; cdecl; external cDllName;// Calculate reflected vector to normal
-function  Vector2Rotate(v: TVector2; degs:Single) :TVector2; cdecl; external cDllName;// Rotate Vector by float in Degrees.
+function  Vector2Rotate(v: TVector2; angle:Single) :TVector2; cdecl; external cDllName;// Rotate vector by angle
 function  Vector2MoveTowards(v, target:Tvector2; maxDistance: Single): TVector2; cdecl; external cDllName; // Move Vector towards target
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector3 math
 //----------------------------------------------------------------------------------
-
 function  Vector3Zero(): TVector3; cdecl; external cDllName;// Vector with components value 0.0
 function  Vector3One(): TVector3; cdecl; external cDllName;// Vector with components value 1.0
 function  Vector3Add(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Add two vectors
@@ -121,13 +128,13 @@ function  Vector3Reflect(v, normal : TVector3): TVector3; cdecl; external cDllNa
 function  Vector3Min(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Return min value for each pair of components
 function  Vector3Max(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Return max value for each pair of components
 function  Vector3Barycenter(p, a, b, c : TVector3): TVector3; cdecl; external cDllName;// Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
+function  Vector3Unproject(source:TVector3; projection:TMatrix; view:TMatrix):TVector3; cdecl; external cDllName;// Projects a Vector3 from screen space into object space
 function  Vector3ToFloatV(v : TVector3): TFloat3; cdecl; external cDllName;// Returns Vector3 as float array
+
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Matrix math
 //----------------------------------------------------------------------------------
-
-
 function  MatrixDeterminant(mat : TMatrix) : Single; cdecl; external cDllName; // Compute matrix determinant
 function  MatrixTrace(mat : TMatrix): Single; cdecl; external cDllName;// Returns the trace of the matrix (sum of the values along the diagonal)
 function  MatrixTranspose(mat : TMatrix): TMatrix; cdecl; external cDllName;// Transposes provided matrix
@@ -154,7 +161,6 @@ function  MatrixToFloatV(mat : TMatrix): TFloat16; cdecl; external cDllName; // 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Quaternion math
 //----------------------------------------------------------------------------------
-
 function  QuaternionAdd(q1, q2: TQuaternion): TQuaternion; cdecl; external cDllName;// Add two quaternions
 function  QuaternionAddValue(q: TQuaternion ; add: single): TQuaternion; cdecl; external cDllName;// Add quaternion and float value
 function  QuaternionSubtract(q1, q2: TQuaternion): TQuaternion; cdecl; external cDllName;// Subtract two quaternions
@@ -177,9 +183,6 @@ procedure QuaternionToAxisAngle(q : TQuaternion; uutAxis : PVector3; outAngle : 
 function  QuaternionFromEuler(pitch, yaw, roll : Single): TQuaternion; cdecl; external cDllName;// Returns the quaternion equivalent to Euler angles
 function  QuaternionToEuler(q : TQuaternion): TVector3; cdecl; external cDllName;// Return the Euler angles equivalent to quaternion (roll, pitch, yaw)
 function  QuaternionTransform(q : TQuaternion; mat : TMatrix): TQuaternion; cdecl; external cDllName;// Transform a quaternion given a transformation matrix
-
-// Projects a Vector3 from screen space into object space
-function Vector3Unproject(source:TVector3; projection:TMatrix; view:TMatrix):TVector3; cdecl; external cDllName;
 
 implementation
 
