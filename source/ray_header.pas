@@ -641,7 +641,7 @@ const
          MATERIAL_MAP_CUBEMAP       = 7;  // Cubemap material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
          MATERIAL_MAP_IRRADIANCE    = 8;  // Irradiance material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
          MATERIAL_MAP_PREFILTER     = 9;  // Prefilter material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
-         MATERIAL_MAP_BRDG          = 10; // Brdg material
+         MATERIAL_MAP_BRDF          = 10; // Brdf material
 
          MATERIAL_MAP_DIFFUSE = MATERIAL_MAP_ALBEDO;
          MATERIAL_MAP_SPECULAR = MATERIAL_MAP_METALNESS;
@@ -1107,6 +1107,7 @@ procedure DrawLineV(startPos:TVector2; endPos:TVector2; color:TColor);cdecl;exte
 procedure DrawLineEx(startPos:TVector2; endPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;// Draw a line defining thickness
 procedure DrawLineBezier(startPos:TVector2; endPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;// Draw a line using cubic-bezier curves in-out
 procedure DrawLineBezierQuad(startPos:TVector2; endPos:TVector2; controlPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;// Draw line using quadratic bezier curves with a control point
+procedure DrawLineBezierCubic(startPos:TVector2; endPos:TVector2; startControlPos:TVector2; endControlPos:TVector2; thick:single; color:TColor);cdecl;external cDllName;// Draw line using cubic bezier curves with 2 control points
 procedure DrawLineStrip(points:PVector2; pointCount:longint; color:TColor);cdecl;external cDllName;// Draw lines sequence
 procedure DrawCircle(centerX:longint; centerY:longint; radius:single; color:TColor);cdecl;external cDllName;// Draw a color-filled circle
 procedure DrawCircleSector(center:TVector2; radius:single; startAngle:single; endAngle:single; segments:longint; color:TColor);cdecl;external cDllName;// Draw a piece of a circle
@@ -1205,6 +1206,7 @@ function LoadImagePalette(image:TImage; maxPaletteSize:longint; colorCount:Plong
 procedure UnloadImageColors(colors:PColor);cdecl;external cDllName;// Unload color data loaded with LoadImageColors()
 procedure UnloadImagePalette(colors:PColor);cdecl;external cDllName;// Unload colors palette loaded with LoadImagePalette()
 function GetImageAlphaBorder(image:TImage; threshold:single):TRectangle;cdecl;external cDllName;// Get image alpha border rectangle
+function GetImageColor(image:TImage; x:longint; y:longint):TColor;cdecl;external cDllName;// Get image pixel color at (x, y) position
 
 (* Image drawing functions *)
 // NOTE: Image software-rendering functions (CPU)
