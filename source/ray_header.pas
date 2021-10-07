@@ -1171,7 +1171,6 @@ function GenImageGradientH(width:longint; height:longint; left:TColor; right:TCo
 function GenImageGradientRadial(width:longint; height:longint; density:single; inner:TColor; outer:TColor):TImage;cdecl;external cDllName;// Generate image: radial gradient
 function GenImageChecked(width:longint; height:longint; checksX:longint; checksY:longint; col1:TColor; col2:TColor):TImage;cdecl;external cDllName;// Generate image: checked
 function GenImageWhiteNoise(width:longint; height:longint; factor:single):TImage;cdecl;external cDllName;// Generate image: white noise
-function GenImagePerlinNoise(width:longint; height:longint; offsetX:longint; offsetY:longint; scale:single):TImage;cdecl;external cDllName;// Generate image: perlin noise
 function GenImageCellular(width:longint; height:longint; tileSize:longint):TImage;cdecl;external cDllName;// Generate image: cellular algorithm, bigger tileSize means bigger cells
 
 (* Image manipulation functions *)
