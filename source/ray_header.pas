@@ -1146,6 +1146,7 @@ function CheckCollisionPointRec(point:TVector2; rec:TRectangle):boolean;cdecl;ex
 function CheckCollisionPointCircle(point:TVector2; center:TVector2; radius:single):boolean;cdecl;external cDllName;// Check if point is inside circle
 function CheckCollisionPointTriangle(point:TVector2; p1:TVector2; p2:TVector2; p3:TVector2):boolean;cdecl;external cDllName;// Check if point is inside a triangle
 function CheckCollisionLines(startPos1:TVector2; endPos1:TVector2; startPos2:TVector2; endPos2:TVector2; collisionPoint:PVector2):boolean;cdecl;external cDllName;// Check the collision between two lines defined by two points each, returns collision point by reference
+function CheckCollisionPointLine(point:TVector2; p1:TVector2; p2:TVector2; threshold:longint):boolean;cdecl;external cDllName;// Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]
 function GetCollisionRec(rec1:TRectangle; rec2:TRectangle):TRectangle;cdecl;external cDllName;// Get collision rectangle for two rectangles collision
 
 //------------------------------------------------------------------------------------
