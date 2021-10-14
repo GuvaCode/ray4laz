@@ -1341,7 +1341,9 @@ procedure DrawSphere(centerPos:TVector3; radius:single; color:TColor);cdecl;exte
 procedure DrawSphereEx(centerPos:TVector3; radius:single; rings:longint; slices:longint; color:TColor);cdecl;external cDllName;// Draw sphere with extended parameters }
 procedure DrawSphereWires(centerPos:TVector3; radius:single; rings:longint; slices:longint; color:TColor);cdecl;external cDllName;// Draw sphere wires
 procedure DrawCylinder(position:TVector3; radiusTop:single; radiusBottom:single; height:single; slices:longint; color:TColor);cdecl;external cDllName;// Draw a cylinder/cone
+procedure DrawCylinderEx(startPos:TVector3; endPos:TVector3; startRadius:single; endRadius:single; sides:longint; color:TColor);cdecl;external cDllName;// Draw a cylinder with base at startPos and top at endPos
 procedure DrawCylinderWires(position:TVector3; radiusTop:single; radiusBottom:single; height:single; slices:longint; color:TColor);cdecl;external cDllName;// Draw a cylinder/cone wires
+procedure DrawCylinderWiresEx(startPos: TVector3; endPos: TVector3; startRadius:single; endRadius: single; sides:longint; color:TColor);cdecl;external cDllName;// Draw a cylinder wires with base at startPos and top at endPos
 procedure DrawPlane(centerPos:TVector3; size:TVector2; color:TColor);cdecl;external cDllName;// Draw a plane XZ
 procedure DrawRay(ray:TRay; color:TColor);cdecl;external cDllName;// Draw a ray line
 procedure DrawGrid(slices:longint; spacing:single);cdecl;external cDllName;// Draw a grid (centered at (0, 0, 0))
