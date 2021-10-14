@@ -30,7 +30,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
  InitWindow(screenWidth, screenHeight, 'raylib [textures] example - bunnymark');
  SetTargetFPS(60);
  // Load bunny texture
- texBunny := LoadTexture('resources/textures/wabbit_alpha.png');
+ texBunny := LoadTexture('resources/wabbit_alpha.png');
 
 
  while not WindowShouldClose() do 
@@ -47,7 +47,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
                     bunnies[bunniesCount].speed.x := Single(GetRandomValue(-250, 250)/60.0);
                     bunnies[bunniesCount].speed.y := Single(GetRandomValue(-250, 250)/60.0);
                     //bunnies[bunniesCount].color :=
-                    TColorSet(@bunnies[bunniesCount].color,
+                    ColorSet(@bunnies[bunniesCount].color,
                     GetRandomValue(50, 240),
                     GetRandomValue(80, 240),
                     GetRandomValue(100, 240), 255) ;

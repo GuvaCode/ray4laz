@@ -39,7 +39,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
 
  InitWindow(screenWidth, screenHeight, 'raylib [models] example - waving cubes');
  SetTargetFPS(60);
- camera:=  TCamera3DCreate(Vector3Create( 30.0, 20.0, 30.0),
+ camera:=  Camera3DCreate(Vector3Create( 30.0, 20.0, 30.0),
                    Vector3Create( 0.0, 0.0, 0.0 ),
                    Vector3Create( 0.0, 1.0, 0.0),
                    70.0,CAMERA_PERSPECTIVE);

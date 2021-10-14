@@ -31,7 +31,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
     camera.fovy := 45.0;                              // Camera field-of-view Y
     camera.projection := CAMERA_PERSPECTIVE;           // Camera mode type
 
-    model := LoadModel('resources/gltf/rigged_figure.glb');               // Load the animated model mesh and
+    model := LoadModel('resources/models/gltf/rigged_figure.glb');               // Load the animated model mesh and
 
     position:=Vector3Create(0.0,0.0,0.0);     // Set model position
 
@@ -39,7 +39,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
      // Load animation data
     animsCount:= 0;
     //ModelAnimation
-    anims := LoadModelAnimations('resources/gltf/rigged_figure.glb', @animsCount);
+    anims := LoadModelAnimations('resources/models/gltf/rigged_figure.glb', @animsCount);
     animFrameCounter := 0;
     animationDirection := 1;
 

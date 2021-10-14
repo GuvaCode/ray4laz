@@ -40,7 +40,7 @@ end;
 
 begin
  InitWindow(screenWidth, screenHeight, 'raylib pascal - spiral');
- cam  :=  TCamera3DCreate(Vector3Create( 30.0, 200.0, 30.0),
+ cam  :=  Camera3DCreate(Vector3Create( 30.0, 200.0, 30.0),
                    Vector3Create( 0.0, 0.0, 0.0 ),
                    Vector3Create( 0.0, 1.0, 0.0),
                    70.0,CAMERA_PERSPECTIVE);
@@ -60,7 +60,7 @@ begin
   end;
 ///////////////////////////////////////
 
-tex:=LoadTexture('resources/textures/raylib_logo.png');
+tex:=LoadTexture('resources/raylib_logo.png');
 
 
  SetTargetFPS(60);

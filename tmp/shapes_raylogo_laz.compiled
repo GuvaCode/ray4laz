@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/bin/fpc" Date="1625802185"/>
+  <Params Value=" -MObjFPC -Scghi -Cg -O1 -gw3 -gl -l -vewnhibq -Fi/home/vadim/Projects/Ray4Laz/tmp -Fu/home/vadim/Projects/Ray4Laz/package/lib/x86_64-linux -Fu/usr/share/lazarus/2.2.0RC1/packager/units/x86_64-linux -Fu/home/vadim/Projects/Ray4Laz/examples/shapes/ -FU/home/vadim/Projects/Ray4Laz/tmp/ -FE/home/vadim/Projects/Ray4Laz/binary/ -o/home/vadim/Projects/Ray4Laz/binary/shapes_raylogo_laz shapes_raylogo_laz.lpr"/>
+</CONFIG>

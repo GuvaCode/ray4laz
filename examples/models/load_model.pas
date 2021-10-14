@@ -28,8 +28,8 @@ begin
   cam.fovy := 45.0;
   cam.projection := CAMERA_PERSPECTIVE;
 
-  dwarf := LoadModel('resources/models/castle.obj'); // Load OBJ model
-  texture := LoadTexture('resources/models/castle_diffuse.png');
+  dwarf := LoadModel('resources/models/church.obj'); // Load OBJ model
+  texture := LoadTexture('resources/models/church_diffuse.png');
   // Load model texture (diffuse map)
 
   dwarf.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture:= texture; // Set map diffuse texture

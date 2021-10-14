@@ -26,7 +26,7 @@ begin
     cam.fovy := 45.0;
     cam.projection := CAMERA_PERSPECTIVE;
 
-    bill := LoadTexture('resources/textures/billboard.png');
+    bill := LoadTexture('resources/billboard.png');
     billPosition := Vector3Create(0.0, 2.0, 0.0);
 
     SetCameraMode(cam, CAMERA_ORBITAL);

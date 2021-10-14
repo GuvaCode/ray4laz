@@ -10,7 +10,7 @@
         <CompatibilityMode Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="textures_particles_blending"/>
+      <Title Value="models_cubicmap"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -31,7 +31,7 @@
     </RequiredPackages>
     <Units Count="1">
       <Unit0>
-        <Filename Value="textures_particles_blending.pas"/>
+        <Filename Value="models_cubicmap.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
     </Units>
@@ -39,7 +39,7 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="../../binary/textures_particles_blending"/>
+      <Filename Value="../../binary/models_cubicmap"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

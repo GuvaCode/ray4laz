@@ -8,7 +8,7 @@ const
   screenWidth = 800;
   screenHeight = 450;
 
-  NUM_TEXTURES = 7;
+  NUM_TEXTURES = 6;
 
 var
   verticalGradient,
@@ -16,7 +16,6 @@ var
   radialGradient,
   checked,
   whiteNoise,
-  perlinNoise,
   cellular         : TImage;
   textures         : array [0 .. (NUM_TEXTURES) - 1] of TTexture2D;
   currentTexture, i: integer;
@@ -33,7 +32,6 @@ begin
   radialGradient := GenImageGradientRadial(screenWidth, screenHeight, 0.0, WHITE, BLACK);
   checked := GenImageChecked(screenWidth, screenHeight, 32, 32, RED, BLUE);
   whiteNoise := GenImageWhiteNoise(screenWidth, screenHeight, 0.5);
-  perlinNoise := GenImagePerlinNoise(screenWidth, screenHeight, 50, 50, 4.0);
   cellular := GenImageCellular(screenWidth, screenHeight, 32);
 
   textures[0] := LoadTextureFromImage(verticalGradient);
@@ -41,15 +39,14 @@ begin
   textures[2] := LoadTextureFromImage(radialGradient);
   textures[3] := LoadTextureFromImage(checked);
   textures[4] := LoadTextureFromImage(whiteNoise);
-  textures[5] := LoadTextureFromImage(perlinNoise);
-  textures[6] := LoadTextureFromImage(cellular);
+  textures[5] := LoadTextureFromImage(cellular);
+
 
   UnloadImage(verticalGradient);
   UnloadImage(horizontalGradient);
   UnloadImage(radialGradient);
   UnloadImage(checked);
   UnloadImage(whiteNoise);
-  UnloadImage(perlinNoise);
   UnloadImage(cellular);
 
   currentTexture := 0;
@@ -75,8 +72,8 @@ begin
       2: DrawText('RADIAL GRADIENT', 580, 10, 20, LIGHTGRAY);
       3: DrawText('CHECKED', 680, 10, 20, RAYWHITE);
       4: DrawText('WHITE NOISE', 640, 10, 20, RED);
-      5: DrawText('PERLIN NOISE', 630, 10, 20, RAYWHITE);
-      6: DrawText('CELLULAR', 670, 10, 20, RAYWHITE);
+      5: DrawText('CELLULAR', 630, 10, 20, RAYWHITE);
+
     else
       break;
     end;

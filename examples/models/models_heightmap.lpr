@@ -23,7 +23,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
  InitWindow(screenWidth, screenHeight, 'raylib [models] example - heightmap loading and drawing');
  SetTargetFPS(60);
  // Define our custom camera to look into our 3d world
- camera:=TCamera3DCreate(Vector3Create(18.0,18.0,18.0),
+ camera:=Camera3DCreate(Vector3Create(18.0,18.0,18.0),
                          Vector3Create(0.0,0.0,0.0),
                          Vector3Create(0.0,1.0,0.0),45.0,0);
 

@@ -34,12 +34,12 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
     camera.fovy := 45.0;                              // Camera field-of-view Y
     camera.projection := CAMERA_PERSPECTIVE;           // Camera mode type
 
-    model[0] := LoadModel('resources/gltf/raylib_32x32.glb');
-    model[1] := LoadModel('resources/gltf/rigged_figure.glb');
-    model[2] := LoadModel('resources/gltf/GearboxAssy.glb');
-    model[3] := LoadModel('resources/gltf/BoxAnimated.glb');
-    model[4] := LoadModel('resources/plane/plane.gltf');
-    model[5] := LoadModel('resources/gltf/AnimatedMorphCube.glb');
+    model[0] := LoadModel('resources/models/gltf/raylib_32x32.glb');
+    model[1] := LoadModel('resources/models/gltf/rigged_figure.glb');
+    model[2] := LoadModel('resources/models/gltf/GearboxAssy.glb');
+    model[3] := LoadModel('resources/models/gltf/BoxAnimated.glb');
+    model[4] := LoadModel('resources/models/gltf/girl.glb');
+    model[5] := LoadModel('resources/models/gltf/AnimatedMorphCube.glb');
 
      position:= Vector3Create( 0.0, 0.0, 0.0 );
 

@@ -26,15 +26,15 @@ begin
 	cam.fovy := 45.0;
 	cam.projection := CAMERA_PERSPECTIVE;
 
-	model := LoadModel('resources/guy/Tent.iqm');
-	texture := LoadTexture('resources/guy/Cleric_Texture.png');
+	model := LoadModel('resources/models/iqm/guy.iqm');
+	texture := LoadTexture('resources/models/iqm/guytex.png');
 	SetMaterialTexture(@model.materials[0], MATERIAL_MAP_DIFFUSE, texture);
 
 	position := Vector3Create(0.0,0.0,0.0);
 
 	// Load Animation Data
 	animsCount := 0;
-	anims := LoadModelAnimations('resources/guy/Tent.iqm', @animsCount);
+	anims := LoadModelAnimations('resources/models/iqm/guy.iqm', @animsCount);
 	animFrameCounter := 0;
 
 	WriteLn('animsCount: ', animsCount);
@@ -63,7 +63,7 @@ begin
 			ClearBackground(RAYWHITE);
 			BeginMode3d(cam);
 		
-				DrawModelEx(model, position, Vector3Create(1.0, 0.0, 0.0), 0.0, Vector3Create(1.0, 1.0, 1.0), WHITE);
+				DrawModelEx(model, position, Vector3Create(1.0, 0.0, 0.0), -90.0, Vector3Create(1.0, 1.0, 1.0), WHITE);
 				for i := 0 to model.boneCount - 1 do
 				begin
 				  DrawCube(anims[0].framePoses[animFrameCounter][i].translation, 0.2, 0.2, 0.2, RED);
