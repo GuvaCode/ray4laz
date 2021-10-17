@@ -105,7 +105,8 @@ type
     OPENGL_11 = 1;
     OPENGL_21 = 2;
     OPENGL_33 = 3;
-    OPENGL_ES_20 = 4;
+    OPENGL_43 = 4;
+    OPENGL_ES_20 = 5;
 
 type
   PrlFramebufferAttachType = ^TrlFramebufferAttachType;
@@ -480,6 +481,23 @@ procedure rlSetUniform(locIndex:longint; value:pointer; uniformType:longint; cou
 procedure rlSetUniformMatrix(locIndex:longint; mat:TMatrix);cdecl;external cDllName;// Set shader value matrix
 procedure rlSetUniformSampler(locIndex:longint; textureId:dword);cdecl;external cDllName;// Set shader value sampler
 procedure rlSetShader(id:dword; locs:Plongint);cdecl;external cDllName; // Set shader currently active (id and locations)
+
+//{$if defined(GRAPHICS_API_OPENGL_43)}
+// Compute shader management
+function rlLoadComputeShaderProgram(shaderId:dword):longint;cdecl;external cDllName;
+procedure rlComputeShaderDispatch(groupX:dword; groupY:dword; groupZ:dword);cdecl;external cDllName;
+
+// Shader buffer storage object management (ssbo)
+function rlLoadShaderBuffer(size: qWord; data:pointer; usageHint:longint):longint;cdecl;external cDllName;
+procedure rlUnloadShaderBuffer(ssboId:dword);cdecl;external cDllName;
+procedure rlUpdateShaderBufferElements(id:dword; data:pointer; dataSize:qword; offset:qword);cdecl;external cDllName;
+function rlGetShaderBufferSize(id:dword):qword;cdecl;external cDllName;
+procedure rlReadShaderBufferElements(id:dword; dest:pointer; count:qword; offset:qword);cdecl;external cDllName;
+procedure rlBindShaderBuffer(id:dword; index:dword);cdecl;external cDllName;
+// Buffer management
+procedure rlCopyBuffersElements(destId:dword; srcId:dword; destOffset:qword; srcOffset:qword; count:qword);cdecl;external cDllName;
+procedure rlBindImageTexture(id:dword; index:dword; format:dword; readonly:longint);cdecl;external cDllName;
+//{$endif}
 
 (* Matrix state management *)
 function rlGetMatrixModelview:TMatrix;cdecl;external cDllName;// Get internal modelview matrix
