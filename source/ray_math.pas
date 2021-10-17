@@ -183,7 +183,27 @@ procedure QuaternionToAxisAngle(q : TQuaternion; uutAxis : PVector3; outAngle : 
 function  QuaternionFromEuler(pitch, yaw, roll : Single): TQuaternion; cdecl; external cDllName;// Returns the quaternion equivalent to Euler angles
 function  QuaternionToEuler(q : TQuaternion): TVector3; cdecl; external cDllName;// Return the Euler angles equivalent to quaternion (roll, pitch, yaw)
 function  QuaternionTransform(q : TQuaternion; mat : TMatrix): TQuaternion; cdecl; external cDllName;// Transform a quaternion given a transformation matrix
-
+// Custom Misc Functions
+function fMinf(a, b: Single):single;
+function fMaxf(a, b: Single):single;
+//sinf
+//cosf
 implementation
+
+function fMinf(a, b: Single): single;
+begin
+   if a < b then
+    Result := a
+  else
+    Result := b;
+end;
+
+function fMaxf(a, b: Single): single;
+begin
+   if a > b then
+    Result := a
+  else
+    Result := b;
+end;
 
 end.
