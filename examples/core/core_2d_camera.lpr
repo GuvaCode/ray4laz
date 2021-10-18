@@ -9,11 +9,11 @@
 *   Pascal conversion (c) 2021 Gunko Vadim (@guvacode)
 *
 ********************************************************************************************}
-program core_2d_camara;
+program core_2d_camera;
 
 {$MODE objfpc}
 
-uses cmem, ray_header, ray_math, math;
+uses cmem, ray_header, ray_math, math, ray_physac;
 
 const
   screenWidth = 800;

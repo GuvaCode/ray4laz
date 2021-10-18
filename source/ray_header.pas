@@ -1008,8 +1008,12 @@ function IsFileDropped:boolean;cdecl;external cDllName;// Check if a file has be
 function GetDroppedFiles(count:Plongint):PPchar;cdecl;external cDllName;// Get dropped files names (memory should be freed)
 procedure ClearDroppedFiles;cdecl;external cDllName;// Clear dropped files paths buffer (free memory)
 function GetFileModTime(fileName:Pchar):longint;cdecl;external cDllName;// Get file modification time (last write time)
+
+(* Compression/Encoding functionality *)
 function CompressData(data:Pbyte; dataLength:longint; compDataLength:Plongint):Pbyte;cdecl;external cDllName;// Compress data (DEFLATE algorithm)
 function DecompressData(compData:Pbyte; compDataLength:longint; dataLength:Plongint):Pbyte;cdecl;external cDllName;// Decompress data (DEFLATE algorithm)
+function EncodeDataBase64(data:Pchar; dataLength:longint; outputLength:Plongint):Pchar;cdecl;external cDllName;// Encode data to Base64 string
+function DecodeDataBase64(data:Pchar; outputLength:Plongint):Pchar;cdecl;external cDllName;// Decode Base64 string data
 
 (* Persistent storage management *)
 function SaveStorageValue(position:dword; value:longint):boolean;cdecl;external cDllName;// Save integer value to storage file (to defined position), returns true on success

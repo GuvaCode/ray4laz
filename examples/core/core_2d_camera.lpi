@@ -32,7 +32,6 @@
       <Unit>
         <Filename Value="core_2d_camera.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="core_2d_camara"/>
       </Unit>
     </Units>
   </ProjectOptions>
