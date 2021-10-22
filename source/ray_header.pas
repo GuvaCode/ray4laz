@@ -1034,10 +1034,8 @@ procedure SetExitKey(key:longint);cdecl;external cDllName;// Set a custom key to
 function GetKeyPressed:longint;cdecl;external cDllName;// Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
 function GetCharPressed:longint;cdecl;external cDllName;// Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
 
-
 (* Input-related functions: gamepads *)
 function IsGamepadAvailable(gamepad:longint):boolean;cdecl;external cDllName;// Check if a gamepad is available
-function IsGamepadName(gamepad:longint; name:Pchar):boolean;cdecl;external cDllName;// Check gamepad name (if available)
 function GetGamepadName(gamepad:longint):Pchar;cdecl;external cDllName;// Get gamepad internal name id
 function IsGamepadButtonPressed(gamepad:longint; button:longint):boolean;cdecl;external cDllName;// Check if a gamepad button has been pressed once
 function IsGamepadButtonDown(gamepad:longint; button:longint):boolean;cdecl;external cDllName;// Check if a gamepad button is being pressed
