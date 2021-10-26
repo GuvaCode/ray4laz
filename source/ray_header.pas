@@ -234,7 +234,7 @@ const
          // Animation vertex data
          animVertices  : Psingle;  // Animated vertex positions (after bones transformations)
          animNormals   : Psingle;  // Animated normals (after bones transformations)
-         boneIds       : Plongint; // Vertex bone ids, up to 4 bones influence by vertex (skinning)
+         boneIds       : Pbyte; // Vertex bone ids, up to 4 bones influence by vertex (skinning)
          boneWeights   : Psingle;  // Vertex bone weight, up to 4 bones influence by vertex (skinning)
          // OpenGL identifiers
          vaoId         : dword;    // OpenGL Vertex Array Object id
