@@ -28,7 +28,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
 {$IFEND}
 
  InitWindow(screenWidth, screenHeight, 'raylib [textures] example - bunnymark');
- SetTargetFPS(60);
+ //SetTargetFPS(60);
  // Load bunny texture
  texBunny := LoadTexture('resources/wabbit_alpha.png');
 
