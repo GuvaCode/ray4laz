@@ -1,3 +1,5 @@
+
+
 <img align="left" src="binary/resources/ray4logo.png" width="256px">
 
 **Ray4Laz is a header translation of the [Raylib Game Development Library](https://www.raylib.com/) for the [Lazarus project](https://www.lazarus-ide.org/).**
@@ -5,6 +7,9 @@
 **[raylib](https://github.com/raysan5/raylib) is a simple and easy-to-use library to enjoy videogames programming.**
 
 raylib is highly inspired by Borland BGI graphics lib and by XNA framework and it's specially well suited for prototyping, tooling, graphical applications, embedded systems and education.
+
+ <br/><br/>
+ 
 
 *NOTE for ADVENTURERS: raylib is a programming library to enjoy videogames programming; no fancy interface, no visual helpers, no auto-debugging... just coding in the most pure spartan-programmers way.*
 
