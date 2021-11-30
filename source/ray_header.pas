@@ -741,7 +741,7 @@ const
      PTextureFilter = ^TTextureFilter;
      TTextureFilter =  Longint;
      const
-       TEXTURE_FILTER_POINT            = 0; // No filter, just pixel aproximation
+       TEXTURE_FILTER_POINT            = 0; // No filter, just pixel approximation
        TEXTURE_FILTER_BILINEAR         = 1; // Linear filtering
        TEXTURE_FILTER_TRILINEAR        = 2; // Trilinear filtering (linear with mipmaps)
        TEXTURE_FILTER_ANISOTROPIC_4X   = 3; // Anisotropic filtering 4x
@@ -884,6 +884,8 @@ procedure SetWindowSize(width:longint; height:longint);cdecl;external cDllName;/
 function GetWindowHandle:pointer;cdecl;external cDllName;// Get native window handle
 function GetScreenWidth:longint;cdecl;external cDllName;// Get current screen width
 function GetScreenHeight:longint;cdecl;external cDllName;// Get current screen height
+function GetRenderWidth:longint;cdecl;external cDllName;// Get current render width (it considers HiDPI)
+function GetRenderHeight:longint;cdecl;external cDllName;// Get current render height (it considers HiDPI)
 function GetMonitorCount:longint;cdecl;external cDllName;// Get number of connected monitors
 function GetCurrentMonitor:longint;cdecl;external cDllName;// Get current connected monitor
 function GetMonitorPosition(monitor:longint):TVector2;cdecl;external cDllName;// Get specified monitor position
