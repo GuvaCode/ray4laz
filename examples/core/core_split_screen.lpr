@@ -162,7 +162,11 @@ begin
     end;
   // De-Initialization
   //--------------------------------------------------------------------------------------
+  UnloadRenderTexture(screenPlayer1); // Unload render texture
+  UnloadRenderTexture(screenPlayer2); // Unload render texture
+  UnloadTexture(textureGrid);         // Unload texture
   CloseWindow();        // Close window and OpenGL context
+
   //--------------------------------------------------------------------------------------
 end.
 
