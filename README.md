@@ -9,7 +9,7 @@ raylib is highly inspired by Borland BGI graphics lib and by XNA framework and i
 
 ---
 
- <br/><br/>
+ <br/>
  *NOTE for ADVENTURERS: raylib is a programming library to enjoy videogames programming; no fancy interface, no visual helpers, no auto-debugging... just coding in the most pure spartan-programmers way.*
 
 
@@ -30,6 +30,7 @@ Windows    | :heavy_check_mark: |
 Linux      | :heavy_check_mark: |
 Haiku      | :heavy_check_mark: |
 
+---
 
 **build and installation raylib**
 
@@ -48,6 +49,8 @@ raylib binary releases for Windows, Linux and macOS are available at the [Github
  - [Working for Web (HTML5)](https://github.com/raysan5/raylib/wiki/Working-for-Web-(HTML5))
  - [Working anywhere with CMake](https://github.com/raysan5/raylib/wiki/Working-with-CMake)
  - [CMake Build Options](https://github.com/raysan5/raylib/wiki/CMake-Build-Options)
+
+---
 
 **Installation in Lazarus.** 
 
