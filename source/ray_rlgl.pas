@@ -173,7 +173,7 @@ TrlRenderBatch = record
     currentDepth : single;
   end;
 
-type
+{type
   PMatrix = ^TMatrix;
   TMatrix = record
       m0 : single;
@@ -192,7 +192,7 @@ type
       m7 : single;
       m11 : single;
       m15 : single;
-    end;
+    end;}
 
 type
   PrlTraceLogLevel = ^TrlTraceLogLevel;
@@ -317,7 +317,7 @@ type
 //------------------------------------------------------------------------------------
 // Functions Declaration - Matrix operations
 //------------------------------------------------------------------------------------
-
+procedure rlMatrixMode(mode: longint);cdecl;external cDllName;// Choose the current matrix to be transformed
 procedure rlPushMatrix;cdecl;external cDllName;// Push the current matrix to stack
 procedure rlPopMatrix;cdecl;external cDllName;// Pop lattest inserted matrix from stack
 procedure rlLoadIdentity;cdecl;external cDllName;// Reset current matrix to identity matrix
