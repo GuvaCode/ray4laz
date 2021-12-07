@@ -48,6 +48,7 @@ type
         f3 : Single;
     end;
 
+    PFloat16 = ^TFloat16;
     TFloat16 = record
         f1 : single;
         f2 : single;
