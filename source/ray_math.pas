@@ -42,30 +42,14 @@ interface
 uses ray_header;
 
 type
+    PFloat3 = ^TFloat3;
     TFloat3 = record
-        f1 : Single;
-        f2 : Single;
-        f3 : Single;
+     v: array[0..2] of single;
     end;
 
     PFloat16 = ^TFloat16;
     TFloat16 = record
-        f1 : single;
-        f2 : single;
-        f3 : single;
-        f4 : single;
-        f5 : single;
-        f6 : single;
-        f7 : single;
-        f8 : single;
-        f9 : single;
-        f10 : single;
-        f11 : single;
-        f12 : single;
-        f13 : single;
-        f14 : single;
-        f15 : single;
-        f16 : single;
+     v: array[0..15] of single;
     end;
 
 //----------------------------------------------------------------------------------
