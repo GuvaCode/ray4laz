@@ -35,11 +35,11 @@
 *
 **********************************************************************************************}
 
-unit ray_math;
+unit raymath;
 
 interface
 
-uses ray_header;
+uses raylib;
 
 type
     PFloat3 = ^TFloat3;

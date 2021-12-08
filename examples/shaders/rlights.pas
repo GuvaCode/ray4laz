@@ -37,7 +37,7 @@ unit rlights;
 interface
 
 uses
-  ray_header, ray_math, sysutils;
+  raylib, sysutils;
 
 const
   MAX_LIGHTS = 4;         // Max dynamic lights supported by shader

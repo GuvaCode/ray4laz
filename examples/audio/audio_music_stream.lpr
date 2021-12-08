@@ -13,7 +13,7 @@ program audio_music_stream;
 
 {$mode objfpc}{$H+}
 
-uses ray_header;
+uses raylib;
 
 const
  screenWidth = 800;

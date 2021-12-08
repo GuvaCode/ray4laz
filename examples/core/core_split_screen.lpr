@@ -17,9 +17,9 @@ program core_split_screen;
 
 uses 
 {uncomment if necessary}
-//ray_math, 
-//ray_rlgl, 
-ray_header; 
+//raymath,
+//rlgl,
+raylib;
 
 const
   screenWidth = 800;

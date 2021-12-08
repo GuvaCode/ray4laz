@@ -2,7 +2,7 @@ program textures_bunnymark;
 
 {$mode objfpc}{$H+}
 
-uses cmem, ray_header, math;
+uses cmem, raylib, math;
 
 type
  TBunny = record

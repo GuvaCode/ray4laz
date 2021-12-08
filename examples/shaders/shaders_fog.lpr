@@ -2,7 +2,7 @@ program shaders_fog;
 
 {$mode objfpc}{$H+}
 
-uses ray_header, ray_math, rlights;
+uses raylib, raymath, rlights;
 
 const
   screenWidth = 800;

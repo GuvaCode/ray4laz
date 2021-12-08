@@ -4,9 +4,9 @@ program models_loading_vox;
 
 uses 
 {uncomment if necessary}
-ray_math,
-//ray_rlgl, 
-ray_header; 
+raymath,
+//rlgl,
+raylib;
 
 const
   screenWidth = 800;
@@ -80,7 +80,7 @@ begin
 		else if IsKeyPressed(KEY_LEFT) then
 		begin
                         Dec(currentModel);
-			if (currentModel < 0) then currentModel := MAX_VOX_FILES - 1;
+			if (currentModel < 0) then currentModel := MAX_VOX_FILES ;
 		end;
 
       //----------------------------------------------------------------------------------

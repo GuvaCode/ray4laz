@@ -15,16 +15,16 @@
     <Version Major="4"/>
     <Files Count="3">
       <Item1>
-        <Filename Value="../source/ray_header.pas"/>
-        <UnitName Value="ray_header"/>
+        <Filename Value="../source/raylib.pas"/>
+        <UnitName Value="raylib"/>
       </Item1>
       <Item2>
-        <Filename Value="../source/ray_math.pas"/>
-        <UnitName Value="ray_math"/>
+        <Filename Value="../source/raymath.pas"/>
+        <UnitName Value="raymath"/>
       </Item2>
       <Item3>
-        <Filename Value="../source/ray_rlgl.pas"/>
-        <UnitName Value="ray_rlgl"/>
+        <Filename Value="../source/rlgl.pas"/>
+        <UnitName Value="rlgl"/>
       </Item3>
     </Files>
     <CompatibilityMode Value="True"/>

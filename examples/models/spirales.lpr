@@ -4,7 +4,7 @@ program spirales;
 
 uses cmem,
 Math,
-ray_header; 
+raylib;
 
 const
  screenWidth = 800;

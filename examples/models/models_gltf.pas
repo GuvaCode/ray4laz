@@ -2,7 +2,7 @@ program models_gltf;
 
 {$mode objfpc}{$H+}
 
-uses cmem, ray_header;
+uses cmem, raylib;
 
 const
  screenWidth = 800;

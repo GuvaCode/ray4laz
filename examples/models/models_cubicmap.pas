@@ -2,7 +2,7 @@ program models_cubicmap;
 
 {$MODE objfpc}
 
-uses cmem, ray_header, ray_math, math;
+uses cmem, raylib, raymath, math;
 
 const
   screenWidth = 800;

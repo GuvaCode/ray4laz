@@ -16,7 +16,7 @@ program models_waving_cubes;
 
 {$mode objfpc}{$H+}
 
-uses cmem, ray_header, math;
+uses cmem, raylib, math;
 
 const
  screenWidth = 800;

@@ -48,13 +48,13 @@
 **********************************************************************************************}
 
 
-unit ray_rlgl;
+unit rlgl;
 
 {$mode objfpc}{$H+}
 
 interface
 
-uses ray_header;
+uses raylib;
 
 const
       {$IFnDEF Arm}

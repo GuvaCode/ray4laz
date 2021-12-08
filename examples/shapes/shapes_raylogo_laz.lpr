@@ -2,7 +2,7 @@ program shapes_raylogo_laz;
 
 {$mode objfpc}{$H+}
 
-uses cmem, ray_header, math;
+uses cmem, raylib, math;
 
 const
  screenWidth = 800;

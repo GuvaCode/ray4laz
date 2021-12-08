@@ -2,7 +2,7 @@ program core_3d_camera_first_person;
 
 {$mode objfpc}{$H+}
 
-uses cmem, ray_header, math;
+uses cmem, raylib, math;
 
 const
   screenWidth = 800;

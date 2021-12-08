@@ -1,4 +1,4 @@
-unit ray_header;
+unit raylib;
 
 {$mode objfpc}{$H+}
 

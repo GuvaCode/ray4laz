@@ -8,7 +8,7 @@ unit ray4laz;
 interface
 
 uses
-  ray_header, ray_math, ray_rlgl;
+  raylib, raymath, rlgl;
 
 implementation
 

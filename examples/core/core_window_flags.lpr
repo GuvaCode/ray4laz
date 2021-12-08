@@ -16,9 +16,9 @@ program core_window_flags;
 
 uses 
 {uncomment if necessary}
-//ray_math, 
-//ray_rlgl, 
-ray_header, sysutils;
+//raymath,
+//rlgl,
+raylib, sysutils;
 
 const
   screenWidth = 800;

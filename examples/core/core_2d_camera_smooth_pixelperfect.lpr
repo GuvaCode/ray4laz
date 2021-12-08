@@ -18,9 +18,9 @@ program core_2d_camera_smooth_pixelperfect;
 
 uses 
 {uncomment if necessary}
-ray_math,
-//ray_rlgl,
-ray_header;
+raymath,
+//rlgl,
+raylib;
 
 const
   screenWidth = 800;

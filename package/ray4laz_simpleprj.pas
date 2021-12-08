@@ -64,9 +64,9 @@ begin
     LineEnding +
     'uses ' + LineEnding +
     '{uncomment if necessary}' + LineEnding +
-    '//ray_math, ' + LineEnding +
-    '//ray_rlgl, ' + LineEnding +
-    'ray_header; ' + LineEnding + LineEnding +
+    '//raymath, ' + LineEnding +
+    '//rlgl, ' + LineEnding +
+    'raylib; ' + LineEnding + LineEnding +
     'const' +  LineEnding +
     '  screenWidth = 800;'+ LineEnding +
     '  screenHeight = 450;'+ LineEnding  + LineEnding +

@@ -2,7 +2,7 @@ program shapes_starfield;
 
 {$mode objfpc}{$H+}
 
-uses cmem, ray_header, math;
+uses cmem, raylib, math;
 
 type
 

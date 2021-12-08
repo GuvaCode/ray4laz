@@ -15,7 +15,7 @@ program models_rlgl_solar_system;
 
 {$mode objfpc}{$H+}
 
-uses cmem, ray_header, ray_rlgl;
+uses cmem, raylib, rlgl;
 
 const
  screenWidth = 800;

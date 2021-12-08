@@ -2,7 +2,7 @@ program textures_sprite_explosion;
 
 {$mode objfpc}
 
-uses cmem, ray_header, math;
+uses cmem, raylib, math;
 
 const
 screenWidth = 800;

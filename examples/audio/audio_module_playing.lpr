@@ -13,7 +13,7 @@ program audio_module_playing;
 
 {$mode objfpc}{$H+}
 
-uses ray_header;
+uses raylib;
 
 const
   MAX_CIRCLES = 64;

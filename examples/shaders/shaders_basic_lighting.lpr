@@ -21,7 +21,7 @@ program shaders_basic_lighting;
 
 {$mode objfpc}{$H+}
 
-uses ray_header, ray_math, rlights;
+uses raylib, raymath, rlights;
 
 const
   screenWidth = 800;
