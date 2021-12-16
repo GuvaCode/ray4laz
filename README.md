@@ -20,6 +20,7 @@ Header     | Supported          |
 raylib.h   | :heavy_check_mark: |
 raymath.h  | :heavy_check_mark: |
 rlgl.h     | :heavy_check_mark: |
+raygui.h   | :heavy_check_mark: |
 
 **Platforms**
 
