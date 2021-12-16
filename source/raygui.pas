@@ -267,8 +267,23 @@ function GuiColorBarAlpha(bounds: TRectangle; alpha: single): single ;cdecl;exte
 function GuiColorBarHue(bounds:TRectangle; value: single): single ;cdecl;external cDllName;// Color Bar Hue control
 
 // Styles loading functions
-RAYGUIAPI void GuiLoadStyle(const char *fileName);              // Load style file over global style variable (.rgs)
-RAYGUIAPI void GuiLoadStyleDefault(void);                       // Load style default over global style
+procedure GuiLoadStyle(const fileName: pchar); cdecl;external cDllName;// Load style file over global style variable (.rgs)
+procedure GuiLoadStyleDefault; cdecl;external cDllName;// Load style default over global style
+
+RAYGUIAPI const char *GuiIconText(int iconId, const char *text); // Get text with icon id prepended (if supported)
+
+#if !defined(RAYGUI_NO_RICONS)
+// Gui icons functionality
+RAYGUIAPI void GuiDrawIcon(int iconId, int posX, int posY, int pixelSize, Color color);
+
+RAYGUIAPI unsigned int *GuiGetIcons(void);                      // Get full icons data pointer
+RAYGUIAPI unsigned int *GuiGetIconData(int iconId);             // Get icon bit data
+RAYGUIAPI void GuiSetIconData(int iconId, unsigned int *data);  // Set icon bit data
+
+RAYGUIAPI void GuiSetIconPixel(int iconId, int x, int y);       // Set icon pixel value
+RAYGUIAPI void GuiClearIconPixel(int iconId, int x, int y);     // Clear icon pixel value
+RAYGUIAPI bool GuiCheckIconPixel(int iconId, int x, int y);     // Check icon pixel value
+#endif
 
 
 implementation
