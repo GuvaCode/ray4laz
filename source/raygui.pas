@@ -256,9 +256,19 @@ procedure GuiDummyRec(bounds: TRectangle; const text: pchar);cdecl;external cDll
 function GuiScrollBar(bounds: TRectangle; value: longint; minValue: longint; maxValue: longint): longint;cdecl;external cDllName;// Scroll Bar control
 function GuiGrid(bounds: TRectangle; spacing: single; subdivs: longint): TVector2; cdecl;external cDllName;// Grid control
 
+// Advance controls set
+function GuiListView(bounds: TRectangle; const text: pchar; scrollIndex: plongint; active: longint): longint; cdecl;external cDllName;// List View control, returns selected list item index
+function GuiListViewEx(bounds: TRectangle; const text: ppchar; count: longint; focus: plongint; scrollIndex: plongint; active: longint): longint; cdecl;external cDllName;// List View with extended parameters
+function GuiMessageBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar): longint; cdecl;external cDllName;// Message Box control, displays a message
+function GuiTextInputBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar; text: pchar): longint; cdecl;external cDllName;// Text Input Box control, ask for text
+function GuiColorPicker(bounds: TRectangle; color: TColor): TColor ;cdecl;external cDllName;// Color Picker control (multiple color controls)
+function GuiColorPanel(bounds: TRectangle; color: TColor): TColor ;cdecl;external cDllName;// Color Panel control
+function GuiColorBarAlpha(bounds: TRectangle; alpha: single): single ;cdecl;external cDllName;// Color Bar Alpha control
+function GuiColorBarHue(bounds:TRectangle; value: single): single ;cdecl;external cDllName;// Color Bar Hue control
 
-
-
+// Styles loading functions
+RAYGUIAPI void GuiLoadStyle(const char *fileName);              // Load style file over global style variable (.rgs)
+RAYGUIAPI void GuiLoadStyleDefault(void);                       // Load style default over global style
 
 
 implementation
