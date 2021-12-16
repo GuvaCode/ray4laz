@@ -6,6 +6,9 @@
 *                                                                                           *
 *   raygui is a tools-dev-focused immediate-mode-gui library based on raylib but also       *
 *   available as a standalone library, as long as input and drawing functions are provided. *
+*                                                                                           *
+*   pascal header by Gunko Vadim                                                            *
+*                                                                                           *
 *********************************************************************************************}
 
 unit raygui;
@@ -16,6 +19,8 @@ interface
 
 uses
  raylib;
+
+{$DEFINE RAYGUI_NO_RICONS}
 
 type
 // GlyphInfo, font characters glyphs info
@@ -270,21 +275,19 @@ function GuiColorBarHue(bounds:TRectangle; value: single): single ;cdecl;externa
 procedure GuiLoadStyle(const fileName: pchar); cdecl;external cDllName;// Load style file over global style variable (.rgs)
 procedure GuiLoadStyleDefault; cdecl;external cDllName;// Load style default over global style
 
-RAYGUIAPI const char *GuiIconText(int iconId, const char *text); // Get text with icon id prepended (if supported)
+function GuiIconText(iconId: longint; const text: pchar): pchar; cdecl;external cDllName; // Get text with icon id prepended (if supported)
 
-#if !defined(RAYGUI_NO_RICONS)
+{$IFDEF RAYGUI_NO_RICONS}
 // Gui icons functionality
-RAYGUIAPI void GuiDrawIcon(int iconId, int posX, int posY, int pixelSize, Color color);
+procedure GuiDrawIcon(iconId: longint; posX: longint; posY: longint; pixelSize: longint; color: TColor); cdecl;external cDllName;
 
-RAYGUIAPI unsigned int *GuiGetIcons(void);                      // Get full icons data pointer
-RAYGUIAPI unsigned int *GuiGetIconData(int iconId);             // Get icon bit data
-RAYGUIAPI void GuiSetIconData(int iconId, unsigned int *data);  // Set icon bit data
-
-RAYGUIAPI void GuiSetIconPixel(int iconId, int x, int y);       // Set icon pixel value
-RAYGUIAPI void GuiClearIconPixel(int iconId, int x, int y);     // Clear icon pixel value
-RAYGUIAPI bool GuiCheckIconPixel(int iconId, int x, int y);     // Check icon pixel value
-#endif
-
+function GuiGetIcons: pdword; cdecl;external cDllName;// Get full icons data pointer
+function GuiGetIconData(iconId: longint): pdword; cdecl;external cDllName;// Get icon bit data
+procedure GuiSetIconData(iconId: longint; data: pdword); cdecl;external cDllName;// Set icon bit data
+procedure GuiSetIconPixel(iconId: longint; x: longint; y: longint); cdecl;external cDllName;// Set icon pixel value
+procedure GuiClearIconPixel(iconId: longint; x: longint; y: longint); cdecl;external cDllName;// Clear icon pixel value
+function GuiCheckIconPixel(iconId: longint; x: longint; y: longint): boolean; cdecl;external cDllName;// Check icon pixel value
+{$ENDIF}
 
 implementation
 
