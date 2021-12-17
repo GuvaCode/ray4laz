@@ -121,6 +121,7 @@ begin
     end;
   // De-Initialization
   //--------------------------------------------------------------------------------------
+  ClosePhysics();       // Unitialize physics
   CloseWindow();        // Close window and OpenGL context
   //--------------------------------------------------------------------------------------
 end.
