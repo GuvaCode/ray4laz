@@ -110,14 +110,12 @@ type
 
 
 type
-  PPhysicsShapeType = ^TPhysicsShapeType;
   TPhysicsShapeType = Longint;
   const
     PHYSICS_CIRCLE   = 0;
     PHYSICS_POLYGON  = 1;
 
-type
-  PPhysicsVertexData = ^TPhysicsVertexData;
+ type
   TPhysicsVertexData = record
     vertexCount: dword;                                    // Vertex count (positions and normals)
     positions: array [0..PHYSAC_MAX_VERTICES] of TVector2; // Vertex positions vectors
@@ -125,19 +123,16 @@ type
   end;
 
   // Previously defined to be used in PhysicsShape struct as circular dependencies
-  PPhysicsBody = ^TPhysicsBody;
   TPhysicsBody = ^TPhysicsBodyData;
 
-  PPhysicsShape = ^TPhysicsShape;
   TPhysicsShape = record
     type_: TPhysicsShapeType;                     // Shape type (circle or polygon)
-    body: TPhysicsBody;                           // Shape physics body data pointer
+    body:  TPhysicsBody;                           // Shape physics body data pointer
     vertexData: TPhysicsVertexData;               // Shape vertices data (used for polygon shapes)
     radius: single;                               // Shape radius (used for circle shapes)
     transform: TMatrix2x2;                        // Vertices transform matrix 2x2
   end;
 
-   PPhysicsBodyData = ^TPhysicsBodyData;
    TPhysicsBodyData = record
      id: dword ;                                   // Unique identifier
      enabled: boolean;                             // Enabled dynamics state (collisions are calculated anyway)
@@ -160,21 +155,22 @@ type
      shape: TPhysicsShape;                         // Physics body shape information (type, radius, vertices, transform)
    end;
 
-   PPhysicsManifoldData = ^TPhysicsManifoldData;
+
    TPhysicsManifoldData = record
      id: dword;                                    // Unique identifier
      bodyA: TPhysicsBody;                          // Manifold first physics body reference
      bodyB: TPhysicsBody;                          // Manifold second physics body reference
      penetration: single;                          // Depth of penetration from collision
      normal: TVector2;                             // Normal direction vector from 'a' to 'b'
-     contacts: array [0..2] of TVector2;           // Points of contact during collision
+     contacts: array [0..1] of TVector2;           // Points of contact during collision
      contactsCount: dword;                 // Current collision number of contacts
      restitution: single;                          // Mixed restitution during collision
      dynamicFriction: single;                      // Mixed dynamic friction during collision
      staticFriction: single;                       // Mixed static friction during collision
    end;
 
-   TPhysicsManifold = PPhysicsManifoldData;
+   TPhysicsManifold = ^TPhysicsManifoldData;
+
 
 //----------------------------------------------------------------------------------
 // Module Functions Declaration
