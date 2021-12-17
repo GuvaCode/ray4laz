@@ -173,8 +173,38 @@ type
      staticFriction: single;                       // Mixed static friction during collision
    end;
 
-   PhysicsManifold = PPhysicsManifoldData;
+   TPhysicsManifold = PPhysicsManifoldData;
 
+//----------------------------------------------------------------------------------
+// Module Functions Declaration
+//----------------------------------------------------------------------------------
+
+// Physics system management
+procedure InitPhysics; cdecl;external cDllName;// Initializes physics system
+procedure UpdatePhysics; cdecl;external cDllName;// Update physics system
+procedure ResetPhysics; cdecl;external cDllName;// Reset physics system (global variables)
+procedure ClosePhysics; cdecl;external cDllName;// Close physics system and unload used memory
+procedure SetPhysicsTimeStep(delta: single); cdecl;external cDllName;// Sets physics fixed time step in milliseconds. 1.666666 by default
+procedure SetPhysicsGravity(x,y: single); cdecl;external cDllName;// Sets physics global gravity force
+
+// Physic body creation/destroy
+function CreatePhysicsBodyCircle(pos: TVector2; radius: single; density: single): TPhysicsBody; cdecl;external cDllName;// Creates a new circle physics body with generic parameters
+function CreatePhysicsBodyRectangle(pos: TVector2; width: single; height: single; density: single): TPhysicsBody; cdecl;external cDllName;// Creates a new rectangle physics body with generic parameters
+function CreatePhysicsBodyPolygon(pos: TVector2; radius: single; sides:longint; density: single): TPhysicsBody; cdecl;external cDllName;// Creates a new polygon physics body with generic parameters
+procedure DestroyPhysicsBody(body: TPhysicsBody); cdecl;external cDllName;// Destroy a physics body
+
+// Physic body forces
+procedure PhysicsAddForce(body: TPhysicsBody; force: TVector2); cdecl;external cDllName;// Adds a force to a physics body
+procedure PhysicsAddTorque(body: TPhysicsBody; amount: single); cdecl;external cDllName;// Adds an angular force to a physics body
+procedure PhysicsShatter(body: TPhysicsBody; position: TVector2; force: single); cdecl;external cDllName;// Shatters a polygon shape physics body to little physics bodies with explosion force
+procedure SetPhysicsBodyRotation(body: TPhysicsBody; radians: single); cdecl;external cDllName;// Sets physics body shape transform based on radians parameter
+
+// Query physics info
+function GetPhysicsBody(index: longint): TPhysicsBody; cdecl;external cDllName;// Returns a physics body of the bodies pool at a specific index
+function GetPhysicsBodiesCount: longint; cdecl;external cDllName;// Returns the current amount of created physics bodies
+function GetPhysicsShapeType(index: longint): longint; cdecl;external cDllName;// Returns the physics body shape type (PHYSICS_CIRCLE or PHYSICS_POLYGON)
+function GetPhysicsShapeVerticesCount(index: longint): longint; cdecl;external cDllName;// Returns the amount of vertices of a physics body shape
+function GetPhysicsShapeVertex(body: TPhysicsBody; vertex: longint): TVector2; cdecl;external cDllName;// Returns transformed position of a body shape (body position + vertex transformed position)
 
 implementation
 
