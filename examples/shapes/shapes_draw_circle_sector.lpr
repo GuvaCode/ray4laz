@@ -62,8 +62,13 @@ begin
       outerRadius := GuiSliderBar(RectangleCreate( 600, 140, 120, 20), 'Radius', nil, outerRadius, 0, 200);
       segments := Round(GuiSliderBar(RectangleCreate( 600, 170, 120, 20), 'Segments', nil, segments, 0, 100));
       //------------------------------------------------------------------------------
+      try
+       minSegments:= ceil((endAngle - startAngle) / 90);
+      finally
 
-      minSegments:= ceil((endAngle - startAngle) / 90);
+      end;
+
+
 
       if segments >= minSegments then
       DrawText('MANUAL',600,20,10,DARKGRAY) else
