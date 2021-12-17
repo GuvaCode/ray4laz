@@ -15,8 +15,8 @@ const
 var
   center: TVector2;
   outerRadius: single;
-  startAngle: single;
-  endAngle: single;
+
+  startAngle,endAngle: single;
 
   segments: longint;
   minsegments: longint;
@@ -28,7 +28,7 @@ begin
 
   center := Vector2Create((GetScreenWidth - 300) /2.0 , GetScreenHeight / 2.0);
   outerRadius := 180.0;
-  startAngle := 0.0;
+  startAngle := 0;
   endAngle := 180.0;
   segments := 0;
   minSegments := 4;
@@ -51,24 +51,25 @@ begin
       DrawLine(500, 0, 500, GetScreenHeight(), Fade(LIGHTGRAY, 0.6));
       DrawRectangle(500, 0, GetScreenWidth() - 500, GetScreenHeight(), Fade(LIGHTGRAY, 0.3));
 
+     if startAngle = endAngle then endAngle:=endAngle-0.1;
+
+     try
       DrawCircleSector(center, outerRadius, startAngle, endAngle, segments, Fade(MAROON, 0.3));
       DrawCircleSectorLines(center, outerRadius, startAngle, endAngle, segments, Fade(MAROON, 0.6));
+     except
+       writeln('except Draw');
+     end;
 
       // Draw GUI controls
       //------------------------------------------------------------------------------
-      startAngle := GuiSliderBar(RectangleCreate( 600, 40, 120, 20), 'StartAngle',nil, startAngle, 0, 720);
+      startAngle :=GuiSliderBar(RectangleCreate( 600, 40, 120, 20), 'StartAngle',nil, startAngle, 0, 720);
       endAngle := GuiSliderBar(RectangleCreate( 600, 70, 120, 20), 'EndAngle', nil, endAngle, 0, 720);
 
       outerRadius := GuiSliderBar(RectangleCreate( 600, 140, 120, 20), 'Radius', nil, outerRadius, 0, 200);
       segments := Round(GuiSliderBar(RectangleCreate( 600, 170, 120, 20), 'Segments', nil, segments, 0, 100));
       //------------------------------------------------------------------------------
-      try
-       minSegments:= ceil((endAngle - startAngle) / 90);
-      finally
 
-      end;
-
-
+      minSegments:= ceil((endAngle - startAngle) / 90);
 
       if segments >= minSegments then
       DrawText('MANUAL',600,20,10,DARKGRAY) else
@@ -76,7 +77,8 @@ begin
 
       DrawFPS(10, 10);
       EndDrawing();
-    end;
+     end;
+
   // De-Initialization
   //--------------------------------------------------------------------------------------
   CloseWindow();        // Close window and OpenGL context

@@ -13,9 +13,9 @@ const
 const
   DEG2RAD = (PI / 180.0);
   RAD2DEG = (180.0 / PI);
-  MAX_TOUCH_POINTS = 10;
-  MAX_SHADER_LOCATIONS = 32;
-  MAX_MATERIAL_MAPS = 12;
+ // MAX_TOUCH_POINTS = 10;
+ // MAX_SHADER_LOCATIONS = 32;
+//  MAX_MATERIAL_MAPS = 12;
 
 //----------------------------------------------------------------------------------
 // Some basic Defines }
@@ -275,7 +275,7 @@ const
      (* Bone, skeletal animation bone *)
      PBoneInfo = ^TBoneInfo;
      TBoneInfo = record
-         name    : array[0..31] of char; // Bone name
+         name    : array[0..32] of char; // Bone name
          parent  : longint;              // Bone parent
        end;
 
@@ -376,21 +376,21 @@ const
           eyeToScreenDistance    : single;                // Distance between eye and display in meters
           lensSeparationDistance : single;                // Lens separation distance in meters
           interpupillaryDistance : single;                // IPD (distance between pupils) in meters
-          lensDistortionValues   : array[0..3] of single; // Lens distortion constant parameters
-          chromaAbCorrection     : array[0..3] of single; // Chromatic aberration correction parameters
+          lensDistortionValues   : array[0..4] of single; // Lens distortion constant parameters
+          chromaAbCorrection     : array[0..4] of single; // Chromatic aberration correction parameters
         end;
 
      (* VrStereoConfig, VR stereo rendering configuration for simulator *)
      PVrStereoConfig = ^TVrStereoConfig;
      TVrStereoConfig = record
-         projection          : array[0..1] of TMatrix; // VR projection matrices (per eye)
-         viewOffset          : array[0..1] of TMatrix; // VR view offset matrices (per eye)
-         leftLensCenter      : array[0..1] of single;  // VR left lens center
-         rightLensCenter     : array[0..1] of single;  // VR right lens center
-         leftScreenCenter    : array[0..1] of single;  // VR left screen center
-         rightScreenCenter   : array[0..1] of single;  // VR right screen center
-         scale               : array[0..1] of single;  // VR distortion scale
-         scaleIn             : array[0..1] of single;  // VR distortion scale in
+         projection          : array[0..2] of TMatrix; // VR projection matrices (per eye)
+         viewOffset          : array[0..2] of TMatrix; // VR view offset matrices (per eye)
+         leftLensCenter      : array[0..2] of single;  // VR left lens center
+         rightLensCenter     : array[0..2] of single;  // VR right lens center
+         leftScreenCenter    : array[0..2] of single;  // VR left screen center
+         rightScreenCenter   : array[0..2] of single;  // VR right screen center
+         scale               : array[0..2] of single;  // VR distortion scale
+         scaleIn             : array[0..2] of single;  // VR distortion scale in
        end;
 
 //----------------------------------------------------------------------------------
