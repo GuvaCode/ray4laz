@@ -125,6 +125,7 @@ type
   end;
 
   // Previously defined to be used in PhysicsShape struct as circular dependencies
+  PPhysicsBody = ^TPhysicsBody;
   TPhysicsBody = ^TPhysicsBodyData;
 
   PPhysicsShape = ^TPhysicsShape;
@@ -166,7 +167,7 @@ type
      bodyB: TPhysicsBody;                          // Manifold second physics body reference
      penetration: single;                          // Depth of penetration from collision
      normal: TVector2;                             // Normal direction vector from 'a' to 'b'
-     contacts: array [1..2] of TVector2;           // Points of contact during collision
+     contacts: array [0..2] of TVector2;           // Points of contact during collision
      contactsCount: dword;                 // Current collision number of contacts
      restitution: single;                          // Mixed restitution during collision
      dynamicFriction: single;                      // Mixed dynamic friction during collision
