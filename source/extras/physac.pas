@@ -94,6 +94,88 @@ const
   PHYSAC_PI                       = 3.14159265358979323846;
   PHYSAC_DEG2RAD                  = (PHYSAC_PI/180.0);
 
+//----------------------------------------------------------------------------------
+// Data Types Structure Definition
+//----------------------------------------------------------------------------------
+
+type
+// Matrix2x2 type (used for polygon shape rotation matrix)
+  PMatrix2x2 = ^TMatrix2x2;
+  TMatrix2x2 = record
+    m00: single;
+    m01: single;
+    m10: single;
+    m11: single;
+  end;
+
+
+type
+  PPhysicsShapeType = ^TPhysicsShapeType;
+  TPhysicsShapeType = Longint;
+  const
+    PHYSICS_CIRCLE   = 0;
+    PHYSICS_POLYGON  = 1;
+
+type
+  PPhysicsVertexData = ^TPhysicsVertexData;
+  TPhysicsVertexData = record
+    vertexCount: dword;                                    // Vertex count (positions and normals)
+    positions: array [0..PHYSAC_MAX_VERTICES] of TVector2; // Vertex positions vectors
+    normals: array[0..PHYSAC_MAX_VERTICES] of TVector2;    // Vertex normals vectors
+  end;
+
+  // Previously defined to be used in PhysicsShape struct as circular dependencies
+  TPhysicsBody = ^TPhysicsBodyData;
+
+  PPhysicsShape = ^TPhysicsShape;
+  TPhysicsShape = record
+    type_: TPhysicsShapeType;                     // Shape type (circle or polygon)
+    body: TPhysicsBody;                           // Shape physics body data pointer
+    vertexData: TPhysicsVertexData;               // Shape vertices data (used for polygon shapes)
+    radius: single;                               // Shape radius (used for circle shapes)
+    transform: TMatrix2x2;                        // Vertices transform matrix 2x2
+  end;
+
+   PPhysicsBodyData = ^TPhysicsBodyData;
+   TPhysicsBodyData = record
+     id: dword ;                                   // Unique identifier
+     enabled: boolean;                             // Enabled dynamics state (collisions are calculated anyway)
+     position: TVector2;                           // Physics body shape pivot
+     velocity: TVector2;                           // Current linear velocity applied to position
+     force: TVector2;                              // Current linear force (reset to 0 every step)
+     angularVelocity: single;                      // Current angular velocity applied to orient
+     torque: single;                               // Current angular force (reset to 0 every step)
+     orient: single;                               // Rotation in radians
+     inertia: single;                              // Moment of inertia
+     inverseInertia: single;                       // Inverse value of inertia
+     mass: single;                                 // Physics body mass
+     inverseMass: single;                          // Inverse value of mass
+     staticFriction: single;                       // Friction when the body has not movement (0 to 1)
+     dynamicFriction: single;                      // Friction when the body has movement (0 to 1)
+     restitution: single;                          // Restitution coefficient of the body (0 to 1)
+     useGravity: boolean;                          // Apply gravity force to dynamics
+     isGrounded: boolean;                          // Physics grounded on other body state
+     freezeOrient: boolean;                        // Physics rotation constraint
+     shape: TPhysicsShape;                         // Physics body shape information (type, radius, vertices, transform)
+   end;
+
+   PPhysicsManifoldData = ^TPhysicsManifoldData;
+   TPhysicsManifoldData = record
+     id: dword;                                    // Unique identifier
+     bodyA: TPhysicsBody;                          // Manifold first physics body reference
+     bodyB: TPhysicsBody;                          // Manifold second physics body reference
+     penetration: single;                          // Depth of penetration from collision
+     normal: TVector2;                             // Normal direction vector from 'a' to 'b'
+     contacts: array [1..2] of TVector2;           // Points of contact during collision
+     contactsCount: dword;                 // Current collision number of contacts
+     restitution: single;                          // Mixed restitution during collision
+     dynamicFriction: single;                      // Mixed dynamic friction during collision
+     staticFriction: single;                       // Mixed static friction during collision
+   end;
+
+   PhysicsManifold = PPhysicsManifoldData;
+
+
 implementation
 
 end.
