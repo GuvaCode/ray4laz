@@ -24,14 +24,14 @@ begin
   // Initialization
   //--------------------------------------------------------------------------------------
   SetConfigFlags(FLAG_MSAA_4X_HINT);
-  InitWindow(screenWidth, screenHeight, 'raylib - simple project');
+  InitWindow(screenWidth, screenHeight, 'raylib [physac] example - physics movement');
 
   // Physac logo drawing position
- logoX := screenWidth - MeasureText('Physac', 30) - 10;
- logoY := 15;
+  logoX := screenWidth - MeasureText('Physac', 30) - 10;
+  logoY := 15;
 
- // Initialize physics and default physics bodies
-  InitPhysics();
+  // Initialize physics and default physics bodies
+   InitPhysics;
 
   // Create floor and walls rectangle physics body
   floor := CreatePhysicsBodyRectangle(Vector2Create( screenWidth/2.0, screenHeight ), screenWidth, 100, 10);
@@ -40,32 +40,32 @@ begin
   wallLeft := CreatePhysicsBodyRectangle(Vector2Create( -5, screenHeight/2.0 ), 10, screenHeight, 10);
   wallRight := CreatePhysicsBodyRectangle(Vector2Create( screenWidth + 5, screenHeight/2.0 ), 10, screenHeight, 10);
 
-    // Disable dynamics to floor and walls physics bodies
-    floor^.enabled := false;
-    platformLeft^.enabled := false;
-    platformRight^.enabled := false;
-    wallLeft^.enabled := false;
-    wallRight^.enabled := false;
+  // Disable dynamics to floor and walls physics bodies
+  floor^.enabled := false;
+  platformLeft^.enabled := false;
+  platformRight^.enabled := false;
+  wallLeft^.enabled := false;
+  wallRight^.enabled := false;
 
-    // Create movement physics body
-    body := CreatePhysicsBodyRectangle(Vector2Create( screenWidth/2.0, screenHeight/2.0 ), 50, 50, 1);
-//    body := CreatePhysicsBodyCircle(Vector2Create( screenWidth/2.0, screenHeight/2.0 ), 45, 10);
-    body^.freezeOrient := true;      // Constrain body rotation to avoid little collision torque amounts
-    bodyId:=body^.id;
+  // Create movement physics body
+  body := CreatePhysicsBodyRectangle(Vector2Create( screenWidth/2.0, screenHeight/2.0 ), 50, 50, 1);
 
+  body^.freezeOrient := true;      // Constrain body rotation to avoid little collision torque amounts
+  bodyId:=body^.id;
 
-
-    SetTargetFPS(60);// Set our game to run at 60 frames-per-second
+  SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
+
   // Main game loop
   while not WindowShouldClose() do
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdatePhysics;              // Update physics system
 
-      body:=GetPhysicsBody(bodyID); // короче я хуй его знает но без этого котыля не работает.
-                                    // где-то теч1т как сука
+     UpdatePhysics;              // Update physics system
+
+      body:=GetPhysicsBody(bodyID); // короче я хуй его знает но без этого коcтыля не работает.
+                                    // где-то течЁт как сука
 
       if IsKeyDown(KEY_R) then      // Reset physics input
       begin
