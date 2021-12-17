@@ -16,6 +16,15 @@ var
   animsCount, animFrameCounter : Integer;
   anims : PModelAnimation;
   i : Integer;
+
+procedure DrawModelFx(AModel:TModel; APosition:TVector3; AAxis:TVector3; AAngle:Single; AScale:Single; ATint:TColor);
+var
+  Scale:TVector3;
+begin
+  Scale:=Vector3Create(AScale,AScale,AScale);
+  DrawModelEx(AModel, APosition, AAxis, AAngle, Scale, ATint);
+end;
+
 begin
 
 	InitWindow(screenWidth, screenHeight, 'Animation Test');	
@@ -62,16 +71,13 @@ begin
 		BeginDrawing();
 			ClearBackground(RAYWHITE);
 			BeginMode3d(cam);
-		
-				DrawModelEx(model, position, Vector3Create(1.0, 0.0, 0.0), -90.0, Vector3Create(1.0, 1.0, 1.0), WHITE);
+		                DrawModelFx(model, position, Vector3Create(1.0, 0.0, 0.0), -90, 1, WHITE); //fix for wondows tnx realmworksxyz
 				for i := 0 to model.boneCount - 1 do
 				begin
 				  DrawCube(anims[0].framePoses[animFrameCounter][i].translation, 0.2, 0.2, 0.2, RED);
 				end;
 				DrawGrid(10, 1.0);
-		
-		
-			EndMode3D();
+                       EndMode3D();
 			DrawFPS(10, 10);
 		EndDrawing();
 	end;
@@ -80,9 +86,6 @@ begin
 		UnloadModelAnimation(anims[i]);
 	
         Free(anims);
-
 	UnloadModel(model);
-
-
 	CloseWindow();
 end.
