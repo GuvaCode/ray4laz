@@ -1277,7 +1277,7 @@ function GetPixelDataSize(width:longint; height:longint; format:longint):longint
 (* Font loading/unloading functions *)
 function GetFontDefault:TFont;cdecl;external cDllName;// Get the default Font
 function LoadFont(fileName:Pchar):TFont;cdecl;external cDllName;// Load font from file into GPU memory (VRAM)
-function LoadFontEx(fileName:Pchar; fontSize:longint; fontChars:Plongint; glyphCount:longint):TFont;cdecl;external cDllName;// Load font from file with extended parameters
+function LoadFontEx(fileName:Pchar; fontSize:longint; fontChars:Plongint; glyphCount:longint):TFont;cdecl;external cDllName;// Load font from file with extended parameters, use NULL for fontChars and 0 for glyphCount to load the default character set
 function LoadFontFromImage(image:TImage; key:TColor; firstChar:longint):TFont;cdecl;external cDllName;// Load font from Image (XNA style)
 function LoadFontFromMemory(fileType:Pchar; fileData:Pbyte; dataSize:longint; fontSize:longint; fontChars:Plongint; glyphCount:longint):TFont;cdecl;external cDllName;// Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
 function LoadFontData(fileData:Pbyte; dataSize:longint; fontSize:longint; fontChars:Plongint; glyphCount:longint; _type:longint):PGlyphInfo;cdecl;external cDllName;// Load font data for further use
