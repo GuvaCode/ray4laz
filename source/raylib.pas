@@ -1,3 +1,15 @@
+{
+██████╗  █████╗ ██╗   ██╗██╗     ██╗██████╗     ██╗  ██╗   ██╗
+██╔══██╗██╔══██╗╚██╗ ██╔╝██║     ██║██╔══██╗    ██║  ██║  ███║
+██████╔╝███████║ ╚████╔╝ ██║     ██║██████╔╝    ███████║  ╚██║
+██╔══██╗██╔══██║  ╚██╔╝  ██║     ██║██╔══██╗    ╚════██║   ██║
+██║  ██║██║  ██║   ██║   ███████╗██║██████╔╝         ██║██╗██║
+╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝╚═════╝          ╚═╝╚═╝╚═╝
+raylib v4.1-dev - A simple and easy-to-use library to enjoy videogames programming
+(www.raylib.com)
+Pascal header by Gunko Vadim (@guvacode)
+}
+
 unit raylib;
 
 {$mode objfpc}{$H+}
@@ -261,7 +273,7 @@ const
      TMaterial = record
          shader  : TShader;                // Material shader
          maps    : PMaterialMap;           // Material maps array (MAX_MATERIAL_MAPS)
-         params  : array[0..4] of single;  // Material generic parameters (if required)
+         params  : array[0..3] of single;  // Material generic parameters (if required)
        end;
 
      (* Transform, vectex transformation data *)
@@ -275,7 +287,7 @@ const
      (* Bone, skeletal animation bone *)
      PBoneInfo = ^TBoneInfo;
      TBoneInfo = record
-         name    : array[0..32] of char; // Bone name
+         name    : array[0..31] of char; // Bone name
          parent  : longint;              // Bone parent
        end;
 
@@ -376,21 +388,21 @@ const
           eyeToScreenDistance    : single;                // Distance between eye and display in meters
           lensSeparationDistance : single;                // Lens separation distance in meters
           interpupillaryDistance : single;                // IPD (distance between pupils) in meters
-          lensDistortionValues   : array[0..4] of single; // Lens distortion constant parameters
-          chromaAbCorrection     : array[0..4] of single; // Chromatic aberration correction parameters
+          lensDistortionValues   : array[0..3] of single; // Lens distortion constant parameters
+          chromaAbCorrection     : array[0..3] of single; // Chromatic aberration correction parameters
         end;
 
      (* VrStereoConfig, VR stereo rendering configuration for simulator *)
      PVrStereoConfig = ^TVrStereoConfig;
      TVrStereoConfig = record
-         projection          : array[0..2] of TMatrix; // VR projection matrices (per eye)
-         viewOffset          : array[0..2] of TMatrix; // VR view offset matrices (per eye)
-         leftLensCenter      : array[0..2] of single;  // VR left lens center
-         rightLensCenter     : array[0..2] of single;  // VR right lens center
-         leftScreenCenter    : array[0..2] of single;  // VR left screen center
-         rightScreenCenter   : array[0..2] of single;  // VR right screen center
-         scale               : array[0..2] of single;  // VR distortion scale
-         scaleIn             : array[0..2] of single;  // VR distortion scale in
+         projection          : array[0..1] of TMatrix; // VR projection matrices (per eye)
+         viewOffset          : array[0..1] of TMatrix; // VR view offset matrices (per eye)
+         leftLensCenter      : array[0..1] of single;  // VR left lens center
+         rightLensCenter     : array[0..1] of single;  // VR right lens center
+         leftScreenCenter    : array[0..1] of single;  // VR left screen center
+         rightScreenCenter   : array[0..1] of single;  // VR right screen center
+         scale               : array[0..1] of single;  // VR distortion scale
+         scaleIn             : array[0..1] of single;  // VR distortion scale in
        end;
 
 //----------------------------------------------------------------------------------
@@ -869,7 +881,7 @@ function IsWindowMaximized:boolean;cdecl;external cDllName;// Check if window is
 function IsWindowFocused:boolean;cdecl;external cDllName;// Check if window is currently focused (only PLATFORM_DESKTOP)
 function IsWindowResized:boolean;cdecl;external cDllName;// Check if window has been resized last frame
 function IsWindowState(flag:dword):boolean;cdecl;external cDllName;// Check if one specific window flag is enabled
-procedure SetWindowState(flags:dword);cdecl;external cDllName;// Set window configuration state using flags
+procedure SetWindowState(flags:dword);cdecl;external cDllName;// Set window configuration state using flags (only PLATFORM_DESKTOP)
 procedure ClearWindowState(flags:dword);cdecl;external cDllName;// Clear window configuration state flags
 procedure ToggleFullscreen;cdecl;external cDllName;// Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
 procedure MaximizeWindow;cdecl;external cDllName;// Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
@@ -881,6 +893,7 @@ procedure SetWindowPosition(x:longint; y:longint);cdecl;external cDllName;// Set
 procedure SetWindowMonitor(monitor:longint);cdecl;external cDllName;// Set monitor for the current window (fullscreen mode)
 procedure SetWindowMinSize(width:longint; height:longint);cdecl;external cDllName;// Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 procedure SetWindowSize(width:longint; height:longint);cdecl;external cDllName;// Set window dimensions
+procedure SetWindowOpacity(opacity: single);cdecl;external cDllName;// Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
 function GetWindowHandle:pointer;cdecl;external cDllName;// Get native window handle
 function GetScreenWidth:longint;cdecl;external cDllName;// Get current screen width
 function GetScreenHeight:longint;cdecl;external cDllName;// Get current screen height
@@ -1284,6 +1297,7 @@ function LoadFontData(fileData:Pbyte; dataSize:longint; fontSize:longint; fontCh
 function GenImageFontAtlas(chars:PGlyphInfo; recs:PPRectangle; glyphCount:longint; fontSize:longint; padding:longint; packMethod:longint):TImage;cdecl;external cDllName;// Generate image font atlas using chars info
 procedure UnloadFontData(chars:PGlyphInfo; glyphCount:longint);cdecl;external cDllName;// Unload font chars info data (RAM)
 procedure UnloadFont(font:TFont);cdecl;external cDllName;// Unload Font from GPU memory (VRAM)
+procedure ExportFontAsCode(font: TFont; fileName:Pchar);cdecl;external cDllName;// Export font as code file, returns true on success
 
 (* Text drawing functions *)
 procedure DrawFPS(posX:longint; posY:longint);cdecl;external cDllName;// Draw current FPS

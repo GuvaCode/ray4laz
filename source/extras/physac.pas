@@ -84,8 +84,8 @@ uses
 const
   PHYSAC_MAX_BODIES               = 64;          // Maximum number of physic bodies supported
   PHYSAC_MAX_MANIFOLDS            = 4096;        // Maximum number of physic bodies interactions (64x64)
-  PHYSAC_MAX_VERTICES             = 24;          // Maximum number of vertex for polygons shapes
-  PHYSAC_DEFAULT_CIRCLE_VERTICES  = 24;          // Default number of vertices for circle shapes
+  PHYSAC_MAX_VERTICES             = 23;          // Maximum number of vertex for polygons shapes
+  PHYSAC_DEFAULT_CIRCLE_VERTICES  = 23;          // Default number of vertices for circle shapes
 
   PHYSAC_COLLISION_ITERATIONS     = 100;
   PHYSAC_PENETRATION_ALLOWANCE    = 0.05;
@@ -167,8 +167,8 @@ type
      bodyB: TPhysicsBody;                          // Manifold second physics body reference
      penetration: single;                          // Depth of penetration from collision
      normal: TVector2;                             // Normal direction vector from 'a' to 'b'
-     contacts: array [0..2] of TVector2;           // Points of contact during collision
-     contactsCount: dword;                 // Current collision number of contacts
+     contacts: array [0..1] of TVector2;           // Points of contact during collision
+     contactsCount: dword;                         // Current collision number of contacts
      restitution: single;                          // Mixed restitution during collision
      dynamicFriction: single;                      // Mixed dynamic friction during collision
      staticFriction: single;                       // Mixed static friction during collision

@@ -35,9 +35,12 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib - simple project');
 
     // General variables
-    Vector2Set(@mousePosition,0,0);
+
     Vector2Set(@windowPosition,0,0);
-    panOffset := mousePosition;
+    mousePosition := GetmousePosition;
+    panOffset := GetmousePosition;
+    windowPosition:=panOffset;
+
     dragWindow := false;
     SetWindowPosition(Round(windowPosition.x),Round(windowPosition.y));
     exitWindow := false;
@@ -48,9 +51,11 @@ begin
   while ( not exitWindow and not WindowShouldClose) do
     begin
       // Update
-      mousePosition.x := GetMouseX;
-      mousePosition.y := GetMouseY;
-      //GetMousePosition;
+    //  mousePosition.x := GetMouseX;
+    //  mousePosition.y := GetMouseY;
+      mousePosition:=GetMousePosition;
+      //mousePosition.x:=GetMousePosition.x-GetMouseDelta.x;
+
 
       if IsMouseButtonPressed(MOUSE_LEFT_BUTTON) then
       begin
@@ -63,11 +68,12 @@ begin
 
       if dragWindow then
       begin
+
           windowPosition.x += (mousePosition.x - panOffset.x);
           windowPosition.y += (mousePosition.y - panOffset.y);
 
           if IsMouseButtonReleased(MOUSE_LEFT_BUTTON) then dragWindow := false;
-             SetWindowPosition(trunc(windowPosition.x), trunc(windowPosition.y));
+          SetWindowPosition(trunc(windowPosition.x), trunc(windowPosition.y));
       end;
 
       // Draw
@@ -75,7 +81,7 @@ begin
       BeginDrawing();
         ClearBackground(RAYWHITE);
         exitWindow := GuiWindowBox(RectangleCreate( 0, 0, screenWidth, screenHeight ), '#198# PORTABLE WINDOW');
-        DrawText(TextFormat('Mouse Position: [ %.0, %.0 ]', [mousePosition.x,mousePosition.y]), 10, 40, 10, DARKGRAY);
+        DrawText(TextFormat( '%0,%0', [mousePosition.x, mousePosition.y]), 10, 40, 10, DARKGRAY);
 
       EndDrawing();
     end;
