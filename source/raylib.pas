@@ -246,7 +246,7 @@ const
          // Animation vertex data
          animVertices  : Psingle;  // Animated vertex positions (after bones transformations)
          animNormals   : Psingle;  // Animated normals (after bones transformations)
-         boneIds       : Pbyte; // Vertex bone ids, up to 4 bones influence by vertex (skinning)
+         boneIds       : Pbyte;    // Vertex bone ids, up to 4 bones influence by vertex (skinning)
          boneWeights   : Psingle;  // Vertex bone weight, up to 4 bones influence by vertex (skinning)
          // OpenGL identifiers
          vaoId         : dword;    // OpenGL Vertex Array Object id
@@ -1016,6 +1016,7 @@ function GetFileNameWithoutExt(filePath:Pchar):Pchar;cdecl;external cDllName;// 
 function GetDirectoryPath(filePath:Pchar):Pchar;cdecl;external cDllName;// Get full path for a given fileName with path (uses static string)
 function GetPrevDirectoryPath(dirPath:Pchar):Pchar;cdecl;external cDllName;// Get previous directory path for a given path (uses static string)
 function GetWorkingDirectory:Pchar;cdecl;external cDllName;// Get current working directory (uses static string)
+function GetApplicationDirectory:Pchar;cdecl;external cDllName;// Get the directory if the running application (uses static string)
 function GetDirectoryFiles(dirPath:Pchar; count:Plongint):PPchar;cdecl;external cDllName;// Get filenames in a directory path (memory should be freed)
 procedure ClearDirectoryFiles;cdecl;external cDllName;// Clear directory files paths buffers (free memory)
 function ChangeDirectory(dir:Pchar):boolean;cdecl;external cDllName;// Change working directory, return true on success

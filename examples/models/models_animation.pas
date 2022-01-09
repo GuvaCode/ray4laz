@@ -2,7 +2,7 @@ program animation_test;
 
 {$MODE objfpc}
 
-uses cmem, raylib, rlgl;
+uses cmem, raylib, rlgl, raymath;
 
 const
 	screenWidth = 800;
@@ -16,6 +16,10 @@ var
   animsCount, animFrameCounter : Integer;
   anims : PModelAnimation;
   i : Integer;
+  bb:TBoundingBox;
+  mat: TMatrix;
+  vv: TVector3;
+  rot:single;
 
 procedure DrawModelFx(AModel:TModel; APosition:TVector3; AAxis:TVector3; AAngle:Single; AScale:Single; ATint:TColor);
 var
@@ -48,7 +52,7 @@ begin
 
 	WriteLn('animsCount: ', animsCount);
 
-	SetCameraMode(cam, CAMERA_FREE);
+	SetCameraMode(cam, CAMERA_THIRD_PERSON);
 
 	SetTargetFPS(60);
 
@@ -66,16 +70,46 @@ begin
 			UpdateModelAnimation(model, anims[0], animFrameCounter);
 			if animFrameCounter >= anims[0].frameCount then
 				animFrameCounter := 0;
+                        rot:=rot+1;
 		end;
 
 		BeginDrawing();
 			ClearBackground(RAYWHITE);
 			BeginMode3d(cam);
-		                DrawModelFx(model, position, Vector3Create(1.0, 0.0, 0.0), -90, 1, WHITE); //fix for wondows tnx realmworksxyz
-				for i := 0 to model.boneCount - 1 do
+
+                            //    DrawModelFx(model, position, Vector3Create(1.0, 0.0, 0.0), -60, 1, WHITE); //fix for wondows tnx realmworksxyz
+                                DRawModelEx(model, position, Vector3Create(1.0, 0.0, 0.0), rot, Vector3Create(1,1,1), WHITE);
+
+                                for i := 0 to model.boneCount - 1 do
 				begin
-				  DrawCube(anims[0].framePoses[animFrameCounter][i].translation, 0.2, 0.2, 0.2, RED);
-				end;
+
+                                bb:= GetMeshBoundingBox(model.meshes[0]);
+                                bb.min:=Vector3Scale(bb.min,1);
+                                bb.max:=Vector3Scale(bb.max,1);
+
+                               // mat:= model.transform;
+                                mat:= MatrixRotate(
+
+                                Vector3Create(-1.0, 0.0, 0.0),
+
+                                rot * DEG2RAD);
+
+                                bb.min:=Vector3Transform(bb.min,mat);
+                                bb.max:=Vector3Transform(bb.max,mat);
+
+                                DrawBoundingBox(bb,blue);
+
+
+                                vv:=Vector3Transform(anims[0].framePoses[animFrameCounter][i].translation,mat);
+
+
+                                DrawCube(vv, 0.2, 0.2, 0.2, RED);
+
+                                 model.transform:=MatrixRotate( Vector3Create(-1.0, 0.0, 0.0),rot * DEG2RAD);
+
+
+
+                                end;
 				DrawGrid(10, 1.0);
                        EndMode3D();
 			DrawFPS(10, 10);
