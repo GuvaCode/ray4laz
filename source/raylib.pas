@@ -1504,6 +1504,7 @@ function IsAudioStreamPlaying(stream:TAudioStream):boolean;cdecl;external cDllNa
 procedure StopAudioStream(stream:TAudioStream);cdecl;external cDllName;//  Stop audio stream
 procedure SetAudioStreamVolume(stream:TAudioStream; volume:single);cdecl;external cDllName;//  Set volume for audio stream (1.0 is max level)
 procedure SetAudioStreamPitch(stream:TAudioStream; pitch:single);cdecl;external cDllName;//  Set pitch for audio stream (1.0 is base level)
+procedure SetAudioStreamPan(stream:TAudioStream; pan:single);cdecl;external cDllName;// Set pan for audio stream (0.5 = centered)
 procedure SetAudioStreamBufferSizeDefault(size:longint);cdecl;external cDllName;//  Default size for new audio streams
 
 
