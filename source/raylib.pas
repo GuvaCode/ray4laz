@@ -1467,11 +1467,11 @@ procedure StopSoundMulti;cdecl;external cDllName;// Stop any sound playing (usin
 function GetSoundsPlaying:longint;cdecl;external cDllName;// Get number of sounds playing in the multichannel
 function IsSoundPlaying(sound:TSound):boolean;cdecl;external cDllName;// Check if a sound is currently playing
 procedure SetSoundVolume(sound:TSound; volume:single);cdecl;external cDllName;// Set volume for a sound (1.0 is max level)
-procedure SetSoundPan(sound: TSound; pan: single);cdecl;external cDllName;// Set pan for a sound (0.5 = center)
 procedure SetSoundPitch(sound:TSound; pitch:single);cdecl;external cDllName;// Set pitch for a sound (1.0 is base level)
-procedure WaveFormat(wave:PWave; sampleRate:longint; sampleSize:longint; channels:longint);cdecl;external cDllName;// Convert wave data to desired format
+procedure SetSoundPan(sound: TSound; pan: single);cdecl;external cDllName;// Set pan for a sound (0.5 is center)
 function WaveCopy(wave:TWave):TWave;cdecl;external cDllName;// Copy a wave to a new wave
 procedure WaveCrop(wave:PWave; initSample:longint; finalSample:longint);cdecl;external cDllName; // Crop a wave to defined samples range
+procedure WaveFormat(wave:PWave; sampleRate:longint; sampleSize:longint; channels:longint);cdecl;external cDllName;// Convert wave data to desired format
 function LoadWaveSamples(wave:TWave):Psingle;cdecl;external cDllName;// Load samples data from wave as a floats array
 procedure UnloadWaveSamples(samples:Psingle);cdecl;external cDllName;// Unload samples data loaded with LoadWaveSamples()
 
@@ -1487,8 +1487,8 @@ procedure PauseMusicStream(music:TMusic);cdecl;external cDllName;// Pause music 
 procedure ResumeMusicStream(music:TMusic);cdecl;external cDllName;// Resume playing paused music
 procedure SeekMusicStream(music:TMusic; position:single);cdecl;external cDllName;// Seek music to a position (in seconds)
 procedure SetMusicVolume(music:TMusic; volume:single);cdecl;external cDllName;// Set volume for music (1.0 is max level)
-procedure SetMusicPan(music:TMusic; pan:single);cdecl;external cDllName;// Set pan for a music (0.5 = center)
 procedure SetMusicPitch(music:TMusic; pitch:single);cdecl;external cDllName;// Set pitch for a music (1.0 is base level)
+procedure SetMusicPan(music:TMusic; pan:single);cdecl;external cDllName;// Set pan for a music (0.5 = center)
 function GetMusicTimeLength(music:TMusic):single;cdecl;external cDllName;// Get music time length (in seconds)
 function GetMusicTimePlayed(music:TMusic):single;cdecl;external cDllName;// Get current music time played (in seconds)
 
@@ -1504,7 +1504,7 @@ function IsAudioStreamPlaying(stream:TAudioStream):boolean;cdecl;external cDllNa
 procedure StopAudioStream(stream:TAudioStream);cdecl;external cDllName;//  Stop audio stream
 procedure SetAudioStreamVolume(stream:TAudioStream; volume:single);cdecl;external cDllName;//  Set volume for audio stream (1.0 is max level)
 procedure SetAudioStreamPitch(stream:TAudioStream; pitch:single);cdecl;external cDllName;//  Set pitch for audio stream (1.0 is base level)
-procedure SetAudioStreamPan(stream:TAudioStream; pan:single);cdecl;external cDllName;// Set pan for audio stream (0.5 = centered)
+procedure SetAudioStreamPan(stream:TAudioStream; pan:single);cdecl;external cDllName;// Set pan for audio stream (0.5 is centered)
 procedure SetAudioStreamBufferSizeDefault(size:longint);cdecl;external cDllName;//  Default size for new audio streams
 
 
