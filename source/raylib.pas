@@ -1487,6 +1487,7 @@ procedure PauseMusicStream(music:TMusic);cdecl;external cDllName;// Pause music 
 procedure ResumeMusicStream(music:TMusic);cdecl;external cDllName;// Resume playing paused music
 procedure SeekMusicStream(music:TMusic; position:single);cdecl;external cDllName;// Seek music to a position (in seconds)
 procedure SetMusicVolume(music:TMusic; volume:single);cdecl;external cDllName;// Set volume for music (1.0 is max level)
+procedure SetMusicPan(music:TMusic; pan:single);cdecl;external cDllName;// Set pan for a music (0.5 = center)
 procedure SetMusicPitch(music:TMusic; pitch:single);cdecl;external cDllName;// Set pitch for a music (1.0 is base level)
 function GetMusicTimeLength(music:TMusic):single;cdecl;external cDllName;// Get music time length (in seconds)
 function GetMusicTimePlayed(music:TMusic):single;cdecl;external cDllName;// Get current music time played (in seconds)
