@@ -1467,6 +1467,7 @@ procedure StopSoundMulti;cdecl;external cDllName;// Stop any sound playing (usin
 function GetSoundsPlaying:longint;cdecl;external cDllName;// Get number of sounds playing in the multichannel
 function IsSoundPlaying(sound:TSound):boolean;cdecl;external cDllName;// Check if a sound is currently playing
 procedure SetSoundVolume(sound:TSound; volume:single);cdecl;external cDllName;// Set volume for a sound (1.0 is max level)
+procedure SetSoundPan(sound: TSound; pan: single);cdecl;external cDllName;// Set pan for a sound (0.5 = center)
 procedure SetSoundPitch(sound:TSound; pitch:single);cdecl;external cDllName;// Set pitch for a sound (1.0 is base level)
 procedure WaveFormat(wave:PWave; sampleRate:longint; sampleSize:longint; channels:longint);cdecl;external cDllName;// Convert wave data to desired format
 function WaveCopy(wave:TWave):TWave;cdecl;external cDllName;// Copy a wave to a new wave
