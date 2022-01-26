@@ -1306,6 +1306,7 @@ procedure DrawText(text:Pchar; posX:longint; posY:longint; fontSize:longint; col
 procedure DrawTextEx(font:TFont; text:Pchar; position:TVector2; fontSize:single; spacing:single; tint:TColor);cdecl;external cDllName;// Draw text using font and additional parameters
 procedure DrawTextPro(font:TFont; text:Pchar; position:TVector2; origin:TVector2; rotation:single; fontSize:single; spacing:single; tint:TColor);cdecl;external cDllName;// Draw text using Font and pro parameters (rotation)
 procedure DrawTextCodepoint(font:TFont; codepoint:longint; position:TVector2; fontSize:single; tint:TColor);cdecl;external cDllName;// Draw one character (codepoint)
+procedure DrawTextCodepoints(font:TFont; codepoints: plongint; count: longint; position:TVector2; fontSize: single; spacing: single; tint: Tcolor);cdecl;external cDllName;// Draw multiple character (codepoint)
 
 (* Text font info functions *)
 function MeasureText(text:Pchar; fontSize:longint):longint;cdecl;external cDllName;// Measure string width for default font
