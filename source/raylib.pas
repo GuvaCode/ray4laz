@@ -801,7 +801,7 @@ const
        BLEND_MULTIPLIED      = 2;    // Blend textures multiplying colors
        BLEND_ADD_COLORS      = 3;    // Blend textures adding colors (alternative)
        BLEND_SUBTRACT_COLORS = 4;    // Blend textures subtracting colors (alternative)
-       BLEND_CUSTOM          = 5;    // Belnd textures using custom src/dst factors (use rlSetBlendMode())
+       BLEND_CUSTOM          = 5;    // Blend textures using custom src/dst factors (use rlSetBlendMode())
 
    (* Gestures *)
    //  NOTE: It could be used as flags to enable only some gestures
@@ -1010,6 +1010,7 @@ function SaveFileText(fileName:Pchar; boolean:Pchar):boolean;cdecl;external cDll
 function FileExists(fileName:Pchar):boolean;cdecl;external cDllName;// Check if file exists
 function DirectoryExists(dirPath:Pchar):boolean;cdecl;external cDllName;// Check if a directory path exists
 function IsFileExtension(fileName:Pchar; ext:Pchar):boolean;cdecl;external cDllName;// Check file extension (including point: .png, .wav)
+function GetFileLength(fileName:Pchar):longint;cdecl;external cDllName;// Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
 function GetFileExtension(fileName:Pchar):Pchar;cdecl;external cDllName;// Get pointer to extension for a filename string (includes dot: '.png')
 function GetFileName(filePath:Pchar):Pchar;cdecl;external cDllName;// Get pointer to filename for a path string
 function GetFileNameWithoutExt(filePath:Pchar):Pchar;cdecl;external cDllName;// Get filename string without extension (uses static string)

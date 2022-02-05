@@ -78,7 +78,7 @@ begin
 			BeginMode3d(cam);
 
                             //    DrawModelFx(model, position, Vector3Create(1.0, 0.0, 0.0), -60, 1, WHITE); //fix for wondows tnx realmworksxyz
-                                DRawModelEx(model, position, Vector3Create(1.0, 0.0, 0.0), rot, Vector3Create(1,1,1), WHITE);
+                                DRawModelEx(model, position, Vector3Create(1.0, 1.0, 0.0), 0, Vector3Create(1,1,1), WHITE);
 
                                 for i := 0 to model.boneCount - 1 do
 				begin
@@ -88,24 +88,24 @@ begin
                                 bb.max:=Vector3Scale(bb.max,1);
 
                                // mat:= model.transform;
-                                mat:= MatrixRotate(
+                               mat:= MatrixRotate(
 
-                                Vector3Create(-1.0, 0.0, 0.0),
+                                Vector3Create(0.0, 0.0, 0.0),
 
                                 rot * DEG2RAD);
 
-                                bb.min:=Vector3Transform(bb.min,mat);
-                                bb.max:=Vector3Transform(bb.max,mat);
+                            //    bb.min:=Vector3Transform(bb.min,mat);
+                            //    bb.max:=Vector3Transform(bb.max,mat);
 
-                                DrawBoundingBox(bb,blue);
-
-
-                                vv:=Vector3Transform(anims[0].framePoses[animFrameCounter][i].translation,mat);
+                            //    DrawBoundingBox(bb,blue);
 
 
-                                DrawCube(vv, 0.2, 0.2, 0.2, RED);
+                                vv:=Vector3Transform(anims[0].framePoses[animFrameCounter][i].translation,model.transform);
 
-                                 model.transform:=MatrixRotate( Vector3Create(-1.0, 0.0, 0.0),rot * DEG2RAD);
+
+                                DrawCube(vv, 2.2, 2.2, 0.2, RED);
+
+                               model.transform:=MatrixRotate( Vector3Create(-1.0, 0.0, 1.0),rot * DEG2RAD);
 
 
 
