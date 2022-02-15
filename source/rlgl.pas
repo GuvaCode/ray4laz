@@ -253,7 +253,8 @@ type
     RL_BLEND_MULTIPLIED = 2;
     RL_BLEND_ADD_COLORS = 3;
     RL_BLEND_SUBTRACT_COLORS = 4;
-    RL_BLEND_CUSTOM = 5;
+    RL_BLEND_ALPHA_PREMUL = 5;
+    RL_BLEND_CUSTOM = 6;
 
   type
     PrlShaderLocationIndex = ^TrlShaderLocationIndex;
