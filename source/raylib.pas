@@ -11,12 +11,9 @@ Pascal header by Gunko Vadim (@guvacode)
 }
 
 unit raylib;
-
 {$mode objfpc}{$H+}
 
 interface
-
-
 const
   cDllName = {$IFDEF WINDOWS} 'raylib.dll' {$IFEND}
              {$IFDEF DARWIN} 'libraylib.dylib' {$IFEND}
