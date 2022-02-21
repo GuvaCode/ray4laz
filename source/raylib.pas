@@ -1025,10 +1025,10 @@ procedure ClearDroppedFiles;cdecl;external cDllName;// Clear dropped files paths
 function GetFileModTime(fileName:Pchar):longint;cdecl;external cDllName;// Get file modification time (last write time)
 
 (* Compression/Encoding functionality *)
-function CompressData(data:Pbyte; dataLength:longint; compDataLength:Plongint):Pbyte;cdecl;external cDllName;// Compress data (DEFLATE algorithm)
-function DecompressData(compData:Pbyte; compDataLength:longint; dataLength:Plongint):Pbyte;cdecl;external cDllName;// Decompress data (DEFLATE algorithm)
-function EncodeDataBase64(data:Pchar; dataLength:longint; outputLength:Plongint):Pchar;cdecl;external cDllName;// Encode data to Base64 string
-function DecodeDataBase64(data:Pchar; outputLength:Plongint):Pchar;cdecl;external cDllName;// Decode Base64 string data
+function CompressData(const data:Pbyte; dataLength:longint; compDataLength:Plongint):Pbyte;cdecl;external cDllName;// Compress data (DEFLATE algorithm)
+function DecompressData(const compData:Pbyte; compDataLength:longint; dataLength:Plongint):Pbyte;cdecl;external cDllName;// Decompress data (DEFLATE algorithm)
+function EncodeDataBase64(const data:Pchar; dataLength:longint; outputLength:Plongint):Pchar;cdecl;external cDllName;// Encode data to Base64 string
+function DecodeDataBase64(const data:Pchar; outputLength:Plongint):Pchar;cdecl;external cDllName;// Decode Base64 string data
 
 (* Persistent storage management *)
 function SaveStorageValue(position:dword; value:longint):boolean;cdecl;external cDllName;// Save integer value to storage file (to defined position), returns true on success
@@ -1305,7 +1305,7 @@ procedure DrawText(text:Pchar; posX:longint; posY:longint; fontSize:longint; col
 procedure DrawTextEx(font:TFont; text:Pchar; position:TVector2; fontSize:single; spacing:single; tint:TColor);cdecl;external cDllName;// Draw text using font and additional parameters
 procedure DrawTextPro(font:TFont; text:Pchar; position:TVector2; origin:TVector2; rotation:single; fontSize:single; spacing:single; tint:TColor);cdecl;external cDllName;// Draw text using Font and pro parameters (rotation)
 procedure DrawTextCodepoint(font:TFont; codepoint:longint; position:TVector2; fontSize:single; tint:TColor);cdecl;external cDllName;// Draw one character (codepoint)
-procedure DrawTextCodepoints(font:TFont; codepoints: plongint; count: longint; position:TVector2; fontSize: single; spacing: single; tint: Tcolor);cdecl;external cDllName;// Draw multiple character (codepoint)
+procedure DrawTextCodepoints(font:TFont;const codepoints: plongint; count: longint; position:TVector2; fontSize: single; spacing: single; tint: Tcolor);cdecl;external cDllName;// Draw multiple character (codepoint)
 
 (* Text font info functions *)
 function MeasureText(text:Pchar; fontSize:longint):longint;cdecl;external cDllName;// Measure string width for default font
@@ -1320,7 +1320,7 @@ procedure UnloadCodepoints(codepoints:Plongint);cdecl;external cDllName;// Unloa
 function GetCodepointCount(text:Pchar):longint;cdecl;external cDllName;// Get total number of codepoints in a UTF-8 encoded string
 function GetCodepoint(text:Pchar; bytesProcessed:Plongint):longint;cdecl;external cDllName;// Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 function CodepointToUTF8(codepoint:longint; byteSize:Plongint):Pchar;cdecl;external cDllName;// Encode one codepoint into UTF-8 byte array (array length returned as parameter)
-function TextCodepointsToUTF8(codepoints:Plongint; length:longint):Pchar;cdecl;external cDllName;// Encode text as codepoints array into UTF-8 text string (WARNING: memory must be freed!)
+function TextCodepointsToUTF8(const codepoints:Plongint; length:longint):Pchar;cdecl;external cDllName;// Encode text as codepoints array into UTF-8 text string (WARNING: memory must be freed!)
 
 (* Text strings management functions (no UTF-8 strings, only byte chars) *)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
@@ -1389,10 +1389,10 @@ procedure DrawBillboardRec(camera:TCamera; texture:TTexture2D; source:TRectangle
 procedure DrawBillboardPro(camera:TCamera; texture:TTexture2D; source:TRectangle; position:TVector3; up:TVector3; size:TVector2; origin:TVector2; rotation:single; tint:TColor);cdecl;external cDllName;// Draw a billboard texture defined by source and rotation
 (* Mesh management functions *)
 procedure UploadMesh(mesh:PMesh; dynamic:boolean);cdecl;external cDllName;// Upload mesh vertex data in GPU and provide VAO/VBO ids
-procedure UpdateMeshBuffer(mesh:TMesh; index:longint; data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName;// Update mesh vertex data in GPU for a specific buffer index
+procedure UpdateMeshBuffer(mesh:TMesh; index:longint; const data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName;// Update mesh vertex data in GPU for a specific buffer index
 procedure UnloadMesh(mesh:TMesh);cdecl;external cDllName;// Unload mesh data from CPU and GPU
 procedure DrawMesh(mesh:TMesh; material:TMaterial; transform:TMatrix);cdecl;external cDllName;// Draw a 3d mesh with material and transform
-procedure DrawMeshInstanced(mesh:TMesh; material:TMaterial; transforms:PMatrix; instances:longint);cdecl;external cDllName;// Draw multiple mesh instances with material and different transforms
+procedure DrawMeshInstanced(mesh:TMesh; material:TMaterial;const transforms:PMatrix; instances:longint);cdecl;external cDllName;// Draw multiple mesh instances with material and different transforms
 function ExportMesh(mesh:TMesh; fileName:Pchar):boolean;cdecl;external cDllName;// Export mesh data to file, returns true on success
 function GetMeshBoundingBox(mesh:TMesh):TBoundingBox;cdecl;external cDllName;// Compute mesh bounding box limits
 procedure GenMeshTangents(mesh:PMesh);cdecl;external cDllName;// Compute mesh tangents
@@ -1477,7 +1477,7 @@ procedure UnloadWaveSamples(samples:Psingle);cdecl;external cDllName;// Unload s
 
 (* Music management functions *)
 function LoadMusicStream(fileName:Pchar):TMusic;cdecl;external cDllName;// Load music stream from file
-function LoadMusicStreamFromMemory(fileType:Pchar; data:Pbyte; dataSize:longint):TMusic;cdecl;external cDllName;// Load music stream from data
+function LoadMusicStreamFromMemory(fileType:Pchar;const data:Pbyte; dataSize:longint):TMusic;cdecl;external cDllName;// Load music stream from data
 procedure UnloadMusicStream(music:TMusic);cdecl;external cDllName;// Unload music stream
 procedure PlayMusicStream(music:TMusic);cdecl;external cDllName;// Start music playing
 function IsMusicStreamPlaying(music:TMusic):boolean;cdecl;external cDllName;// Check if music is playing

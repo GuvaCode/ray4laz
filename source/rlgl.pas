@@ -440,23 +440,24 @@ procedure rlSetTexture(id:dword);cdecl;external cDllName;// Set current texture 
 
 (* Vertex buffers management *)
 function rlLoadVertexArray:dword;cdecl;external cDllName;// Load vertex array (vao) if supported
-function rlLoadVertexBuffer(buffer:pointer; size:longint; dynamic_:boolean):dword;cdecl;external cDllName;// Load a vertex buffer attribute
-function rlLoadVertexBufferElement(buffer:pointer; size:longint; dynamic_:boolean):dword;cdecl;external cDllName;// Load a new attributes element buffer
-procedure rlUpdateVertexBuffer(bufferId:dword; data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName;// Update GPU buffer with new data
+function rlLoadVertexBuffer(const buffer:pointer; size:longint; dynamic_:boolean):dword;cdecl;external cDllName;// Load a vertex buffer attribute
+function rlLoadVertexBufferElement(const buffer:pointer; size:longint; dynamic_:boolean):dword;cdecl;external cDllName;// Load a new attributes element buffer
+procedure rlUpdateVertexBuffer(bufferId:dword;const data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName;// Update GPU buffer with new data
+procedure rlUpdateVertexBufferElements(id:dword; const data:pointer; dataSize:longint; offset:longint);cdecl;external cDllName;// Update vertex buffer elements with new data
 procedure rlUnloadVertexArray(vaoId:dword);cdecl;external cDllName;
 procedure rlUnloadVertexBuffer(vboId:dword);cdecl;external cDllName;
-procedure rlSetVertexAttribute(index:dword; compSize:longint; type_:longint; normalized:boolean; stride:longint;pointer_:pointer);cdecl;external cDllName;
+procedure rlSetVertexAttribute(index:dword; compSize:longint; type_:longint; normalized:boolean; stride:longint;const pointer_:pointer);cdecl;external cDllName;
 procedure rlSetVertexAttributeDivisor(index:dword; divisor:longint);cdecl;external cDllName;
 procedure rlSetVertexAttributeDefault(locIndex:longint; value:pointer; attribType:longint; count:longint);cdecl;external cDllName;// Set vertex attribute default value
 procedure rlDrawVertexArray(offset:longint; count:longint);cdecl;external cDllName;
-procedure rlDrawVertexArrayElements(offset:longint; count:longint; buffer:pointer);cdecl;external cDllName;
+procedure rlDrawVertexArrayElements(offset:longint; count:longint;const buffer:pointer);cdecl;external cDllName;
 procedure rlDrawVertexArrayInstanced(offset:longint; count:longint; instances:longint);cdecl;external cDllName;
-procedure rlDrawVertexArrayElementsInstanced(offset:longint; count:longint; buffer:pointer; instances:longint);cdecl;external cDllName;
+procedure rlDrawVertexArrayElementsInstanced(offset:longint; count:longint;const buffer:pointer; instances:longint);cdecl;external cDllName;
 
 (* Textures management *)
-function rlLoadTexture(data:pointer; width:longint; height:longint; format:longint; mipmapCount:longint):dword;cdecl;external cDllName;// Load texture in GPU
+function rlLoadTexture(const data:pointer; width:longint; height:longint; format:longint; mipmapCount:longint):dword;cdecl;external cDllName;// Load texture in GPU
 function rlLoadTextureDepth(width:longint; height:longint; useRenderBuffer:boolean):dword;cdecl;external cDllName;// Load depth texture/renderbuffer (to be attached to fbo)
-function rlLoadTextureCubemap(data:pointer; size:longint; format:longint):dword;cdecl;external cDllName;// Load texture cubemap
+function rlLoadTextureCubemap(const data:pointer; size:longint; format:longint):dword;cdecl;external cDllName;// Load texture cubemap
 procedure rlUpdateTexture(id:dword; offsetX:longint; offsetY:longint; width:longint; height:longint;format:longint; data:pointer);cdecl;external cDllName;// Update GPU texture with new data
 procedure rlGetGlTextureFormats(format:longint; glInternalFormat:Plongint; glFormat:Plongint; glType:Plongint);cdecl;external cDllName;// Get OpenGL internal formats
 function rlGetPixelFormatName(format:dword):Pchar;cdecl;external cDllName;// Get name string for pixel format
