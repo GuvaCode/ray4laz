@@ -73,6 +73,7 @@ function  Vector2Length(v : TVector2): Single; cdecl; external cDllName; // Calc
 function  Vector2LengthSqr(v : TVector2): Single; cdecl; external cDllName; // Calculate vector square length
 function  Vector2DotProduct(v1, v2 : TVector2): Single; cdecl; external cDllName; // Calculate two vectors dot product
 function  Vector2Distance(v1, v2 : TVector2): Single; cdecl; external cDllName;// Calculate distance between two vectors
+function  Vector2DistanceSqr(v1, v2 : TVector2): Single; cdecl; external cDllName;// Calculate square distance between two vectors
 function  Vector2Angle(v1, v2 : TVector2): Single; cdecl; external cDllName;// Calculate angle from two vectors in X-axis
 function  Vector2Scale(v : TVector2; scale : Single): TVector2; cdecl; external cDllName;// Scale vector (multiply by value)
 function  Vector2Multiply(v1, v2 : TVector2): TVector2; cdecl; external cDllName;// Multiply vector by vector
@@ -101,6 +102,7 @@ function  Vector3Length(v : TVector3): Single; cdecl; external cDllName;// Calcu
 function  Vector3LengthSqr(v: TVector3): Single; cdecl; external cDllName;// Calculate vector square length
 function  Vector3DotProduct(v1, v2 : TVector3): Single; cdecl; external cDllName;// Calculate two vectors dot product
 function  Vector3Distance(v1, v2 : TVector3): Single; cdecl; external cDllName;// Calculate distance between two vectors
+function  Vector3DistanceSqr(v1, v2 : TVector3): Single; cdecl; external cDllName;// Calculate square distance between two vectors
 function  Vector3Angle(v1, v2: TVector3): Single; cdecl; external cDllName;// Calculate angle between two vectors in XY and XZ
 function  Vector3Negate(aV : TVector3): TVector3; cdecl; external cDllName;// Negate provided vector (invert direction)
 function  Vector3Divide(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Divide vector by vector
