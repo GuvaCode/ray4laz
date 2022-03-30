@@ -1439,6 +1439,8 @@ function GetRayCollisionQuad(ray:TRay; p1:TVector3; p2:TVector3; p3:TVector3; p4
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
 //------------------------------------------------------------------------------------
+PAudioCallback = ^TAudioCallback;
+TAudioCallback = procedure (bufferData: pointer; frames: dword);cdecl;
 
 (* Audio device management functions *)
 procedure InitAudioDevice;cdecl;external cDllName;// Initialize audio device and context
@@ -1506,7 +1508,7 @@ procedure SetAudioStreamVolume(stream:TAudioStream; volume:single);cdecl;externa
 procedure SetAudioStreamPitch(stream:TAudioStream; pitch:single);cdecl;external cDllName;//  Set pitch for audio stream (1.0 is base level)
 procedure SetAudioStreamPan(stream:TAudioStream; pan:single);cdecl;external cDllName;// Set pan for audio stream (0.5 is centered)
 procedure SetAudioStreamBufferSizeDefault(size:longint);cdecl;external cDllName;//  Default size for new audio streams
-
+procedure SetAudioStreamCallback(stream:AudioStream; callback:TAudioCallback);cdecl;external cDllName;// Audio thread callback to request new data
 
 // Custom Misc Functions to help simplify a few things
 function Vector2Create(aX: single; aY: single): TVector2;
