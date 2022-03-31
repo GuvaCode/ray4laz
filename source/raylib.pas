@@ -1443,6 +1443,7 @@ function GetRayCollisionQuad(ray:TRay; p1:TVector3; p2:TVector3; p3:TVector3; p4
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
 //------------------------------------------------------------------------------------
+type
 PAudioCallback = ^TAudioCallback;
 TAudioCallback = procedure (bufferData: pointer; frames: dword);cdecl;
 //typedef void (*AudioCallback)(void *bufferData, unsigned int frames);
