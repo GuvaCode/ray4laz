@@ -180,6 +180,8 @@ procedure QuaternionToAxisAngle(q : TQuaternion; uutAxis : PVector3; outAngle : 
 function  QuaternionFromEuler(pitch, yaw, roll : Single): TQuaternion; cdecl; external cDllName;// Returns the quaternion equivalent to Euler angles
 function  QuaternionToEuler(q : TQuaternion): TVector3; cdecl; external cDllName;// Return the Euler angles equivalent to quaternion (roll, pitch, yaw)
 function  QuaternionTransform(q : TQuaternion; mat : TMatrix): TQuaternion; cdecl; external cDllName;// Transform a quaternion given a transformation matrix
+function  QuaternionEquals(p, q: TQuaternion): longint; cdecl; external cDllName;// Check whether two given quaternions are almost equal
+
 // Custom Misc Functions
 function fMinf(a, b: Single):single;
 function fMaxf(a, b: Single):single;
