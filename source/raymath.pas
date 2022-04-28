@@ -59,6 +59,7 @@ function  Clamp(value, min, max : Single): Single; cdecl; external cDllName;   /
 function  Lerp(start, end_, amount : Single): Single; cdecl; external cDllName; // Calculate linear interpolation between two floats
 function  Normalize(value, start, end_: Single): Single; cdecl; external cDllName; // Normalize input value within input range
 function  Remap(value, inputStart, inputEnd, outputStart, outputEnd : Single): Single; cdecl; external cDllName;// Remap input value within input range to output range
+function  FloatEquals(x, y: Single): longint; cdecl; external cDllName;// Check whether two given floats are almost equal
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector2 math
@@ -82,8 +83,13 @@ function  Vector2Divide(v1, v2 : TVector2): TVector2; cdecl; external cDllName;/
 function  Vector2Normalize(v : TVector2): TVector2; cdecl; external cDllName; // Normalize provided vector
 function  Vector2Lerp(v1, v2 : TVector2; amount : Single): TVector2; cdecl; external cDllName;// Calculate linear interpolation between two vectors
 function  Vector2Reflect(v, normal : TVector2): TVector2; cdecl; external cDllName;// Calculate reflected vector to normal
-function  Vector2Rotate(v: TVector2; angle:Single) :TVector2; cdecl; external cDllName;// Rotate vector by angle
+function  Vector2Rotate(v: TVector2; angle:Single): TVector2; cdecl; external cDllName;// Rotate vector by angle
 function  Vector2MoveTowards(v, target:Tvector2; maxDistance: Single): TVector2; cdecl; external cDllName; // Move Vector towards target
+function  Vector2Invert(v: TVector2): TVector2; cdecl; external cDllName;//Invert the given vector
+function  Vector2Clamp(v, min, max: TVector2): TVector2; cdecl; external cDllName;// Clamp the components of the vector between min and max values specified by the given vectors
+function  Vector2ClampValue(v, min, max: TVector2): TVector2; cdecl; external cDllName;// Clamp the magnitude of the vector between two min and max values
+function  Vector2Equals(p, q: TVector2): TVector2; cdecl; external cDllName;// Check whether two given vectors are almost equal
+
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector3 math
@@ -117,7 +123,11 @@ function  Vector3Max(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// R
 function  Vector3Barycenter(p, a, b, c : TVector3): TVector3; cdecl; external cDllName;// Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
 function  Vector3Unproject(source:TVector3; projection:TMatrix; view:TMatrix):TVector3; cdecl; external cDllName;// Projects a Vector3 from screen space into object space
 function  Vector3ToFloatV(v : TVector3): TFloat3; cdecl; external cDllName;// Returns Vector3 as float array
-
+function  Vector3Invert(v: TVector3): TVector3; cdecl; external cDllName;// Invert the given vector
+function  Vector3Clamp(v, min, max: TVector3): TVector3; cdecl; external cDllName;// Clamp the components of the vector between min and max values specified by the given vectors
+function  Vector3ClampValue(v: TVector3; min, max: Single): TVector3; cdecl; external cDllName;// Clamp the magnitude of the vector between two values
+function  Vector3Equals(p, q: TVector3): longint; cdecl; external cDllName;// Check whether two given vectors are almost equal
+function  Vector3Refract(v, n: TVector3; r: Single): TVector3; cdecl; external cDllName;
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Matrix math
@@ -126,7 +136,7 @@ function  MatrixDeterminant(mat : TMatrix) : Single; cdecl; external cDllName; /
 function  MatrixTrace(mat : TMatrix): Single; cdecl; external cDllName;// Returns the trace of the matrix (sum of the values along the diagonal)
 function  MatrixTranspose(mat : TMatrix): TMatrix; cdecl; external cDllName;// Transposes provided matrix
 function  MatrixInvert(mat : TMatrix): TMatrix; cdecl; external cDllName; // Invert provided matrix
-function  MatrixNormalize(mat : TMatrix): TMatrix; cdecl; external cDllName;// Normalize provided matrix
+// rem // function  MatrixNormalize(mat : TMatrix): TMatrix; cdecl; external cDllName;// Normalize provided matrix
 function  MatrixIdentity: TMatrix; cdecl; external cDllName;// Returns identity matrix
 function  MatrixAdd(left : TMatrix; right : TMatrix): TMatrix; cdecl; external cDllName;// Add two matrices
 function  MatrixSubtract(left : TMatrix; right : TMatrix): TMatrix; cdecl; external cDllName;// Subtract two matrices (left - right)

@@ -419,7 +419,9 @@ procedure rlglInit(width:longint; height:longint);cdecl;external cDllName;// Ini
 procedure rlglClose;cdecl;external cDllName;// De-inititialize rlgl (buffers, shaders, textures)
 procedure rlLoadExtensions(loader:pointer);cdecl;external cDllName;// Load OpenGL extensions (loader function required)
 function rlGetVersion:longint;cdecl;external cDllName;// Get current OpenGL version
+procedure rlSetFramebufferWidth(width:longint);cdecl;external cDllName;// Set current framebuffer width
 function rlGetFramebufferWidth:longint;cdecl;external cDllName;// Get default framebuffer width
+procedure rlSetFramebufferHeight(height:longint);cdecl;external cDllName;// Set current framebuffer height
 function rlGetFramebufferHeight:longint;cdecl;external cDllName;// Get default framebuffer height
 function rlGetTextureIdDefault:dword;cdecl;external cDllName;// Get default texture id
 function rlGetShaderIdDefault:dword;cdecl;external cDllName;// Get default shader id

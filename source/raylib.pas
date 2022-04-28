@@ -345,16 +345,22 @@ const
          data       : pointer; // Buffer data pointer
        end;
 
+     (* Opaque structs declaration *)
+     (* NOTE: Actual structs are defined internally in raudio module *)
      PrAudioBuffer = ^TrAudioBuffer;
      TrAudioBuffer = record end;
+
+     PrAudioProcessor = ^TrAudioProcessor;
+     TrAudioProcessor = record end;
 
      (* AudioStream, custom audio stream *)
      PAudioStream = ^TAudioStream;
      TAudioStream = record
-         buffer     : PrAudioBuffer; // Pointer to internal data used by the audio system
-         sampleRate : dword;         // Frequency (samples per second)
-         sampleSize : dword;         // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
-         channels   : dword;         // Number of channels (1-mono, 2-stereo, ...)
+         buffer     : PrAudioBuffer;    // Pointer to internal data used by the audio system
+         processor  : PrAudioProcessor; // Pointer to internal data processor, useful for audio effects
+         sampleRate : dword;            // Frequency (samples per second)
+         sampleSize : dword;            // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
+         channels   : dword;            // Number of channels (1-mono, 2-stereo, ...)
        end;
 
      (* Sound *)
@@ -1025,10 +1031,10 @@ procedure ClearDroppedFiles;cdecl;external cDllName;// Clear dropped files paths
 function GetFileModTime(fileName:Pchar):longint;cdecl;external cDllName;// Get file modification time (last write time)
 
 (* Compression/Encoding functionality *)
-function CompressData(const data:Pbyte; dataLength:longint; compDataLength:Plongint):Pbyte;cdecl;external cDllName;// Compress data (DEFLATE algorithm)
-function DecompressData(const compData:Pbyte; compDataLength:longint; dataLength:Plongint):Pbyte;cdecl;external cDllName;// Decompress data (DEFLATE algorithm)
-function EncodeDataBase64(const data:Pchar; dataLength:longint; outputLength:Plongint):Pchar;cdecl;external cDllName;// Encode data to Base64 string
-function DecodeDataBase64(const data:Pchar; outputLength:Plongint):Pchar;cdecl;external cDllName;// Decode Base64 string data
+function CompressData(const data:Pbyte; dataSize:longint; compDataSize:Plongint):Pbyte;cdecl;external cDllName;// Compress data (DEFLATE algorithm)
+function DecompressData(const compData:Pbyte; compDataSize:longint; dataSize:Plongint):Pbyte;cdecl;external cDllName;// Decompress data (DEFLATE algorithm)
+function EncodeDataBase64(const data:Pchar; dataSize:longint; outputSize:Plongint):Pchar;cdecl;external cDllName;// Encode data to Base64 string
+function DecodeDataBase64(const data:Pchar; outputSize:Plongint):Pchar;cdecl;external cDllName;// Decode Base64 string data
 
 (* Persistent storage management *)
 function SaveStorageValue(position:dword; value:longint):boolean;cdecl;external cDllName;// Save integer value to storage file (to defined position), returns true on success
@@ -1431,7 +1437,6 @@ function CheckCollisionBoxes(box1:TBoundingBox; box2:TBoundingBox):boolean;cdecl
 function CheckCollisionBoxSphere(box:TBoundingBox; center:TVector3; radius:single):boolean;cdecl;external cDllName;// Check collision between box and sphere
 function GetRayCollisionSphere(ray:TRay; center:TVector3; radius:single):TRayCollision;cdecl;external cDllName;// Get collision info between ray and sphere
 function GetRayCollisionBox(ray:TRay; box:TBoundingBox):TRayCollision;cdecl;external cdllName;// Get collision info between ray and box
-function GetRayCollisionModel(ray:TRay; model:TModel):TRayCollision;cdecl;external cdllName;// Get collision info between ray and model
 function GetRayCollisionMesh(ray:TRay; mesh:TMesh; transform:TMatrix):TRayCollision;cdecl;external cdllName;// Get collision info between ray and mesh
 function GetRayCollisionTriangle(ray:TRay; p1:TVector3; p2:TVector3; p3:TVector3):TRayCollision;cdecl;external cDllName;// Get collision info between ray and triangle
 function GetRayCollisionQuad(ray:TRay; p1:TVector3; p2:TVector3; p3:TVector3; p4:TVector3):TRayCollision;cdecl;external cDllName;// Get collision info between ray and quad
@@ -1439,6 +1444,8 @@ function GetRayCollisionQuad(ray:TRay; p1:TVector3; p2:TVector3; p3:TVector3; p4
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
 //------------------------------------------------------------------------------------
+type
+  TAudioCallback = procedure(bufferData:pointer; frames: dword); cdecl;
 
 (* Audio device management functions *)
 procedure InitAudioDevice;cdecl;external cDllName;// Initialize audio device and context
@@ -1506,6 +1513,10 @@ procedure SetAudioStreamVolume(stream:TAudioStream; volume:single);cdecl;externa
 procedure SetAudioStreamPitch(stream:TAudioStream; pitch:single);cdecl;external cDllName;//  Set pitch for audio stream (1.0 is base level)
 procedure SetAudioStreamPan(stream:TAudioStream; pan:single);cdecl;external cDllName;// Set pan for audio stream (0.5 is centered)
 procedure SetAudioStreamBufferSizeDefault(size:longint);cdecl;external cDllName;//  Default size for new audio streams
+procedure SetAudioStreamCallback(stream:TAudioStream; callback:TAudioCallback);cdecl;external cDllName;// Audio thread callback to request new data
+
+procedure AttachAudioStreamProcessor(stream:TAudioStream; processor:TAudioCallback);cdecl;external cDllName;
+procedure DetachAudioStreamProcessor(stream:TAudioStream; processor:TAudioCallback);cdecl;external cDllName;
 
 
 // Custom Misc Functions to help simplify a few things
