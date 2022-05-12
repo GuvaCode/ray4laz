@@ -235,7 +235,7 @@ const
          // Vertex attributes data
          vertices      : Psingle;  // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
          texcoords     : Psingle;  // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
-         texcoords2    : Psingle;  // Vertex second texture coordinates (useful for lightmaps) (shader-location = 5)
+         texcoords2    : Psingle;  // Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
          normals       : Psingle;  // Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
          tangents      : Psingle;  // Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
          colors        : Pbyte;    // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
@@ -914,9 +914,10 @@ function GetMonitorRefreshRate(monitor:longint):longint;cdecl;external cDllName;
 function GetWindowPosition:TVector2;cdecl;external cDllName;// Get window position XY on monitor
 function GetWindowScaleDPI:TVector2;cdecl;external cDllName;// Get window scale DPI factor
 function GetMonitorName(monitor:longint):Pchar;cdecl;external cDllName;// Get the human-readable, UTF-8 encoded name of the primary monitor
-
 procedure SetClipboardText(text:Pchar);cdecl;external cDllName;// Set clipboard text content
 function GetClipboardText:Pchar;cdecl;external cDllName;// Get clipboard text content
+procedure EnableEventWaiting;cdecl;external cDllName;// Enable waiting for events on EndDrawing(), no automatic event polling
+procedure DisableEventWaiting;cdecl;external cDllName;// Disable waiting for events on EndDrawing(), automatic events polling
 
 (* Custom frame control functions *)
 // NOTE: Those functions are intended for advance users that want full control over the frame processing
@@ -1008,6 +1009,7 @@ procedure SetSaveFileTextCallback(callback:TSaveFileTextCallback);cdecl;external
 function LoadFileData(fileName:Pchar; bytesRead:Pdword):Pbyte;cdecl;external cDllName;// Load file data as byte array (read)
 procedure UnloadFileData(data:Pbyte);cdecl;external cDllName;// Unload file data allocated by LoadFileData()
 function SaveFileData(fileName:Pchar; data:pointer; bytesToWrite:dword):boolean;cdecl;external cDllName;// Save data to file from byte array (write), returns true on success
+function ExportDataAsCode(data: Pchar; size:dword; fileName:Pchar):boolean;cdecl;external cDllName;// Export data to code (.h), returns true on success
 function LoadFileText(fileName:Pchar):Pchar;cdecl;external cDllName;// Load text data from file (read), returns a '\0' terminated string
 procedure UnloadFileText(text:Pchar);cdecl;external cDllName;// Unload file text data allocated by LoadFileText()
 function SaveFileText(fileName:Pchar; boolean:Pchar):boolean;cdecl;external cDllName;// Save text data to file (write), string must be '\0' terminated, returns true on success
@@ -1022,19 +1024,19 @@ function GetDirectoryPath(filePath:Pchar):Pchar;cdecl;external cDllName;// Get f
 function GetPrevDirectoryPath(dirPath:Pchar):Pchar;cdecl;external cDllName;// Get previous directory path for a given path (uses static string)
 function GetWorkingDirectory:Pchar;cdecl;external cDllName;// Get current working directory (uses static string)
 function GetApplicationDirectory:Pchar;cdecl;external cDllName;// Get the directory if the running application (uses static string)
-function GetDirectoryFiles(dirPath:Pchar; count:Plongint):PPchar;cdecl;external cDllName;// Get filenames in a directory path (memory should be freed)
+function GetDirectoryFiles(dirPath:Pchar; count:Plongint):PPchar;cdecl;external cDllName;// Get filenames in a directory path (memory must be freed)
 procedure ClearDirectoryFiles;cdecl;external cDllName;// Clear directory files paths buffers (free memory)
 function ChangeDirectory(dir:Pchar):boolean;cdecl;external cDllName;// Change working directory, return true on success
 function IsFileDropped:boolean;cdecl;external cDllName;// Check if a file has been dropped into window
-function GetDroppedFiles(count:Plongint):PPchar;cdecl;external cDllName;// Get dropped files names (memory should be freed)
+function GetDroppedFiles(count:Plongint):PPchar;cdecl;external cDllName;// Get dropped files names (memory must be freed)
 procedure ClearDroppedFiles;cdecl;external cDllName;// Clear dropped files paths buffer (free memory)
 function GetFileModTime(fileName:Pchar):longint;cdecl;external cDllName;// Get file modification time (last write time)
 
 (* Compression/Encoding functionality *)
-function CompressData(const data:Pbyte; dataSize:longint; compDataSize:Plongint):Pbyte;cdecl;external cDllName;// Compress data (DEFLATE algorithm)
-function DecompressData(const compData:Pbyte; compDataSize:longint; dataSize:Plongint):Pbyte;cdecl;external cDllName;// Decompress data (DEFLATE algorithm)
-function EncodeDataBase64(const data:Pchar; dataSize:longint; outputSize:Plongint):Pchar;cdecl;external cDllName;// Encode data to Base64 string
-function DecodeDataBase64(const data:Pchar; outputSize:Plongint):Pchar;cdecl;external cDllName;// Decode Base64 string data
+function CompressData(const data:Pbyte; dataSize:longint; compDataSize:Plongint):Pbyte;cdecl;external cDllName;// Compress data (DEFLATE algorithm), memory must be MemFree()
+function DecompressData(const compData:Pbyte; compDataSize:longint; dataSize:Plongint):Pbyte;cdecl;external cDllName;// Decompress data (DEFLATE algorithm), memory must be MemFree()
+function EncodeDataBase64(const data:Pchar; dataSize:longint; outputSize:Plongint):Pchar;cdecl;external cDllName;// Encode data to Base64 string, memory must be MemFree()
+function DecodeDataBase64(const data:Pchar; outputSize:Plongint):Pchar;cdecl;external cDllName;// Decode Base64 string data, memory must be MemFree()
 
 (* Persistent storage management *)
 function SaveStorageValue(position:dword; value:longint):boolean;cdecl;external cDllName;// Save integer value to storage file (to defined position), returns true on success
