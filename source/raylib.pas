@@ -22,11 +22,8 @@ const
 const
   DEG2RAD = (PI / 180.0);
   RAD2DEG = (180.0 / PI);
- // MAX_TOUCH_POINTS = 10;
- // MAX_SHADER_LOCATIONS = 32;
-//  MAX_MATERIAL_MAPS = 12;
 
-//----------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------
 // Some basic Defines }
 //----------------------------------------------------------------------------------
 
@@ -1522,7 +1519,7 @@ procedure AttachAudioStreamProcessor(stream:TAudioStream; processor:TAudioCallba
 procedure DetachAudioStreamProcessor(stream:TAudioStream; processor:TAudioCallback);cdecl;external cDllName;
 
 
-// Custom Misc Functions to help simplify a few things
+(* Custom Misc Functions to help simplify a few things *)
 function Vector2Create(aX: single; aY: single): TVector2;
 procedure Vector2Set(aVec: PVector2; aX: single; aY: single);
 function Vector3Create(aX: single; aY: single; aZ: single): TVector3;
