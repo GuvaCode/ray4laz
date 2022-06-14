@@ -1,6 +1,6 @@
 /**********************************************************************************************
 *
-*   raylib v4.1-dev - A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)
+*   raylib v4.2-dev - A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)
 *
 *   FEATURES:
 *       - NO external dependencies, all required libraries included with raylib
@@ -80,7 +80,7 @@
 
 #include <stdarg.h>     // Required for: va_list - Only used by TraceLogCallback
 
-#define RAYLIB_VERSION  "4.1-dev"
+#define RAYLIB_VERSION  "4.2-dev"
 
 // Function specifiers in case library is build/used as a shared library (Windows)
 // NOTE: Microsoft specifiers to tell compiler that symbols are imported/exported from a .dll
@@ -177,10 +177,10 @@
 // Structures Definition
 //----------------------------------------------------------------------------------
 // Boolean type
-#if defined(__STDC__) && __STDC_VERSION__ >= 199901L
+#if (defined(__STDC__) && __STDC_VERSION__ >= 199901L) || (defined(_MSC_VER) && _MSC_VER >= 1800)
     #include <stdbool.h>
 #elif !defined(__cplusplus) && !defined(bool)
-    typedef enum bool { false, true } bool;
+    typedef enum bool { false = 0, true = !false } bool;
     #define RL_BOOL_TYPE
 #endif
 
@@ -482,6 +482,13 @@ typedef struct VrStereoConfig {
     float scaleIn[2];               // VR distortion scale in
 } VrStereoConfig;
 
+// File path list
+typedef struct FilePathList {
+    unsigned int capacity;          // Filepaths max entries
+    unsigned int count;             // Filepaths entries count
+    char **paths;                   // Filepaths entries
+} FilePathList;
+
 //----------------------------------------------------------------------------------
 // Enumerators Definition
 //----------------------------------------------------------------------------------
@@ -501,6 +508,7 @@ typedef enum {
     FLAG_WINDOW_ALWAYS_RUN  = 0x00000100,   // Set to allow windows running while minimized
     FLAG_WINDOW_TRANSPARENT = 0x00000010,   // Set to allow transparent framebuffer
     FLAG_WINDOW_HIGHDPI     = 0x00002000,   // Set to support HighDPI
+    FLAG_WINDOW_MOUSE_PASSTHROUGH = 0x00004000, // Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
     FLAG_MSAA_4X_HINT       = 0x00000020,   // Set to try enabling MSAA 4X
     FLAG_INTERLACED_HINT    = 0x00010000    // Set to try enabling interlaced video format (for V3D)
 } ConfigFlags;
@@ -843,7 +851,7 @@ typedef enum {
     BLEND_MULTIPLIED,               // Blend textures multiplying colors
     BLEND_ADD_COLORS,               // Blend textures adding colors (alternative)
     BLEND_SUBTRACT_COLORS,          // Blend textures subtracting colors (alternative)
-    BLEND_ALPHA_PREMUL,             // Blend premultiplied textures considering alpha
+    BLEND_ALPHA_PREMULTIPLY,        // Blend premultiplied textures considering alpha
     BLEND_CUSTOM                    // Blend textures using custom src/dst factors (use rlSetBlendMode())
 } BlendMode;
 
@@ -890,8 +898,8 @@ typedef enum {
 typedef void (*TraceLogCallback)(int logLevel, const char *text, va_list args);  // Logging: Redirect trace log messages
 typedef unsigned char *(*LoadFileDataCallback)(const char *fileName, unsigned int *bytesRead);      // FileIO: Load binary data
 typedef bool (*SaveFileDataCallback)(const char *fileName, void *data, unsigned int bytesToWrite);  // FileIO: Save binary data
-typedef char *(*LoadFileTextCallback)(const char *fileName);       // FileIO: Load text data
-typedef bool (*SaveFileTextCallback)(const char *fileName, char *text);     // FileIO: Save text data
+typedef char *(*LoadFileTextCallback)(const char *fileName);            // FileIO: Load text data
+typedef bool (*SaveFileTextCallback)(const char *fileName, char *text); // FileIO: Save text data
 
 //------------------------------------------------------------------------------------
 // Global Variables Definition
@@ -939,8 +947,8 @@ RLAPI int GetRenderHeight(void);                                  // Get current
 RLAPI int GetMonitorCount(void);                                  // Get number of connected monitors
 RLAPI int GetCurrentMonitor(void);                                // Get current connected monitor
 RLAPI Vector2 GetMonitorPosition(int monitor);                    // Get specified monitor position
-RLAPI int GetMonitorWidth(int monitor);                           // Get specified monitor width (max available by monitor)
-RLAPI int GetMonitorHeight(int monitor);                          // Get specified monitor height (max available by monitor)
+RLAPI int GetMonitorWidth(int monitor);                           // Get specified monitor width (current video mode used by monitor)
+RLAPI int GetMonitorHeight(int monitor);                          // Get specified monitor height (current video mode used by monitor)
 RLAPI int GetMonitorPhysicalWidth(int monitor);                   // Get specified monitor physical width in millimetres
 RLAPI int GetMonitorPhysicalHeight(int monitor);                  // Get specified monitor physical height in millimetres
 RLAPI int GetMonitorRefreshRate(int monitor);                     // Get specified monitor refresh rate
@@ -958,7 +966,7 @@ RLAPI void DisableEventWaiting(void);                             // Disable wai
 // To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
 RLAPI void SwapScreenBuffer(void);                                // Swap back buffer with front buffer (screen drawing)
 RLAPI void PollInputEvents(void);                                 // Register all input events
-RLAPI void WaitTime(float ms);                                    // Wait for some milliseconds (halt program execution)
+RLAPI void WaitTime(double seconds);                              // Wait for some time (halt program execution)
 
 // Cursor-related functions
 RLAPI void ShowCursor(void);                                      // Shows cursor
@@ -1008,9 +1016,9 @@ RLAPI Ray GetMouseRay(Vector2 mousePosition, Camera camera);      // Get a ray t
 RLAPI Matrix GetCameraMatrix(Camera camera);                      // Get camera transform matrix (view matrix)
 RLAPI Matrix GetCameraMatrix2D(Camera2D camera);                  // Get camera 2d transform matrix
 RLAPI Vector2 GetWorldToScreen(Vector3 position, Camera camera);  // Get the screen space position for a 3d world space position
+RLAPI Vector2 GetScreenToWorld2D(Vector2 position, Camera2D camera); // Get the world space position for a 2d camera screen space position
 RLAPI Vector2 GetWorldToScreenEx(Vector3 position, Camera camera, int width, int height); // Get size position for a 3d world space position
 RLAPI Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera); // Get the screen space position for a 2d camera world space position
-RLAPI Vector2 GetScreenToWorld2D(Vector2 position, Camera2D camera); // Get the world space position for a 2d camera screen space position
 
 // Timing-related functions
 RLAPI void SetTargetFPS(int fps);                                 // Set target FPS (maximum)
@@ -1057,12 +1065,14 @@ RLAPI const char *GetDirectoryPath(const char *filePath);         // Get full pa
 RLAPI const char *GetPrevDirectoryPath(const char *dirPath);      // Get previous directory path for a given path (uses static string)
 RLAPI const char *GetWorkingDirectory(void);                      // Get current working directory (uses static string)
 RLAPI const char *GetApplicationDirectory(void);                  // Get the directory if the running application (uses static string)
-RLAPI char **GetDirectoryFiles(const char *dirPath, int *count);  // Get filenames in a directory path (memory must be freed)
-RLAPI void ClearDirectoryFiles(void);                             // Clear directory files paths buffers (free memory)
 RLAPI bool ChangeDirectory(const char *dir);                      // Change working directory, return true on success
+RLAPI bool IsPathFile(const char *path);                          // Check if a given path is a file or a directory
+RLAPI FilePathList LoadDirectoryFiles(const char *dirPath);       // Load directory filepaths
+RLAPI FilePathList LoadDirectoryFilesEx(const char *basePath, const char *filter, bool scanSubdirs); // Load directory filepaths with extension filtering and recursive directory scan
+RLAPI void UnloadDirectoryFiles(FilePathList files);              // Unload filepaths
 RLAPI bool IsFileDropped(void);                                   // Check if a file has been dropped into window
-RLAPI char **GetDroppedFiles(int *count);                         // Get dropped files names (memory must be freed)
-RLAPI void ClearDroppedFiles(void);                               // Clear dropped files paths buffer (free memory)
+RLAPI FilePathList LoadDroppedFiles(void);                        // Load dropped filepaths
+RLAPI void UnloadDroppedFiles(FilePathList files);                // Unload dropped filepaths
 RLAPI long GetFileModTime(const char *fileName);                  // Get file modification time (last write time)
 
 // Compression/Encoding functionality
@@ -1114,7 +1124,8 @@ RLAPI Vector2 GetMouseDelta(void);                            // Get mouse delta
 RLAPI void SetMousePosition(int x, int y);                    // Set mouse position XY
 RLAPI void SetMouseOffset(int offsetX, int offsetY);          // Set mouse offset
 RLAPI void SetMouseScale(float scaleX, float scaleY);         // Set mouse scaling
-RLAPI float GetMouseWheelMove(void);                          // Get mouse wheel movement Y
+RLAPI float GetMouseWheelMove(void);                          // Get mouse wheel movement for X or Y, whichever is larger
+RLAPI Vector2 GetMouseWheelMoveV(void);                       // Get mouse wheel movement for both X and Y
 RLAPI void SetMouseCursor(int cursor);                        // Set mouse cursor
 
 // Input-related functions: touch
