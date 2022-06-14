@@ -34,7 +34,7 @@ const
    moonRotation :single = 0.0;          // Rotation of moon around itself
    moonOrbitRotation :single = 0.0;     // Rotation of moon around earth in degrees
 
-   procedure  DrawSphereBasic(Color: Tcolor); // Draw sphere without any matrix transformation
+   procedure  DrawSphereBasic(Color: TRayColor); // Draw sphere without any matrix transformation
    var
        rings:integer = 16;
        slices:integer = 16;
