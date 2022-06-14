@@ -14,7 +14,7 @@ const
 type
   Particle = record
     position: TVector2;
-    color: TColor;
+    color: TRayColor;
     alpha: Single;
     size: Single;
     rotation: Single;
