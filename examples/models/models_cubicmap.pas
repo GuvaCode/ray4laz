@@ -14,7 +14,7 @@ var
   cubicmap, texture: TTexture2D;
   mesh: TMesh;
   model: TModel;
-  mapPixels: PColor;
+  mapPixels: PRayColor;
   mapPosition: TVector3;
 
 begin
