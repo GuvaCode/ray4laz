@@ -59,6 +59,7 @@ function  Clamp(value, min, max : Single): Single; cdecl; external cDllName;   /
 function  Lerp(start, end_, amount : Single): Single; cdecl; external cDllName; // Calculate linear interpolation between two floats
 function  Normalize(value, start, end_: Single): Single; cdecl; external cDllName; // Normalize input value within input range
 function  Remap(value, inputStart, inputEnd, outputStart, outputEnd : Single): Single; cdecl; external cDllName;// Remap input value within input range to output range
+function  Wrap(value, min, max: Single): Single; cdecl; external cDllName;// Wrap input value from min to max
 function  FloatEquals(x, y: Single): longint; cdecl; external cDllName;// Check whether two given floats are almost equal
 
 //----------------------------------------------------------------------------------
