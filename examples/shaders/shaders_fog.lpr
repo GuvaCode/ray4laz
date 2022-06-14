@@ -33,8 +33,7 @@ begin
   45.0, CAMERA_PERSPECTIVE); // fov, type
 
   // Load models and texture
-  modelA := LoadModelFromMesh(GenMeshTorus(0.4, 1.0, 16, 64));
- // modelA := LoadModelFromMesh(GenMeshKnot(1.0, 2.0, 16, 128));
+  modelA := LoadModelFromMesh(GenMeshKnot(1.0, 2.0, 16, 128));
   modelB := LoadModelFromMesh(GenMeshCube(1.0, 1.0, 1.0));
   modelC := LoadModelFromMesh(GenMeshSphere(0.5, 32, 32));
   texture := LoadTexture('resources/texel_checker.png');
