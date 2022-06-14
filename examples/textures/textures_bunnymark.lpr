@@ -8,7 +8,7 @@ type
  TBunny = record
     position:TVector2;
     speed:TVector2;
-    color:TColor;
+    color:TRayColor;
   end;
 
 const
