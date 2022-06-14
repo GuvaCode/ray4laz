@@ -13,7 +13,7 @@ var
   Camera: TCamera;
   heights: array[0..MAX_COLUMNS - 1] of single;
   positions: array[0..MAX_COLUMNS - 1] of TVector3;
-  colors:  array[0..MAX_COLUMNS - 1] of TColor;
+  colors:  array[0..MAX_COLUMNS - 1] of TRayColor;
   i:integer;
 
 begin
