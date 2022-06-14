@@ -251,7 +251,7 @@ const
      PMaterialMap = ^TMaterialMap;
      TMaterialMap = record
          texture : TTexture2D; // Material map texture
-         color   : TRayColor;     // Material map color
+         color   : TRayColor;  // Material map color
          value   : single;     // Material map value
        end;
 
