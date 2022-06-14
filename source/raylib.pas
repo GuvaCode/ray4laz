@@ -1288,7 +1288,7 @@ function ColorToHSV(color:TRayColor):TVector3;cdecl;external cDllName;// Get HSV
 function ColorFromHSV(hue:single; saturation:single; value:single):TRayColor;cdecl;external cDllName;// Get a Color from HSV values, hue [0..360], saturation/value [0..1]
 function ColorAlpha(color:TRayColor; alpha:single):TRayColor;cdecl;external cDllName;// Get color with alpha applied, alpha goes from 0.0f to 1.0f
 function ColorAlphaBlend(dst:TRayColor; src:TRayColor; tint:TRayColor):TRayColor;cdecl;external cDllName;// Get src alpha-blended into dst color with tint
-function GeTRayColor(hexValue:dword):TRayColor;cdecl;external cDllName;// Get Color structure from hexadecimal value
+function GetColor(hexValue:dword):TRayColor;cdecl;external cDllName;// Get Color structure from hexadecimal value
 function GetPixelColor(srcPtr:pointer; format:longint):TRayColor;cdecl;external cDllName;// Get Color from a source pixel pointer of certain format
 procedure SetPixelColor(dstPtr:pointer; color:TRayColor; format:longint);cdecl;external cDllName;// Set color formatted into destination pixel pointer
 function GetPixelDataSize(width:longint; height:longint; format:longint):longint;cdecl;external cDllName;// Get pixel data size in bytes for certain format
