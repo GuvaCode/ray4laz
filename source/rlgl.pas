@@ -461,7 +461,7 @@ function rlLoadTexture(const data:pointer; width:longint; height:longint; format
 function rlLoadTextureDepth(width:longint; height:longint; useRenderBuffer:boolean):dword;cdecl;external cDllName;// Load depth texture/renderbuffer (to be attached to fbo)
 function rlLoadTextureCubemap(const data:pointer; size:longint; format:longint):dword;cdecl;external cDllName;// Load texture cubemap
 procedure rlUpdateTexture(id:dword; offsetX:longint; offsetY:longint; width:longint; height:longint;format:longint; data:pointer);cdecl;external cDllName;// Update GPU texture with new data
-procedure rlGetGlTextureFormats(format:longint; glInternalFormat:Plongint; glFormat:Plongint; glType:Plongint);cdecl;external cDllName;// Get OpenGL internal formats
+procedure rlGetGlTextureFormats(format:longint; glInternalFormat:PDword; glFormat:PDword; glType:PDword);cdecl;external cDllName;// Get OpenGL internal formats
 function rlGetPixelFormatName(format:dword):Pchar;cdecl;external cDllName;// Get name string for pixel format
 procedure rlUnloadTexture(id:dword);cdecl;external cDllName;// Unload texture from GPU memory
 procedure rlGenTextureMipmaps(id:dword; width:longint; height:longint; format:longint; mipmaps:Plongint);cdecl;external cDllName;// Generate mipmap data for selected texture
