@@ -62,7 +62,7 @@ var
     listViewExList: array [0..7] of PChar = ('This', 'is', 'a', 'list view', 'with', 'disable', 'elements', 'amazing!');
     multiTextBoxText: array [0..254] of Char = 'Multi text box';
     multiTextBoxEditMode: boolean = false;
-    colorPickerValue: TColor = (r: 230; g: 41; b: 55; a: 255);    // Red// = RED;
+    colorPickerValue: TRayColor = (r: 230; g: 41; b: 55; a: 255);    // Red// = RED;
     sliderValue: longint = 50;
     sliderBarValue: longint = 60;
     progressValue: single = 0.4;
@@ -102,10 +102,12 @@ begin
 
        if IsFileDropped() then
         begin
+          {
             dropFileCount := 0;
             droppedFiles := GetDroppedFiles(@dropFileCount);
             if ((dropFileCount > 0) and IsFileExtension(droppedFiles[0], '.rgs')) then  GuiLoadStyle(droppedFiles[0]);
             ClearDroppedFiles();    // Clear internal buffers
+            }
         end;
 
       // Draw
