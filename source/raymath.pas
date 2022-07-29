@@ -117,6 +117,7 @@ function  Vector3Normalize(v : TVector3): TVector3; cdecl; external cDllName; //
 procedure Vector3OrthoNormalize(v1, v2 : PVector3); cdecl; external cDllName;// Orthonormalize provided vectors
 function  Vector3Transform(v : TVector3; mat : TMatrix): TVector3; cdecl; external cDllName;// Transforms a Vector3 by a given Matrix
 function  Vector3RotateByQuaternion(v : TVector3; q : TQuaternion): TVector3; cdecl; external cDllName;// Transform a vector by quaternion rotation
+function  Vector3RotateByAxisAngle(v : TVector3; axis: TVector3; angle: single): TVector3; cdecl; external cDllName;// Rotates a vector around an axis
 function  Vector3Lerp(v1, v2 : TVector3; amount : Single): TVector3; cdecl; external cDllName;// Calculate linear interpolation between two vectors
 function  Vector3Reflect(v, normal : TVector3): TVector3; cdecl; external cDllName;// Calculate reflected vector to normal
 function  Vector3Min(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Return min value for each pair of components
@@ -147,8 +148,8 @@ function  MatrixRotate(axis : TVector3; angle : Single): TMatrix; cdecl; externa
 function  MatrixRotateX(angle : Single): TMatrix; cdecl; external cDllName;// Returns x-rotation matrix (angle in radians)
 function  MatrixRotateY(angle : Single): TMatrix; cdecl; external cDllName;// Returns y-rotation matrix (angle in radians)
 function  MatrixRotateZ(angle : Single): TMatrix; cdecl; external cDllName;// Returns z-rotation matrix (angle in radians)
-function  MatrixRotateXYZ(ang : TVector3): TMatrix; cdecl; external cDllName;// Returns xyz-rotation matrix (angles in radians)
-function  MatrixRotateZYX(ang : TVector3): TMatrix; cdecl; external cDllName;// Returns zyx-rotation matrix (angles in radians)
+function  MatrixRotateXYZ(angle : TVector3): TMatrix; cdecl; external cDllName;// Returns xyz-rotation matrix (angles in radians)
+function  MatrixRotateZYX(angle : TVector3): TMatrix; cdecl; external cDllName;// Returns zyx-rotation matrix (angles in radians)
 function  MatrixScale(x, y, z : Single): TMatrix; cdecl; external cDllName;// Returns scaling matrix
 function  MatrixFrustum(left, right, bottom, top, near_, far_ : double): TMatrix; cdecl; external cDllName;// Returns perspective projection matrix
 function  MatrixPerspective(fovy, aspect, near_, far_ : double): TMatrix; cdecl; external cDllName;// Returns perspective projection matrix

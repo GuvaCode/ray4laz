@@ -1000,6 +1000,7 @@ procedure SetTraceLogLevel(logLevel:longint);cdecl;external cDllName;// Set the 
 function MemAlloc(size:longint):pointer;cdecl;external cDllName;// Internal memory allocator
 function MemRealloc(ptr:pointer; size:longint):pointer;cdecl;external cDllName;// Internal memory reallocator
 procedure MemFree(ptr:pointer);cdecl;external cDllName;// Internal memory free
+procedure OpenURL(const url:PChar);cdecl;external cDllName;// Open URL with default system browser (if available)
 
 (* Set custom callbacks *)
 // WARNING: Callbacks setup is intended for advance users
@@ -1043,12 +1044,6 @@ function CompressData(const data:Pbyte; dataSize:longint; compDataSize:Plongint)
 function DecompressData(const compData:Pbyte; compDataSize:longint; dataSize:Plongint):Pbyte;cdecl;external cDllName;// Decompress data (DEFLATE algorithm), memory must be MemFree()
 function EncodeDataBase64(const data:Pchar; dataSize:longint; outputSize:Plongint):Pchar;cdecl;external cDllName;// Encode data to Base64 string, memory must be MemFree()
 function DecodeDataBase64(const data:Pchar; outputSize:Plongint):Pchar;cdecl;external cDllName;// Decode Base64 string data, memory must be MemFree()
-
-(* Persistent storage management *)
-function SaveStorageValue(position:dword; value:longint):boolean;cdecl;external cDllName;// Save integer value to storage file (to defined position), returns true on success
-function LoadStorageValue(position:dword):longint;cdecl;external cDllName;// Load integer value from storage file (from defined position)
-procedure OpenURL(url:Pchar);cdecl;external cDllName;// Open URL with default system browser (if available)
-
 
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
@@ -1411,7 +1406,6 @@ procedure DrawMeshInstanced(mesh:TMesh; material:TMaterial;const transforms:PMat
 function ExportMesh(mesh:TMesh; fileName:Pchar):boolean;cdecl;external cDllName;// Export mesh data to file, returns true on success
 function GetMeshBoundingBox(mesh:TMesh):TBoundingBox;cdecl;external cDllName;// Compute mesh bounding box limits
 procedure GenMeshTangents(mesh:PMesh);cdecl;external cDllName;// Compute mesh tangents
-procedure GenMeshBinormals(mesh:PMesh);cdecl;external cDllName;// Compute mesh binormals
 
 (* Mesh generation functions *)
 function GenMeshPoly(sides:longint; radius:single):TMesh;cdecl;external cDllName;// Generate polygonal mesh
