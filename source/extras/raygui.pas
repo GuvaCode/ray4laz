@@ -502,7 +502,8 @@ function GuiWindowBox(bounds: TRectangle; const title: pchar): boolean; cdecl;ex
 procedure GuiGroupBox(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Group Box control with text name
 procedure GuiLine(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Line separator control, could contain text
 procedure GuiPanel(bounds: TRectangle); cdecl;external cDllName;// Panel control, useful to group controls
-function GuiScrollPanel(bounds: TRectangle; content: TRectangle; scroll: PVector2): TRectangle; cdecl;external cDllName;// Scroll Panel control
+//function GuiScrollPanel(bounds: TRectangle; content: TRectangle; scroll: PVector2): TRectangle; cdecl;external cDllName;// Scroll Panel control
+function GuiScrollPanel(bounds: TRectangle; const text: PChar; content: TRectangle; scroll: PVector2): TRectangle; cdecl;external cDllName; // Scroll Panel control
 
 // Basic controls set
 procedure GuiLabel(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Label control, shows text
@@ -529,10 +530,16 @@ function GuiGrid(bounds: TRectangle; spacing: single; subdivs: longint): TVector
 function GuiListView(bounds: TRectangle; const text: pchar; scrollIndex: plongint; active: longint): longint; cdecl;external cDllName;// List View control, returns selected list item index
 function GuiListViewEx(bounds: TRectangle; const text: ppchar; count: longint; focus: plongint; scrollIndex: plongint; active: longint): longint; cdecl;external cDllName;// List View with extended parameters
 function GuiMessageBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar): longint; cdecl;external cDllName;// Message Box control, displays a message
-function GuiTextInputBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar; text: pchar): longint; cdecl;external cDllName;// Text Input Box control, ask for text
-function GuiColorPicker(bounds: TRectangle; color: TRayColor): TRayColor ;cdecl;external cDllName;// Color Picker control (multiple color controls)
+function GuiTextInputBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar; text: pchar; textMaxSize: longint; secretViewActive:plongint): longint; cdecl;external cDllName;// Text Input Box control, ask for text
+
+
+function GuiColorPicker(bounds: TRectangle;text: PChar; color: TRayColor): TRayColor ;cdecl;external cDllName;// Color Picker control (multiple color controls)
+//RAYGUIAPI Color GuiColorPicker(Rectangle bounds, const char *text, Color color);                        // Color Picker control (multiple color controls)
+
 function GuiColorPanel(bounds: TRectangle; color: TRayColor): TRayColor ;cdecl;external cDllName;// Color Panel control
+
 function GuiColorBarAlpha(bounds: TRectangle; alpha: single): single ;cdecl;external cDllName;// Color Bar Alpha control
+
 function GuiColorBarHue(bounds:TRectangle; value: single): single ;cdecl;external cDllName;// Color Bar Hue control
 
 // Styles loading functions

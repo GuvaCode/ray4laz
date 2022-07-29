@@ -119,7 +119,7 @@ begin
 
         if (dropDown000EditMode or dropDown001EditMode) then GuiLock()
          else
-          if ( not dropDown000EditMode and  not dropDown001EditMode) then GuiUnlock();
+        if ( not dropDown000EditMode and  not dropDown001EditMode) then GuiUnlock();
 
         forceSquaredChecked := GuiCheckBox(RectangleCreate( 25, 108, 15, 15 ), 'FORCE CHECK!', forceSquaredChecked);
 
@@ -169,15 +169,15 @@ begin
          @listViewExFocus, @listViewExScrollIndex, listViewExActive);
 
 
-         toggleGroupActive := GuiToggleGroup(RectangleCreate( 165, 400, 140, 25 ),
-         '#1#ONE'+#10+'#3#TWO+'+#10+'#8#THREE'+#13, toggleGroupActive);
+       //  toggleGroupActive := GuiToggleGroup(RectangleCreate( 165, 400, 140, 25 ),
+       //  '#1#ONE'+#10+'#3#TWO+'+#10+'#8#THREE'+#13, toggleGroupActive);
 
 
        // Third GUI column
        if GuiTextBoxMulti(RectangleCreate( 320, 25, 225, 140 ), multiTextBoxText, 256,
        multiTextBoxEditMode) then multiTextBoxEditMode := not multiTextBoxEditMode;
 
-       colorPickerValue := GuiColorPicker(RectangleCreate( 320, 185, 196, 192 ), colorPickerValue);
+       colorPickerValue := GuiColorPicker(RectangleCreate( 320, 185, 196, 192 ),'Color picker', colorPickerValue);
 
        sliderValue := round(GuiSlider(RectangleCreate( 355, 400, 165, 20 ), 'TEST',
        TextFormat('%2.2', [sliderValue]), sliderValue, -50, 100));
@@ -188,7 +188,7 @@ begin
        progressValue := GuiProgressBar(RectangleCreate( 320, 460, 200, 20 ), nil, nil, progressValue, 0, 1);
 
        // NOTE: View rectangle could be used to perform some scissor test
-       view := GuiScrollPanel(RectangleCreate( 560, 25, 100, 160 ),
+       view := GuiScrollPanel(RectangleCreate( 560, 25, 100, 160 ),'Scroll Panel',
        RectangleCreate( 560, 25, 200, 400 ), @viewScroll);
 
        GuiStatusBar(RectangleCreate( 0, GetScreenHeight() - 20, GetScreenWidth(), 20 ), 'This is a status bar');
@@ -210,7 +210,7 @@ begin
           begin
             DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, 0.8));
             result := GuiTextInputBox(RectangleCreate( GetScreenWidth()/2 - 120, GetScreenHeight()/2 - 60, 240, 140 ),
-            GuiIconText(RICON_FILE_SAVE, 'Save file as...'), 'Introduce a save file name', 'Ok;Cancel', textInput);
+            GuiIconText(RICON_FILE_SAVE, 'Save file as...'), 'Introduce a save file name', 'Ok;Cancel', textInput,200,nil);
 
              if result = 1 then
                 begin
