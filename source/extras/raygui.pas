@@ -1,6 +1,6 @@
 {********************************************************************************************
 *                                                                                           *
-*   raygui v3.0 - A simple and easy-to-use immediate-mode gui library                       *
+*   raygui v3.2 - A simple and easy-to-use immediate-mode gui library                       *
 *                                                                                           *
 *   DESCRIPTION:                                                                            *
 *                                                                                           *
@@ -302,26 +302,26 @@ type
   TGuiStyleProp = record
     controlId     : Word;
     propertyId    : Word;
-    propertyValue : longint;
+    propertyValue : LongWord;
   end;
 
   // Gui control state
   PGuiControlState = ^TGuiControlState;
   TGuiControlState = Longint;
     const
-      GUI_STATE_NORMAL   = 0;
-      GUI_STATE_FOCUSED  = 1;
-      GUI_STATE_PRESSED  = 2;
-      GUI_STATE_DISABLED = 3;
+      STATE_NORMAL   = 0;
+      STATE_FOCUSED  = 1;
+      STATE_PRESSED  = 2;
+      STATE_DISABLED = 3;
 
 type
   // Gui control text alignment
   PGuiTextAlignment = ^TGuiTextAlignment;
   TGuiTextAlignment = Longint;
     const
-      GUI_TEXT_ALIGN_LEFT   = 0;
-      GUI_TEXT_ALIGN_CENTER = 1;
-      GUI_TEXT_ALIGN_RIGHT  = 2;
+      TEXT_ALIGN_LEFT   = 0;
+      TEXT_ALIGN_CENTER = 1;
+      TEXT_ALIGN_RIGHT  = 2;
 
 type
   // Gui controls
@@ -329,6 +329,7 @@ type
   TGuiControl = Longint;
     const
       DEFAULT       = 0; // Generic control -> populates to all controls when set
+      // Basic controls
       LABELs        = 1; // Used also for: LABELBUTTON
       BUTTON        = 2;
       TOGGLE        = 3; // Used also for: TOGGLEGROUP
@@ -402,39 +403,6 @@ type
       PROGRESS_PADDING = 16;
 
 type
-  // CheckBox
-  PGuiCheckBoxProperty = ^TGuiCheckBoxProperty;
-  TGuiCheckBoxProperty = Longint;
-    const
-      CHECK_PADDING = 16;
-
-type
-  // DropdownBox
-  PGuiDropdownBoxProperty = ^TGuiDropdownBoxProperty;
-  TGuiDropdownBoxProperty = Longint;
-    const
-      ARROW_PADDING = 16;
-      DROPDOWN_ITEMS_PADDING = 17;
-
-type
-  // TextBox/TextBoxMulti/ValueBox/Spinner
-  PGuiTextBoxProperty = ^TGuiTextBoxProperty;
-  TGuiTextBoxProperty = Longint;
-    const
-      TEXT_INNER_PADDING = 16;
-      TEXT_LINES_PADDING = 17;
-      COLOR_SELECTED_FG  = 18;
-      COLOR_SELECTED_BG  = 19;
-
-type
-  // Spinner
-  PGuiSpinnerProperty = ^TGuiSpinnerProperty;
-  TGuiSpinnerProperty = Longint;
-    const
-      SPIN_BUTTON_WIDTH   = 16;
-      SPIN_BUTTON_PADDING = 17;
-
-type
   // ScrollBar
   PGuiScrollBarProperty = ^TGuiScrollBarProperty;
   TGuiScrollBarProperty = Longint;
@@ -447,12 +415,42 @@ type
       SCROLL_SPEED          = 21;
 
 type
-  // ScrollBar side
-  PGuiScrollBarSide = ^TGuiScrollBarSide;
-  TGuiScrollBarSide = Longint;
+  // CheckBox
+  PGuiCheckBoxProperty = ^TGuiCheckBoxProperty;
+  TGuiCheckBoxProperty = Longint;
     const
-      SCROLLBAR_LEFT_SIDE   = 0;
-      SCROLLBAR_RIGHT_SIDE  = 1;
+      CHECK_PADDING = 16;
+
+type
+  PGuiComboBoxProperty = ^TGuiComboBoxProperty;
+  TGuiComboBoxProperty = Longint;
+    const
+      COMBO_BUTTON_WIDTH = 16;    // ComboBox right button width
+      COMBO_BUTTON_SPACING = 17;       // ComboBox button separation
+
+type
+  // DropdownBox
+  PGuiDropdownBoxProperty = ^TGuiDropdownBoxProperty;
+  TGuiDropdownBoxProperty = Longint;
+    const
+      ARROW_PADDING = 16;
+      DROPDOWN_ITEMS_SPACING = 17;
+
+type
+  // TextBox/TextBoxMulti/ValueBox/Spinner
+  PGuiTextBoxProperty = ^TGuiTextBoxProperty;
+  TGuiTextBoxProperty = Longint;
+    const
+      TEXT_INNER_PADDING = 16;
+      TEXT_LINES_SPACING = 17;
+
+type
+  // Spinner
+  PGuiSpinnerProperty = ^TGuiSpinnerProperty;
+  TGuiSpinnerProperty = Longint;
+    const
+      SPIN_BUTTON_WIDTH   = 16;
+      SPIN_BUTTON_SPACING = 17;
 
 type
   // ListView
@@ -460,7 +458,7 @@ type
   TGuiListViewProperty = Longint;
     const
       LIST_ITEMS_HEIGHT   = 16;
-      LIST_ITEMS_PADDING  = 17;
+      LIST_ITEMS_SPACING  = 17;
       SCROLLBAR_WIDTH     = 18;
       SCROLLBAR_SIDE      = 19;
 
@@ -474,6 +472,10 @@ type
       HUEBAR_PADDING           = 18; // Right hue bar separation from panel
       HUEBAR_SELECTOR_HEIGHT   = 19; // Right hue bar selector height
       HUEBAR_SELECTOR_OVERFLOW = 20; // Right hue bar selector overflow
+
+    const
+      SCROLLBAR_LEFT_SIDE   = 0;
+      SCROLLBAR_RIGHT_SIDE  = 1;
 
 //----------------------------------------------------------------------------------
 // Module Functions Declaration
@@ -501,8 +503,7 @@ function GuiGetStyle(control: longint; property_: longint): longint; cdecl;exter
 function GuiWindowBox(bounds: TRectangle; const title: pchar): boolean; cdecl;external cDllName;// Window Box control, shows a window that can be closed
 procedure GuiGroupBox(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Group Box control with text name
 procedure GuiLine(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Line separator control, could contain text
-procedure GuiPanel(bounds: TRectangle); cdecl;external cDllName;// Panel control, useful to group controls
-//function GuiScrollPanel(bounds: TRectangle; content: TRectangle; scroll: PVector2): TRectangle; cdecl;external cDllName;// Scroll Panel control
+procedure GuiPanel(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Panel control, useful to group controls
 function GuiScrollPanel(bounds: TRectangle; const text: PChar; content: TRectangle; scroll: PVector2): TRectangle; cdecl;external cDllName; // Scroll Panel control
 
 // Basic controls set
@@ -524,23 +525,17 @@ function GuiProgressBar(bounds: TRectangle; const textLeft: pchar; const textRig
 procedure GuiStatusBar(bounds: TRectangle; const text: pchar);cdecl;external cDllName;// Status Bar control, shows info text
 procedure GuiDummyRec(bounds: TRectangle; const text: pchar);cdecl;external cDllName;// Dummy control for placeholders
 function GuiScrollBar(bounds: TRectangle; value: longint; minValue: longint; maxValue: longint): longint;cdecl;external cDllName;// Scroll Bar control
-function GuiGrid(bounds: TRectangle; spacing: single; subdivs: longint): TVector2; cdecl;external cDllName;// Grid control
+function GuiGrid(bounds: TRectangle; const text: pchar; spacing: single; subdivs: longint): TVector2; cdecl;external cDllName;// Grid control
 
 // Advance controls set
 function GuiListView(bounds: TRectangle; const text: pchar; scrollIndex: plongint; active: longint): longint; cdecl;external cDllName;// List View control, returns selected list item index
 function GuiListViewEx(bounds: TRectangle; const text: ppchar; count: longint; focus: plongint; scrollIndex: plongint; active: longint): longint; cdecl;external cDllName;// List View with extended parameters
 function GuiMessageBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar): longint; cdecl;external cDllName;// Message Box control, displays a message
 function GuiTextInputBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar; text: pchar; textMaxSize: longint; secretViewActive:plongint): longint; cdecl;external cDllName;// Text Input Box control, ask for text
-
-
-function GuiColorPicker(bounds: TRectangle;text: PChar; color: TRayColor): TRayColor ;cdecl;external cDllName;// Color Picker control (multiple color controls)
-//RAYGUIAPI Color GuiColorPicker(Rectangle bounds, const char *text, Color color);                        // Color Picker control (multiple color controls)
-
-function GuiColorPanel(bounds: TRectangle; color: TRayColor): TRayColor ;cdecl;external cDllName;// Color Panel control
-
-function GuiColorBarAlpha(bounds: TRectangle; alpha: single): single ;cdecl;external cDllName;// Color Bar Alpha control
-
-function GuiColorBarHue(bounds:TRectangle; value: single): single ;cdecl;external cDllName;// Color Bar Hue control
+function GuiColorPicker(bounds: TRectangle; const text: pchar; color: TRayColor): TRayColor ;cdecl;external cDllName;// Color Picker control (multiple color controls)
+function GuiColorPanel(bounds: TRectangle; const text: pchar; color: TRayColor): TRayColor ;cdecl;external cDllName;// Color Panel control
+function GuiColorBarAlpha(bounds: TRectangle; const text: pchar; alpha: single): single ;cdecl;external cDllName;// Color Bar Alpha control
+function GuiColorBarHue(bounds:TRectangle; const text: pchar; value: single): single ;cdecl;external cDllName;// Color Bar Hue control
 
 // Styles loading functions
 procedure GuiLoadStyle(const fileName: pchar); cdecl;external cDllName;// Load style file over global style variable (.rgs)
@@ -555,6 +550,8 @@ procedure GuiDrawIcon(iconId: longint; posX: longint; posY: longint; pixelSize: 
 function GuiGetIcons: pdword; cdecl;external cDllName;// Get full icons data pointer
 function GuiGetIconData(iconId: longint): pdword; cdecl;external cDllName;// Get icon bit data
 procedure GuiSetIconData(iconId: longint; data: pdword); cdecl;external cDllName;// Set icon bit data
+procedure GuiSetIconScale(scale: LongWord); cdecl;external cDllName;// Set icon scale (1 by default)
+
 procedure GuiSetIconPixel(iconId: longint; x: longint; y: longint); cdecl;external cDllName;// Set icon pixel value
 procedure GuiClearIconPixel(iconId: longint; x: longint; y: longint); cdecl;external cDllName;// Clear icon pixel value
 function GuiCheckIconPixel(iconId: longint; x: longint; y: longint): boolean; cdecl;external cDllName;// Check icon pixel value

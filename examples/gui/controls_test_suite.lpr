@@ -123,13 +123,13 @@ begin
 
         forceSquaredChecked := GuiCheckBox(RectangleCreate( 25, 108, 15, 15 ), 'FORCE CHECK!', forceSquaredChecked);
 
-        GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, GUI_TEXT_ALIGN_CENTER);
+        GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
         if GuiSpinner(RectangleCreate( 25, 135, 125, 30 ), nil,
         @spinner001Value, 0, 100, spinnerEditMode) then spinnerEditMode := not spinnerEditMode;
 
         if GuiValueBox(RectangleCreate( 25, 175, 125, 30 ), nil,
         @valueBox002Value, 0, 100, valueBoxEditMode) then valueBoxEditMode := not valueBoxEditMode;
-        GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, GUI_TEXT_ALIGN_LEFT);
+        GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
 
 
         if GuiButton(RectangleCreate( 25, 255, 125, 30 ), GuiIconText(RICON_FILE_SAVE, 'Save File')) then
@@ -137,27 +137,27 @@ begin
 
         GuiGroupBox(RectangleCreate( 25, 310, 125, 150 ), 'STATES');
 
-        GuiSetState(GUI_STATE_NORMAL);
+        GuiSetState(STATE_NORMAL);
         GuiButton(RectangleCreate( 30, 320, 115, 30 ), 'NORMAL');
 
-        GuiSetState(GUI_STATE_FOCUSED);
+        GuiSetState(STATE_FOCUSED);
         GuiButton(RectangleCreate( 30, 355, 115, 30 ), 'FOCUSED');
 
-        GuiSetState(GUI_STATE_PRESSED);
+        GuiSetState(STATE_PRESSED);
         GuiButton(RectangleCreate( 30, 390, 115, 30 ), '#15#PRESSED');
 
-        GuiSetState(GUI_STATE_DISABLED);
+        GuiSetState(STATE_DISABLED);
         GuiButton(RectangleCreate( 30, 425, 115, 30 ), 'DISABLED');
-        GuiSetState(GUI_STATE_NORMAL);
+        GuiSetState(STATE_NORMAL);
 
         comboBoxActive := GuiComboBox(RectangleCreate( 25, 470, 125, 30 ), 'ONE;TWO;THREE;FOUR', comboBoxActive);
 
         // NOTE: GuiDropdownBox must draw after any other control that can be covered on unfolding
-        GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, GUI_TEXT_ALIGN_LEFT);
+        GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
         if GuiDropdownBox(RectangleCreate( 25, 65, 125, 30 ), '#01#ONE;#02#TWO;#03#THREE;#04#FOUR',
         @dropdownBox001Active, dropDown001EditMode) then dropDown001EditMode :=  not dropDown001EditMode;
 
-        GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, GUI_TEXT_ALIGN_CENTER);
+        GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
         if GuiDropdownBox(RectangleCreate( 25, 25, 125, 30 ), 'ONE;TWO;THREE',
         @dropdownBox000Active, dropDown000EditMode) then dropDown000EditMode := not dropDown000EditMode;
 
@@ -169,8 +169,8 @@ begin
          @listViewExFocus, @listViewExScrollIndex, listViewExActive);
 
 
-       //  toggleGroupActive := GuiToggleGroup(RectangleCreate( 165, 400, 140, 25 ),
-       //  '#1#ONE'+#10+'#3#TWO+'+#10+'#8#THREE'+#13, toggleGroupActive);
+         toggleGroupActive := GuiToggleGroup(RectangleCreate( 165, 400, 140, 25 ),
+         '#1#ONE'+#10+'#3#TWO+'+#10+'#8#THREE'+#13, toggleGroupActive);
 
 
        // Third GUI column
@@ -193,7 +193,7 @@ begin
 
        GuiStatusBar(RectangleCreate( 0, GetScreenHeight() - 20, GetScreenWidth(), 20 ), 'This is a status bar');
 
-       alphaValue := GuiColorBarAlpha(RectangleCreate( 320, 490, 200, 30 ), alphaValue);
+       alphaValue := GuiColorBarAlpha(RectangleCreate( 320, 490, 200, 30 ),'TEST', alphaValue);
 
        if showMessageBox then
          begin
