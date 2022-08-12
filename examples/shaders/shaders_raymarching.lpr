@@ -40,7 +40,7 @@ begin
  SetCameraMode(camera, CAMERA_FREE); // Set camera mode
  // Load raymarching shader
  // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
- shader := LoadShader(nil, TextFormat('resources/shaders/glsl%i/raymarching.fs', [GLSL_VERSION]));
+ shader := LoadShader(nil, TextFormat('resources/shaders/glsl%i/raymarching.fs', GLSL_VERSION));
 
  // Get shader locations for required uniforms
   viewEyeLoc := GetShaderLocation(shader, 'viewEye');

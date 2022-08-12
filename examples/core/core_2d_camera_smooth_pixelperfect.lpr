@@ -99,8 +99,8 @@ begin
                 DrawTexturePro(target.texture, sourceRec, destRec, origin, 0.0, WHITE);
             EndMode2D();
 
-            DrawText(TextFormat('Screen resolution: %ix%i', [screenWidth, screenHeight]), 10, 10, 20, DARKBLUE);
-            DrawText(TextFormat('World resolution: %ix%i', [virtualScreenWidth, virtualScreenHeight]), 10, 40, 20, DARKGREEN);
+            DrawText(TextFormat('Screen resolution: %ix%i', screenWidth, screenHeight), 10, 10, 20, DARKBLUE);
+            DrawText(TextFormat('World resolution: %ix%i', virtualScreenWidth, virtualScreenHeight), 10, 40, 20, DARKGREEN);
             DrawFPS(GetScreenWidth() - 95, 10);
       EndDrawing();
     end;

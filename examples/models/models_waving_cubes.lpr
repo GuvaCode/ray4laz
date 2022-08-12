@@ -30,7 +30,7 @@ var
   time,cameraTime : double;
   scale,blockScale,scatter, cubeSize: single;
   x,y,z:integer;
-  cubeColor:TRayColor;
+  cubeColor:TColorB;
   cubePos:TVector3;
 begin
 {$IFDEF DARWIN}

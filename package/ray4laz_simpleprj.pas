@@ -63,6 +63,7 @@ begin
     '{$mode objfpc}{$H+}' + LineEnding +
     LineEnding +
     'uses ' + LineEnding +
+    'cmem, ' + LineEnding +
     '{uncomment if necessary}' + LineEnding +
     '//raymath, ' + LineEnding +
     '//rlgl, ' + LineEnding +

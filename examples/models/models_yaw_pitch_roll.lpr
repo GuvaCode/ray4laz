@@ -14,7 +14,7 @@ program models_yaw_pitch_roll;
 
 {$mode objfpc}{$H+}
 
-uses cmem, ray_header, ray_math;
+uses cmem, raylib, raymath;
 
 const
  screenWidth = 800;

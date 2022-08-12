@@ -158,7 +158,7 @@ begin
 
         DrawFPS(10, 10);
 
-        DrawText(TextFormat('Screen Size: [%i, %i]',[GetScreenWidth, GetScreenHeight]), 10, 40, 10, GREEN);
+        DrawText(TextFormat('Screen Size: [%i, %i]',GetScreenWidth, GetScreenHeight), 10, 40, 10, GREEN);
 
         // Draw window state info
         DrawText('Following flags can be set after window creation:', 10, 60, 10, GRAY);

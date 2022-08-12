@@ -48,7 +48,7 @@ begin
 		models[i] := LoadModel(voxFileNames[i]);
 		t1 := GetTime()*1000.0;
 
-                TraceLog(LOG_WARNING, TextFormat('[%s] File loaded in %.3f ms', [voxFileNames[i], t1 - t0]));
+                TraceLog(LOG_WARNING, TextFormat('[%s] File loaded in %.3f ms', voxFileNames[i], t1 - t0));
 
 	        // Compute model translation matrix to center model on draw position (0, 0 , 0)
 		bb := GetModelBoundingBox(models[i]);
@@ -103,7 +103,7 @@ begin
                 DrawRectangle(10, 400, 310, 30, Fade(SKYBLUE, 0.5));
                 DrawRectangleLines(10, 400, 310, 30, Fade(DARKBLUE, 0.5));
                 DrawText('MOUSE LEFT BUTTON to CYCLE VOX MODELS', 40, 410, 10, BLUE);
-                DrawText(TextFormat('File: %s',[ GetFileName(voxFileNames[currentModel])]), 10, 10, 20, GRAY);
+                DrawText(TextFormat('File: %s', GetFileName(voxFileNames[currentModel])), 10, 10, 20, GRAY);
 
       EndDrawing();
     end;

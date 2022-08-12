@@ -45,8 +45,8 @@ begin
 
 
   // Load shader and set up some uniforms
-  shader := LoadShader(TextFormat('resources/shaders/glsl%i/base_lighting.vs', [GLSL_VERSION]),
-                                 TextFormat('resources/shaders/glsl%i/fog.fs', [GLSL_VERSION]));
+  shader := LoadShader(TextFormat('resources/shaders/glsl%i/base_lighting.vs', GLSL_VERSION),
+                                 TextFormat('resources/shaders/glsl%i/fog.fs', GLSL_VERSION));
   shader.locs[SHADER_LOC_MATRIX_MODEL] := GetShaderLocation(shader, 'matModel');
   shader.locs[SHADER_LOC_VECTOR_VIEW] := GetShaderLocation(shader, 'viewPos');
 
@@ -126,7 +126,7 @@ begin
 
             EndMode3D();
 
-            DrawText(TextFormat('Use KEY_UP/KEY_DOWN to change fog density [%.2f]', [fogDensity]), 10, 10, 20, RAYWHITE);
+            DrawText(TextFormat('Use KEY_UP/KEY_DOWN to change fog density [%.2f]', fogDensity), 10, 10, 20, RAYWHITE);
 
       EndDrawing();
     end;

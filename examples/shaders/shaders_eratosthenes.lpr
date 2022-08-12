@@ -50,7 +50,7 @@ begin
 
   // Load Eratosthenes shader
   // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
-  shader := LoadShader(nil, TextFormat('resources/shaders/glsl%i/eratosthenes.fs', [GLSL_VERSION]));
+  shader := LoadShader(nil, TextFormat('resources/shaders/glsl%i/eratosthenes.fs', GLSL_VERSION));
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop

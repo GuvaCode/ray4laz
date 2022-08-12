@@ -81,18 +81,18 @@ begin
   // NOTE 1: All postpro shader use the base vertex shader (DEFAULT_VERTEX_SHADER)
   // NOTE 2: We load the correct shader depending on GLSL version
   // NOTE 3: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
-  shaders[FX_GRAYSCALE] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/grayscale.fs', [GLSL_VERSION]));
-  shaders[FX_POSTERIZATION] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/posterization.fs]', [GLSL_VERSION]));
-  shaders[FX_DREAM_VISION] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/dream_vision.fs', [GLSL_VERSION]));
-  shaders[FX_PIXELIZER] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/pixelizer.fs', [GLSL_VERSION]));
-  shaders[FX_CROSS_HATCHING] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/cross_hatching.fs', [GLSL_VERSION]));
-  shaders[FX_CROSS_STITCHING] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/cross_stitching.fs', [GLSL_VERSION]));
-  shaders[FX_PREDATOR_VIEW] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/predator.fs', [GLSL_VERSION]));
-  shaders[FX_SCANLINES] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/scanlines.fs', [GLSL_VERSION]));
-  shaders[FX_FISHEYE] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/fisheye.fs', [GLSL_VERSION]));
-  shaders[FX_SOBEL] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/sobel.fs', [GLSL_VERSION]));
-  shaders[FX_BLOOM] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/bloom.fs', [GLSL_VERSION]));
-  shaders[FX_BLUR] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/blur.fs', [GLSL_VERSION]));
+  shaders[FX_GRAYSCALE] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/grayscale.fs', GLSL_VERSION));
+  shaders[FX_POSTERIZATION] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/posterization.fs]', GLSL_VERSION));
+  shaders[FX_DREAM_VISION] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/dream_vision.fs', GLSL_VERSION));
+  shaders[FX_PIXELIZER] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/pixelizer.fs', GLSL_VERSION));
+  shaders[FX_CROSS_HATCHING] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/cross_hatching.fs', GLSL_VERSION));
+  shaders[FX_CROSS_STITCHING] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/cross_stitching.fs', GLSL_VERSION));
+  shaders[FX_PREDATOR_VIEW] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/predator.fs', GLSL_VERSION));
+  shaders[FX_SCANLINES] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/scanlines.fs', GLSL_VERSION));
+  shaders[FX_FISHEYE] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/fisheye.fs', GLSL_VERSION));
+  shaders[FX_SOBEL] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/sobel.fs', GLSL_VERSION));
+  shaders[FX_BLOOM] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/bloom.fs', GLSL_VERSION));
+  shaders[FX_BLUR] := LoadShader(nil, TextFormat('resources/shaders/glsl%i/blur.fs', GLSL_VERSION));
 
 
   currentShader := FX_GRAYSCALE;

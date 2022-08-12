@@ -532,8 +532,8 @@ function GuiListView(bounds: TRectangle; const text: pchar; scrollIndex: plongin
 function GuiListViewEx(bounds: TRectangle; const text: ppchar; count: longint; focus: plongint; scrollIndex: plongint; active: longint): longint; cdecl;external cDllName;// List View with extended parameters
 function GuiMessageBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar): longint; cdecl;external cDllName;// Message Box control, displays a message
 function GuiTextInputBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar; text: pchar; textMaxSize: longint; secretViewActive:plongint): longint; cdecl;external cDllName;// Text Input Box control, ask for text
-function GuiColorPicker(bounds: TRectangle; const text: pchar; color: TRayColor): TRayColor ;cdecl;external cDllName;// Color Picker control (multiple color controls)
-function GuiColorPanel(bounds: TRectangle; const text: pchar; color: TRayColor): TRayColor ;cdecl;external cDllName;// Color Panel control
+function GuiColorPicker(bounds: TRectangle; const text: pchar; color: TColorB): TColorB ;cdecl;external cDllName;// Color Picker control (multiple color controls)
+function GuiColorPanel(bounds: TRectangle; const text: pchar; color: TColorB): TColorB ;cdecl;external cDllName;// Color Panel control
 function GuiColorBarAlpha(bounds: TRectangle; const text: pchar; alpha: single): single ;cdecl;external cDllName;// Color Bar Alpha control
 function GuiColorBarHue(bounds:TRectangle; const text: pchar; value: single): single ;cdecl;external cDllName;// Color Bar Hue control
 
@@ -545,7 +545,7 @@ function GuiIconText(iconId: longint; const text: pchar): pchar; cdecl;external 
 
 {$IFDEF RAYGUI_NO_RICONS}
 // Gui icons functionality
-procedure GuiDrawIcon(iconId: longint; posX: longint; posY: longint; pixelSize: longint; color: TRayColor); cdecl;external cDllName;
+procedure GuiDrawIcon(iconId: longint; posX: longint; posY: longint; pixelSize: longint; color: TColorB); cdecl;external cDllName;
 
 function GuiGetIcons: pdword; cdecl;external cDllName;// Get full icons data pointer
 function GuiGetIconData(iconId: longint): pdword; cdecl;external cDllName;// Get icon bit data

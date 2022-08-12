@@ -41,7 +41,8 @@
       <Filename Value="../../binary/controls_test_suite"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir)"/>
+      <IncludeFiles Value="$(ProjOutDir);../../libs/x64_linux"/>
+      <OtherUnitFiles Value="../../libs/x64_linux"/>
       <UnitOutputDirectory Value="../../lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

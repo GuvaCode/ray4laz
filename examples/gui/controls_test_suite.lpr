@@ -38,7 +38,7 @@ program controls_test_suite;
 
 {$mode objfpc}{$H+}
 
-uses raygui, raylib;
+uses cmem, raygui, raylib;
 
 const
   screenWidth = 690;

@@ -14,7 +14,7 @@ type
 
   TXYZPoint = record
     x, y, z: Single;
-    colors:TRayColor;
+    colors:TColorB;
   end;
 
   TCircle = array[1..36] of TXYZPoint;

@@ -47,7 +47,7 @@ type
     type_: longint;
     position: TVector3;
     target: TVector3;
-    color: TRayColor;
+    color: TColorB;
     enabled: boolean;
     // Shader locations
     enabledLoc: longint;
@@ -64,13 +64,13 @@ type
      LIGHT_DIRECTIONAL = 0;
      LIGHT_POINT = 1;
 
- function CreateLight(type_:longint; position, target: TVector3; color: TRayColor; shader: TShader): TLight; // Create a light and get shader locations
+ function CreateLight(type_:longint; position, target: TVector3; color: TColorB; shader: TShader): TLight; // Create a light and get shader locations
  procedure UpdateLightValues(shader: TShader; light: TLight); // Send light properties to shader
 
 implementation
 var lightsCount: longint = 0;    // Current amount of created lights
 
-  function CreateLight(type_: longint; position, target: TVector3; color: TRayColor;
+  function CreateLight(type_: longint; position, target: TVector3; color: TColorB;
   shader: TShader): TLight;
   var light:TLight;
     enabledName, typeName, posName, targetName, colorName : Pchar;

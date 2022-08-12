@@ -24,7 +24,7 @@ const
 var
   player: TRectangle;
   buildings: array[0..MAX_BUILDINGS - 1] of TRectangle;
-  buildColors: array[0..MAX_BUILDINGS - 1] of TRayColor;
+  buildColors: array[0..MAX_BUILDINGS - 1] of TColorB;
   spacing: Single = 0;
   camera: TCamera2D;
   i: Integer;

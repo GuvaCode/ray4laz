@@ -21,7 +21,7 @@ var
   vv: TVector3;
   rot:single;
 
-procedure DrawModelFx(AModel:TModel; APosition:TVector3; AAxis:TVector3; AAngle:Single; AScale:Single; ATint:TRayColor);
+procedure DrawModelFx(AModel:TModel; APosition:TVector3; AAxis:TVector3; AAngle:Single; AScale:Single; ATint:TColorB);
 var
   Scale:TVector3;
 begin
