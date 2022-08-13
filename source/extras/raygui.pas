@@ -27,7 +27,7 @@ uses
 //----------------------------------------------------------------------------------
 type
   PguiIconName = ^TguiIconName;
-  TGuiIconName = Longint;
+  TGuiIconName = Integer;
   const
     RICON_NONE                     = 0;
     RICON_FOLDER_FILE_OPEN         = 1;
@@ -290,10 +290,10 @@ type
 // GlyphInfo, font characters glyphs info
   PGlyphInfo = ^TGlyphInfo;
   TGlyphInfo = record
-    value    : longint;// Character value (Unicode)
-    offsetX  : longint;// Character offset X when drawing
-    offsetY  : longint;// Character offset Y when drawing
-    advanceX : longint;// Character advance position X
+    value    : Integer;// Character value (Unicode)
+    offsetX  : Integer;// Character offset X when drawing
+    offsetY  : Integer;// Character offset Y when drawing
+    advanceX : Integer;// Character advance position X
     image    : TImage; // Character image data
   end;
 
@@ -302,12 +302,12 @@ type
   TGuiStyleProp = record
     controlId     : Word;
     propertyId    : Word;
-    propertyValue : LongWord;
+    propertyValue : Integer;
   end;
 
   // Gui control state
   PGuiControlState = ^TGuiControlState;
-  TGuiControlState = Longint;
+  TGuiControlState = Integer;
     const
       STATE_NORMAL   = 0;
       STATE_FOCUSED  = 1;
@@ -317,7 +317,7 @@ type
 type
   // Gui control text alignment
   PGuiTextAlignment = ^TGuiTextAlignment;
-  TGuiTextAlignment = Longint;
+  TGuiTextAlignment = Integer;
     const
       TEXT_ALIGN_LEFT   = 0;
       TEXT_ALIGN_CENTER = 1;
@@ -326,7 +326,7 @@ type
 type
   // Gui controls
   PGuiControl = ^TGuiControl;
-  TGuiControl = Longint;
+  TGuiControl = Integer;
     const
       DEFAULT       = 0; // Generic control -> populates to all controls when set
       // Basic controls
@@ -350,7 +350,7 @@ type
   // Gui base properties for every control
   // NOTE: RAYGUI_MAX_PROPS_BASE properties (by default 16 properties)
   PGuiControlProperty = ^TGuiControlProperty;
-  TGuiControlProperty = Longint;
+  TGuiControlProperty = Integer;
     const
       BORDER_COLOR_NORMAL     = 0;
       BASE_COLOR_NORMAL       = 1;
@@ -373,7 +373,7 @@ type
   // DEFAULT extended properties
   // NOTE: Those properties are actually common to all controls
   PGuiDefaultProperty = ^TGuiDefaultProperty;
-  TGuiDefaultProperty = Longint;
+  TGuiDefaultProperty = Integer;
     const
       TEXT_SIZE        = 16;
       TEXT_SPACING     = 17;
@@ -383,14 +383,14 @@ type
 type
   // Toggle/ToggleGroup
   PGuiToggleProperty = ^TGuiToggleProperty;
-  TGuiToggleProperty = Longint;
+  TGuiToggleProperty = Integer;
     const
       GROUP_PADDING = 16;
 
 type
   // Slider/SliderBar
   PGuiSliderProperty = ^TGuiSliderProperty;
-  TGuiSliderProperty = Longint;
+  TGuiSliderProperty = Integer;
     const
       SLIDER_WIDTH   = 16;
       SLIDER_PADDING = 17;
@@ -398,14 +398,14 @@ type
 type
   // ProgressBar
   PGuiProgressBarProperty = ^TGuiProgressBarProperty;
-  TGuiProgressBarProperty = Longint;
+  TGuiProgressBarProperty = Integer;
     const
       PROGRESS_PADDING = 16;
 
 type
   // ScrollBar
   PGuiScrollBarProperty = ^TGuiScrollBarProperty;
-  TGuiScrollBarProperty = Longint;
+  TGuiScrollBarProperty = Integer;
     const
       ARROWS_SIZE           = 16;
       ARROWS_VISIBLE        = 17;
@@ -417,13 +417,13 @@ type
 type
   // CheckBox
   PGuiCheckBoxProperty = ^TGuiCheckBoxProperty;
-  TGuiCheckBoxProperty = Longint;
+  TGuiCheckBoxProperty = Integer;
     const
       CHECK_PADDING = 16;
 
 type
   PGuiComboBoxProperty = ^TGuiComboBoxProperty;
-  TGuiComboBoxProperty = Longint;
+  TGuiComboBoxProperty = Integer;
     const
       COMBO_BUTTON_WIDTH = 16;    // ComboBox right button width
       COMBO_BUTTON_SPACING = 17;       // ComboBox button separation
@@ -431,7 +431,7 @@ type
 type
   // DropdownBox
   PGuiDropdownBoxProperty = ^TGuiDropdownBoxProperty;
-  TGuiDropdownBoxProperty = Longint;
+  TGuiDropdownBoxProperty = Integer;
     const
       ARROW_PADDING = 16;
       DROPDOWN_ITEMS_SPACING = 17;
@@ -439,7 +439,7 @@ type
 type
   // TextBox/TextBoxMulti/ValueBox/Spinner
   PGuiTextBoxProperty = ^TGuiTextBoxProperty;
-  TGuiTextBoxProperty = Longint;
+  TGuiTextBoxProperty = Integer;
     const
       TEXT_INNER_PADDING = 16;
       TEXT_LINES_SPACING = 17;
@@ -447,7 +447,7 @@ type
 type
   // Spinner
   PGuiSpinnerProperty = ^TGuiSpinnerProperty;
-  TGuiSpinnerProperty = Longint;
+  TGuiSpinnerProperty = Integer;
     const
       SPIN_BUTTON_WIDTH   = 16;
       SPIN_BUTTON_SPACING = 17;
@@ -455,7 +455,7 @@ type
 type
   // ListView
   PGuiListViewProperty = ^TGuiListViewProperty;
-  TGuiListViewProperty = Longint;
+  TGuiListViewProperty = Integer;
     const
       LIST_ITEMS_HEIGHT   = 16;
       LIST_ITEMS_SPACING  = 17;
@@ -465,7 +465,7 @@ type
 type
   // ColorPicker
   PGuiColorPickerProperty = ^TGuiColorPickerProperty;
-  TGuiColorPickerProperty = Longint;
+  TGuiColorPickerProperty = Integer;
     const
       COLOR_SELECTOR_SIZE      = 16;
       HUEBAR_WIDTH             = 17; // Right hue bar width
@@ -481,80 +481,138 @@ type
 // Module Functions Declaration
 //----------------------------------------------------------------------------------
 
-// Global gui state control functions
-procedure GuiEnable; cdecl;external cDllName;// Enable gui controls (global state)
-procedure GuiDisable; cdecl;external cDllName;// Disable gui controls (global state)
-procedure GuiLock; cdecl;external cDllName;// Lock gui controls (global state)
-procedure GuiUnlock; cdecl;external cDllName;// Unlock gui controls (global state)
-function  GuiIsLocked:boolean; cdecl;external cDllName;// Check if gui is locked (global state)
-procedure GuiFade(alpha: single); cdecl;external cDllName;// Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
-procedure GuiSetState(state: longint); cdecl;external cDllName;// Set gui state (global state)
-function GuiGetState:longint; cdecl;external cDllName;// Get gui state (global state)
+(*Global gui state control functions*)
 
-// Font set/get functions
-procedure GuiSetFont(font:TFont); cdecl;external cDllName;// Set gui custom font (global state)
-function GuiGetFont:TFont; cdecl;external cDllName;// Get gui custom font (global state)
+{Enable gui controls (global state)}
+procedure GuiEnable; cdecl; external cDllName;
+{Disable gui controls (global state)}
+procedure GuiDisable; cdecl; external cDllName;
+{Lock gui controls (global state)}
+procedure GuiLock; cdecl; external cDllName;
+{Unlock gui controls (global state)}
+procedure GuiUnlock; cdecl; external cDllName;
+{Check if gui is locked (global state)}
+function  GuiIsLocked: Boolean; cdecl; external cDllName;
+{Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f}
+procedure GuiFade(alpha: Single); cdecl; external cDllName;
+{Set gui state (global state)}
+procedure GuiSetState(state: Integer); cdecl; external cDllName;
+{Get gui state (global state)}
+function GuiGetState: Integer; cdecl; external cDllName;
 
-// Style set/get functions
-procedure GuiSetStyle(control: longint; property_: longint; value: longint); cdecl;external cDllName;// Set one style property
-function GuiGetStyle(control: longint; property_: longint): longint; cdecl;external cDllName;// Get one style property
+(*Font set/get functions*)
 
-// Container/separator controls, useful for controls organization
-function GuiWindowBox(bounds: TRectangle; const title: pchar): boolean; cdecl;external cDllName;// Window Box control, shows a window that can be closed
-procedure GuiGroupBox(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Group Box control with text name
-procedure GuiLine(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Line separator control, could contain text
-procedure GuiPanel(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Panel control, useful to group controls
-function GuiScrollPanel(bounds: TRectangle; const text: PChar; content: TRectangle; scroll: PVector2): TRectangle; cdecl;external cDllName; // Scroll Panel control
+{Set gui custom font (global state)}
+procedure GuiSetFont(font: TFont); cdecl; external cDllName;
+{Get gui custom font (global state)}
+function GuiGetFont:TFont; cdecl; external cDllName;
 
-// Basic controls set
-procedure GuiLabel(bounds: TRectangle; const text: pchar); cdecl;external cDllName;// Label control, shows text
-function GuiButton(bounds: TRectangle; const text: pchar): boolean; cdecl;external cDllName;// Button control, returns true when clicked
-function GuiLabelButton(bounds: TRectangle; const text: pchar): boolean; cdecl;external cDllName;// Label button control, show true when clicked
-function GuiToggle(bounds: TRectangle; const text: pchar; active: boolean):boolean; cdecl;external cDllName;// Toggle Button control, returns true when active
-function GuiToggleGroup(bounds: TRectangle; const text: pchar; active: longint): longint; cdecl;external cDllName;// Toggle Group control, returns active toggle index
-function GuiCheckBox(bounds: TRectangle; const text: pchar; checked: boolean): boolean; cdecl;external cDllName;// Check Box control, returns true when active
-function GuiComboBox(bounds: TRectangle; const text: pchar; active: longint): longint; cdecl;external cDllName;// Combo Box control, returns selected item index
-function GuiDropdownBox(bounds: TRectangle; const text: pchar; active: plongint; editMode: boolean): boolean; cdecl;external cDllName;// Dropdown Box control, returns selected item
-function GuiSpinner(bounds: TRectangle; const text: pchar; value: plongint; minValue: longint; maxValue: longint; editMode: boolean): boolean; cdecl;external cDllName;// Spinner control, returns selected value
-function GuiValueBox(bounds: TRectangle; const text: pchar; value: plongint; minValue: longint; maxValue: longint; editMode: boolean): boolean; cdecl;external cDllName;// Value Box control, updates input text with numbers
-function GuiTextBox(bounds: TRectangle; text: pchar; textSize: longint; editMode: boolean): boolean; cdecl;external cDllName;// Text Box control, updates input text
-function GuiTextBoxMulti(bounds: TRectangle; text: pchar; textSize: longint; editMode: boolean): boolean; cdecl;external cDllName;// Text Box control with multiple lines
-function GuiSlider(bounds: TRectangle; const textLeft: pchar; const textRight: pchar; value: single; minValue: single; maxValue: single): single; cdecl;external cDllName;// Slider control, returns selected value
-function GuiSliderBar(bounds: TRectangle; const textLeft: pchar; const textRight: pchar; value: single; minValue: single; maxValue: single): single; cdecl;external cDllName;// Slider Bar control, returns selected value
-function GuiProgressBar(bounds: TRectangle; const textLeft: pchar; const textRight: pchar; value: single; minValue: single; maxValue: single): single; cdecl;external cDllName;// Progress Bar control, shows current progress value
-procedure GuiStatusBar(bounds: TRectangle; const text: pchar);cdecl;external cDllName;// Status Bar control, shows info text
-procedure GuiDummyRec(bounds: TRectangle; const text: pchar);cdecl;external cDllName;// Dummy control for placeholders
-function GuiScrollBar(bounds: TRectangle; value: longint; minValue: longint; maxValue: longint): longint;cdecl;external cDllName;// Scroll Bar control
-function GuiGrid(bounds: TRectangle; const text: pchar; spacing: single; subdivs: longint): TVector2; cdecl;external cDllName;// Grid control
+(*Style set/get functions*)
 
-// Advance controls set
-function GuiListView(bounds: TRectangle; const text: pchar; scrollIndex: plongint; active: longint): longint; cdecl;external cDllName;// List View control, returns selected list item index
-function GuiListViewEx(bounds: TRectangle; const text: ppchar; count: longint; focus: plongint; scrollIndex: plongint; active: longint): longint; cdecl;external cDllName;// List View with extended parameters
-function GuiMessageBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar): longint; cdecl;external cDllName;// Message Box control, displays a message
-function GuiTextInputBox(bounds: TRectangle; const title: pchar; const message: pchar; const buttons: pchar; text: pchar; textMaxSize: longint; secretViewActive:plongint): longint; cdecl;external cDllName;// Text Input Box control, ask for text
-function GuiColorPicker(bounds: TRectangle; const text: pchar; color: TColorB): TColorB ;cdecl;external cDllName;// Color Picker control (multiple color controls)
-function GuiColorPanel(bounds: TRectangle; const text: pchar; color: TColorB): TColorB ;cdecl;external cDllName;// Color Panel control
-function GuiColorBarAlpha(bounds: TRectangle; const text: pchar; alpha: single): single ;cdecl;external cDllName;// Color Bar Alpha control
-function GuiColorBarHue(bounds:TRectangle; const text: pchar; value: single): single ;cdecl;external cDllName;// Color Bar Hue control
+{Set one style property}
+procedure GuiSetStyle(control, property_, value: Integer); cdecl; external cDllName;
+{Get one style property}
+function GuiGetStyle(control, property_: Integer): Integer; cdecl; external cDllName;
 
-// Styles loading functions
-procedure GuiLoadStyle(const fileName: pchar); cdecl;external cDllName;// Load style file over global style variable (.rgs)
-procedure GuiLoadStyleDefault; cdecl;external cDllName;// Load style default over global style
+(*Container/separator controls, useful for controls organization*)
 
-function GuiIconText(iconId: longint; const text: pchar): pchar; cdecl;external cDllName; // Get text with icon id prepended (if supported)
+{Window Box control, shows a window that can be closed}
+function GuiWindowBox(bounds: TRectangle; const title: PChar): Boolean; cdecl; external cDllName;
+{Group Box control with text name}
+procedure GuiGroupBox(bounds: TRectangle; const text:PChar); cdecl; external cDllName;
+{Line separator control, could contain text}
+procedure GuiLine(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+{Panel control, useful to group controls}
+procedure GuiPanel(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+{Scroll Panel control}
+function GuiScrollPanel(bounds: TRectangle; const text: PChar; content: TRectangle; scroll: PVector2): TRectangle; cdecl; external cDllName;
+
+(*Basic controls set*)
+
+{Label control, shows text}
+procedure GuiLabel(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+{Button control, returns true when clicked}
+function GuiButton(bounds: TRectangle; const text: PChar): Boolean; cdecl; external cDllName;
+{Label button control, show true when clicked}
+function GuiLabelButton(bounds: TRectangle; const text: PChar): Boolean; cdecl; external cDllName;
+{Toggle Button control, returns true when active}
+function GuiToggle(bounds: TRectangle; const text: PChar; active: Boolean): Boolean; cdecl; external cDllName;
+{Toggle Group control, returns active toggle index}
+function GuiToggleGroup(bounds: TRectangle; const text: PChar; active: Integer): Integer; cdecl; external cDllName;
+{Check Box control, returns true when active}
+function GuiCheckBox(bounds: TRectangle; const text: PChar; checked: Boolean): Boolean; cdecl; external cDllName;
+{Combo Box control, returns selected item index}
+function GuiComboBox(bounds: TRectangle; const text: PChar; active: Integer): Integer; cdecl; external cDllName;
+{Dropdown Box control, returns selected item}
+function GuiDropdownBox(bounds: TRectangle; const text: PChar; active: PInteger; editMode: Boolean): Boolean; cdecl; external cDllName;
+{Spinner control, returns selected value}
+function GuiSpinner(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Boolean; cdecl; external cDllName;
+{Value Box control, updates input text with numbers}
+function GuiValueBox(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Boolean; cdecl; external cDllName;
+{Text Box control, updates input text}
+function GuiTextBox(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Boolean; cdecl; external cDllName;
+{Text Box control with multiple lines}
+function GuiTextBoxMulti(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Boolean; cdecl; external cDllName;
+{Slider control, returns selected value}
+function GuiSlider(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external cDllName;
+{Slider Bar control, returns selected value}
+function GuiSliderBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external cDllName;
+{Progress Bar control, shows current progress value}
+function GuiProgressBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external cDllName;
+{Status Bar control, shows info text}
+procedure GuiStatusBar(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+{Dummy control for placeholders}
+procedure GuiDummyRec(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+{Scroll Bar control}
+function GuiScrollBar(bounds: TRectangle; value, minValue, maxValue: Integer): Integer; cdecl; external cDllName;
+{Grid control}
+function GuiGrid(bounds: TRectangle; const text: PChar; spacing:Single; subdivs: Integer): TVector2; cdecl; external cDllName;
+
+(*Advance controls set*)
+
+{List View control, returns selected list item index}
+function GuiListView(bounds: TRectangle; const text: PChar; scrollIndex: PInteger; active: Integer): Integer; cdecl; external cDllName;
+{List View with extended parameters}
+function GuiListViewEx(bounds: TRectangle; const text: PPChar; count: Integer; focus: PInteger; scrollIndex: PInteger; active: Integer): Integer; cdecl; external cDllName;
+{Message Box control, displays a message}
+function GuiMessageBox(bounds: TRectangle; const title, message, buttons: PChar): Integer; cdecl; external cDllName;
+{Text Input Box control, ask for text}
+function GuiTextInputBox(bounds: TRectangle; const title, message, buttons, text: PChar; textMaxSize: Integer; secretViewActive: PInteger): Integer; cdecl; external cDllName;
+{Color Picker control (multiple color controls)}
+function GuiColorPicker(bounds: TRectangle; const text: PChar; color: TColorB): TColorB ; cdecl; external cDllName;
+{Color Panel control}
+function GuiColorPanel(bounds: TRectangle; const text: PChar; color: TColorB): TColorB ; cdecl; external cDllName;
+{Color Bar Alpha control}
+function GuiColorBarAlpha(bounds: TRectangle; const text: PChar; alpha: Single): Single ; cdecl; external cDllName;
+{Color Bar Hue control}
+function GuiColorBarHue(bounds:TRectangle; const text: PChar; value: Single): Single ; cdecl; external cDllName;
+
+(* Styles loading functions *)
+{Load style file over global style variable (.rgs)}
+procedure GuiLoadStyle(const fileName: PChar); cdecl; external cDllName;
+{Load style default over global style }
+procedure GuiLoadStyleDefault; cdecl; external cDllName;
+{Get text with icon id prepended (if supported)}
+function GuiIconText(iconId: longint; const text: PChar): PChar; cdecl; external cDllName;
 
 {$IFDEF RAYGUI_NO_RICONS}
-// Gui icons functionality
-procedure GuiDrawIcon(iconId: longint; posX: longint; posY: longint; pixelSize: longint; color: TColorB); cdecl;external cDllName;
+{Gui icons functionality}
+procedure GuiDrawIcon(iconId, posX, posY, pixelSize: Integer; color: TColorB); cdecl; external cDllName;
 
-function GuiGetIcons: pdword; cdecl;external cDllName;// Get full icons data pointer
-function GuiGetIconData(iconId: longint): pdword; cdecl;external cDllName;// Get icon bit data
-procedure GuiSetIconData(iconId: longint; data: pdword); cdecl;external cDllName;// Set icon bit data
-procedure GuiSetIconScale(scale: LongWord); cdecl;external cDllName;// Set icon scale (1 by default)
-
-procedure GuiSetIconPixel(iconId: longint; x: longint; y: longint); cdecl;external cDllName;// Set icon pixel value
-procedure GuiClearIconPixel(iconId: longint; x: longint; y: longint); cdecl;external cDllName;// Clear icon pixel value
-function GuiCheckIconPixel(iconId: longint; x: longint; y: longint): boolean; cdecl;external cDllName;// Check icon pixel value
+{Get full icons data pointer}
+function GuiGetIcons: Pointer; cdecl; external cDllName;
+{Get icon bit data }
+function GuiGetIconData(iconId: Integer): Pointer; cdecl; external cDllName;
+{Set icon bit data}
+procedure GuiSetIconData(iconId: Integer; data: Pointer); cdecl; external cDllName;
+{Set icon scale (1 by default)}
+procedure GuiSetIconScale(scale: LongWord); cdecl; external cDllName;
+{Set icon pixel value }
+procedure GuiSetIconPixel(iconId: Integer; x: Integer; y: Integer); cdecl; external cDllName;
+{// Clear icon pixel value}
+procedure GuiClearIconPixel(iconId: Integer; x: Integer; y: Integer); cdecl; external cDllName;
+{Check icon pixel value}
+function GuiCheckIconPixel(iconId: Integer; x: Integer; y: Integer): Boolean; cdecl; external cDllName;
 {$ENDIF}
 
 implementation
