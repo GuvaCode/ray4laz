@@ -19,7 +19,7 @@ const
   MAX_CIRCLES = 64;
   screenWidth = 800;
   screenHeight = 450;
-  colors:  array [0..13] of TRayColor =(
+  colors:  array [0..13] of TColorB =(
   (r: 255; g: 161; b: 0; a: 255),(r: 230; g: 41; b: 55; a: 255),
   (r: 255; g: 203; b: 0; a: 255),(r: 0; g: 158; b: 47; a: 255),
   (r: 0; g: 121; b: 241; a: 255),(r: 135; g: 60; b: 190; a: 255),
@@ -34,7 +34,7 @@ const
       radius:   single;
       alpha:    single;
       speed:    single;
-      color:    TRayColor;
+      color:    TColorB;
       end;
 
 var

@@ -42,6 +42,7 @@
       </Item1>
     </RequiredPkgs>
     <UsageOptions>
+      <LibraryPath Value="../lib/$(TargetCPU)-$(TargetOS)"/>
       <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>

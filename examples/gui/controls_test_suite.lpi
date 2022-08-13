@@ -43,7 +43,7 @@
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);../../libs/x64_linux"/>
       <OtherUnitFiles Value="../../libs/x64_linux"/>
-      <UnitOutputDirectory Value="../../lib/$(TargetCPU)-$(TargetOS)"/>
+      <UnitOutputDirectory Value="../../temp/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
       <Debugging>

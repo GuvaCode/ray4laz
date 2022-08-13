@@ -81,7 +81,7 @@ begin
       BeginDrawing();
         ClearBackground(RAYWHITE);
         exitWindow := GuiWindowBox(RectangleCreate( 0, 0, screenWidth, screenHeight ), '#198# PORTABLE WINDOW');
-        DrawText(TextFormat( '%0,%0', [mousePosition.x, mousePosition.y]), 10, 40, 10, DARKGRAY);
+        DrawText(TextFormat( '%0,%0', mousePosition.x, mousePosition.y), 10, 40, 10, DARKGRAY);
 
       EndDrawing();
     end;

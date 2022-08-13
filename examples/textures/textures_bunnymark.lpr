@@ -8,7 +8,7 @@ type
  TBunny = record
     position:TVector2;
     speed:TVector2;
-    color:TRayColor;
+    color:TColorB;
   end;
 
 const
@@ -81,8 +81,8 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
                 DrawTexture(texBunny,round(bunnies[i].position.x),round(bunnies[i].position.y), bunnies[i].color);
 
             DrawRectangle(0, 0, screenWidth, 40, BLACK);
-            DrawText(TextFormat('bunnies: %i', [bunniesCount]), 120, 10, 20, GREEN);
-            DrawText(TextFormat('batched draw calls: %i', [1 + bunniesCount div MAX_BATCH_ELEMENTS]), 320, 10, 20, MAROON);
+            DrawText(TextFormat('bunnies: %i', bunniesCount), 120, 10, 20, GREEN);
+            DrawText(TextFormat('batched draw calls: %i', 1 + bunniesCount div MAX_BATCH_ELEMENTS), 320, 10, 20, MAROON);
             DrawFPS(10, 10);
   EndDrawing();
  end;

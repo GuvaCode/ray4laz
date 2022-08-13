@@ -62,7 +62,7 @@ var
     listViewExList: array [0..7] of PChar = ('This', 'is', 'a', 'list view', 'with', 'disable', 'elements', 'amazing!');
     multiTextBoxText: array [0..254] of Char = 'Multi text box';
     multiTextBoxEditMode: boolean = false;
-    colorPickerValue: TRayColor = (r: 230; g: 41; b: 55; a: 255);    // Red// = RED;
+    colorPickerValue: TColorB = (r: 230; g: 41; b: 55; a: 255);    // Red// = RED;
     sliderValue: longint = 50;
     sliderBarValue: longint = 60;
     progressValue: single = 0.4;
@@ -180,11 +180,11 @@ begin
        colorPickerValue := GuiColorPicker(RectangleCreate( 320, 185, 196, 192 ),'Color picker', colorPickerValue);
 
        sliderValue := round(GuiSlider(RectangleCreate( 355, 400, 165, 20 ), 'TEST',
-       TextFormat('%2.2', [sliderValue]), sliderValue, -50, 100));
+       TextFormat('%2.2', sliderValue), sliderValue, -50, 100));
 
 
        sliderBarValue :=round( GuiSliderBar(RectangleCreate( 320, 430, 200, 20 ), nil,
-       TextFormat('%i', [sliderBarValue]), sliderBarValue, 0, 100));
+       TextFormat('%i', sliderBarValue), sliderBarValue, 0, 100));
        progressValue := GuiProgressBar(RectangleCreate( 320, 460, 200, 20 ), nil, nil, progressValue, 0, 1);
 
        // NOTE: View rectangle could be used to perform some scissor test

@@ -123,7 +123,7 @@ begin
   DrawRectangleLinesEx( LogoRec,14,RAYWHITE);
 
   DrawText('raylib', screenWidth div 2 - 44, screenHeight div 2 + 48, 50, RAYWHITE);
-  DrawText('4.0', screenWidth div 2 + 74, screenHeight div 2 + 90, 20, RAYWHITE);
+  DrawText('4.2', screenWidth div 2 + 74, screenHeight div 2 + 90, 20, RAYWHITE);
   EndDrawing();
  end;
 CloseWindow(); 

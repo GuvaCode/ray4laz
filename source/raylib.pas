@@ -12,6 +12,12 @@ Pascal header by Gunko Vadim (@guvacode)
 unit raylib;
 {$mode objfpc}{$H+}
 
+// Defines for GNU/Linux
+{$IFDEF LINUX}
+{$DEFINE RAY_STATIC}
+{$ENDIF}
+
+
 interface
 const
   cDllName = {$IFDEF WINDOWS} 'raylib.dll' {$IFEND}
@@ -869,93 +875,93 @@ const
 (* Window-related function *)
 
 {Initialize window and OpenGL context}
-procedure InitWindow(width, height: Integer; title: PChar); cdecl; external cDllName;
+procedure InitWindow(width, height: Integer; title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if KEY_ESCAPE pressed or Close icon pressed}
-function WindowShouldClose: Boolean; cdecl; external cDllName;
+function WindowShouldClose: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Close window and unload OpenGL context}
-procedure CloseWindow; cdecl; external cDllName;
+procedure CloseWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if window has been initialized successfully}
-function IsWindowReady: Boolean; cdecl; external cDllName;
+function IsWindowReady: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if window is currently fullscreen }
-function IsWindowFullscreen: Boolean; cdecl; external cDllName;
+function IsWindowFullscreen: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if window is currently hidden (only PLATFORM_DESKTOP)}
-function IsWindowHidden: Boolean; cdecl; external cDllName;
+function IsWindowHidden: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if window is currently minimized (only PLATFORM_DESKTOP)}
-function IsWindowMinimized: Boolean; cdecl; external cDllName;
+function IsWindowMinimized: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if window is currently maximized (only PLATFORM_DESKTOP)}
-function IsWindowMaximized: Boolean; cdecl; external cDllName;
+function IsWindowMaximized: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if window is currently focused (only PLATFORM_DESKTOP)}
-function IsWindowFocused: Boolean; cdecl; external cDllName;
+function IsWindowFocused: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if window has been resized last frame}
-function IsWindowResized: Boolean;cdecl; external cDllName;
+function IsWindowResized: Boolean;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if one specific window flag is enabled}
-function IsWindowState(flag: LongWord): Boolean; cdecl; external cDllName;
+function IsWindowState(flag: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set window configuration state using flags (only PLATFORM_DESKTOP)}
-procedure SetWindowState(flags: LongWord); cdecl; external cDllName;
+procedure SetWindowState(flags: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Clear window configuration state flags}
-procedure ClearWindowState(flags: LongWord); cdecl; external cDllName;
+procedure ClearWindowState(flags: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)}
-procedure ToggleFullscreen; cdecl; external cDllName;
+procedure ToggleFullscreen; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set window state: maximized, if resizable (only PLATFORM_DESKTOP)}
-procedure MaximizeWindow; cdecl; external cDllName;
+procedure MaximizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set window state: minimized, if resizable (only PLATFORM_DESKTOP)}
-procedure MinimizeWindow; cdecl; external cDllName;
+procedure MinimizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set window state: not minimized/maximized (only PLATFORM_DESKTOP)}
-procedure RestoreWindow; cdecl; external cDllName;
+procedure RestoreWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set icon for window (only PLATFORM_DESKTOP)}
-procedure SetWindowIcon(image: TImage); cdecl; external cDllName;
+procedure SetWindowIcon(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set title for window (only PLATFORM_DESKTOP)}
-procedure SetWindowTitle(title: PChar); cdecl; external cDllName;
+procedure SetWindowTitle(title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set window position on screen (only PLATFORM_DESKTOP)}
-procedure SetWindowPosition(x, y: Integer); cdecl; external cDllName;
+procedure SetWindowPosition(x, y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set monitor for the current window (fullscreen mode)}
-procedure SetWindowMonitor(monitor: Integer); cdecl; external cDllName;
+procedure SetWindowMonitor(monitor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)}
-procedure SetWindowMinSize(width, height: Integer); cdecl; external cDllName;
+procedure SetWindowMinSize(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set window dimensions}
-procedure SetWindowSize(width, height: Integer);cdecl; external cDllName;
+procedure SetWindowSize(width, height: Integer);cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)}
-procedure SetWindowOpacity(opacity: Single); cdecl; external cDllName;
+procedure SetWindowOpacity(opacity: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get native window handle}
-function GetWindowHandle: Pointer; cdecl; external cDllName;
+function GetWindowHandle: Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get current screen width}
-function GetScreenWidth: Integer; cdecl; external cDllName;
+function GetScreenWidth: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get current screen height}
-function GetScreenHeight: Integer; cdecl; external cDllName;
+function GetScreenHeight: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get current render width (it considers HiDPI)}
-function GetRenderWidth: Integer; cdecl; external cDllName;
+function GetRenderWidth: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get current render height (it considers HiDPI)}
-function GetRenderHeight: Integer; cdecl; external cDllName;
+function GetRenderHeight: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get number of connected monitors}
-function GetMonitorCount: Integer; cdecl; external cDllName;
+function GetMonitorCount: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get current connected monitor}
-function GetCurrentMonitor: Integer; cdecl; external cDllName;
+function GetCurrentMonitor: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get specified monitor position}
-function GetMonitorPosition(monitor: Integer): TVector2; cdecl; external cDllName;
+function GetMonitorPosition(monitor: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get specified monitor width (current video mode used by monitor)}
-function GetMonitorWidth(monitor: Integer): Integer; cdecl; external cDllName;
+function GetMonitorWidth(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get specified monitor height (current video mode used by monitor)}
-function GetMonitorHeight(monitor: Integer): Integer; cdecl; external cDllName;
+function GetMonitorHeight(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get specified monitor physical width in millimetres}
-function GetMonitorPhysicalWidth(monitor: Integer): Integer; cdecl; external cDllName;
+function GetMonitorPhysicalWidth(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get specified monitor physical height in millimetres}
-function GetMonitorPhysicalHeight(monitor: Integer): Integer; cdecl; external cDllName;
+function GetMonitorPhysicalHeight(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get specified monitor refresh rate}
-function GetMonitorRefreshRate(monitor: Integer): Integer; cdecl; external cDllName;
+function GetMonitorRefreshRate(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get window position XY on monitor}
-function GetWindowPosition: TVector2; cdecl; external cDllName;
+function GetWindowPosition: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get window scale DPI factor}
-function GetWindowScaleDPI: TVector2; cdecl; external cDllName;
+function GetWindowScaleDPI: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get the human-readable, UTF-8 encoded name of the primary monitor}
-function GetMonitorName(monitor: Integer): PChar; cdecl; external cDllName;
+function GetMonitorName(monitor: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set clipboard text content}
-procedure SetClipboardText(text: PChar); cdecl; external cDllName;
+procedure SetClipboardText(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get clipboard text content}
-function GetClipboardText: PChar; cdecl; external cDllName;
+function GetClipboardText: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Enable waiting for events on EndDrawing(), no automatic event polling}
-procedure EnableEventWaiting; cdecl; external cDllName;
+procedure EnableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Disable waiting for events on EndDrawing(), automatic events polling}
-procedure DisableEventWaiting; cdecl; external cDllName;
+procedure DisableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Custom frame control functions *)
 // NOTE: Those functions are intended for advance users that want full control over the frame processing
@@ -963,146 +969,146 @@ procedure DisableEventWaiting; cdecl; external cDllName;
 // To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
 
 {Swap back buffer with front buffer (screen drawing)}
-procedure SwapScreenBuffer; cdecl; external cDllName;
+procedure SwapScreenBuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Register all input events}
-procedure PollInputEvents; cdecl; external cDllName;
+procedure PollInputEvents; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Wait for some time (halt program execution) }
-procedure WaitTime(ms: Double); cdecl; external cDllName;
+procedure WaitTime(ms: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Cursor-related functions *)
 
 {Shows cursor}
-procedure ShowCursor; cdecl; external cDllName;
+procedure ShowCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Hides cursor}
-procedure HideCursor; cdecl; external cDllName;
+procedure HideCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if cursor is not visible}
-function IsCursorHidden: Boolean; cdecl; external cDllName;
+function IsCursorHidden: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Enables cursor (unlock cursor)}
-procedure EnableCursor; cdecl; external cDllName;
+procedure EnableCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Disables cursor (lock cursor)}
-procedure DisableCursor; cdecl; external cDllName;
+procedure DisableCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if cursor is on the current screen.}
-function IsCursorOnScreen: Boolean; cdecl; external cDllName;
+function IsCursorOnScreen: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Drawing-related functions *)
 
 {Set background color (framebuffer clear color)}
-procedure ClearBackground(color: TColorB); cdecl; external cDllName;
+procedure ClearBackground(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Setup canvas (framebuffer) to start drawing}
-procedure BeginDrawing; cdecl; external cDllName;
+procedure BeginDrawing; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {End canvas drawing and swap buffers (double buffering)}
-procedure EndDrawing; cdecl; external cDllName;
+procedure EndDrawing; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Initialize 2D mode with custom camera (2D)}
-procedure BeginMode2D(camera: TCamera2D); cdecl; external cDllName;
+procedure BeginMode2D(camera: TCamera2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Ends 2D mode with custom camera}
-procedure EndMode2D; cdecl; external cDllName;
+procedure EndMode2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Initializes 3D mode with custom camera (3D)}
-procedure BeginMode3D(camera: TCamera3D); cdecl; external cDllName;
+procedure BeginMode3D(camera: TCamera3D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Ends 3D mode and returns to default 2D orthographic mode}
-procedure EndMode3D; cdecl; external cDllName;
+procedure EndMode3D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Initializes render texture for drawing}
-procedure BeginTextureMode(target: TRenderTexture2D); cdecl; external cDllName;
+procedure BeginTextureMode(target: TRenderTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Ends drawing to render texture}
-procedure EndTextureMode; cdecl; external cDllName;
+procedure EndTextureMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Begin custom shader drawing}
-procedure BeginShaderMode(shader: TShader); cdecl; external cDllName;
+procedure BeginShaderMode(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {End custom shader drawing (use default shader)}
-procedure EndShaderMode;cdecl; external cDllName;
+procedure EndShaderMode;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Begin blending mode (alpha, additive, multiplied)}
-procedure BeginBlendMode(mode: Integer); cdecl; external cDllName;
+procedure BeginBlendMode(mode: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {End blending mode (reset to default: alpha blending)}
-procedure EndBlendMode; cdecl; external cDllName;
+procedure EndBlendMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Begin scissor mode (define screen area for following drawing)}
-procedure BeginScissorMode(x, y, width, height: Integer); cdecl; external cDllName;
+procedure BeginScissorMode(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {End scissor mode}
-procedure EndScissorMode; cdecl; external cDllName;
+procedure EndScissorMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Begin stereo rendering (requires VR simulator)}
-procedure BeginVrStereoMode(config: TVrStereoConfig); cdecl; external cDllName;
+procedure BeginVrStereoMode(config: TVrStereoConfig); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {End stereo rendering (requires VR simulator)}
-procedure EndVrStereoMode; cdecl; external cDllName;
+procedure EndVrStereoMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* VR stereo config functions for VR simulator *)
 
 {Load VR stereo config for VR simulator device parameters}
-function LoadVrStereoConfig(device: TVrDeviceInfo): TVrStereoConfig; cdecl; external cDllName;
+function LoadVrStereoConfig(device: TVrDeviceInfo): TVrStereoConfig; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload VR stereo config }
-procedure UnloadVrStereoConfig(config: TVrStereoConfig); cdecl; external cDllName;
+procedure UnloadVrStereoConfig(config: TVrStereoConfig); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Shader management functions *)
 // NOTE: Shader functionality is not available on OpenGL 1.1
 
 {Load shader from files and bind default locations}
-function LoadShader(vsFileName, fsFileName: PChar): TShader; cdecl; external cDllName;
+function LoadShader(vsFileName, fsFileName: PChar): TShader; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load shader from code strings and bind default locations}
-function LoadShaderFromMemory(vsCode, fsCode: PChar): TShader;cdecl;external cDllName;
+function LoadShaderFromMemory(vsCode, fsCode: PChar): TShader;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get shader uniform location}
-function GetShaderLocation(shader: TShader; uniformName: PChar): Integer; cdecl; external cDllName;
+function GetShaderLocation(shader: TShader; uniformName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get shader attribute location}
-function GetShaderLocationAttrib(shader:TShader; attribName:PChar): Integer; cdecl; external cDllName;
+function GetShaderLocationAttrib(shader:TShader; attribName:PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set shader uniform value}
-procedure SetShaderValue(shader: TShader; locIndex: Integer; value: Pointer; uniformType: Integer); cdecl; external cDllName;
+procedure SetShaderValue(shader: TShader; locIndex: Integer; value: Pointer; uniformType: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set shader uniform value vector}
-procedure SetShaderValueV(shader: TShader; locIndex: Integer; value: Pointer; uniformType, count: Integer); cdecl; external cDllName;
+procedure SetShaderValueV(shader: TShader; locIndex: Integer; value: Pointer; uniformType, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set shader uniform value (matrix 4x4)}
-procedure SetShaderValueMatrix(shader: TShader; locIndex: Integer; mat:TMatrix); cdecl; external cDllName;
+procedure SetShaderValueMatrix(shader: TShader; locIndex: Integer; mat:TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set shader uniform value for texture (sampler2d) }
-procedure SetShaderValueTexture(shader: TShader; locIndex: Integer; texture: TTexture2D); cdecl; external cDllName;
+procedure SetShaderValueTexture(shader: TShader; locIndex: Integer; texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload shader from GPU memory (VRAM)}
-procedure UnloadShader(shader: TShader); cdecl; external cDllName;
+procedure UnloadShader(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Screen-space-related functions *)
 
 {Get a ray trace from mouse position}
-function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; cdecl; external cDllName;
+function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get camera transform matrix (view matrix)}
-function GetCameraMatrix(camera: TCamera): TMatrix; cdecl; external cDllName;
+function GetCameraMatrix(camera: TCamera): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get camera 2d transform matrix}
-function GetCameraMatrix2D(camera: TCamera2D): TMatrix; cdecl; external cDllName;
+function GetCameraMatrix2D(camera: TCamera2D): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get the screen space position for a 3d world space position}
-function GetWorldToScreen(position: TVector3; camera: TCamera): TVector2; cdecl; external cDllName;
+function GetWorldToScreen(position: TVector3; camera: TCamera): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get size position for a 3d world space position}
-function GetWorldToScreenEx(position: TVector3; camera: TCamera; width, height: Integer): TVector2; cdecl; external cDllName;
+function GetWorldToScreenEx(position: TVector3; camera: TCamera; width, height: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get the screen space position for a 2d camera world space position}
-function GetWorldToScreen2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external cDllName;
+function GetWorldToScreen2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get the world space position for a 2d camera screen space position}
-function GetScreenToWorld2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external cDllName;
+function GetScreenToWorld2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Timing-related functions *)
 
 {Set target FPS (maximum)}
-procedure SetTargetFPS(fps: Integer); cdecl; external cDllName;
+procedure SetTargetFPS(fps: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Returns current FPS}
-function GetFPS: Integer; cdecl; external cDllName;
+function GetFPS: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Returns time in seconds for last frame drawn (delta time)}
-function GetFrameTime: Single; cdecl; external cDllName;
+function GetFrameTime: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Returns elapsed time in seconds since InitWindow()}
-function GetTime: Double; cdecl; external cDllName;
+function GetTime: Double; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Misc. functions *)
 
 {Get a random value between min and max (both included)}
-function GetRandomValue(min, max: Integer): Integer; cdecl; external cDllName;
+function GetRandomValue(min, max: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set the seed for the random number generator}
-procedure SetRandomSeed(seed: LongWord); cdecl; external cDllName;
+procedure SetRandomSeed(seed: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Takes a screenshot of current screen (filename extension defines format)}
-procedure TakeScreenshot(fileName: PChar); cdecl; external cDllName;
+procedure TakeScreenshot(fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Setup init configuration flags (view FLAGS)}
-procedure SetConfigFlags(flags:LongWord); cdecl; external cDllName;
+procedure SetConfigFlags(flags:LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)}
-procedure TraceLog(logLevel: Integer; text: PChar); cdecl; varargs; external cDllName;
+procedure TraceLog(logLevel: Integer; text: PChar); cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set the current threshold (minimum) log level}
-procedure SetTraceLogLevel(logLevel: Integer); cdecl; external cDllName;
+procedure SetTraceLogLevel(logLevel: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Internal memory allocator}
-function MemAlloc(size: Integer): Pointer; cdecl; external cDllName;
+function MemAlloc(size: Integer): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Internal memory reallocator}
-function MemRealloc(ptr: Pointer; size: Integer): Pointer; cdecl; external cDllName;
+function MemRealloc(ptr: Pointer; size: Integer): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Internal memory free}
-procedure MemFree(ptr: Pointer); cdecl; external cDllName;
+procedure MemFree(ptr: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Open URL with default system browser (if available)}
-procedure OpenURL(const url: PChar); cdecl; external cDllName;
+procedure OpenURL(const url: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Set custom callbacks *)
 (* Callbacks to hook some internal functions *)
@@ -1115,84 +1121,84 @@ type
   TSaveFileTextCallback = function(fileName, text: PChar): Boolean; cdecl;
 
   { Set custom trace log }
-  procedure SetTraceLogCallback(callback: TTraceLogCallback); cdecl; external cDllName;
+  procedure SetTraceLogCallback(callback: TTraceLogCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
   { Set custom file binary data loader }
-  procedure SetLoadFileDataCallback(callback: TLoadFileDataCallback); cdecl; external cDllName;
+  procedure SetLoadFileDataCallback(callback: TLoadFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
   { Set custom file binary data saver }
-  procedure SetSaveFileDataCallback(callback: TSaveFileDataCallback); cdecl; external cDllName;
+  procedure SetSaveFileDataCallback(callback: TSaveFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
   { Set custom file text data loader }
-  procedure SetLoadFileTextCallback(callback: TLoadFileTextCallback); cdecl; external cDllName;
+  procedure SetLoadFileTextCallback(callback: TLoadFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
   { Set custom file text data saver }
-  procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; external cDllName;
+  procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Files management functions *)
 
 {Load file data as byte array (read)}
-function LoadFileData(fileName: PChar; bytesRead: PLongWord): Pointer; cdecl; external cDllName;
+function LoadFileData(fileName: PChar; bytesRead: PLongWord): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload file data allocated by LoadFileData()}
-procedure UnloadFileData(data: Pointer); cdecl; external cDllName;
+procedure UnloadFileData(data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Save data to file from byte array (write), returns true on success}
-function SaveFileData(fileName: PChar; data: Pointer; bytesToWrite: LongWord): Boolean; cdecl; external cDllName;
+function SaveFileData(fileName: PChar; data: Pointer; bytesToWrite: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Export data to code (.h), returns true on success}
-function ExportDataAsCode(data: PChar; size: LongWord; fileName: PChar): Boolean; cdecl; external cDllName;
+function ExportDataAsCode(data: PChar; size: LongWord; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load text data from file (read), returns a '\0' terminated string}
-function LoadFileText(fileName: Pchar): Pchar; cdecl; external cDllName;
+function LoadFileText(fileName: Pchar): Pchar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload file text data allocated by LoadFileText()}
-procedure UnloadFileText(text: PChar); cdecl; external cDllName;
+procedure UnloadFileText(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Save text data to file (write), string must be '\0' terminated, returns true on success}
-function SaveFileText(fileName, text: PChar): Boolean; cdecl; external cDllName;
+function SaveFileText(fileName, text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if file exists}
-function FileExists(fileName: PChar): Boolean; cdecl; external cDllName;
+function FileExists(fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a directory path exists}
-function DirectoryExists(dirPath: PChar): Boolean; cdecl; external cDllName;
+function DirectoryExists(dirPath: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check file extension (including point: .png, .wav)}
-function IsFileExtension(fileName, ext: PChar): Boolean; cdecl; external cDllName;
+function IsFileExtension(fileName, ext: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)}
-function GetFileLength(fileName: PChar): Integer; cdecl; external cDllName;
+function GetFileLength(fileName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get pointer to extension for a filename string (includes dot: '.png')}
-function GetFileExtension(fileName: PChar): PChar; cdecl; external cDllName;
+function GetFileExtension(fileName: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get pointer to filename for a path string }
-function GetFileName(filePath: PChar): PChar; cdecl; external cDllName;
+function GetFileName(filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get filename string without extension (uses static string)}
-function GetFileNameWithoutExt(filePath: PChar): PChar; cdecl; external cDllName;
+function GetFileNameWithoutExt(filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get full path for a given fileName with path (uses static string)}
-function GetDirectoryPath(filePath: PChar): PChar; cdecl; external cDllName;
+function GetDirectoryPath(filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get previous directory path for a given path (uses static string)}
-function GetPrevDirectoryPath(dirPath: PChar): PChar; cdecl; external cDllName;
+function GetPrevDirectoryPath(dirPath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get current working directory (uses static string)}
-function GetWorkingDirectory: PChar; cdecl; external cDllName;
+function GetWorkingDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get the directory if the running application (uses static string)}
-function GetApplicationDirectory: PChar; cdecl; external cDllName;
+function GetApplicationDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Change working directory, return true on success}
-function ChangeDirectory(dir: PChar): Boolean; cdecl; external cDllName;
+function ChangeDirectory(dir: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a given path is a file or a directory}
-function IsPathFile(path: PChar): Boolean; cdecl; external cDllName;
+function IsPathFile(path: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load directory filepaths}
-function LoadDirectoryFiles(dirPath: PChar): TFilePathList; cdecl; external cDllName;
+function LoadDirectoryFiles(dirPath: PChar): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load directory filepaths with extension filtering and recursive directory scan}
-function LoadDirectoryFilesEx(basePath, filter: PChar; scanSubdirs: Boolean): TFilePathList; cdecl; external cDllName;
+function LoadDirectoryFilesEx(basePath, filter: PChar; scanSubdirs: Boolean): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload filepaths}
-procedure UnloadDirectoryFiles(files: TFilePathList); cdecl; external cDllName;
+procedure UnloadDirectoryFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a file has been dropped into window}
-function IsFileDropped: Boolean; cdecl; external cDllName;
+function IsFileDropped: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load dropped filepaths}
-function LoadDroppedFiles: TFilePathList; cdecl; external cDllName;
+function LoadDroppedFiles: TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload dropped filepaths}
-procedure UnloadDroppedFiles(files: TFilePathList); cdecl; external cDllName;
+procedure UnloadDroppedFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get file modification time (last write time)}
-function GetFileModTime(fileName: PChar): QWord; cdecl; external cDllName;
+function GetFileModTime(fileName: PChar): QWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Compression/Encoding functionality *)
 
 {Compress data (DEFLATE algorithm), memory must be MemFree()}
-function CompressData(const data: Pointer; dataSize: Integer; compDataSize: PInteger): Pointer; cdecl; external cDllName;
+function CompressData(const data: Pointer; dataSize: Integer; compDataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Decompress data (DEFLATE algorithm), memory must be MemFree()}
-function DecompressData(const compData: Pointer; compDataSize: Integer; dataSize: PInteger): Pointer; cdecl; external cDllName;
+function DecompressData(const compData: Pointer; compDataSize: Integer; dataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Encode data to Base64 string, memory must be MemFree()}
-function EncodeDataBase64(const data: PChar; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external cDllName;
+function EncodeDataBase64(const data: PChar; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Decode Base64 string data, memory must be MemFree()}
-function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl; external cDllName;
+function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
@@ -1201,126 +1207,126 @@ function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl
 (* Input-related functions: keyboard *)
 
 {Check if a key has been pressed once}
-function IsKeyPressed(key: Integer): Boolean; cdecl; external cDllName;
+function IsKeyPressed(key: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a key is being pressed}
-function IsKeyDown(key: Integer): Boolean;cdecl;external cDllName;
+function IsKeyDown(key: Integer): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a key has been released once}
-function IsKeyReleased(key: Integer): Boolean;cdecl;external cDllName;
+function IsKeyReleased(key: Integer): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a key is NOT being pressed}
-function IsKeyUp(key: Integer): Boolean;cdecl;external cDllName;
+function IsKeyUp(key: Integer): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set a custom key to exit program (default is ESC)}
-procedure SetExitKey(key: Integer); cdecl; external cDllName;
+procedure SetExitKey(key: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty}
-function GetKeyPressed: Integer; cdecl; external cDllName;
+function GetKeyPressed: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty}
-function GetCharPressed: Integer; cdecl; external cDllName;
+function GetCharPressed: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Input-related functions: gamepads *)
 
 {Check if a gamepad is available}
-function IsGamepadAvailable(gamepad: Integer): Boolean; cdecl; external cDllName;
+function IsGamepadAvailable(gamepad: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get gamepad internal name id}
-function GetGamepadName(gamepad: Integer): PChar; cdecl; external cDllName;
+function GetGamepadName(gamepad: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a gamepad button has been pressed once}
-function IsGamepadButtonPressed(gamepad, button: Integer): Boolean; cdecl; external cDllName;
+function IsGamepadButtonPressed(gamepad, button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a gamepad button is being pressed}
-function IsGamepadButtonDown(gamepad, button: Integer): Boolean; cdecl; external cDllName;
+function IsGamepadButtonDown(gamepad, button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a gamepad button has been released once}
-function IsGamepadButtonReleased(gamepad, button: Integer): Boolean; cdecl; external cDllName;
+function IsGamepadButtonReleased(gamepad, button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a gamepad button is NOT being pressed}
-function IsGamepadButtonUp(gamepad, button: Integer): Boolean; cdecl; external cDllName;
+function IsGamepadButtonUp(gamepad, button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get the last gamepad button pressed}
-function GetGamepadButtonPressed: Integer; cdecl; external cDllName;
+function GetGamepadButtonPressed: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get gamepad axis count for a gamepad}
-function GetGamepadAxisCount(gamepad: Integer): Integer; cdecl; external cDllName;
+function GetGamepadAxisCount(gamepad: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get axis movement value for a gamepad axis}
-function GetGamepadAxisMovement(gamepad, axis: Integer): Single; cdecl; external cDllName;
+function GetGamepadAxisMovement(gamepad, axis: Integer): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set internal gamepad mappings (SDL_GameControllerDB)}
-function SetGamepadMappings(mappings: PChar): Integer; cdecl; external cDllName;
+function SetGamepadMappings(mappings: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Input-related functions: mouse *)
 
 {Check if a mouse button has been pressed once}
-function IsMouseButtonPressed(button: Integer): Boolean; cdecl; external cDllName;
+function IsMouseButtonPressed(button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a mouse button is being pressed}
-function IsMouseButtonDown(button: Integer): Boolean; cdecl; external cDllName;
+function IsMouseButtonDown(button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a mouse button has been released once}
-function IsMouseButtonReleased(button: Integer): Boolean; cdecl; external cDllName;
+function IsMouseButtonReleased(button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a mouse button is NOT being pressed}
-function IsMouseButtonUp(button: Integer): Boolean; cdecl; external cDllName;
+function IsMouseButtonUp(button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get mouse position X}
-function GetMouseX: Integer; cdecl; external cDllName;
+function GetMouseX: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get mouse position Y}
-function GetMouseY: Integer; cdecl; external cDllName;
+function GetMouseY: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get mouse position XY}
-function GetMousePosition: TVector2; cdecl;external cDllName;
+function GetMousePosition: TVector2; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get mouse delta between frames}
-function GetMouseDelta: TVector2; cdecl; external cDllName;
+function GetMouseDelta: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set mouse position XY}
-procedure SetMousePosition(x,y: Integer); cdecl; external cDllName;
+procedure SetMousePosition(x,y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set mouse offset}
-procedure SetMouseOffset(offsetX, offsetY: Integer); cdecl; external cDllName;
+procedure SetMouseOffset(offsetX, offsetY: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set mouse scaling}
-procedure SetMouseScale(scaleX, scaleY: Single); cdecl; external cDllName;
+procedure SetMouseScale(scaleX, scaleY: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get mouse wheel movement for X or Y, whichever is larger}
-function GetMouseWheelMove: Single; cdecl; external cDllName;
+function GetMouseWheelMove: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get mouse wheel movement for both X and Y}
-function GetMouseWheelMoveV: TVector2; cdecl; external cDllName;
+function GetMouseWheelMoveV: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 { Set mouse cursor}
-procedure SetMouseCursor(cursor: Integer); cdecl; external cDllName;
+procedure SetMouseCursor(cursor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Input-related functions: touch *)
 
 {Get touch position X for touch point 0 (relative to screen size)}
-function GetTouchX: Integer; cdecl; external cDllName;
+function GetTouchX: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get touch position Y for touch point 0 (relative to screen size)}
-function GetTouchY: Integer; cdecl; external cDllName;
+function GetTouchY: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get touch point identifier for given index}
-function GetTouchPointId(index: Integer): Integer; cdecl; external cDllName;
+function GetTouchPointId(index: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get touch position XY for a touch point index (relative to screen size)}
-function GetTouchPosition(index: Integer): TVector2; cdecl; external cDllName;
+function GetTouchPosition(index: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get touch points count}
-function GetTouchPointCount: Integer; cdecl; external cDllName;
+function GetTouchPointCount: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get last touch event registered}
-function GetTouchEvent: Integer; cdecl; external cDllName;
+function GetTouchEvent: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 //------------------------------------------------------------------------------------
 // Gestures and Touch Handling Functions (Module: rgestures)
 //------------------------------------------------------------------------------------
 
 {Enable a set of gestures using flags}
-procedure SetGesturesEnabled(flags: LongWord); cdecl; external cDllName;
+procedure SetGesturesEnabled(flags: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a gesture have been detected}
-function IsGestureDetected(gesture: Integer): Boolean;cdecl;external cDllName;
+function IsGestureDetected(gesture: Integer): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get latest detected gesture}
-function GetGestureDetected: Integer; cdecl; external cDllName;
+function GetGestureDetected: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get gesture hold time in milliseconds}
-function GetGestureHoldDuration: Single; cdecl; external cDllName;
+function GetGestureHoldDuration: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get gesture drag vector}
-function GetGestureDragVector: TVector2; cdecl; external cDllName;
+function GetGestureDragVector: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get gesture drag angle}
-function GetGestureDragAngle: Single; cdecl; external cDllName;
+function GetGestureDragAngle: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get gesture pinch delta}
-function GetGesturePinchVector: TVector2; cdecl; external cDllName;
+function GetGesturePinchVector: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get gesture pinch angle}
-function GetGesturePinchAngle: Single; cdecl; external cDllName;
+function GetGesturePinchAngle: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 //------------------------------------------------------------------------------------
 // Camera System Functions (Module: rcamera)
 //------------------------------------------------------------------------------------
 
 {Set camera mode (multiple camera modes available)}
-procedure SetCameraMode(camera: TCamera; mode: Integer); cdecl; external cDllName;
+procedure SetCameraMode(camera: TCamera; mode: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Update camera position for selected mode}
-procedure UpdateCamera(camera: PCamera); cdecl; external cDllName;
+procedure UpdateCamera(camera: PCamera); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set camera pan key to combine with mouse movement (free camera)}
-procedure SetCameraPanControl(keyPan: Integer); cdecl; external cDllName;
+procedure SetCameraPanControl(keyPan: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set camera alt key to combine with mouse movement (free camera)}
-procedure SetCameraAltControl(keyAlt: Integer); cdecl; external cDllName;
+procedure SetCameraAltControl(keyAlt: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set camera smooth zoom key to combine with mouse (free camera)}
-procedure SetCameraSmoothZoomControl(keySmoothZoom: Integer); cdecl; external cDllName;
+procedure SetCameraSmoothZoomControl(keySmoothZoom: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set camera move controls (1st person and 3rd person cameras)}
-procedure SetCameraMoveControls(keyFront, keyBack, keyRight, keyLeft, keyUp, keyDown: Integer); cdecl; external cDllName;
+procedure SetCameraMoveControls(keyFront, keyBack, keyRight, keyLeft, keyUp, keyDown: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 //------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
@@ -1330,105 +1336,105 @@ procedure SetCameraMoveControls(keyFront, keyBack, keyRight, keyLeft, keyUp, key
 // defining a font char white rectangle would allow drawing everything in a single draw call
 
 {Set texture and rectangle to be used on shapes drawing}
-procedure SetShapesTexture(texture: TTexture2D; source: TRectangle); cdecl; external cDllName;
+procedure SetShapesTexture(texture: TTexture2D; source: TRectangle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Basic shapes drawing functions *)
 
 {Draw a pixel}
-procedure DrawPixel(posX, posY: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawPixel(posX, posY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a pixel (Vector version)}
-procedure DrawPixelV(position: TVector2; color: TColorB); cdecl; external cDllName;
+procedure DrawPixelV(position: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a line}
-procedure DrawLine(startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawLine(startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a line (Vector version)}
-procedure DrawLineV(startPos, endPos: TVector2; color: TColorB); cdecl; external cDllName;
+procedure DrawLineV(startPos, endPos: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a line defining thickness}
-procedure DrawLineEx(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawLineEx(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a line using cubic-bezier curves in-out}
-procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw line using quadratic bezier curves with a control point}
-procedure DrawLineBezierQuad(startPos, endPos, controlPos: TVector2; thick: Single; color:TColorB); cdecl; external cDllName;
+procedure DrawLineBezierQuad(startPos, endPos, controlPos: TVector2; thick: Single; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw line using cubic bezier curves with 2 control points}
-procedure DrawLineBezierCubic(startPos, endPos, startControlPos, endControlPos: TVector2; thick: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawLineBezierCubic(startPos, endPos, startControlPos, endControlPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw lines sequence}
-procedure DrawLineStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawLineStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a color-filled circle}
-procedure DrawCircle(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawCircle(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a piece of a circle}
-procedure DrawCircleSector(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawCircleSector(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw circle sector outline}
-procedure DrawCircleSectorLines(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB);cdecl;external cDllName;
+procedure DrawCircleSectorLines(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a gradient-filled circle}
-procedure DrawCircleGradient(centerX, centerY: Integer; radius: Single; color1, color2: TColorB); cdecl; external cDllName;
+procedure DrawCircleGradient(centerX, centerY: Integer; radius: Single; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a color-filled circle (Vector version)}
-procedure DrawCircleV(center: TVector2; radius: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawCircleV(center: TVector2; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw circle outline}
-procedure DrawCircleLines(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawCircleLines(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw ellipse}
-procedure DrawEllipse(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawEllipse(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw ellipse outline}
-procedure DrawEllipseLines(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawEllipseLines(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw ring}
-procedure DrawRing(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawRing(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw ring outline}
-procedure DrawRingLines(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawRingLines(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a color-filled rectangle}
-procedure DrawRectangle(posX, posY, width, height: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawRectangle(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a color-filled rectangle (Vector version)}
-procedure DrawRectangleV(position, size: TVector2; color: TColorB); cdecl; external cDllName;
+procedure DrawRectangleV(position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a color-filled rectangle}
-procedure DrawRectangleRec(rec: TRectangle; color: TColorB); cdecl; external cDllName;
+procedure DrawRectangleRec(rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a color-filled rectangle with pro parameters}
-procedure DrawRectanglePro(rec: TRectangle; origin: TVector2; rotation: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawRectanglePro(rec: TRectangle; origin: TVector2; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a vertical-gradient-filled rectangle}
-procedure DrawRectangleGradientV(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external cDllName;
+procedure DrawRectangleGradientV(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a horizontal-gradient-filled rectangle}
-procedure DrawRectangleGradientH(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external cDllName;
+procedure DrawRectangleGradientH(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a gradient-filled rectangle with custom vertex colors}
-procedure DrawRectangleGradientEx(rec: TRectangle; col1, col2, col3, col4: TColorB); cdecl; external cDllName;
+procedure DrawRectangleGradientEx(rec: TRectangle; col1, col2, col3, col4: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle outline}
-procedure DrawRectangleLines(posX, posY, width, height: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawRectangleLines(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle outline with extended parameters}
-procedure DrawRectangleLinesEx(rec: TRectangle; lineThick: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawRectangleLinesEx(rec: TRectangle; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle with rounded edges}
-procedure DrawRectangleRounded(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawRectangleRounded(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle with rounded edges outline}
-procedure DrawRectangleRoundedLines(rec: TRectangle; roundness: Single; segments: Integer; lineThick: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawRectangleRoundedLines(rec: TRectangle; roundness: Single; segments: Integer; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a color-filled triangle (vertex in counter-clockwise order!)}
-procedure DrawTriangle(v1, v2, v3: TVector2; color: TColorB); cdecl; external cDllName;
+procedure DrawTriangle(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw triangle outline (vertex in counter-clockwise order!)}
-procedure DrawTriangleLines(v1, v2, v3: TVector2; color: TColorB); cdecl; external cDllName;
+procedure DrawTriangleLines(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a triangle fan defined by points (first vertex is the center)}
-procedure DrawTriangleFan(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawTriangleFan(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a triangle strip defined by points}
-procedure DrawTriangleStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawTriangleStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a regular polygon (Vector version)}
-procedure DrawPoly(center: TVector2; sides: Integer; radius: Single; rotation: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawPoly(center: TVector2; sides: Integer; radius: Single; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a polygon outline of n sides}
-procedure DrawPolyLines(center: TVector2; sides: Integer; radius, rotation: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawPolyLines(center: TVector2; sides: Integer; radius, rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a polygon outline of n sides with extended parameters }
-procedure DrawPolyLinesEx(center: TVector2; sides: Integer; radius, rotation, lineThick: single; color: TColorB); cdecl; external cDllName;
+procedure DrawPolyLinesEx(center: TVector2; sides: Integer; radius, rotation, lineThick: single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Basic shapes collision detection functions *)
 
 {Check collision between two rectangles}
-function CheckCollisionRecs(rec1, rec2: TRectangle): Boolean; cdecl; external cDllName;
+function CheckCollisionRecs(rec1, rec2: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check collision between two circles}
-function CheckCollisionCircles(center1: TVector2; radius1: Single; center2: TVector2; radius2: Single): Boolean; cdecl; external cDllName;
+function CheckCollisionCircles(center1: TVector2; radius1: Single; center2: TVector2; radius2: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check collision between circle and rectangle}
-function CheckCollisionCircleRec(center: TVector2; radius: Single; rec: TRectangle): Boolean; cdecl; external cDllName;
+function CheckCollisionCircleRec(center: TVector2; radius: Single; rec: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if point is inside rectangle}
-function CheckCollisionPointRec(point: TVector2; rec: TRectangle): Boolean; cdecl; external cDllName;
+function CheckCollisionPointRec(point: TVector2; rec: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if point is inside circle}
-function CheckCollisionPointCircle(point, center: TVector2; radius: Single): Boolean; cdecl; external cDllName;
+function CheckCollisionPointCircle(point, center: TVector2; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if point is inside a triangle}
-function CheckCollisionPointTriangle(point, p1, p2, p3: TVector2): Boolean; cdecl; external cDllName;
+function CheckCollisionPointTriangle(point, p1, p2, p3: TVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check the collision between two lines defined by two points each, returns collision point by reference}
-function CheckCollisionLines(startPos1, endPos1, startPos2, endPos2: TVector2; collisionPoint: PVector2): Boolean; cdecl; external cDllName;
+function CheckCollisionLines(startPos1, endPos1, startPos2, endPos2: TVector2; collisionPoint: PVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]}
-function CheckCollisionPointLine(point, p1, p2: TVector2; threshold: Integer): Boolean; cdecl; external cDllName;
+function CheckCollisionPointLine(point, p1, p2: TVector2; threshold: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get collision rectangle for two rectangles collision}
-function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external cDllName;
+function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 //------------------------------------------------------------------------------------
 // Texture Loading and Drawing Functions (Module: textures)
@@ -1438,221 +1444,221 @@ function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external cD
 // NOTE: This functions do not require GPU access
 
 {Load image from file into CPU memory (RAM)}
-function LoadImage(fileName: PChar): TImage; cdecl; external cDllName;
+function LoadImage(fileName: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load image from RAW file data}
-function LoadImageRaw(fileName: PChar; width, height, format, headerSize: Integer): TImage; cdecl; external cDllName;
+function LoadImageRaw(fileName: PChar; width, height, format, headerSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load image sequence from file (frames appended to image.data)}
-function LoadImageAnim(fileName: PChar; frames: PInteger):TImage; cdecl; external cDllName;
+function LoadImageAnim(fileName: PChar; frames: PInteger):TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load image from memory buffer, fileType refers to extension: i.e. '.png'}
-function LoadImageFromMemory(fileType: PChar; fileData: Pointer; dataSize: Integer): TImage; cdecl; external cDllName;
+function LoadImageFromMemory(fileType: PChar; fileData: Pointer; dataSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load image from GPU texture data}
-function LoadImageFromTexture(texture: TTexture2D): TImage; cdecl; external cDllName;
+function LoadImageFromTexture(texture: TTexture2D): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load image from screen buffer and (screenshot)}
-function LoadImageFromScreen: TImage; cdecl; external cDllName;
+function LoadImageFromScreen: TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload image from CPU memory (RAM)}
-procedure UnloadImage(image: TImage); cdecl; external cDllName;
+procedure UnloadImage(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Export image data to file, returns true on success}
-function ExportImage(image: TImage; fileName: PChar): Boolean; cdecl; external cDllName;
+function ExportImage(image: TImage; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Export image as code file defining an array of bytes, returns true on success  }
-function ExportImageAsCode(image: TImage; fileName: PChar): Boolean; cdecl; external cDllName;
+function ExportImageAsCode(image: TImage; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Image generation functions *)
 
 {Generate image: plain color}
-function GenImageColor(width, height: Integer; color: TColorB): TImage; cdecl; external cDllName;
+function GenImageColor(width, height: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image: vertical gradient}
-function GenImageGradientV(width, height: Integer; top, bottom: TColorB): TImage; cdecl; external cDllName;
+function GenImageGradientV(width, height: Integer; top, bottom: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image: horizontal gradient}
-function GenImageGradientH(width, height: Integer; left, right: TColorB): TImage; cdecl; external cDllName;
+function GenImageGradientH(width, height: Integer; left, right: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image: radial gradient}
-function GenImageGradientRadial(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external cDllName;
+function GenImageGradientRadial(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image: checked}
-function GenImageChecked(width, height, checksX, checksY: Integer; col1, col2: TColorB): TImage; cdecl; external cDllName;
+function GenImageChecked(width, height, checksX, checksY: Integer; col1, col2: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image: white noise}
-function GenImageWhiteNoise(width, height: Integer; factor: Single): TImage; cdecl; external cDllName;
+function GenImageWhiteNoise(width, height: Integer; factor: Single): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image: cellular algorithm, bigger tileSize means bigger cells}
-function GenImageCellular(width, height, tileSize: Integer): TImage; cdecl; external cDllName;
+function GenImageCellular(width, height, tileSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Image manipulation functions *)
 
 {Create an image duplicate (useful for transformations)}
-function ImageCopy(image: TImage): TImage; cdecl; external cDllName;
+function ImageCopy(image: TImage): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Create an image from another image piece}
-function ImageFromImage(image: TImage; rec: TRectangle): TImage; cdecl; external cDllName;
+function ImageFromImage(image: TImage; rec: TRectangle): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Create an image from text (default font)}
-function ImageText(text: PChar; fontSize: Integer; color: TColorB): TImage; cdecl; external cDllName;
+function ImageText(text: PChar; fontSize: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Create an image from text (custom sprite font)}
-function ImageTextEx(font: TFont; text: PChar; fontSize, spacing: Single; tint: TColorB): TImage; cdecl; external cDllName;
+function ImageTextEx(font: TFont; text: PChar; fontSize, spacing: Single; tint: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Convert image data to desired format}
-procedure ImageFormat(image: PImage; newFormat: Integer); cdecl; external cDllName;
+procedure ImageFormat(image: PImage; newFormat: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Convert image to POT (power-of-two)}
-procedure ImageToPOT(image: PImage; fill: TColorB); cdecl; external cDllName;
+procedure ImageToPOT(image: PImage; fill: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Crop an image to a defined rectangle}
-procedure ImageCrop(image: PImage; crop: TRectangle); cdecl; external cDllName;
+procedure ImageCrop(image: PImage; crop: TRectangle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Crop image depending on alpha value}
-procedure ImageAlphaCrop(image: PImage; threshold: Single); cdecl; external cDllName;
+procedure ImageAlphaCrop(image: PImage; threshold: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Clear alpha channel to desired color}
-procedure ImageAlphaClear(image: PImage; color: TColorB; threshold: Single); cdecl; external cDllName;
+procedure ImageAlphaClear(image: PImage; color: TColorB; threshold: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Apply alpha mask to image}
-procedure ImageAlphaMask(image: PImage; alphaMask: TImage); cdecl; external cDllName;
+procedure ImageAlphaMask(image: PImage; alphaMask: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Premultiply alpha channel}
-procedure ImageAlphaPremultiply(image: PImage); cdecl; external cDllName;
+procedure ImageAlphaPremultiply(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Resize image (Bicubic scaling algorithm)}
-procedure ImageResize(image: PImage; newWidth, newHeight: Integer); cdecl; external cDllName;
+procedure ImageResize(image: PImage; newWidth, newHeight: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Resize image (Nearest-Neighbor scaling algorithm)}
-procedure ImageResizeNN(image: PImage; newWidth, newHeight: Integer); cdecl; external cDllName;
+procedure ImageResizeNN(image: PImage; newWidth, newHeight: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Resize canvas and fill with color}
-procedure ImageResizeCanvas(image: PImage; newWidth, newHeight, offsetX, offsetY: Integer; fill: TColorB); cdecl; external cDllName;
+procedure ImageResizeCanvas(image: PImage; newWidth, newHeight, offsetX, offsetY: Integer; fill: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Compute all mipmap levels for a provided image}
-procedure ImageMipmaps(image: PImage); cdecl; external cDllName;
+procedure ImageMipmaps(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Dither image data to 16bpp or lower (Floyd-Steinberg dithering)}
-procedure ImageDither(image: PImage; rBpp, gBpp, bBpp, aBpp: Integer); cdecl; external cDllName;
+procedure ImageDither(image: PImage; rBpp, gBpp, bBpp, aBpp: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Flip image vertically}
-procedure ImageFlipVertical(image: PImage); cdecl; external cDllName;
+procedure ImageFlipVertical(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Flip image horizontally}
-procedure ImageFlipHorizontal(image: PImage); cdecl; external cDllName;
+procedure ImageFlipHorizontal(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Rotate image clockwise 90deg}
-procedure ImageRotateCW(image: PImage); cdecl; external cDllName;
+procedure ImageRotateCW(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Rotate image counter-clockwise 90deg}
-procedure ImageRotateCCW(image: PImage); cdecl; external cDllName;
+procedure ImageRotateCCW(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Modify image color: tint}
-procedure ImageColorTint(image: PImage; color: TColorB); cdecl; external cDllName;
+procedure ImageColorTint(image: PImage; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Modify image color: invert}
-procedure ImageColorInvert(image: PImage); cdecl; external cDllName;
+procedure ImageColorInvert(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Modify image color: grayscale}
-procedure ImageColorGrayscale(image: PImage); cdecl; external cDllName;
+procedure ImageColorGrayscale(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Modify image color: contrast (-100 to 100)}
-procedure ImageColorContrast(image: PImage; contrast: Single); cdecl; external cDllName;
+procedure ImageColorContrast(image: PImage; contrast: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Modify image color: brightness (-255 to 255)}
-procedure ImageColorBrightness(image: PImage; brightness: Single); cdecl; external cDllName;
+procedure ImageColorBrightness(image: PImage; brightness: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Modify image color: replace color}
-procedure ImageColorReplace(image: PImage; color, replace: TColorB); cdecl; external cDllName;
+procedure ImageColorReplace(image: PImage; color, replace: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load color data from image as a Color array (RGBA - 32bit)}
-function LoadImageColors(image: TImage): PColorB; cdecl; external cDllName;
+function LoadImageColors(image: TImage): PColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load colors palette from image as a Color array (RGBA - 32bit)}
-function LoadImagePalette(image: TImage; maxPaletteSize: Integer; colorCount: PInteger): PColorB; cdecl; external cDllName;
+function LoadImagePalette(image: TImage; maxPaletteSize: Integer; colorCount: PInteger): PColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload color data loaded with LoadImageColors()}
-procedure UnloadImageColors(colors: PColorB); cdecl; external cDllName;
+procedure UnloadImageColors(colors: PColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload colors palette loaded with LoadImagePalette()}
-procedure UnloadImagePalette(colors: PColorB); cdecl; external cDllName;
+procedure UnloadImagePalette(colors: PColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get image alpha border rectangle}
-function GetImageAlphaBorder(image: TImage; threshold: Single): TRectangle; cdecl; external cDllName;
+function GetImageAlphaBorder(image: TImage; threshold: Single): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get image pixel color at (x, y) position}
-function GetImageColor(image: TImage; x, y: Integer): TColorB; cdecl; external cDllName;
+function GetImageColor(image: TImage; x, y: Integer): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Image drawing functions *)
 // NOTE: Image software-rendering functions (CPU)
 
 {Clear image background with given color}
-procedure ImageClearBackground(dst: PImage; color: TColorB); cdecl; external cDllName;
+procedure ImageClearBackground(dst: PImage; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw pixel within an image}
-procedure ImageDrawPixel(dst: PImage; posX, posY: Integer; color: TColorB); cdecl; external cDllName;
+procedure ImageDrawPixel(dst: PImage; posX, posY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw pixel within an image (Vector version)}
-procedure ImageDrawPixelV(dst: PImage; position: TVector2; color: TColorB); cdecl; external cDllName;
+procedure ImageDrawPixelV(dst: PImage; position: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw line within an image}
-procedure ImageDrawLine(dst: PImage; startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external cDllName;
+procedure ImageDrawLine(dst: PImage; startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw line within an image (Vector version)}
-procedure ImageDrawLineV(dst: PImage; start, _end: TVector2; color: TColorB); cdecl; external cDllName;
+procedure ImageDrawLineV(dst: PImage; start, _end: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw circle within an image}
-procedure ImageDrawCircle(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external cDllName;
+procedure ImageDrawCircle(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw circle within an image (Vector version)}
-procedure ImageDrawCircleV(dst: PImage; center: TVector2; radius: Integer; color: TColorB); cdecl; external cDllName;
+procedure ImageDrawCircleV(dst: PImage; center: TVector2; radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle within an image}
-procedure ImageDrawRectangle(dst: PImage; posX, posY, width, height: Integer; color: TColorB);cdecl;external cDllName;
+procedure ImageDrawRectangle(dst: PImage; posX, posY, width, height: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle within an image (Vector version)}
-procedure ImageDrawRectangleV(dst: PImage; position, size: TVector2; color: TColorB); cdecl; external cDllName;
+procedure ImageDrawRectangleV(dst: PImage; position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle within an image}
-procedure ImageDrawRectangleRec(dst: PImage; rec: TRectangle; color: TColorB); cdecl; external cDllName;
+procedure ImageDrawRectangleRec(dst: PImage; rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle lines within an image}
-procedure ImageDrawRectangleLines(dst: PImage; rec: TRectangle; thick: Integer; color: TColorB); cdecl; external cDllName;
+procedure ImageDrawRectangleLines(dst: PImage; rec: TRectangle; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a source image within a destination image (tint applied to source)}
-procedure ImageDraw(dst: PImage; src: TImage; srcRec, dstRec: TRectangle; tint: TColorB); cdecl; external cDllName;
+procedure ImageDraw(dst: PImage; src: TImage; srcRec, dstRec: TRectangle; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw text (using default font) within an image (destination)}
-procedure ImageDrawText(dst: PImage; text: PChar; posX, posY, fontSize: Integer; color:TColorB); cdecl; external cDllName;
+procedure ImageDrawText(dst: PImage; text: PChar; posX, posY, fontSize: Integer; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw text (custom sprite font) within an image (destination)}
-procedure ImageDrawTextEx(dst: PImage; font: TFont; text: PChar; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external cDllName;
+procedure ImageDrawTextEx(dst: PImage; font: TFont; text: PChar; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Texture loading functions *)
 // NOTE: These functions require GPU access
 
 {Load texture from file into GPU memory (VRAM)}
-function LoadTexture(fileName: PChar): TTexture2D; cdecl; external cDllName;
+function LoadTexture(fileName: PChar): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load texture from image data}
-function LoadTextureFromImage(image: TImage): TTexture2D; cdecl; external cDllName;
+function LoadTextureFromImage(image: TImage): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load cubemap from image, multiple image cubemap layouts supported}
-function LoadTextureCubemap(image: TImage; layout: Integer): TTextureCubemap; cdecl; external cDllName;
+function LoadTextureCubemap(image: TImage; layout: Integer): TTextureCubemap; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load texture for rendering (framebuffer)}
-function LoadRenderTexture(width, height: Integer): TRenderTexture2D; cdecl; external cDllName;
+function LoadRenderTexture(width, height: Integer): TRenderTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload texture from GPU memory (VRAM)}
-procedure UnloadTexture(texture: TTexture2D); cdecl; external cDllName;
+procedure UnloadTexture(texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload render texture from GPU memory (VRAM)}
-procedure UnloadRenderTexture(target: TRenderTexture2D); cdecl; external cDllName;
+procedure UnloadRenderTexture(target: TRenderTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Update GPU texture with new data}
-procedure UpdateTexture(texture: TTexture2D; pixels: Pointer); cdecl; external cDllName;
+procedure UpdateTexture(texture: TTexture2D; pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Update GPU texture rectangle with new data}
-procedure UpdateTextureRec(texture: TTexture2D; rec: TRectangle; pixels: Pointer); cdecl; external cDllName;
+procedure UpdateTextureRec(texture: TTexture2D; rec: TRectangle; pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Texture configuration functions *)
 
 {Generate GPU mipmaps for a texture}
-procedure GenTextureMipmaps(texture: PTexture2D); cdecl; external cDllName;
+procedure GenTextureMipmaps(texture: PTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set texture scaling filter mode}
-procedure SetTextureFilter(texture: TTexture2D; filter: Integer); cdecl; external cDllName;
+procedure SetTextureFilter(texture: TTexture2D; filter: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set texture wrapping mode}
-procedure SetTextureWrap(texture: TTexture2D; wrap: Integer); cdecl; external cDllName;
+procedure SetTextureWrap(texture: TTexture2D; wrap: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Texture drawing functions *)
 
 {Draw a Texture2D}
-procedure DrawTexture(texture: TTexture2D; posX, posY: Integer; tint: TColorB); cdecl; external cDllName;
+procedure DrawTexture(texture: TTexture2D; posX, posY: Integer; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a Texture2D with position defined as Vector2}
-procedure DrawTextureV(texture: TTexture2D; position: TVector2; tint: TColorB); cdecl; external cDllName;
+procedure DrawTextureV(texture: TTexture2D; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a Texture2D with extended parameters}
-procedure DrawTextureEx(texture: TTexture2D; position: TVector2; rotation, scale: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawTextureEx(texture: TTexture2D; position: TVector2; rotation, scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a part of a texture defined by a rectangle}
-procedure DrawTextureRec(texture: TTexture2D; source: TRectangle; position: TVector2; tint: TColorB); cdecl; external cDllName;
+procedure DrawTextureRec(texture: TTexture2D; source: TRectangle; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw texture quad with tiling and offset parameters}
-procedure DrawTextureQuad(texture: TTexture2D; tiling, offset: TVector2; quad: TRectangle; tint: TColorB); cdecl; external cDllName;
+procedure DrawTextureQuad(texture: TTexture2D; tiling, offset: TVector2; quad: TRectangle; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.}
-procedure DrawTextureTiled(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation, scale: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawTextureTiled(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation, scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a part of a texture defined by a rectangle with 'pro' parameters}
-procedure DrawTexturePro(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawTexturePro(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draws a texture (or part of it) that stretches or shrinks nicely}
-procedure DrawTextureNPatch(texture: TTexture2D; nPatchInfo: TNPatchInfo; dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB);cdecl;external cDllName;
+procedure DrawTextureNPatch(texture: TTexture2D; nPatchInfo: TNPatchInfo; dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a textured polygon}
-procedure DrawTexturePoly(texture: TTexture2D; center: TVector2; points: PVector2; texcoords: PVector2; pointCount: Integer; tint: TColorB); cdecl; external cDllName;
+procedure DrawTexturePoly(texture: TTexture2D; center: TVector2; points: PVector2; texcoords: PVector2; pointCount: Integer; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Color/pixel related functions *)
 
 {Get color with alpha applied, alpha goes from 0.0f to 1.0f}
-function Fade(color: TColorB; alpha: Single): TColorB; cdecl; external cDllName;
+function Fade(color: TColorB; alpha: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get hexadecimal value for a Color}
-function ColorToInt(color: TColorB): Integer; cdecl; external cDllName;
+function ColorToInt(color: TColorB): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get Color normalized as float [0..1]}
-function ColorNormalize(color: TColorB): TVector4; cdecl; external cDllName;
+function ColorNormalize(color: TColorB): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get Color from normalized values [0..1]}
-function ColorFromNormalized(normalized: TVector4): TColorB; cdecl; external cDllName;
+function ColorFromNormalized(normalized: TVector4): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get HSV values for a Color, hue [0..360], saturation/value [0..1]}
-function ColorToHSV(color: TColorB): TVector3; cdecl; external cDllName;
+function ColorToHSV(color: TColorB): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get a Color from HSV values, hue [0..360], saturation/value [0..1]}
-function ColorFromHSV(hue, saturation, value: Single): TColorB; cdecl; external cDllName;
+function ColorFromHSV(hue, saturation, value: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get color with alpha applied, alpha goes from 0.0f to 1.0f}
-function ColorAlpha(color: TColorB; alpha: Single): TColorB; cdecl; external cDllName;
+function ColorAlpha(color: TColorB; alpha: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get src alpha-blended into dst color with tint}
-function ColorAlphaBlend(dst, src, tint: TColorB): TColorB; cdecl; external cDllName;
+function ColorAlphaBlend(dst, src, tint: TColorB): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get Color structure from hexadecimal value}
-function GetColor(hexValue: LongWord): TColorB; cdecl; external cDllName;
+function GetColor(hexValue: LongWord): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get Color from a source pixel pointer of certain format}
-function GetPixelColor(srcPtr: Pointer; format: Integer): TColorB; cdecl; external cDllName;
+function GetPixelColor(srcPtr: Pointer; format: Integer): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set color formatted into destination pixel pointer}
-procedure SetPixelColor(dstPtr: Pointer; color: TColorB; format: Integer); cdecl; external cDllName;
+procedure SetPixelColor(dstPtr: Pointer; color: TColorB; format: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get pixel data size in bytes for certain format}
-function GetPixelDataSize(width, height, format: Integer): Integer; cdecl; external cDllName;
+function GetPixelDataSize(width, height, format: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 //------------------------------------------------------------------------------------
 // TFont Loading and Text Drawing Functions (Module: text)
@@ -1661,107 +1667,107 @@ function GetPixelDataSize(width, height, format: Integer): Integer; cdecl; exter
 (* Font loading/unloading functions *)
 
 {Get the default Font}
-function GetFontDefault: TFont; cdecl; external cDllName;
+function GetFontDefault: TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load font from file into GPU memory (VRAM)}
-function LoadFont(fileName: PChar): TFont; cdecl; external cDllName;
+function LoadFont(fileName: PChar): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load font from file with extended parameters, use NULL for fontChars and 0 for glyphCount to load the default character set}
-function LoadFontEx(fileName: Pchar; fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external cDllName;
+function LoadFontEx(fileName: Pchar; fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load font from Image (XNA style)}
-function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external cDllName;
+function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load font from memory buffer, fileType refers to extension: i.e. '.ttf'}
-function LoadFontFromMemory(fileType: PChar; fileData: Pointer; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external cDllName;
+function LoadFontFromMemory(fileType: PChar; fileData: Pointer; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load font data for further uses}
-function LoadFontData(fileData: Pointer; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount, _type: Integer): PGlyphInfo; cdecl; external cDllName;
+function LoadFontData(fileData: Pointer; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount, _type: Integer): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image font atlas using chars info}
-function GenImageFontAtlas(chars: PGlyphInfo; recs: PPRectangle; glyphCount, fontSize, padding, packMethod: Integer): TImage; cdecl; external cDllName;
+function GenImageFontAtlas(chars: PGlyphInfo; recs: PPRectangle; glyphCount, fontSize, padding, packMethod: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload font chars info data (RAM)}
-procedure UnloadFontData(chars: PGlyphInfo; glyphCount: Integer); cdecl; external cDllName;
+procedure UnloadFontData(chars: PGlyphInfo; glyphCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload Font from GPU memory (VRAM)}
-procedure UnloadFont(font: TFont); cdecl; external cDllName;
+procedure UnloadFont(font: TFont); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Export font as code file, returns true on success}
-procedure ExportFontAsCode(font: TFont; fileName: PChar); cdecl; external cDllName;
+procedure ExportFontAsCode(font: TFont; fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Text drawing functions *)
 
 {Draw current FPS}
-procedure DrawFPS(posX, posY: Integer); cdecl; external cDllName;
+procedure DrawFPS(posX, posY: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw text (using default font)}
-procedure DrawText(text: PChar; posX, posY, fontSize: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawText(text: PChar; posX, posY, fontSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw text using font and additional parameters}
-procedure DrawTextEx(font: TFont; text: PChar; position: TVector2; fontSize, spacing: Single; tint:TColorB); cdecl; external cDllName;
+procedure DrawTextEx(font: TFont; text: PChar; position: TVector2; fontSize, spacing: Single; tint:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw text using Font and pro parameters (rotation)}
-procedure DrawTextPro(font: TFont; text: PChar; position, origin: TVector2; rotation, fontSize, spacing: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawTextPro(font: TFont; text: PChar; position, origin: TVector2; rotation, fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw one character (codepoint)}
-procedure DrawTextCodepoint(font: TFont; codepoint: Integer; position: TVector2; fontSize: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawTextCodepoint(font: TFont; codepoint: Integer; position: TVector2; fontSize: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw multiple character (codepoint)}
-procedure DrawTextCodepoints(font: TFont; const codepoints: PInteger; count: Integer; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawTextCodepoints(font: TFont; const codepoints: PInteger; count: Integer; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Text font info functions *)
 
 {Measure string width for default font}
-function MeasureText(text: PChar; fontSize: Integer): Integer; cdecl; external cDllName;
+function MeasureText(text: PChar; fontSize: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Measure string size for Font}
-function MeasureTextEx(font: TFont; text: PChar; fontSize, spacing: Single): TVector2; cdecl; external cDllName;
+function MeasureTextEx(font: TFont; text: PChar; fontSize, spacing: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found}
-function GetGlyphIndex(font: TFont; codepoint: Integer): Integer; cdecl; external cDllName;
+function GetGlyphIndex(font: TFont; codepoint: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found}
-function GetGlyphInfo(font: TFont; codepoint: Integer): TGlyphInfo; cdecl; external cDllName;
+function GetGlyphInfo(font: TFont; codepoint: Integer): TGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found}
-function GetGlyphAtlasRec(font: TFont; codepoint: Integer): TRectangle; cdecl; external cDllName;
+function GetGlyphAtlasRec(font: TFont; codepoint: Integer): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Text codepoints management functions (unicode characters) *)
 
 {Load all codepoints from a UTF-8 text string, codepoints count returned by parameter}
-function LoadCodepoints(text: PChar; count: PInteger): PInteger; cdecl; external cDllName;
+function LoadCodepoints(text: PChar; count: PInteger): PInteger; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload codepoints data from memory}
-procedure UnloadCodepoints(codepoints: PInteger); cdecl; external cDllName;
+procedure UnloadCodepoints(codepoints: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get total number of codepoints in a UTF-8 encoded string}
-function GetCodepointCount(text: PChar): Integer; cdecl; external cDllName;
+function GetCodepointCount(text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
-function GetCodepoint(text: PChar; bytesProcessed: PInteger): Integer; cdecl; external cDllName;
+function GetCodepoint(text: PChar; bytesProcessed: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Encode one codepoint into UTF-8 byte array (array length returned as parameter)}
-function CodepointToUTF8(codepoint: Integer; byteSize: PInteger): PChar; cdecl; external cDllName;
+function CodepointToUTF8(codepoint: Integer; byteSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Encode text as codepoints array into UTF-8 text string (WARNING: memory must be freed!)}
-function TextCodepointsToUTF8(const codepoints: PInteger; length: Integer): PChar; cdecl; external cDllName;
+function TextCodepointsToUTF8(const codepoints: PInteger; length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Text strings management functions (no UTF-8 strings, only byte chars) *)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
 
 {Copy one string to another, returns bytes copied}
-function TextCopy(dst, src: PChar): Integer; cdecl; external cDllName;
+function TextCopy(dst, src: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if two text string are equal}
-function TextIsEqual(text1, text2: PChar): Boolean; cdecl; external cDllName;
+function TextIsEqual(text1, text2: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get text length, checks for '\0' ending}
-function TextLength(text: PChar): LongWord; cdecl; external cDllName;
+function TextLength(text: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 {Text formatting with variables (sprintf() style)}
-function TextFormat(text: PChar): PChar; cdecl; varargs; external cDllName;
+function TextFormat(text: PChar): PChar; cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get a piece of a text string}
-function TextSubtext(text: PChar; position, length: Integer): PChar; cdecl; external cDllName;
+function TextSubtext(text: PChar; position, length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Replace text string (WARNING: memory must be freed!)}
-function TextReplace(text, replace, by: PChar): PChar; cdecl; external cDllName;
+function TextReplace(text, replace, by: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Insert text in a position (WARNING: memory must be freed!)}
-function TextInsert(text, insert: PChar; position: Integer): PChar; cdecl; external cDllName;
+function TextInsert(text, insert: PChar; position: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Join text strings with delimiter}
-function TextJoin(textList: PPChar; count: Integer; delimiter: PChar): PChar; cdecl; external cDllName;
+function TextJoin(textList: PPChar; count: Integer; delimiter: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Split text into multiple strings}
-function TextSplit(text: PChar; delimiter: Char; count: PInteger): PPChar; cdecl; external cDllName;
+function TextSplit(text: PChar; delimiter: Char; count: PInteger): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Append text at specific position and move cursor!}
-procedure TextAppend(text, append: PChar; position: PInteger); cdecl; external cDllName;
+procedure TextAppend(text, append: PChar; position: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Find first text occurrence within a string}
-function TextFindIndex(text, find: PChar): Integer; cdecl; external cDllName;
+function TextFindIndex(text, find: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get upper case version of provided string}
-function TextToUpper(text: PChar): PChar; cdecl; external cDllName;
+function TextToUpper(text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get lower case version of provided string}
-function TextToLower(text: PChar):PChar; cdecl; external cDllName;
+function TextToLower(text: PChar):PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get Pascal case notation version of provided string}
-function TextToPascal(text: PChar): PChar; cdecl; external cDllName;
+function TextToPascal(text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get integer value from text (negative values not supported)}
-function TextToInteger(text: PChar): Integer; cdecl; external cDllName;
+function TextToInteger(text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 //------------------------------------------------------------------------------------
 // Basic 3d Shapes Drawing Functions (Module: models)
@@ -1770,47 +1776,47 @@ function TextToInteger(text: PChar): Integer; cdecl; external cDllName;
 (* Basic geometric 3D shapes drawing functions *)
 
 {Draw a line in 3D world space}
-procedure DrawLine3D(startPos, endPos: TVector3; color: TColorB); cdecl; external cDllName;
+procedure DrawLine3D(startPos, endPos: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a point in 3D space, actually a small line}
-procedure DrawPoint3D(position: TVector3; color: TColorB); cdecl; external cDllName;
+procedure DrawPoint3D(position: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a circle in 3D world space}
-procedure DrawCircle3D(center: TVector3; radius: Single; rotationAxis: TVector3; rotationAngle: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawCircle3D(center: TVector3; radius: Single; rotationAxis: TVector3; rotationAngle: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a color-filled triangle (vertex in counter-clockwise order!)}
-procedure DrawTriangle3D(v1, v2, v3: TVector3; color: TColorB); cdecl; external cDllName;
+procedure DrawTriangle3D(v1, v2, v3: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a triangle strip defined by points}
-procedure DrawTriangleStrip3D(points: PVector3; pointCount: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawTriangleStrip3D(points: PVector3; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw cube}
-procedure DrawCube(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawCube(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw cube (Vector version)}
-procedure DrawCubeV(position, size: TVector3; color: TColorB); cdecl; external cDllName;
+procedure DrawCubeV(position, size: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw cube wires}
-procedure DrawCubeWires(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawCubeWires(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw cube wires (Vector version)}
-procedure DrawCubeWiresV(position, size: TVector3; color: TColorB); cdecl; external cDllName;
+procedure DrawCubeWiresV(position, size: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw cube textured}
-procedure DrawCubeTexture(texture: TTexture2D; position: TVector3; width, height, length: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawCubeTexture(texture: TTexture2D; position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw cube with a region of a texture}
-procedure DrawCubeTextureRec(texture: TTexture2D; source: TRectangle; position: TVector3; width, height, length: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawCubeTextureRec(texture: TTexture2D; source: TRectangle; position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw sphere}
-procedure DrawSphere(centerPos: TVector3; radius: Single; color: TColorB); cdecl; external cDllName;
+procedure DrawSphere(centerPos: TVector3; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw sphere with extended parameters}
-procedure DrawSphereEx(centerPos: TVector3; radius: Single; rings, slices: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawSphereEx(centerPos: TVector3; radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw sphere wires}
-procedure DrawSphereWires(centerPos: TVector3; radius: Single; rings, slices: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawSphereWires(centerPos: TVector3; radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a cylinder/cone}
-procedure DrawCylinder(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawCylinder(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a cylinder with base at startPos and top at endPos}
-procedure DrawCylinderEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawCylinderEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a cylinder/cone wires}
-procedure DrawCylinderWires(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawCylinderWires(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a cylinder wires with base at startPos and top at endPos}
-procedure DrawCylinderWiresEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external cDllName;
+procedure DrawCylinderWiresEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a plane XZ}
-procedure DrawPlane(centerPos: TVector3; size: TVector2; color: TColorB); cdecl; external cDllName;
+procedure DrawPlane(centerPos: TVector3; size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a ray line}
-procedure DrawRay(ray: TRay; color: TColorB); cdecl; external cDllName;
+procedure DrawRay(ray: TRay; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a grid (centered at (0, 0, 0))}
-procedure DrawGrid(slices: Integer; spacing: Single); cdecl; external cDllName;
+procedure DrawGrid(slices: Integer; spacing: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 //------------------------------------------------------------------------------------
 // TModel 3d Loading and Drawing Functions (Module: models)
@@ -1819,128 +1825,128 @@ procedure DrawGrid(slices: Integer; spacing: Single); cdecl; external cDllName;
 (* Model management functions *)
 
 {Load model from files (meshes and materials)}
-function LoadModel(fileName: PChar): TModel; cdecl; external cDllName;
+function LoadModel(fileName: PChar): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load model from generated mesh (default material)}
-function LoadModelFromMesh(mesh: TMesh): TModel; cdecl; external cDllName;
+function LoadModelFromMesh(mesh: TMesh): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload model (including meshes) from memory (RAM and/or VRAM)}
-procedure UnloadModel(model: TModel); cdecl; external cDllName;
+procedure UnloadModel(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload model (but not meshes) from memory (RAM and/or VRAM)}
-procedure UnloadModelKeepMeshes(model: TModel); cdecl; external cDllName;
+procedure UnloadModelKeepMeshes(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Compute model bounding box limits (considers all meshes)}
-function GetModelBoundingBox(model: TModel): TBoundingBox; cdecl; external cDllName;
+function GetModelBoundingBox(model: TModel): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Model drawing functions *)
 
 {Draw a model (with texture if set)}
-procedure DrawModel(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawModel(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a model with extended parameters}
-procedure DrawModelEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external cDllName;
+procedure DrawModelEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a model wires (with texture if set)}
-procedure DrawModelWires(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawModelWires(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a model wires (with texture if set) with extended parameters}
-procedure DrawModelWiresEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external cDllName;
+procedure DrawModelWiresEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw bounding box (wires)}
-procedure DrawBoundingBox(box: TBoundingBox; color: TColorB); cdecl; external cDllName;
+procedure DrawBoundingBox(box: TBoundingBox; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a billboard texture}
-procedure DrawBillboard(camera: TCamera; texture: TTexture2D; position: TVector3; size: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawBillboard(camera: TCamera; texture: TTexture2D; position: TVector3; size: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a billboard texture defined by source}
-procedure DrawBillboardRec(camera: TCamera; texture: TTexture2D; source: TRectangle; position: TVector3; size: TVector2; tint: TColorB); cdecl; external cDllName;
+procedure DrawBillboardRec(camera: TCamera; texture: TTexture2D; source: TRectangle; position: TVector3; size: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a billboard texture defined by source and rotation}
-procedure DrawBillboardPro(camera: TCamera; texture: TTexture2D; source: TRectangle; position, up: TVector3; size, origin: TVector2; rotation: Single; tint: TColorB); cdecl; external cDllName;
+procedure DrawBillboardPro(camera: TCamera; texture: TTexture2D; source: TRectangle; position, up: TVector3; size, origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Mesh management functions *)
 
 {Upload mesh vertex data in GPU and provide VAO/VBO ids}
-procedure UploadMesh(mesh: PMesh; _dynamic: Boolean); cdecl; external cDllName;
+procedure UploadMesh(mesh: PMesh; _dynamic: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Update mesh vertex data in GPU for a specific buffer index}
-procedure UpdateMeshBuffer(mesh: TMesh; index: Integer; const data: Pointer; dataSize, offset: Integer); cdecl; external cDllName;
+procedure UpdateMeshBuffer(mesh: TMesh; index: Integer; const data: Pointer; dataSize, offset: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload mesh data from CPU and GPU}
-procedure UnloadMesh(mesh: TMesh); cdecl; external cDllName;
+procedure UnloadMesh(mesh: TMesh); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a 3d mesh with material and transform}
-procedure DrawMesh(mesh: TMesh; material: TMaterial; transform: TMatrix); cdecl; external cDllName;
+procedure DrawMesh(mesh: TMesh; material: TMaterial; transform: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw multiple mesh instances with material and different transforms}
-procedure DrawMeshInstanced(mesh: TMesh; material: TMaterial;const transforms: PMatrix; instances: Integer); cdecl; external cDllName;
+procedure DrawMeshInstanced(mesh: TMesh; material: TMaterial;const transforms: PMatrix; instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Export mesh data to file, returns true on success}
-function ExportMesh(mesh: TMesh; fileName: PChar): Boolean; cdecl; external cDllName;
+function ExportMesh(mesh: TMesh; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Compute mesh bounding box limits}
-function GetMeshBoundingBox(mesh: TMesh): TBoundingBox; cdecl; external cDllName;
+function GetMeshBoundingBox(mesh: TMesh): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Compute mesh tangents}
-procedure GenMeshTangents(mesh: PMesh); cdecl; external cDllName;
+procedure GenMeshTangents(mesh: PMesh); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Mesh generation functions *)
 
 {Generate polygonal mesh}
-function GenMeshPoly(sides: Integer; radius: Single): TMesh; cdecl; external cDllName;
+function GenMeshPoly(sides: Integer; radius: Single): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate plane mesh (with subdivisions)}
-function GenMeshPlane(width, length: Single; resX, resZ: Integer): TMesh; cdecl; external cDllName;
+function GenMeshPlane(width, length: Single; resX, resZ: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate cuboid mesh}
-function GenMeshCube(width, height, length: Single): TMesh; cdecl; external cDllName;
+function GenMeshCube(width, height, length: Single): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate sphere mesh (standard sphere)}
-function GenMeshSphere(radius: Single; rings, slices: Integer): TMesh; cdecl; external cDllName;
+function GenMeshSphere(radius: Single; rings, slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate half-sphere mesh (no bottom cap)}
-function GenMeshHemiSphere(radius: Single; rings, slices: Integer): TMesh; cdecl; external cDllName;
+function GenMeshHemiSphere(radius: Single; rings, slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate cylinder mesh}
-function GenMeshCylinder(radius, height: Single; slices: Integer): TMesh; cdecl; external cDllName;
+function GenMeshCylinder(radius, height: Single; slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate cone/pyramid mesh}
-function GenMeshCone(radius, height: Single; slices: Integer): TMesh; cdecl; external cDllName;
+function GenMeshCone(radius, height: Single; slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate torus mesh}
-function GenMeshTorus(radius, size: Single; radSeg, sides: Integer): TMesh; cdecl; external cDllName;
+function GenMeshTorus(radius, size: Single; radSeg, sides: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate trefoil knot mesh}
-function GenMeshKnot(radius, size: Single; radSeg, sides: Integer): TMesh; cdecl; external cDllName;
+function GenMeshKnot(radius, size: Single; radSeg, sides: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate heightmap mesh from image data}
-function GenMeshHeightmap(heightmap: TImage; size: TVector3): TMesh; cdecl; external cDllName;
+function GenMeshHeightmap(heightmap: TImage; size: TVector3): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate cubes-based map mesh from image data}
-function GenMeshCubicmap(cubicmap: TImage; cubeSize: TVector3): TMesh; cdecl; external cDllName;
+function GenMeshCubicmap(cubicmap: TImage; cubeSize: TVector3): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Material loading/unloading functions *)
 
 {Load materials from model file}
-function LoadMaterials(fileName: PChar; materialCount: PInteger): PMaterial; cdecl; external cDllName;
+function LoadMaterials(fileName: PChar; materialCount: PInteger): PMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)}
-function LoadMaterialDefault: TMaterial; cdecl; external cDllName;
+function LoadMaterialDefault: TMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload material from GPU memory (VRAM)}
-procedure UnloadMaterial(material: TMaterial); cdecl; external cDllName;
+procedure UnloadMaterial(material: TMaterial); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)}
-procedure SetMaterialTexture(material: PMaterial; mapType: Integer; texture: TTexture2D); cdecl; external cDllName;
+procedure SetMaterialTexture(material: PMaterial; mapType: Integer; texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set material for a mesh}
-procedure SetModelMeshMaterial(model: PModel; meshId, materialId: Integer); cdecl; external cDllName;
+procedure SetModelMeshMaterial(model: PModel; meshId, materialId: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Model animations loading/unloading functions *)
 
 {Load model animations from file}
-function LoadModelAnimations(fileName: PChar; animCount: PLongWord): PModelAnimation; cdecl; external cDllName;
+function LoadModelAnimations(fileName: PChar; animCount: PLongWord): PModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Update model animation pose}
-procedure UpdateModelAnimation(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external cDllName;
+procedure UpdateModelAnimation(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload animation data}
-procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external cDllName;
+procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload animation array data}
-procedure UnloadModelAnimations(animations: PModelAnimation; count: LongWord); cdecl; external cDllName;
+procedure UnloadModelAnimations(animations: PModelAnimation; count: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check model animation skeleton match}
-function IsModelAnimationValid(model: TModel; anim: TModelAnimation): Boolean; cdecl; external cDllName;
+function IsModelAnimationValid(model: TModel; anim: TModelAnimation): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Collision detection functions *)
 
 {Check collision between two spheres}
-function CheckCollisionSpheres(center1: TVector3; radius1: Single; center2: TVector3; radius2: Single): Boolean; cdecl; external cDllName;
+function CheckCollisionSpheres(center1: TVector3; radius1: Single; center2: TVector3; radius2: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check collision between two bounding boxes}
-function CheckCollisionBoxes(box1, box2: TBoundingBox): Boolean; cdecl; external cDllName;
+function CheckCollisionBoxes(box1, box2: TBoundingBox): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check collision between box and sphere}
-function CheckCollisionBoxSphere(box: TBoundingBox; center: TVector3; radius: Single): Boolean; cdecl; external cDllName;
+function CheckCollisionBoxSphere(box: TBoundingBox; center: TVector3; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get collision info between ray and sphere}
-function GetRayCollisionSphere(ray:TRay; center: TVector3; radius: Single): TRayCollision; cdecl; external cDllName;
+function GetRayCollisionSphere(ray:TRay; center: TVector3; radius: Single): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get collision info between ray and box}
-function GetRayCollisionBox(ray: TRay; box: TBoundingBox): TRayCollision; cdecl; external cdllName;
+function GetRayCollisionBox(ray: TRay; box: TBoundingBox): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get collision info between ray and mesh}
-function GetRayCollisionMesh(ray: TRay; mesh: TMesh; transform: TMatrix): TRayCollision; cdecl; external cdllName;
+function GetRayCollisionMesh(ray: TRay; mesh: TMesh; transform: TMatrix): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get collision info between ray and triangle}
-function GetRayCollisionTriangle(ray: TRay; p1, p2, p3: TVector3): TRayCollision; cdecl; external cDllName;
+function GetRayCollisionTriangle(ray: TRay; p1, p2, p3: TVector3): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get collision info between ray and quad}
-function GetRayCollisionQuad(ray: TRay; p1, p2, p3, p4: TVector3): TRayCollision; cdecl; external cDllName;
+function GetRayCollisionQuad(ray: TRay; p1, p2, p3, p4: TVector3): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
@@ -1952,142 +1958,142 @@ TAudioCallback = procedure (bufferData: Pointer; frames: LongWord); cdecl;
 (* Audio device management functions *)
 
 {Initialize audio device and context}
-procedure InitAudioDevice; cdecl; external cDllName;
+procedure InitAudioDevice; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Close the audio device and context}
-procedure CloseAudioDevice; cdecl; external cDllName;
+procedure CloseAudioDevice; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if audio device has been initialized successfully}
-function IsAudioDeviceReady: Boolean; cdecl; external cDllName;
+function IsAudioDeviceReady: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set master volume (listener)}
-procedure SetMasterVolume(volume: Single); cdecl; external cDllName;
+procedure SetMasterVolume(volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Wave/Sound loading/unloading functions *)
 
 {Load wave data from file}
-function LoadWave(fileName: PChar): TWave; cdecl; external cDllName;
+function LoadWave(fileName: PChar): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load wave from memory buffer, fileType refers to extension: i.e. '.wav' }
-function LoadWaveFromMemory(fileType: PChar; fileData: Pointer; dataSize: Integer): TWave; cdecl; external cdllName;
+function LoadWaveFromMemory(fileType: PChar; fileData: Pointer; dataSize: Integer): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load sound from file}
-function LoadSound(fileName: PChar): TSound; cdecl; external cDllName;
+function LoadSound(fileName: PChar): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load sound from wave data}
-function LoadSoundFromWave(wave: TWave): TSound; cdecl; external cDllName;
+function LoadSoundFromWave(wave: TWave): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Update sound buffer with new data}
-procedure UpdateSound(sound: TSound; data: Pointer; sampleCount: Integer); cdecl; external cdllName;
+procedure UpdateSound(sound: TSound; data: Pointer; sampleCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload wave data}
-procedure UnloadWave(wave: TWave); cdecl; external cDllName;
+procedure UnloadWave(wave: TWave); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload sound}
-procedure UnloadSound(sound: TSound); cdecl; external cDllName;
+procedure UnloadSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Export wave data to file, returns true on success}
-function ExportWave(wave: TWave; fileName: PChar): Boolean; cdecl; external cDllName;
+function ExportWave(wave: TWave; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Export wave sample data to code (.h), returns true on success}
-function ExportWaveAsCode(wave: TWave; fileName: PChar): Boolean; cdecl; external cDllName;
+function ExportWaveAsCode(wave: TWave; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Wave/Sound management functions *)
 
 {Play a sound}
-procedure PlaySound(sound: TSound); cdecl; external cDllName;
+procedure PlaySound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Stop playing a sound}
-procedure StopSound(sound: TSound); cdecl; external cDllName;
+procedure StopSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Pause a sound}
-procedure PauseSound(sound: TSound); cdecl; external cDllName;
+procedure PauseSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Resume a paused sound}
-procedure ResumeSound(sound: TSound); cdecl; external cDllName;
+procedure ResumeSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Play a sound (using multichannel buffer pool)}
-procedure PlaySoundMulti(sound: TSound); cdecl; external cDllName;
+procedure PlaySoundMulti(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Stop any sound playing (using multichannel buffer pool)}
-procedure StopSoundMulti; cdecl; external cDllName;
+procedure StopSoundMulti; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get number of sounds playing in the multichannel}
-function GetSoundsPlaying: Integer; cdecl; external cDllName;
+function GetSoundsPlaying: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if a sound is currently playing}
-function IsSoundPlaying(sound: TSound): Boolean; cdecl; external cDllName;
+function IsSoundPlaying(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set volume for a sound (1.0 is max level)}
-procedure SetSoundVolume(sound: TSound; volume: Single); cdecl; external cDllName;
+procedure SetSoundVolume(sound: TSound; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set pitch for a sound (1.0 is base level)}
-procedure SetSoundPitch(sound: TSound; pitch: Single); cdecl; external cDllName;
+procedure SetSoundPitch(sound: TSound; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set pan for a sound (0.5 is center)}
-procedure SetSoundPan(sound: TSound; pan: Single); cdecl; external cDllName;
+procedure SetSoundPan(sound: TSound; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Copy a wave to a new wave}
-function WaveCopy(wave: TWave): TWave; cdecl; external cDllName;
+function WaveCopy(wave: TWave): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Crop a wave to defined samples range}
-procedure WaveCrop(wave: PWave; initSample, finalSample: Integer); cdecl; external cDllName;
+procedure WaveCrop(wave: PWave; initSample, finalSample: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Convert wave data to desired format}
-procedure WaveFormat(wave: PWave; sampleRate, sampleSize, channels: Integer); cdecl; external cDllName;
+procedure WaveFormat(wave: PWave; sampleRate, sampleSize, channels: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load samples data from wave as a floats array}
-function LoadWaveSamples(wave: TWave): PSingle; cdecl; external cDllName;
+function LoadWaveSamples(wave: TWave): PSingle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload samples data loaded with LoadWaveSamples()}
-procedure UnloadWaveSamples(samples: PSingle); cdecl; external cDllName;
+procedure UnloadWaveSamples(samples: PSingle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Music management functions *)
 
 {Load music stream from file}
-function LoadMusicStream(fileName: PChar): TMusic; cdecl; external cDllName;
+function LoadMusicStream(fileName: PChar): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load music stream from data}
-function LoadMusicStreamFromMemory(fileType: PChar; const data: Pointer; dataSize: Integer): TMusic; cdecl; external cDllName;
+function LoadMusicStreamFromMemory(fileType: PChar; const data: Pointer; dataSize: Integer): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload music stream}
-procedure UnloadMusicStream(music: TMusic); cdecl; external cDllName;
+procedure UnloadMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Start music playing}
-procedure PlayMusicStream(music: TMusic); cdecl; external cDllName;
+procedure PlayMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if music is playing}
-function IsMusicStreamPlaying(music: TMusic): Boolean; cdecl; external cDllName;
+function IsMusicStreamPlaying(music: TMusic): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Updates buffers for music streaming}
-procedure UpdateMusicStream(music: TMusic); cdecl; external cDllName;
+procedure UpdateMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Stop music playing}
-procedure StopMusicStream(music: TMusic); cdecl; external cDllName;
+procedure StopMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Pause music playing}
-procedure PauseMusicStream(music: TMusic); cdecl; external cDllName;
+procedure PauseMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Resume playing paused music}
-procedure ResumeMusicStream(music: TMusic); cdecl; external cDllName;
+procedure ResumeMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Seek music to a position (in seconds)}
-procedure SeekMusicStream(music: TMusic; position: Single); cdecl; external cDllName;
+procedure SeekMusicStream(music: TMusic; position: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set volume for music (1.0 is max level)}
-procedure SetMusicVolume(music: TMusic; volume: Single); cdecl; external cDllName;
+procedure SetMusicVolume(music: TMusic; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set pitch for a music (1.0 is base level)}
-procedure SetMusicPitch(music: TMusic; pitch: Single); cdecl; external cDllName;
+procedure SetMusicPitch(music: TMusic; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set pan for a music (0.5 = center)}
-procedure SetMusicPan(music: TMusic; pan: Single); cdecl; external cDllName;
+procedure SetMusicPan(music: TMusic; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get music time length (in seconds)}
-function GetMusicTimeLength(music: TMusic): Single; cdecl; external cDllName;
+function GetMusicTimeLength(music: TMusic): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get current music time played (in seconds)}
-function GetMusicTimePlayed(music: TMusic): Single; cdecl; external cDllName;
+function GetMusicTimePlayed(music: TMusic): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* AudioStream management functions *)
 
 {Load audio stream (to stream raw audio pcm data)}
-function LoadAudioStream(sampleRate, sampleSize, channels: LongWord): TAudioStream; cdecl; external cDllName;
+function LoadAudioStream(sampleRate, sampleSize, channels: LongWord): TAudioStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload audio stream and free memory}
-procedure UnloadAudioStream(stream: TAudioStream); cdecl; external cDllName;
+procedure UnloadAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Update audio stream buffers with data}
-procedure UpdateAudioStream(stream: TAudioStream; data: Pointer; frameCount: Integer); cdecl; external cDllName;
+procedure UpdateAudioStream(stream: TAudioStream; data: Pointer; frameCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if any audio stream buffers requires refill}
-function IsAudioStreamProcessed(stream: TAudioStream): Boolean; cdecl; external cDllName;
+function IsAudioStreamProcessed(stream: TAudioStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Play audio stream}
-procedure PlayAudioStream(stream: TAudioStream); cdecl; external cDllName;
+procedure PlayAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Pause audio stream}
-procedure PauseAudioStream(stream: TAudioStream); cdecl; external cDllName;
+procedure PauseAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Resume audio stream}
-procedure ResumeAudioStream(stream: TAudioStream); cdecl; external cDllName;
+procedure ResumeAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if audio stream is playing}
-function IsAudioStreamPlaying(stream: TAudioStream): Boolean; cdecl; external cDllName;
+function IsAudioStreamPlaying(stream: TAudioStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Stop audio stream}
-procedure StopAudioStream(stream: TAudioStream); cdecl; external cDllName;
+procedure StopAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set volume for audio stream (1.0 is max level)}
-procedure SetAudioStreamVolume(stream: TAudioStream; volume: Single); cdecl; external cDllName;
+procedure SetAudioStreamVolume(stream: TAudioStream; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set pitch for audio stream (1.0 is base level)}
-procedure SetAudioStreamPitch(stream: TAudioStream; pitch: Single); cdecl; external cDllName;
+procedure SetAudioStreamPitch(stream: TAudioStream; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set pan for audio stream (0.5 is centered)}
-procedure SetAudioStreamPan(stream: TAudioStream; pan: Single); cdecl; external cDllName;
+procedure SetAudioStreamPan(stream: TAudioStream; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Default size for new audio streams}
-procedure SetAudioStreamBufferSizeDefault(size: Integer); cdecl; external cDllName;
+procedure SetAudioStreamBufferSizeDefault(size: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Audio thread callback to request new data}
-procedure SetAudioStreamCallback(stream: TAudioStream; callback: TAudioCallback); cdecl; external cDllName;
+procedure SetAudioStreamCallback(stream: TAudioStream; callback: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 {Attach audio stream processor to stream}
-procedure AttachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external cDllName;
+procedure AttachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Detach audio stream processor from stream}
-procedure DetachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external cDllName;
+procedure DetachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Custom Misc Functions to help simplify a few things *)
@@ -2105,6 +2111,17 @@ function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType:
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer);
 
 implementation
+
+{$IFDEF linux}
+  {$IFDEF RAY_STATIC}
+  {$linklib c}
+  {$linklib m}
+  {$linklib dl}
+  {$linklib pthread}
+  {$linklib libraylib.a}
+  {$endif}
+{$endif}
+
 
 
 function Vector2Create(aX: single; aY: single): TVector2;
