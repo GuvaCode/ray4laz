@@ -243,6 +243,7 @@
 #define RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST    0x2701      // GL_LINEAR_MIPMAP_NEAREST
 #define RL_TEXTURE_FILTER_MIP_LINEAR            0x2703      // GL_LINEAR_MIPMAP_LINEAR
 #define RL_TEXTURE_FILTER_ANISOTROPIC           0x3000      // Anisotropic filter (custom identifier)
+#define RL_TEXTURE_MIPMAP_BIAS_RATIO            0x4000      // Texture mipmap bias (percentage ratio)
 
 #define RL_TEXTURE_WRAP_REPEAT                  0x2901      // GL_REPEAT
 #define RL_TEXTURE_WRAP_CLAMP                   0x812F      // GL_CLAMP_TO_EDGE
@@ -717,7 +718,7 @@ RLAPI void rlLoadDrawQuad(void);     // Load and draw a quad
         #include <OpenGL/glext.h>       // OpenGL extensions library
     #else
         // APIENTRY for OpenGL function pointer declarations is required
-        #ifndef APIENTRY
+        #if !defined(APIENTRY)
             #if defined(_WIN32)
                 #define APIENTRY __stdcall
             #else
@@ -1516,7 +1517,7 @@ void rlDisableTextureCubemap(void)
 void rlTextureParameters(unsigned int id, int param, int value)
 {
     glBindTexture(GL_TEXTURE_2D, id);
-    
+
 #if !defined(GRAPHICS_API_OPENGL_11)
     // Reset anisotropy filter, in case it was set
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
@@ -1551,6 +1552,9 @@ void rlTextureParameters(unsigned int id, int param, int value)
             else TRACELOG(RL_LOG_WARNING, "GL: Anisotropic filtering not supported");
 #endif
         } break;
+#if defined(GRAPHICS_API_OPENGL_33)
+        case RL_TEXTURE_MIPMAP_BIAS_RATIO: glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, value/100.0f);
+#endif
         default: break;
     }
 
@@ -2712,9 +2716,9 @@ bool rlCheckRenderBatchLimit(int vCount)
 // Convert image data to OpenGL texture (returns OpenGL valid Id)
 unsigned int rlLoadTexture(const void *data, int width, int height, int format, int mipmapCount)
 {
-    glBindTexture(GL_TEXTURE_2D, 0);    // Free any old binding
-
     unsigned int id = 0;
+
+    glBindTexture(GL_TEXTURE_2D, 0);    // Free any old binding
 
     // Check texture format support by OpenGL 1.1 (compressed textures not supported)
 #if defined(GRAPHICS_API_OPENGL_11)

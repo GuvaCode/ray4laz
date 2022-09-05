@@ -3,7 +3,7 @@ program models_loading_m3d;
 {$mode objfpc}{$H+}
 
 uses 
-cmem, 
+cmem,
 raylib, sysutils;
 
 const
@@ -15,7 +15,6 @@ var
   Position: TVector3;
   model:TModel;
   anims: PModelAnimation;
-  texture: TTexture2d;
   drawMesh,drawSkeleton,animPlaying : boolean;
   animsCount: longint;
   animFrameCounter: integer;
@@ -36,10 +35,6 @@ begin
 
   // Load model
   model := LoadModel('resources/models/m3d/s.m3d'); // Load the animated model mesh and basic data
-  texture := LoadTexture('resources/models/m3d/Stan_Texture.png');
-
-  //model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture:= texture; // Set map diffuse texture
-  SetMaterialTexture(@model.materials[0], MATERIAL_MAP_DIFFUSE, texture); // Set map diffuse texture alt
 
   drawMesh := true;
   drawSkeleton := true;

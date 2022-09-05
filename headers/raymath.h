@@ -201,9 +201,9 @@ RMAPI float Remap(float value, float inputStart, float inputEnd, float outputSta
 // Wrap input value from min to max
 RMAPI float Wrap(float value, float min, float max)
 {
-	float result = value - (max - min)*floorf((value - min)/(max - min));
+    float result = value - (max - min)*floorf((value - min)/(max - min));
 
-	return result;
+    return result;
 }
 
 // Check whether two given floats are almost equal
@@ -760,7 +760,7 @@ RMAPI Vector3 Vector3RotateByAxisAngle(Vector3 v, Vector3 axis, float angle)
     // Ref.: https://en.wikipedia.org/w/index.php?title=Euler%E2%80%93Rodrigues_formula
 
     Vector3 result = v;
-    
+
     // Vector3Normalize(axis);
     float length = sqrtf(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
     if (length == 0.0f) length = 1.0f;
@@ -2099,7 +2099,7 @@ RMAPI int QuaternionEquals(Quaternion p, Quaternion q)
     int result = (((fabsf(p.x - q.x)) <= (EPSILON*fmaxf(1.0f, fmaxf(fabsf(p.x), fabsf(q.x))))) &&
                   ((fabsf(p.y - q.y)) <= (EPSILON*fmaxf(1.0f, fmaxf(fabsf(p.y), fabsf(q.y))))) &&
                   ((fabsf(p.z - q.z)) <= (EPSILON*fmaxf(1.0f, fmaxf(fabsf(p.z), fabsf(q.z))))) &&
-                  ((fabsf(p.w - q.w)) <= (EPSILON*fmaxf(1.0f, fmaxf(fabsf(p.w), fabsf(q.w)))))) || 
+                  ((fabsf(p.w - q.w)) <= (EPSILON*fmaxf(1.0f, fmaxf(fabsf(p.w), fabsf(q.w)))))) ||
                   (((fabsf(p.x + q.x)) <= (EPSILON*fmaxf(1.0f, fmaxf(fabsf(p.x), fabsf(q.x))))) &&
                   ((fabsf(p.y + q.y)) <= (EPSILON*fmaxf(1.0f, fmaxf(fabsf(p.y), fabsf(q.y))))) &&
                   ((fabsf(p.z + q.z)) <= (EPSILON*fmaxf(1.0f, fmaxf(fabsf(p.z), fabsf(q.z))))) &&
