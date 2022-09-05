@@ -28,7 +28,7 @@ begin
   cam.fovy := 45.0;
   cam.projection := CAMERA_PERSPECTIVE;
 
-  dwarf := LoadModel('resources/models/church.obj'); // Load OBJ model
+  dwarf := LoadModel('resources/models/Spacesuit.mtl'); // Load OBJ model
   texture := LoadTexture('resources/models/church_diffuse.png');
   // Load model texture (diffuse map)
 

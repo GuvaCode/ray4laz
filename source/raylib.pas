@@ -1429,6 +1429,8 @@ function CheckCollisionPointRec(point: TVector2; rec: TRectangle): Boolean; cdec
 function CheckCollisionPointCircle(point, center: TVector2; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if point is inside a triangle}
 function CheckCollisionPointTriangle(point, p1, p2, p3: TVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Check if point is within a polygon described by array of vertices}
+function CheckCollisionPointPoly(point: TVector2; points: PVector2; pointCount: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check the collision between two lines defined by two points each, returns collision point by reference}
 function CheckCollisionLines(startPos1, endPos1, startPos2, endPos2: TVector2; collisionPoint: PVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]}
