@@ -3,7 +3,7 @@ program models_loading_m3d;
 {$mode objfpc}{$H+}
 
 uses 
-cmem,
+cmem, rlgl,
 raylib, sysutils;
 
 const
@@ -20,6 +20,7 @@ var
   animFrameCounter: integer;
   animId: integer;
   i: integer;
+  texture: TTexture2d;
 
 begin
   // Initialization
@@ -35,6 +36,12 @@ begin
 
   // Load model
   model := LoadModel('resources/models/m3d/s.m3d'); // Load the animated model mesh and basic data
+  //texture := LoadTexture('resources/models/George_Texture.png');
+
+ /// UnloadMaterial(model.materials^);
+
+  //SetMaterialTexture(@model.materials[0], MATERIAL_MAP_DIFFUSE, texture); // Set map diffuse texture alt
+
 
   drawMesh := true;
   drawSkeleton := true;

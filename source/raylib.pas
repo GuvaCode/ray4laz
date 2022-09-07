@@ -1102,9 +1102,9 @@ procedure TraceLog(logLevel: Integer; text: PChar); cdecl; varargs; external {$I
 {Set the current threshold (minimum) log level}
 procedure SetTraceLogLevel(logLevel: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Internal memory allocator}
-function MemAlloc(size: Integer): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function MemAlloc(size: LongWord): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Internal memory reallocator}
-function MemRealloc(ptr: Pointer; size: Integer): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function MemRealloc(ptr: Pointer; size: LongWord): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Internal memory free}
 procedure MemFree(ptr: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Open URL with default system browser (if available)}

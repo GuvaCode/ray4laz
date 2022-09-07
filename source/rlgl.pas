@@ -1,6 +1,6 @@
 {**********************************************************************************************
 *
-*   rlgl v4.0 - A multi-OpenGL abstraction layer with an immediate-mode style API
+*   rlgl v4.2 - A multi-OpenGL abstraction layer with an immediate-mode style API
 *
 *   An abstraction layer for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0)
 *   that provides a pseudo-OpenGL 1.1 immediate-mode style API (rlVertex, rlTranslate, rlRotate...)
