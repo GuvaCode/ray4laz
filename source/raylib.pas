@@ -1479,6 +1479,8 @@ function GenImageGradientRadial(width, height: Integer; density: Single; inner, 
 function GenImageChecked(width, height, checksX, checksY: Integer; col1, col2: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image: white noise}
 function GenImageWhiteNoise(width, height: Integer; factor: Single): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Generate image: perlin noise}
+function GenImagePerlinNoise(width, height, offsetX, offsetY: Integer; scale: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image: cellular algorithm, bigger tileSize means bigger cells}
 function GenImageCellular(width, height, tileSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 

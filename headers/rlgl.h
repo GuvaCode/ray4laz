@@ -678,15 +678,15 @@ RLAPI unsigned int rlLoadComputeShaderProgram(unsigned int shaderId);           
 RLAPI void rlComputeShaderDispatch(unsigned int groupX, unsigned int groupY, unsigned int groupZ);  // Dispatch compute shader (equivalent to *draw* for graphics pilepine)
 
 // Shader buffer storage object management (ssbo)
-RLAPI unsigned int rlLoadShaderBuffer(unsigned long long size, const void *data, int usageHint);    // Load shader storage buffer object (SSBO)
+RLAPI unsigned int rlLoadShaderBuffer(unsigned int size, const void *data, int usageHint); // Load shader storage buffer object (SSBO)
 RLAPI void rlUnloadShaderBuffer(unsigned int ssboId);                           // Unload shader storage buffer object (SSBO)
-RLAPI void rlUpdateShaderBufferElements(unsigned int id, const void *data, unsigned long long dataSize, unsigned long long offset); // Update SSBO buffer data
-RLAPI unsigned long long rlGetShaderBufferSize(unsigned int id);                // Get SSBO buffer size
-RLAPI void rlReadShaderBufferElements(unsigned int id, void *dest, unsigned long long count, unsigned long long offset);    // Bind SSBO buffer
-RLAPI void rlBindShaderBuffer(unsigned int id, unsigned int index);             // Copy SSBO buffer data
+RLAPI void rlUpdateShaderBuffer(unsigned int id, const void *data, unsigned int dataSize, unsigned int offset); // Update SSBO buffer data
+RLAPI void rlBindShaderBuffer(unsigned int id, unsigned int index);             // Bind SSBO buffer
+RLAPI void rlReadShaderBuffer(unsigned int id, void *dest, unsigned int count, unsigned int offset); // Read SSBO buffer data (GPU->CPU)
+RLAPI void rlCopyShaderBuffer(unsigned int destId, unsigned int srcId, unsigned int destOffset, unsigned int srcOffset, unsigned int count); // Copy SSBO data between buffers
+RLAPI unsigned int rlGetShaderBufferSize(unsigned int id);                      // Get SSBO buffer size
 
 // Buffer management
-RLAPI void rlCopyBuffersElements(unsigned int destId, unsigned int srcId, unsigned long long destOffset, unsigned long long srcOffset, unsigned long long count); // Copy SSBO buffer data
 RLAPI void rlBindImageTexture(unsigned int id, unsigned int index, unsigned int format, int readonly);  // Bind image texture
 
 // Matrix state management
@@ -2029,13 +2029,16 @@ void rlLoadExtensions(void *loader)
     RLGL.ExtSupported.texAnisoFilter = true;
     RLGL.ExtSupported.texMirrorClamp = true;
     #if defined(GRAPHICS_API_OPENGL_43)
-    if (GLAD_GL_ARB_compute_shader) RLGL.ExtSupported.computeShader = true;
-    if (GLAD_GL_ARB_shader_storage_buffer_object) RLGL.ExtSupported.ssbo = true;
+    RLGL.ExtSupported.computeShader = GLAD_GL_ARB_compute_shader;
+    RLGL.ExtSupported.ssbo = GLAD_GL_ARB_shader_storage_buffer_object;
     #endif
-    #if !defined(__APPLE__)
+    #if defined(__APPLE__)
+    // Apple provides its own extension macros
+    RLGL.ExtSupported.texCompDXT = GL_EXT_texture_compression_s3tc;
+    #else
     // NOTE: With GLAD, we can check if an extension is supported using the GLAD_GL_xxx booleans
-    if (GLAD_GL_EXT_texture_compression_s3tc) RLGL.ExtSupported.texCompDXT = true;  // Texture compression: DXT
-    if (GLAD_GL_ARB_ES3_compatibility) RLGL.ExtSupported.texCompETC2 = true;        // Texture compression: ETC2/EAC
+    RLGL.ExtSupported.texCompDXT = GLAD_GL_EXT_texture_compression_s3tc;  // Texture compression: DXT
+    RLGL.ExtSupported.texCompETC2 = GLAD_GL_ARB_ES3_compatibility;        // Texture compression: ETC2/EAC
     #endif
 #endif  // GRAPHICS_API_OPENGL_33
 
@@ -3954,7 +3957,7 @@ void rlComputeShaderDispatch(unsigned int groupX, unsigned int groupY, unsigned 
 }
 
 // Load shader storage buffer object (SSBO)
-unsigned int rlLoadShaderBuffer(unsigned long long size, const void *data, int usageHint)
+unsigned int rlLoadShaderBuffer(unsigned int size, const void *data, int usageHint)
 {
     unsigned int ssbo = 0;
 
@@ -3978,7 +3981,7 @@ void rlUnloadShaderBuffer(unsigned int ssboId)
 }
 
 // Update SSBO buffer data
-void rlUpdateShaderBufferElements(unsigned int id, const void *data, unsigned long long dataSize, unsigned long long offset)
+void rlUpdateShaderBuffer(unsigned int id, const void *data, unsigned int dataSize, unsigned int offset)
 {
 #if defined(GRAPHICS_API_OPENGL_43)
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, id);
@@ -3987,7 +3990,7 @@ void rlUpdateShaderBufferElements(unsigned int id, const void *data, unsigned lo
 }
 
 // Get SSBO buffer size
-unsigned long long rlGetShaderBufferSize(unsigned int id)
+unsigned int rlGetShaderBufferSize(unsigned int id)
 {
     long long size = 0;
 
@@ -3996,11 +3999,11 @@ unsigned long long rlGetShaderBufferSize(unsigned int id)
     glGetInteger64v(GL_SHADER_STORAGE_BUFFER_SIZE, &size);
 #endif
 
-    return (size > 0)? size : 0;
+    return (size > 0)? (unsigned int)size : 0;
 }
 
-// Read SSBO buffer data
-void rlReadShaderBufferElements(unsigned int id, void *dest, unsigned long long count, unsigned long long offset)
+// Read SSBO buffer data (GPU->CPU)
+void rlReadShaderBuffer(unsigned int id, void *dest, unsigned int count, unsigned int offset)
 {
 #if defined(GRAPHICS_API_OPENGL_43)
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, id);
@@ -4017,7 +4020,7 @@ void rlBindShaderBuffer(unsigned int id, unsigned int index)
 }
 
 // Copy SSBO buffer data
-void rlCopyBuffersElements(unsigned int destId, unsigned int srcId, unsigned long long destOffset, unsigned long long srcOffset, unsigned long long count)
+void rlCopyShaderBuffer(unsigned int destId, unsigned int srcId, unsigned int destOffset, unsigned int srcOffset, unsigned int count)
 {
 #if defined(GRAPHICS_API_OPENGL_43)
     glBindBuffer(GL_COPY_READ_BUFFER, srcId);

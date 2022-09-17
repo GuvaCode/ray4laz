@@ -489,19 +489,21 @@ procedure rlSetShader(id:dword; locs:Plongint);cdecl;external cDllName; // Set s
 
 //{$if defined(GRAPHICS_API_OPENGL_43)}
 // Compute shader management
-function rlLoadComputeShaderProgram(shaderId:dword):longint;cdecl;external cDllName;
+function rlLoadComputeShaderProgram(shaderId: LongWord): LongWord;cdecl;external cDllName;
 procedure rlComputeShaderDispatch(groupX:dword; groupY:dword; groupZ:dword);cdecl;external cDllName;
 
 // Shader buffer storage object management (ssbo)
-function rlLoadShaderBuffer(size: qWord; data:pointer; usageHint:longint):longint;cdecl;external cDllName;
-procedure rlUnloadShaderBuffer(ssboId:dword);cdecl;external cDllName;
-procedure rlUpdateShaderBufferElements(id:dword; data:pointer; dataSize:qword; offset:qword);cdecl;external cDllName;
-function rlGetShaderBufferSize(id:dword):qword;cdecl;external cDllName;
-procedure rlReadShaderBufferElements(id:dword; dest:pointer; count:qword; offset:qword);cdecl;external cDllName;
-procedure rlBindShaderBuffer(id:dword; index:dword);cdecl;external cDllName;
+function rlLoadShaderBuffer(size: LongWord; data:pointer; usageHint: LongWord): LongWord;cdecl;external cDllName;// Load shader storage buffer object (SSBO)
+procedure rlUnloadShaderBuffer(ssboId: LongWord);cdecl;external cDllName;
+procedure rlUpdateShaderBuffer(id: LongWord; data: pointer; dataSize: LongWord; offset: LongWord);cdecl;external cDllName;// Update SSBO buffer data
+procedure rlBindShaderBuffer(id: LongWord; index: LongWord);cdecl;external cDllName; // Bind SSBO buffer
+procedure rlReadShaderBuffer(id: LongWord; dest: pointer; count: LongWord; offset: LongWord);cdecl;external cDllName;
+procedure rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count; LongWord); cdecl; external cDllName; // Copy SSBO data between buffers
+function rlGetShaderBufferSize(id: LongWord): LongWord; cdecl; external cDllName;
+
 // Buffer management
-procedure rlCopyBuffersElements(destId:dword; srcId:dword; destOffset:qword; srcOffset:qword; count:qword);cdecl;external cDllName;
-procedure rlBindImageTexture(id:dword; index:dword; format:dword; readonly:longint);cdecl;external cDllName;
+//procedure rlCopyBuffersElements(destId:dword; srcId:dword; destOffset:qword; srcOffset:qword; count:qword);cdecl;external cDllName;
+procedure rlBindImageTexture(id: LongWord; index: LongWord; format: LongWord; readonly: Integer);cdecl;external cDllName;
 //{$endif}
 
 (* Matrix state management *)
