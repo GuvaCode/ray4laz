@@ -498,7 +498,7 @@ procedure rlUnloadShaderBuffer(ssboId: LongWord);cdecl;external cDllName;
 procedure rlUpdateShaderBuffer(id: LongWord; data: pointer; dataSize: LongWord; offset: LongWord);cdecl;external cDllName;// Update SSBO buffer data
 procedure rlBindShaderBuffer(id: LongWord; index: LongWord);cdecl;external cDllName; // Bind SSBO buffer
 procedure rlReadShaderBuffer(id: LongWord; dest: pointer; count: LongWord; offset: LongWord);cdecl;external cDllName;
-procedure rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count; LongWord); cdecl; external cDllName; // Copy SSBO data between buffers
+procedure rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count: LongWord); cdecl; external cDllName; // Copy SSBO data between buffers
 function rlGetShaderBufferSize(id: LongWord): LongWord; cdecl; external cDllName;
 
 // Buffer management
