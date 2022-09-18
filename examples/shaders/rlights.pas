@@ -45,16 +45,19 @@ const
 type
   TLight = record
     type_: longint;
+    enabled: boolean;
     position: TVector3;
     target: TVector3;
     color: TColorB;
-    enabled: boolean;
+    attenuation: single;
+
     // Shader locations
     enabledLoc: longint;
     typeLoc: longint;
-    posLoc: longint;
+    positionLoc: longint;
     targetLoc: longint;
     colorLoc: longint;
+    attenuationLoc: longint;
   end;
 
  type
@@ -94,7 +97,7 @@ begin
 
         light.enabledLoc := GetShaderLocation(shader, enabledName);
         light.typeLoc := GetShaderLocation(shader, typeName);
-        light.posLoc := GetShaderLocation(shader, posName);
+        light.positionLoc := GetShaderLocation(shader, posName);
         light.targetLoc := GetShaderLocation(shader, targetName);
         light.colorLoc := GetShaderLocation(shader, colorName);
 
@@ -117,7 +120,7 @@ begin
   position[0]:= light.position.x;
   position[1]:= light.position.y;
   position[2]:= light.position.z;
-  SetShaderValue(shader, light.posLoc, @position, SHADER_UNIFORM_VEC3);
+  SetShaderValue(shader, light.positionLoc, @position, SHADER_UNIFORM_VEC3);
   // Send to shader light target position values
   target[0]:= light.target.x;
   target[1]:= light.target.y;
