@@ -537,110 +537,189 @@ procedure rlSetBlendFactors(glSrcFactor, glDstFactor, glEquation: Integer); cdec
 //------------------------------------------------------------------------------------
 
 (* rlgl initialization functions *)
-procedure rlglInit(width:longint; height:longint); cdecl; external cDllName;// Initialize rlgl (buffers, shaders, textures, states)
-procedure rlglClose; cdecl; external cDllName;// De-inititialize rlgl (buffers, shaders, textures)
-procedure rlLoadExtensions(loader:pointer); cdecl; external cDllName;// Load OpenGL extensions (loader function required)
-function rlGetVersion:longint; cdecl; external cDllName;// Get current OpenGL version
-procedure rlSetFramebufferWidth(width:longint); cdecl; external cDllName;// Set current framebuffer width
-function rlGetFramebufferWidth:longint; cdecl; external cDllName;// Get default framebuffer width
-procedure rlSetFramebufferHeight(height:longint); cdecl; external cDllName;// Set current framebuffer height
-function rlGetFramebufferHeight:longint; cdecl; external cDllName;// Get default framebuffer height
-function rlGetTextureIdDefault:dword; cdecl; external cDllName;// Get default texture id
-function rlGetShaderIdDefault:dword; cdecl; external cDllName;// Get default shader id
-function rlGetShaderLocsDefault:Plongint; cdecl; external cDllName;// Get default shader locations
+
+{Initialize rlgl (buffers, shaders, textures, states)}
+procedure rlglInit(width, height: Integer); cdecl; external cDllName;
+{De-inititialize rlgl (buffers, shaders, textures)}
+procedure rlglClose; cdecl; external cDllName;
+{Load OpenGL extensions (loader function required)}
+procedure rlLoadExtensions(loader: Pointer); cdecl; external cDllName;
+{Get current OpenGL version}
+function rlGetVersion: Integer; cdecl; external cDllName;
+{Set current framebuffer width}
+procedure rlSetFramebufferWidth(width: Integer); cdecl; external cDllName;
+{Get default framebuffer width}
+function rlGetFramebufferWidth: Integer; cdecl; external cDllName;
+{Set current framebuffer height}
+procedure rlSetFramebufferHeight(height: Integer); cdecl; external cDllName;
+{Get default framebuffer height}
+function rlGetFramebufferHeight: Integer; cdecl; external cDllName;
+{Get default texture id}
+function rlGetTextureIdDefault: LongWord; cdecl; external cDllName;
+{Get default shader id}
+function rlGetShaderIdDefault: LongWord; cdecl; external cDllName;
+{Get default shader locations}
+function rlGetShaderLocsDefault: PInteger; cdecl; external cDllName;
 
 (* Render batch management *)
 // NOTE: rlgl provides a default render batch to behave like OpenGL 1.1 immediate mode
 // but this render batch API is exposed in case of custom batches are required
-function rlLoadRenderBatch(numBuffers:longint; bufferElements:longint):TrlRenderBatch; cdecl; external cDllName;// Load a render batch system
-procedure rlUnloadRenderBatch(batch:TrlRenderBatch); cdecl; external cDllName;// Unload render batch system
-procedure rlDrawRenderBatch(batch:PrlRenderBatch); cdecl; external cDllName;// Draw render batch data (Update->Draw->Reset)
-procedure rlSetRenderBatchActive(batch:PrlRenderBatch); cdecl; external cDllName;// Set the active render batch for rlgl (NULL for default internal)
-procedure rlDrawRenderBatchActive; cdecl; external cDllName;// Update and draw internal render batch
-function rlCheckRenderBatchLimit(vCount:longint):boolean; cdecl; external cDllName;// Check internal buffer overflow for a given number of vertex
-procedure rlSetTexture(id:dword); cdecl; external cDllName;// Set current texture for render batch and check buffers limits
+
+{Load a render batch system}
+function rlLoadRenderBatch(numBuffers, bufferElements: Integer): TrlRenderBatch; cdecl; external cDllName;
+{Unload render batch system}
+procedure rlUnloadRenderBatch(batch: TrlRenderBatch); cdecl; external cDllName;
+{Draw render batch data (Update->Draw->Reset)}
+procedure rlDrawRenderBatch(batch: PrlRenderBatch); cdecl; external cDllName;
+{Set the active render batch for rlgl (NULL for default internal)}
+procedure rlSetRenderBatchActive(batch: PrlRenderBatch); cdecl; external cDllName;
+{Update and draw internal render batch}
+procedure rlDrawRenderBatchActive; cdecl; external cDllName;
+{Check internal buffer overflow for a given number of vertex}
+function rlCheckRenderBatchLimit(vCount: Integer): Boolean; cdecl; external cDllName;
+{Set current texture for render batch and check buffers limits}
+procedure rlSetTexture(id: Integer); cdecl; external cDllName;
 
 //------------------------------------------------------------------------------------------------------------------------
 
 (* Vertex buffers management *)
-function rlLoadVertexArray:dword; cdecl; external cDllName;// Load vertex array (vao) if supported
-function rlLoadVertexBuffer(const buffer:pointer; size:longint; dynamic_:boolean):dword; cdecl; external cDllName;// Load a vertex buffer attribute
-function rlLoadVertexBufferElement(const buffer:pointer; size:longint; dynamic_:boolean):dword; cdecl; external cDllName;// Load a new attributes element buffer
-procedure rlUpdateVertexBuffer(bufferId:dword;const data:pointer; dataSize:longint; offset:longint); cdecl; external cDllName;// Update GPU buffer with new data
-procedure rlUpdateVertexBufferElements(id:dword; const data:pointer; dataSize:longint; offset:longint); cdecl; external cDllName;// Update vertex buffer elements with new data
-procedure rlUnloadVertexArray(vaoId:dword); cdecl; external cDllName;
-procedure rlUnloadVertexBuffer(vboId:dword); cdecl; external cDllName;
-procedure rlSetVertexAttribute(index:dword; compSize:longint; type_:longint; normalized:boolean; stride:longint;const pointer_:pointer); cdecl; external cDllName;
-procedure rlSetVertexAttributeDivisor(index:dword; divisor:longint); cdecl; external cDllName;
-procedure rlSetVertexAttributeDefault(locIndex:longint; value:pointer; attribType:longint; count:longint); cdecl; external cDllName;// Set vertex attribute default value
-procedure rlDrawVertexArray(offset:longint; count:longint); cdecl; external cDllName;
-procedure rlDrawVertexArrayElements(offset:longint; count:longint;const buffer:pointer); cdecl; external cDllName;
-procedure rlDrawVertexArrayInstanced(offset:longint; count:longint; instances:longint); cdecl; external cDllName;
-procedure rlDrawVertexArrayElementsInstanced(offset:longint; count:longint;const buffer:pointer; instances:longint); cdecl; external cDllName;
+
+{Load vertex array (vao) if supported  }
+function rlLoadVertexArray: LongWord; cdecl; external cDllName;
+{Load a vertex buffer attribute}
+function rlLoadVertexBuffer(const buffer: Pointer; size: Integer; dynamic_: Boolean): LongWord; cdecl; external cDllName;
+{Load a new attributes element buffer}
+function rlLoadVertexBufferElement(const buffer: Pointer; size: Integer; dynamic_: Boolean): LongWord; cdecl; external cDllName;
+{Update GPU buffer with new data}
+procedure rlUpdateVertexBuffer(bufferId: LongWord; const data: Pointer; dataSize, offset: Integer); cdecl; external cDllName;
+{Update vertex buffer elements with new data}
+procedure rlUpdateVertexBufferElements(id: LongWord; const data: Pointer; dataSize, offset: Integer); cdecl; external cDllName;
+procedure rlUnloadVertexArray(vaoId: LongWord); cdecl; external cDllName;
+procedure rlUnloadVertexBuffer(vboId: LongWord); cdecl; external cDllName;
+procedure rlSetVertexAttribute(index: LongWord; compSize, type_: Integer; normalized: Boolean; stride: Integer; const pointer_:pointer); cdecl; external cDllName;
+procedure rlSetVertexAttributeDivisor(index: LongWord; divisor: Integer); cdecl; external cDllName;
+{Set vertex attribute default value }
+procedure rlSetVertexAttributeDefault(locIndex: Integer; value:pointer; attribType, count: Integer); cdecl; external cDllName;
+procedure rlDrawVertexArray(offset, count: Integer); cdecl; external cDllName;
+procedure rlDrawVertexArrayElements(offset, count: Integer; const buffer: Pointer); cdecl; external cDllName;
+procedure rlDrawVertexArrayInstanced(offset, count, instances: Integer); cdecl; external cDllName;
+procedure rlDrawVertexArrayElementsInstanced(offset, count: Integer; const buffer: Pointer; instances: Integer); cdecl; external cDllName;
 
 (* Textures management *)
-function rlLoadTexture(const data:pointer; width:longint; height:longint; format:longint; mipmapCount:longint):dword; cdecl; external cDllName;// Load texture in GPU
-function rlLoadTextureDepth(width:longint; height:longint; useRenderBuffer:boolean):dword; cdecl; external cDllName;// Load depth texture/renderbuffer (to be attached to fbo)
-function rlLoadTextureCubemap(const data:pointer; size:longint; format:longint):dword; cdecl; external cDllName;// Load texture cubemap
-procedure rlUpdateTexture(id:dword; offsetX:longint; offsetY:longint; width:longint; height:longint;format:longint; data:pointer); cdecl; external cDllName;// Update GPU texture with new data
-procedure rlGetGlTextureFormats(format:longint; glInternalFormat:PDword; glFormat:PDword; glType:PDword); cdecl; external cDllName;// Get OpenGL internal formats
-function rlGetPixelFormatName(format:dword):Pchar; cdecl; external cDllName;// Get name string for pixel format
-procedure rlUnloadTexture(id:dword); cdecl; external cDllName;// Unload texture from GPU memory
-procedure rlGenTextureMipmaps(id:dword; width:longint; height:longint; format:longint; mipmaps:Plongint); cdecl; external cDllName;// Generate mipmap data for selected texture
-function rlReadTexturePixels(id:dword; width:longint; height:longint; format:longint):pointer; cdecl; external cDllName;// Read texture pixel data
-function rlReadScreenPixels(width:longint; height:longint):Pbyte; cdecl; external cDllName;// Read screen pixel data (color buffer)
+
+{Load texture in GPU}
+function rlLoadTexture(const data: Pointer; width, height, format, mipmapCount: Integer): LongWord; cdecl; external cDllName;
+{Load depth texture/renderbuffer (to be attached to fbo)}
+function rlLoadTextureDepth(width, height: Integer; useRenderBuffer: boolean): LongWord; cdecl; external cDllName;
+{Load texture cubemap}
+function rlLoadTextureCubemap(const data: Pointer; size, format: Integer): LongWord; cdecl; external cDllName;
+{Update GPU texture with new data}
+procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height, format: Integer; data: Pointer); cdecl; external cDllName;
+{Get OpenGL internal formats}
+procedure rlGetGlTextureFormats(format: Integer; glInternalFormat, glFormat, glType: PLongWord); cdecl; external cDllName;
+{Get name string for pixel format}
+function rlGetPixelFormatName(format: LongWord): PChar; cdecl; external cDllName;
+{Unload texture from GPU memory}
+procedure rlUnloadTexture(id: LongWord); cdecl; external cDllName;
+{Generate mipmap data for selected texture}
+procedure rlGenTextureMipmaps(id: LongWord; width, height, format: Integer; mipmaps:PInteger); cdecl; external cDllName;
+{Read texture pixel data}
+function rlReadTexturePixels(id: LongWord; width, height, format: Integer): Pointer; cdecl; external cDllName;
+{Read screen pixel data (color buffer)}
+function rlReadScreenPixels(width, height: Integer): PByte; cdecl; external cDllName;
+
 
 (* Framebuffer management (fbo) *)
-function rlLoadFramebuffer(width:longint; height:longint):dword; cdecl; external cDllName;// Load an empty framebuffer
-procedure rlFramebufferAttach(fboId:dword; texId:dword; attachType:longint; texType:longint; mipLevel:longint); cdecl; external cDllName;// Attach texture/renderbuffer to a framebuffer
-function rlFramebufferComplete(id:dword):boolean; cdecl; external cDllName;// Verify framebuffer is complete
-procedure rlUnloadFramebuffer(id:dword); cdecl; external cDllName;// Delete framebuffer from GPU
+
+{Load an empty framebuffer}
+function rlLoadFramebuffer(width, height: Integer): LongWord; cdecl; external cDllName;
+{Attach texture/renderbuffer to a framebuffer}
+procedure rlFramebufferAttach(fboId, texId: LongWord; attachType, texType, mipLevel: Integer); cdecl; external cDllName;
+{Verify framebuffer is complete}
+function rlFramebufferComplete(id: LongWord): Boolean; cdecl; external cDllName;
+{Delete framebuffer from GPU}
+procedure rlUnloadFramebuffer(id: LongWord); cdecl; external cDllName;
 
 (* Shaders management *)
-function rlLoadShaderCode(vsCode:Pchar; fsCode:Pchar):dword; cdecl; external cDllName;// Load shader from code strings
-function rlCompileShader(shaderCode:Pchar; _type:longint):dword; cdecl; external cDllName;// Compile custom shader and return shader id (type: GL_VERTEX_SHADER,GL_FRAGMENT_SHADER)
-function rlLoadShaderProgram(vShaderId:dword; fShaderId:dword):dword; cdecl; external cDllName;// Load custom shader program
-procedure rlUnloadShaderProgram(id:dword); cdecl; external cDllName;// Unload shader program }
-function rlGetLocationUniform(shaderId:dword; uniformName:Pchar):longint; cdecl; external cDllName;// Get shader location uniform
-function rlGetLocationAttrib(shaderId:dword; attribName:Pchar):longint; cdecl; external cDllName;// Get shader location attribute
-procedure rlSetUniform(locIndex:longint; value:pointer; uniformType:longint; count:longint); cdecl; external cDllName;// Set shader value uniform
-procedure rlSetUniformMatrix(locIndex:longint; mat:TMatrix); cdecl; external cDllName;// Set shader value matrix
-procedure rlSetUniformSampler(locIndex:longint; textureId:dword); cdecl; external cDllName;// Set shader value sampler
-procedure rlSetShader(id:dword; locs:Plongint); cdecl; external cDllName; // Set shader currently active (id and locations)
 
-//{$if defined(GRAPHICS_API_OPENGL_43)}
-// Compute shader management
+{Load shader from code strings}
+function rlLoadShaderCode(vsCode, fsCode: PChar): LongWord; cdecl; external cDllName;
+{Compile custom shader and return shader id (type: GL_VERTEX_SHADER,GL_FRAGMENT_SHADER)}
+function rlCompileShader(shaderCode: PChar; type_: Integer): LongWord; cdecl; external cDllName;
+{Load custom shader program}
+function rlLoadShaderProgram(vShaderId, fShaderId: LongWord): LongWord; cdecl; external cDllName;
+{Unload shader program}
+procedure rlUnloadShaderProgram(id: LongWord); cdecl; external cDllName;
+{Get shader location uniform}
+function rlGetLocationUniform(shaderId: LongWord; uniformName: PChar): LongWord; cdecl; external cDllName;
+{Get shader location attribute}
+function rlGetLocationAttrib(shaderId: LongWord; attribName: PChar): LongWord; cdecl; external cDllName;
+{Set shader value uniform}
+procedure rlSetUniform(locIndex: Integer; value: Pointer; uniformType, count: Integer); cdecl; external cDllName;
+{Set shader value matrix}
+procedure rlSetUniformMatrix(locIndex: Integer; mat: TMatrix); cdecl; external cDllName;
+{Set shader value sampler}
+procedure rlSetUniformSampler(locIndex: Integer; textureId: LongWord); cdecl; external cDllName;
+{Set shader currently active (id and locations)}
+procedure rlSetShader(id: LongWord; locs: PInteger); cdecl; external cDllName;
+
+
+(* Compute shader management *)
+
+{Load compute shader program}
 function rlLoadComputeShaderProgram(shaderId: LongWord): LongWord; cdecl; external cDllName;
-procedure rlComputeShaderDispatch(groupX:dword; groupY:dword; groupZ:dword); cdecl; external cDllName;
+{Dispatch compute shader (equivalent to *draw* for graphics pilepine)}
+procedure rlComputeShaderDispatch(groupX, groupY, groupZ: LongWord); cdecl; external cDllName;
 
-// Shader buffer storage object management (ssbo)
-function rlLoadShaderBuffer(size: LongWord; data:pointer; usageHint: LongWord): LongWord; cdecl; external cDllName;// Load shader storage buffer object (SSBO)
+(* Shader buffer storage object management (ssbo) *)
+
+{Load shader storage buffer object (SSBO)}
+function rlLoadShaderBuffer(size: LongWord; data: Pointer; usageHint: LongWord): LongWord; cdecl; external cDllName;
+{Unload shader storage buffer object (SSBO)}
 procedure rlUnloadShaderBuffer(ssboId: LongWord); cdecl; external cDllName;
-procedure rlUpdateShaderBuffer(id: LongWord; data: pointer; dataSize: LongWord; offset: LongWord); cdecl; external cDllName;// Update SSBO buffer data
-procedure rlBindShaderBuffer(id: LongWord; index: LongWord); cdecl; external cDllName; // Bind SSBO buffer
-procedure rlReadShaderBuffer(id: LongWord; dest: pointer; count: LongWord; offset: LongWord); cdecl; external cDllName;
-procedure rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count: LongWord); cdecl; external cDllName; // Copy SSBO data between buffers
+{Update SSBO buffer data}
+procedure rlUpdateShaderBuffer(id: LongWord; data: Pointer; dataSize, offset: LongWord); cdecl; external cDllName;
+{Bind SSBO buffer}
+procedure rlBindShaderBuffer(id, index: LongWord); cdecl; external cDllName;
+{Read SSBO buffer data (GPU->CPU)}
+procedure rlReadShaderBuffer(id: LongWord; dest: Pointer; count, offset: LongWord); cdecl; external cDllName;
+{Copy SSBO data between buffers}
+procedure rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count: LongWord); cdecl; external cDllName;
+{Get SSBO buffer size}
 function rlGetShaderBufferSize(id: LongWord): LongWord; cdecl; external cDllName;
 
-// Buffer management
-//procedure rlCopyBuffersElements(destId:dword; srcId:dword; destOffset:qword; srcOffset:qword; count:qword); cdecl; external cDllName;
-procedure rlBindImageTexture(id: LongWord; index: LongWord; format: LongWord; readonly: Integer); cdecl; external cDllName;
-//{$endif}
+(* Buffer management *)
+
+{Bind image texture}
+procedure rlBindImageTexture(id, index, format: LongWord; readonly: Integer); cdecl; external cDllName;
 
 (* Matrix state management *)
-function rlGetMatrixModelview:TMatrix; cdecl; external cDllName;// Get internal modelview matrix
-function rlGetMatrixProjection:TMatrix; cdecl; external cDllName;// Get internal projection matrix
-function rlGetMatrixTransform:TMatrix; cdecl; external cDllName;// Get internal accumulated transform matrix
-function rlGetMatrixProjectionStereo(eye:longint):TMatrix; cdecl; external cDllName;// Get internal projection matrix for stereo render (selected eye)
-function rlGetMatrixViewOffsetStereo(eye:longint):TMatrix; cdecl; external cDllName;// Get internal view offset matrix for stereo render (selected eye)
-procedure rlSetMatrixProjection(proj:TMatrix); cdecl; external cDllName;// Set a custom projection matrix (replaces internal projection matrix)
-procedure rlSetMatrixModelview(view:TMatrix); cdecl; external cDllName;// Set a custom modelview matrix (replaces internal modelview matrix)
-procedure rlSetMatrixProjectionStereo(right:TMatrix; left:TMatrix); cdecl; external cDllName;// Set eyes projection matrices for stereo rendering
-procedure rlSetMatrixViewOffsetStereo(right:TMatrix; left:TMatrix); cdecl; external cDllName;// Set eyes view offsets matrices for stereo rendering
+
+{Get internal modelview matrix}
+function rlGetMatrixModelview: TMatrix; cdecl; external cDllName;
+{Get internal projection matrix}
+function rlGetMatrixProjection: TMatrix; cdecl; external cDllName;
+{Get internal accumulated transform matrix}
+function rlGetMatrixTransform: TMatrix; cdecl; external cDllName;
+{Get internal projection matrix for stereo render (selected eye)}
+function rlGetMatrixProjectionStereo(eye: Integer): TMatrix; cdecl; external cDllName;
+{Get internal view offset matrix for stereo render (selected eye)}
+function rlGetMatrixViewOffsetStereo(eye: Integer): TMatrix; cdecl; external cDllName;
+{Set a custom projection matrix (replaces internal projection matrix)}
+procedure rlSetMatrixProjection(proj: TMatrix); cdecl; external cDllName;
+{Set a custom modelview matrix (replaces internal modelview matrix)}
+procedure rlSetMatrixModelview(view: TMatrix); cdecl; external cDllName;
+{Set eyes projection matrices for stereo rendering}
+procedure rlSetMatrixProjectionStereo(right, left: TMatrix); cdecl; external cDllName;
+{Set eyes view offsets matrices for stereo rendering}
+procedure rlSetMatrixViewOffsetStereo(right, left: TMatrix); cdecl; external cDllName;
 
 (* Quick and dirty cube/quad buffers load->draw->unload *)
-procedure rlLoadDrawCube; cdecl; external cDllName;// Load and draw a cube
-procedure rlLoadDrawQuad; cdecl; external cDllName;// Load and draw a quad
+
+{Load and draw a cube}
+procedure rlLoadDrawCube; cdecl; external cDllName;
+{Load and draw a quad}
+procedure rlLoadDrawQuad; cdecl; external cDllName;
 
 implementation
 
