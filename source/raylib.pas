@@ -12,10 +12,8 @@ Pascal header by Gunko Vadim (@guvacode)
 unit raylib;
 {$mode objfpc}{$H+}
 
-// Defines for GNU/Linux
-{$IFDEF LINUX}
-{$DEFINE RAY_STATIC}
-{$ENDIF}
+// Include configuration file
+{$I raylib.inc}
 
 
 interface
