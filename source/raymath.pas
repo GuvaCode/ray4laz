@@ -44,12 +44,12 @@ uses raylib;
 type
     PFloat3 = ^TFloat3;
     TFloat3 = record
-     v: array[0..2] of single;
+     v: array[0..2] of Single;
     end;
 
     PFloat16 = ^TFloat16;
     TFloat16 = record
-     v: array[0..15] of single;
+     v: array[0..15] of Single;
     end;
 
 //----------------------------------------------------------------------------------
