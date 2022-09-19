@@ -1569,6 +1569,10 @@ procedure ImageDrawLineV(dst: PImage; start, _end: TVector2; color: TColorB); cd
 procedure ImageDrawCircle(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw circle within an image (Vector version)}
 procedure ImageDrawCircleV(dst: PImage; center: TVector2; radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Draw circle outline within an image}
+procedure ImageDrawCircleLines(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Draw circle outline within an image (Vector version)}
+procedure ImageDrawCircleLinesV(dst: PImage; center: TVector2; radius: Integer; color: TColor); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle within an image}
 procedure ImageDrawRectangle(dst: PImage; posX, posY, width, height: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw rectangle within an image (Vector version)}
