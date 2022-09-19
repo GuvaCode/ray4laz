@@ -53,7 +53,7 @@ begin
   model := LoadModelFromMesh(GenMeshPlane(10.0, 10.0, 3, 3));
   cube := LoadModelFromMesh(GenMeshCube(2.0, 4.0, 2.0));
 
-  shader := LoadShader(TextFormat('resources/shaders/glsl%i/base_lighting.vs', GLSL_VERSION),
+  shader := LoadShader(TextFormat('resources/shaders/glsl%i/lighting.vs', GLSL_VERSION),
   TextFormat('resources/shaders/glsl%i/lighting.fs', GLSL_VERSION));
 
   // Get some required shader loactions
