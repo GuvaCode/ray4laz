@@ -1563,9 +1563,9 @@ procedure ImageDrawPixelV(dst: PImage; position: TVector2; color: TColorB); cdec
 procedure ImageDrawLine(dst: PImage; startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw line within an image (Vector version)}
 procedure ImageDrawLineV(dst: PImage; start, _end: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-{Draw circle within an image}
+{Draw a filled circle within an image}
 procedure ImageDrawCircle(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-{Draw circle within an image (Vector version)}
+{Draw a filled circle within an image (Vector version)}
 procedure ImageDrawCircleV(dst: PImage; center: TVector2; radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw circle outline within an image}
 procedure ImageDrawCircleLines(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
@@ -1726,6 +1726,10 @@ function GetGlyphAtlasRec(font: TFont; codepoint: Integer): TRectangle; cdecl; e
 
 (* Text codepoints management functions (unicode characters) *)
 
+{Load UTF-8 text encoded from codepoints array}
+function LoadUTF8( codepoints: PInteger; length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Unload UTF-8 text encoded from codepoints array}
+procedure UnloadUTF8(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load all codepoints from a UTF-8 text string, codepoints count returned by parameter}
 function LoadCodepoints(text: PChar; count: PInteger): PInteger; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload codepoints data from memory}
@@ -1733,11 +1737,13 @@ procedure UnloadCodepoints(codepoints: PInteger); cdecl; external {$IFNDEF RAY_S
 {Get total number of codepoints in a UTF-8 encoded string}
 function GetCodepointCount(text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
-function GetCodepoint(text: PChar; bytesProcessed: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCodepoint(text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
+function GetCodepointNext(text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
+function GetCodepointPrevious(text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Encode one codepoint into UTF-8 byte array (array length returned as parameter)}
-function CodepointToUTF8(codepoint: Integer; byteSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-{Encode text as codepoints array into UTF-8 text string (WARNING: memory must be freed!)}
-function TextCodepointsToUTF8(const codepoints: PInteger; length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CodepointToUTF8(codepoint: Integer; utf8Size: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Text strings management functions (no UTF-8 strings, only byte chars) *)
