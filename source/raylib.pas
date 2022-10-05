@@ -813,6 +813,7 @@ const
        BLEND_SUBTRACT_COLORS   = 4;    // Blend textures subtracting colors (alternative)
        BLEND_ALPHA_PREMULTIPLY = 5;    // Blend premultiplied textures considering alpha
        BLEND_CUSTOM            = 6;    // Blend textures using custom src/dst factors (use rlSetBlendMode())
+       BLEND_CUSTOM_SEPARATE   = 7;    // Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendModeSeparate())
 
    (* Gestures *)
    //  NOTE: It could be used as flags to enable only some gestures

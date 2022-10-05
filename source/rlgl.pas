@@ -272,6 +272,7 @@ type
     RL_BLEND_SUBTRACT_COLORS = 4;    // Blend textures subtracting colors (alternative)
     RL_BLEND_ALPHA_PREMULTIPLY = 5;  // Blend premultiplied textures considering alpha
     RL_BLEND_CUSTOM = 6;             // Blend textures using custom src/dst factors (use rlSetBlendFactors())
+    RL_BLEND_CUSTOM_SEPARATE = 7;    // Blend textures using custom src/dst factors (use rlSetBlendFactorsSeparate())
 
 type
   (* Shader location point type *)
@@ -530,7 +531,8 @@ procedure rlCheckErrors; cdecl; external cDllName;
 procedure rlSetBlendMode(mode: Integer); cdecl; external cDllName;
 {Set blending mode factor and equation (using OpenGL factors)}
 procedure rlSetBlendFactors(glSrcFactor, glDstFactor, glEquation: Integer); cdecl; external cDllName;
-
+{Set blending mode factors and equations separately (using OpenGL factors)}
+procedure rlSetBlendFactorsSeparate(glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha: Integer); cdecl; external cDllName;
 
 //------------------------------------------------------------------------------------
 // Functions Declaration - rlgl functionality
