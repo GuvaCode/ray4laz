@@ -20,7 +20,6 @@ var
   animFrameCounter: integer;
   animId: integer;
   i: integer;
-  texture: TTexture2d;
 
 begin
   // Initialization
@@ -35,13 +34,7 @@ begin
   position := Vector3Create( 0, 0, 0 );                // Set model position
 
   // Load model
-  model := LoadModel('resources/models/m3d/s.m3d'); // Load the animated model mesh and basic data
-  //texture := LoadTexture('resources/models/George_Texture.png');
-
- /// UnloadMaterial(model.materials^);
-
-  //SetMaterialTexture(@model.materials[0], MATERIAL_MAP_DIFFUSE, texture); // Set map diffuse texture alt
-
+  model := LoadModel('resources/models/m3d/Spacesuit.m3d'); // Load the animated model mesh and basic data
 
   drawMesh := true;
   drawSkeleton := true;
@@ -51,7 +44,7 @@ begin
  animsCount:= 0;
  animFrameCounter := 0;
  animId := 0;
- anims := LoadModelAnimations('resources/models/m3d/s.m3d', @animsCount);
+ anims := LoadModelAnimations('resources/models/m3d/Spacesuit.m3d', @animsCount);
 
  SetCameraMode(camera, CAMERA_FREE); // Set free camera mode
  SetTargetFPS(60);// Set our game to run at 60 frames-per-second
@@ -146,7 +139,7 @@ begin
         DrawText('PRESS SPACE to PLAY MODEL ANIMATION', 10, GetScreenHeight() - 60, 10, MAROON);
         DrawText('PRESS A to CYCLE THROUGH ANIMATIONS', 10, GetScreenHeight() - 40, 10, DARKGRAY);
         DrawText('PRESS M to toggle MESH, S to toggle SKELETON DRAWING', 10, GetScreenHeight() - 20, 10, DARKGRAY);
-        DrawText('(c) CesiumMan model by KhronosGroup', GetScreenWidth() - 210, GetScreenHeight() - 20, 10, GRAY);
+        DrawText('(c) SpaceSuit model by Quaternius', GetScreenWidth() - 210, GetScreenHeight() - 20, 10, GRAY);
 
       EndDrawing();
     end;
