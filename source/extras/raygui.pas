@@ -1,6 +1,6 @@
 {********************************************************************************************
 *                                                                                           *
-*   raygui v3.2 - A simple and easy-to-use immediate-mode gui library                       *
+*   raygui v3.5 dev - A simple and easy-to-use immediate-mode gui library                   *
 *                                                                                           *
 *   DESCRIPTION:                                                                            *
 *                                                                                           *
@@ -229,23 +229,23 @@ type
     RICON_LAYERS                   = 197;
     RICON_WINDOW                   = 198;
     RICON_HIDPI                    = 199;
-    RICON_200                      = 200;
-    RICON_201                      = 201;
-    RICON_202                      = 202;
-    RICON_203                      = 203;
-    RICON_204                      = 204;
-    RICON_205                      = 205;
-    RICON_206                      = 206;
-    RICON_207                      = 207;
-    RICON_208                      = 208;
-    RICON_209                      = 209;
-    RICON_210                      = 210;
-    RICON_211                      = 211;
-    RICON_212                      = 212;
-    RICON_213                      = 213;
-    RICON_214                      = 214;
-    RICON_215                      = 215;
-    RICON_216                      = 216;
+    ICON_FILETYPE_BINARY           = 200;
+    ICON_HEX                       = 201;
+    ICON_SHIELD                    = 202;
+    ICON_FILE_NEW                  = 203;
+    ICON_FOLDER_ADD                = 204;
+    ICON_ALARM                     = 205;
+    ICON_CPU                       = 206;
+    ICON_ROM                       = 207;
+    ICON_STEP_OVER                 = 208;
+    ICON_STEP_INTO                 = 209;
+    ICON_STEP_OUT                  = 210;
+    ICON_RESTART                   = 211;
+    ICON_BREAKPOINT_ON             = 212;
+    ICON_BREAKPOINT_OFF            = 213;
+    ICON_BURGER_MENU               = 214;
+    ICON_CASE_SENSITIVE            = 215;
+    ICON_REG_EXP                   = 216;
     RICON_217                      = 217;
     RICON_218                      = 218;
     RICON_219                      = 219;
@@ -524,6 +524,8 @@ procedure GuiGroupBox(bounds: TRectangle; const text:PChar); cdecl; external cDl
 procedure GuiLine(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
 {Panel control, useful to group controls}
 procedure GuiPanel(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+{Tab Bar control, returns TAB to be closed or -1}
+function GuiTabBar(bounds: TRectangle; const text: PPChar; count: Integer; active: PInteger): Integer; cdecl; external cDllName;
 {Scroll Panel control}
 function GuiScrollPanel(bounds: TRectangle; const text: PChar; content: TRectangle; scroll: PVector2): TRectangle; cdecl; external cDllName;
 
@@ -596,23 +598,12 @@ procedure GuiLoadStyleDefault; cdecl; external cDllName;
 function GuiIconText(iconId: longint; const text: PChar): PChar; cdecl; external cDllName;
 
 {$IFDEF RAYGUI_NO_RICONS}
-{Gui icons functionality}
-procedure GuiDrawIcon(iconId, posX, posY, pixelSize: Integer; color: TColorB); cdecl; external cDllName;
-
 {Get full icons data pointer}
 function GuiGetIcons: Pointer; cdecl; external cDllName;
-{Get icon bit data }
-function GuiGetIconData(iconId: Integer): Pointer; cdecl; external cDllName;
-{Set icon bit data}
-procedure GuiSetIconData(iconId: Integer; data: Pointer); cdecl; external cDllName;
-{Set icon scale (1 by default)}
-procedure GuiSetIconScale(scale: LongWord); cdecl; external cDllName;
-{Set icon pixel value }
-procedure GuiSetIconPixel(iconId: Integer; x: Integer; y: Integer); cdecl; external cDllName;
-{// Clear icon pixel value}
-procedure GuiClearIconPixel(iconId: Integer; x: Integer; y: Integer); cdecl; external cDllName;
-{Check icon pixel value}
-function GuiCheckIconPixel(iconId: Integer; x: Integer; y: Integer): Boolean; cdecl; external cDllName;
+{Load raygui icons file (.rgi) into internal icons data}
+function GuiLoadIcons(const fileName: PChar; loadIconsName: Boolean): PPChar; cdecl; external cDllName;
+{Gui icons functionality}
+procedure GuiDrawIcon(iconId, posX, posY, pixelSize: Integer; color: TColorB); cdecl; external cDllName;
 {$ENDIF}
 
 implementation
