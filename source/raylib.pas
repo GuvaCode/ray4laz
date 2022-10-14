@@ -1,10 +1,6 @@
 {
-██████╗░░█████╗░██╗░░░██╗██╗░░░░░██╗██████╗░  ░░██╗██╗░░░██████╗░
-██╔══██╗██╔══██╗╚██╗░██╔╝██║░░░░░██║██╔══██╗  ░██╔╝██║░░░╚════██╗
-██████╔╝███████║░╚████╔╝░██║░░░░░██║██████╦╝  ██╔╝░██║░░░░░███╔═╝
-██╔══██╗██╔══██║░░╚██╔╝░░██║░░░░░██║██╔══██╗  ███████║░░░██╔══╝░░
-██║░░██║██║░░██║░░░██║░░░███████╗██║██████╦╝  ╚════██║██╗███████╗
-╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝╚═╝╚═════╝░  ░░░░░╚═╝╚═╝╚══════╝
+raylib v4.5-dev
+
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
@@ -271,7 +267,7 @@ const
          params  : array[0..3] of single;  // Material generic parameters (if required)
        end;
 
-     (* Transform, vectex transformation data *)
+     (* Transform, verctex transformation data *)
      PTransform = ^TTransform;
      TTransform = record
          translation : TVector3;     // Translation
@@ -1482,6 +1478,8 @@ function GenImageWhiteNoise(width, height: Integer; factor: Single): TImage; cde
 function GenImagePerlinNoise(width, height, offsetX, offsetY: Integer; scale: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate image: cellular algorithm, bigger tileSize means bigger cells}
 function GenImageCellular(width, height, tileSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Generate image: grayscale image from text data}
+function GenImageText(width, height: Integer; const text: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Image manipulation functions *)
