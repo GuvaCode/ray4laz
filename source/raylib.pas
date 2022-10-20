@@ -1822,6 +1822,10 @@ procedure DrawCylinderEx(startPos, endPos: TVector3; startRadius, endRadius: Sin
 procedure DrawCylinderWires(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a cylinder wires with base at startPos and top at endPos}
 procedure DrawCylinderWiresEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Draw a capsule with the center of its sphere caps at startPos and endPos}
+procedure DrawCapsule(startPos, endPos: TVector3;  radius: Single; slices, rings: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Draw capsule wireframe with the center of its sphere caps at startPos and endPos}
+procedure DrawCapsuleWires(startPos, endPos: TVector3;  radius: Single; slices, rings: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a plane XZ}
 procedure DrawPlane(centerPos: TVector3; size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a ray line}
