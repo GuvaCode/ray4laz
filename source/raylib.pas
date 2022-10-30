@@ -1506,6 +1506,8 @@ procedure ImageAlphaClear(image: PImage; color: TColorB; threshold: Single); cde
 procedure ImageAlphaMask(image: PImage; alphaMask: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Premultiply alpha channel}
 procedure ImageAlphaPremultiply(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Apply Gaussian blur using a box blur approximation}
+procedure ImageBlurGaussian(image: PImage; blurSize: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Resize image (Bicubic scaling algorithm)}
 procedure ImageResize(image: PImage; newWidth, newHeight: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Resize image (Nearest-Neighbor scaling algorithm)}
