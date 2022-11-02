@@ -9,7 +9,6 @@ const
   screenHeight = 450;
   GLSL_VERSION = 330;
 
-
 var
   modelA,modelB,modelC: TModel;
   texture: TTexture2D;
@@ -87,7 +86,6 @@ begin
             if (fogDensity > 1.0) then fogDensity := 1.0;
         end;
 
-
         if IsKeyDown(KEY_DOWN)  then
         begin
             fogDensity -= 0.001;
@@ -114,15 +112,12 @@ begin
                 DrawModel(modelA, Vector3Zero(), 1.0, WHITE);
                 DrawModel(modelB, Vector3Create( -2.6, 0, 0), 1.0, WHITE);
                 DrawModel(modelC, Vector3Create( 2.6, 0, 0), 1.0, WHITE);
-               // for i := -20 to
-               // for (int i = -20; i < 20; i += 2) DrawModel(modelA,(Vector3){ (float)i, 0, 2 }, 1.0f, WHITE);
 
                for i:= -20 to 20 do
                begin
 
                DrawModel(modelA,Vector3Create(i*2,0,2),1.0,White);
                end;
-
 
             EndMode3D();
 
@@ -132,6 +127,11 @@ begin
     end;
   // De-Initialization
   //--------------------------------------------------------------------------------------
+    UnloadModel(modelA);        // Unload the model A
+    UnloadModel(modelB);        // Unload the model B
+    UnloadModel(modelC);        // Unload the model C
+    UnloadTexture(texture);     // Unload the texture
+    UnloadShader(shader);       // Unload shader
   CloseWindow();        // Close window and OpenGL context
   //--------------------------------------------------------------------------------------
 end.
