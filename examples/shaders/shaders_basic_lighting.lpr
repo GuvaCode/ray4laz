@@ -32,7 +32,7 @@ var
   camera: TCamera;
   model,cube: TModel;
   shader: TShader;
-  ambientLoc: integer;
+  ambientLoc, i: integer;
   lights: array [0..MAX_LIGHTS] of TLight ;
   shaderVol, cameraPos: array [0..3] of single;
 
@@ -99,10 +99,7 @@ begin
      if IsKeyPressed(KEY_B) then  lights[3].enabled := not lights[3].enabled;
 
      // Update light values (actually, only enable/disable them)
-     UpdateLightValues(shader, lights[0]);
-     UpdateLightValues(shader, lights[1]);
-     UpdateLightValues(shader, lights[2]);
-     UpdateLightValues(shader, lights[3]);
+     for  i := 0 to MAX_LIGHTS do UpdateLightValues(shader, lights[i]);
 
      // Update the shader with the camera view vector (points towards { 0.0f, 0.0f, 0.0f })
      cameraPos[0] := camera.position.x;
@@ -116,18 +113,18 @@ begin
       BeginDrawing();
        ClearBackground(RAYWHITE);
        BeginMode3D(camera);
+
           DrawModel(model, Vector3Zero(), 1.0, WHITE);
           DrawModel(cube, Vector3Zero(), 1.0, WHITE);
-          // Draw markers to show where the lights are
-          if lights[0].enabled then DrawSphereEx(lights[0].position, 0.2, 8, 8, YELLOW)
-          else DrawSphereWires(lights[0].position, 0.2, 8, 8, ColorAlpha(YELLOW, 0.3));
-          if lights[1].enabled then DrawSphereEx(lights[1].position, 0.2, 8, 8, RED)
-          else DrawSphereWires(lights[1].position, 0.2, 8, 8, ColorAlpha(RED, 0.3));
-          if lights[2].enabled then  DrawSphereEx(lights[2].position, 0.2, 8, 8, GREEN)
-          else DrawSphereWires(lights[2].position, 0.2, 8, 8, ColorAlpha(GREEN, 0.3));
-          if lights[3].enabled then DrawSphereEx(lights[3].position, 0.2, 8, 8, BLUE)
-          else DrawSphereWires(lights[3].position, 0.2, 8, 8, ColorAlpha(BLUE, 0.3));
+
+          // Draw spheres to show where the lights are
+          for i:=0 to MAX_LIGHTS do
+          if (lights[i].enabled) then DrawSphereEx(lights[i].position, 0.2, 8, 8, lights[i].color)
+          else
+          DrawSphereWires(lights[i].position, 0.2, 8, 8, ColorAlpha(lights[i].color, 0.3));
+
           DrawGrid(10, 1.0);
+
         EndMode3D();
         DrawFPS(10, 10);
         DrawText('Use keys [Y][R][G][B] to toggle lights', 10, 40, 20, DARKGRAY);

@@ -44,71 +44,63 @@ const
 
 type
   TLight = record
-    type_: longint;
-    enabled: boolean;
+    type_: Integer;
+    enabled: Boolean;
     position: TVector3;
     target: TVector3;
     color: TColorB;
-    attenuation: single;
+    attenuation: Single;
 
     // Shader locations
-    enabledLoc: longint;
-    typeLoc: longint;
-    positionLoc: longint;
-    targetLoc: longint;
-    colorLoc: longint;
-    attenuationLoc: longint;
+    enabledLoc: Integer;
+    typeLoc: Integer;
+    positionLoc: Integer;
+    targetLoc: Integer;
+    colorLoc: Integer;
+    attenuationLoc: Integer;
   end;
 
  type
   PLightType = ^TLightType;
-  TLightType = Longint;
+  TLightType = Integer;
    const
      LIGHT_DIRECTIONAL = 0;
      LIGHT_POINT = 1;
 
- function CreateLight(type_:longint; position, target: TVector3; color: TColorB; shader: TShader): TLight; // Create a light and get shader locations
+ function CreateLight(type_:Integer; position, target: TVector3; color: TColorB; shader: TShader): TLight; // Create a light and get shader locations
  procedure UpdateLightValues(shader: TShader; light: TLight); // Send light properties to shader
 
 implementation
 var lightsCount: longint = 0;    // Current amount of created lights
 
-  function CreateLight(type_: longint; position, target: TVector3; color: TColorB;
-  shader: TShader): TLight;
-  var light:TLight;
-    enabledName, typeName, posName, targetName, colorName : Pchar;
+function CreateLight(type_: Integer; position, target: TVector3; color: TColorB; shader: TShader): TLight;
+var light:TLight;
 begin
-   if (lightsCount < MAX_LIGHTS) then
-     begin
-        light.enabled := true;
-        light.type_ := type_;
-        light.position := position;
-        light.target := target;
-        light.color := color;
+  if (lightsCount < MAX_LIGHTS) then
+   begin
+       light.enabled := true;
+       light.type_ := type_;
+       light.position := position;
+       light.target := target;
+       light.color := color;
 
-        // TODO: Below code doesn't look good to me,
-        // it assumes a specific shader naming and structure
-        // Probably this implementation could be improved
-        enabledName := Pchar('lights['+inttostr(lightsCount)+'].enabled');
-        typeName := Pchar('lights['+inttostr(lightsCount)+'].type');
-        posName := Pchar('lights['+inttostr(lightsCount)+'].position');
-        targetName := Pchar('lights['+inttostr(lightsCount)+'].target');
-        colorName := Pchar('lights['+inttostr(lightsCount)+'].color');
+       // NOTE: Lighting shader naming must be the provided ones
+       light.enabledLoc := GetShaderLocation(shader, TextFormat('lights[%i].enabled', lightsCount));
+       light.typeLoc := GetShaderLocation(shader, TextFormat('lights[%i].type', lightsCount));
+       light.positionLoc := GetShaderLocation(shader, TextFormat('lights[%i].position', lightsCount));
+       light.targetLoc := GetShaderLocation(shader, TextFormat('lights[%i].target', lightsCount));
+       light.colorLoc := GetShaderLocation(shader, TextFormat('lights[%i].color', lightsCount));
 
-        light.enabledLoc := GetShaderLocation(shader, enabledName);
-        light.typeLoc := GetShaderLocation(shader, typeName);
-        light.positionLoc := GetShaderLocation(shader, posName);
-        light.targetLoc := GetShaderLocation(shader, targetName);
-        light.colorLoc := GetShaderLocation(shader, colorName);
+       UpdateLightValues(shader, light);
 
-        UpdateLightValues(shader, light);
-
-        Inc(lightsCount);
-    end;
-
-    result:=light;
+       Inc(lightsCount);
+   end;
+   result := light;
 end;
 
+
+// Send light properties to shader
+// NOTE: Light shader locations should be available
 procedure UpdateLightValues(shader: TShader; light: TLight);
 var   position, target: array [0..2] of single;
       color: array [0..3] of single;
