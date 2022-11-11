@@ -246,8 +246,8 @@ type
     ICON_BURGER_MENU               = 214;
     ICON_CASE_SENSITIVE            = 215;
     ICON_REG_EXP                   = 216;
-    RICON_217                      = 217;
-    RICON_218                      = 218;
+    ICON_FOLDER                    = 217;
+    ICON_FILE                      = 218;
     RICON_219                      = 219;
     RICON_220                      = 220;
     RICON_221                      = 221;

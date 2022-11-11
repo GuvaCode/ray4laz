@@ -1136,7 +1136,7 @@ procedure UnloadFileData(data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDl
 {Save data to file from byte array (write), returns true on success}
 function SaveFileData(fileName: PChar; data: Pointer; bytesToWrite: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Export data to code (.h), returns true on success}
-function ExportDataAsCode(data: PChar; size: LongWord; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ExportDataAsCode(data: PByte; size: LongWord; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load text data from file (read), returns a '\0' terminated string}
 function LoadFileText(fileName: Pchar): Pchar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload file text data allocated by LoadFileText()}
@@ -1628,16 +1628,10 @@ procedure DrawTextureV(texture: TTexture2D; position: TVector2; tint: TColorB); 
 procedure DrawTextureEx(texture: TTexture2D; position: TVector2; rotation, scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a part of a texture defined by a rectangle}
 procedure DrawTextureRec(texture: TTexture2D; source: TRectangle; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-{Draw texture quad with tiling and offset parameters}
-procedure DrawTextureQuad(texture: TTexture2D; tiling, offset: TVector2; quad: TRectangle; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-{Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.}
-procedure DrawTextureTiled(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation, scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw a part of a texture defined by a rectangle with 'pro' parameters}
 procedure DrawTexturePro(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draws a texture (or part of it) that stretches or shrinks nicely}
 procedure DrawTextureNPatch(texture: TTexture2D; nPatchInfo: TNPatchInfo; dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-{Draw a textured polygon}
-procedure DrawTexturePoly(texture: TTexture2D; center: TVector2; points: PVector2; texcoords: PVector2; pointCount: Integer; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Color/pixel related functions *)
