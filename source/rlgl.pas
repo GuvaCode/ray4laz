@@ -367,6 +367,15 @@ type
     RL_ATTACHMENT_TEXTURE2D = 100;         // Framebuffer texture attachment type: texture2d
     RL_ATTACHMENT_RENDERBUFFER = 200;      // Framebuffer texture attachment type: renderbuffer
 
+type
+  (* Face culling mode *)
+  PrlCullMode = ^TrlCullMode;
+  TrlCullMode = Integer;
+  const
+    RL_CULL_FACE_FRONT = 0;
+    RL_CULL_FACE_BACK =1;
+
+
 //------------------------------------------------------------------------------------
 // Functions Declaration - Matrix operations
 //------------------------------------------------------------------------------------
@@ -497,6 +506,8 @@ procedure rlDisableDepthMask; cdecl; external cDllName;
 procedure rlEnableBackfaceCulling; cdecl; external cDllName;
 {Disable backface culling}
 procedure rlDisableBackfaceCulling; cdecl; external cDllName;
+{Set face culling mode}
+procedure rlSetCullFace(mode: Integer); cdecl; external cDllName;
 {Enable scissor test}
 procedure rlEnableScissorTest; cdecl; external cDllName;
 {Disable scissor test}

@@ -1800,10 +1800,6 @@ procedure DrawCubeV(position, size: TVector3; color: TColorB); cdecl; external {
 procedure DrawCubeWires(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw cube wires (Vector version)}
 procedure DrawCubeWiresV(position, size: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-{Draw cube textured}
-procedure DrawCubeTexture(texture: TTexture2D; position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-{Draw cube with a region of a texture}
-procedure DrawCubeTextureRec(texture: TTexture2D; source: TRectangle; position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw sphere}
 procedure DrawSphere(centerPos: TVector3; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Draw sphere with extended parameters}
