@@ -395,7 +395,7 @@ procedure rlRotatef(angle, x, y, z: Single); cdecl; external cDllName;
 {Multiply the current matrix by a scaling matrix}
 procedure rlScalef(x, y, z: Single); cdecl; external cDllName;
 {Multiply the current matrix by another matrix}
-procedure rlMultMatrixf(matf: PSingle); cdecl; external cDllName;
+procedure rlMultMatrixf(const matf: PSingle); cdecl; external cDllName;
 procedure rlFrustum(left, right, bottom, top, znear, zfar: Double); cdecl; external cDllName;
 procedure rlOrtho(left, right, bottom, top, znear, zfar: Double); cdecl; external cDllName;
 {Set the viewport area}
@@ -704,7 +704,7 @@ function rlGetShaderBufferSize(id: LongWord): LongWord; cdecl; external cDllName
 (* Buffer management *)
 
 {Bind image texture}
-procedure rlBindImageTexture(id, index, format: LongWord; readonly: Integer); cdecl; external cDllName;
+procedure rlBindImageTexture(id, index, format: Integer; readonly: Boolean); cdecl; external cDllName;
 
 (* Matrix state management *)
 
