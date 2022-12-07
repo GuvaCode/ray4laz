@@ -594,6 +594,16 @@ function GuiColorBarHue(bounds:TRectangle; const text: PChar; value: Single): Si
 procedure GuiLoadStyle(const fileName: PChar); cdecl; external cDllName;
 {Load style default over global style }
 procedure GuiLoadStyleDefault; cdecl; external cDllName;
+
+(* Tooltips management functions *)
+{Enable gui tooltips (global state)}
+procedure GuiEnableTooltip; cdecl; external cDllName;
+{Disable gui tooltips (global state)}
+procedure GuiDisableTooltip; cdecl; external cDllName;
+{Set tooltip string}
+procedure GuiSetTooltip(const tooltip: PChar); cdecl; external cDllName;
+
+(* Icons functionality *)
 {Get text with icon id prepended (if supported)}
 function GuiIconText(iconId: longint; const text: PChar): PChar; cdecl; external cDllName;
 

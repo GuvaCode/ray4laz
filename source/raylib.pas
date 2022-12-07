@@ -1648,7 +1648,13 @@ function ColorFromNormalized(normalized: TVector4): TColorB; cdecl; external {$I
 function ColorToHSV(color: TColorB): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get a Color from HSV values, hue [0..360], saturation/value [0..1]}
 function ColorFromHSV(hue, saturation, value: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-{Get color with alpha applied, alpha goes from 0.0f to 1.0f}
+{Get color multiplied with another color}
+function ColorTint(color, tint: TColorB): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Get color with brightness correction, brightness factor goes from -1.0 to 1.0}
+function ColorBrightness(color: TColorB; factor: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Get color with contrast correction, contrast values between -1.0 and 1.0}
+function ColorContrast(color: TColorB; contrast: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{Get color with alpha applied, alpha goes from 0.0 to 1.0}
 function ColorAlpha(color: TColorB; alpha: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get src alpha-blended into dst color with tint}
 function ColorAlphaBlend(dst, src, tint: TColorB): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};

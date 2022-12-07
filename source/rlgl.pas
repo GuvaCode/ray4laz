@@ -147,6 +147,36 @@ const
   RL_VERTEX_SHADER = $8B31;                         // GL_VERTEX_SHADER
   RL_COMPUTE_SHADER = $91B9;                        // GL_COMPUTE_SHADER
 
+  (* GL blending factors *)
+  RL_ZERO = 0;                                      // GL_ZERO
+  RL_ONE = 1;                                       // GL_ONE
+  RL_SRC_COLOR = $0300;                             // GL_SRC_COLOR
+  RL_ONE_MINUS_SRC_COLOR = $0301;                   // GL_ONE_MINUS_SRC_COLOR
+  RL_SRC_ALPHA = 0302;                              // GL_SRC_ALPHA
+  RL_ONE_MINUS_SRC_ALPHA = $0303;                   // GL_ONE_MINUS_SRC_ALPHA
+  RL_DST_ALPHA = $0304;                             // GL_DST_ALPHA
+  RL_ONE_MINUS_DST_ALPHA = $0305;                   // GL_ONE_MINUS_DST_ALPHA
+  RL_DST_COLOR = $0306;                             // GL_DST_COLOR
+  RL_ONE_MINUS_DST_COLOR = $0307;                   // GL_ONE_MINUS_DST_COLOR
+  RL_SRC_ALPHA_SATURATE = $0308;                    // GL_SRC_ALPHA_SATURATE
+  RL_CONSTANT_COLOR = $8001;                        // GL_CONSTANT_COLOR
+  RL_ONE_MINUS_CONSTANT_COLOR = $8002;              // GL_ONE_MINUS_CONSTANT_COLOR
+  RL_CONSTANT_ALPHA = $8003;                        // GL_CONSTANT_ALPHA
+  RL_ONE_MINUS_CONSTANT_ALPHA = $8004;              // GL_ONE_MINUS_CONSTANT_ALPHA
+
+  (* GL blending functions/equations *)
+  RL_FUNC_ADD = $8006;                              // GL_FUNC_ADD
+  RL_FUNC_SUBTRACT = $800A;                         // GL_FUNC_SUBTRACT
+  RL_FUNC_REVERSE_SUBTRACT = $800B;                 // GL_FUNC_REVERSE_SUBTRACT
+  RL_BLEND_EQUATION = $8009;                        // GL_BLEND_EQUATION
+  RL_BLEND_EQUATION_RGB = $8009;                    // GL_BLEND_EQUATION_RGB   // (Same as BLEND_EQUATION)
+  RL_BLEND_EQUATION_ALPHA = $883D;                  // GL_BLEND_EQUATION_ALPHA
+  RL_BLEND_DST_RGB = $80C8;                         // GL_BLEND_DST_RGB
+  RL_BLEND_SRC_RGB = $80C9;                         // GL_BLEND_SRC_RGB
+  RL_BLEND_DST_ALPHA = $80CA;                       // GL_BLEND_DST_ALPHA
+  RL_BLEND_SRC_ALPHA = $80CB;                       // GL_BLEND_SRC_ALPHA
+  RL_BLEND_COLOR = $8005;                           // GL_BLEND_COLOR
+
 
 type
   // Dynamic vertex buffers (position + texcoords + colors + indices arrays)
