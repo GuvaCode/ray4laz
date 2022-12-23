@@ -6,7 +6,10 @@ Pascal header by Gunko Vadim (@guvacode)
 }
 
 unit raylib;
-{$mode objfpc}{$H+}
+{$packrecords c}
+{$ALIGN 8}
+{$MINENUMSIZE 4}
+
 
 // Include configuration file
 {$I raylib.inc}
@@ -268,6 +271,7 @@ const
        end;
 
      (* Transform, verctex transformation data *)
+     PPTransform = ^PTransform;
      PTransform = ^TTransform;
      TTransform = record
          translation : TVector3;     // Translation
@@ -303,7 +307,7 @@ const
          boneCount : Integer;      // Number of bones
          frameCount : Integer;     // Number of animation frames
          bones : PBoneInfo;        // Bones information (skeleton)
-         framePoses : ^PTransform; // Poses array by frame
+         framePoses : PPTransform; // Poses array by frame
        end;
 
       (* Ray, ray for raycasting *)
@@ -2124,7 +2128,8 @@ function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType:
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer);
 
 implementation
-
+uses
+  Math;
 {$IFDEF linux}
   {$IFDEF RAY_STATIC}
   {$linklib c}
@@ -2214,7 +2219,9 @@ begin
 end;
 
 
+
 initialization
+  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);
 
 end.
 
