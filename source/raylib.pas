@@ -1,19 +1,17 @@
 {
 raylib v4.5-dev
-
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
 
 unit raylib;
+{$mode objfpc}{$H+}
 {$packrecords c}
 {$ALIGN 8}
 {$MINENUMSIZE 4}
 
-
 // Include configuration file
 {$I raylib.inc}
-
 
 interface
 const
@@ -41,32 +39,32 @@ const
 const
   // Some Basic Colors
   // NOTE: Custom raylib color palette for amazing visuals on WHITE background
-  LIGHTGRAY:      TColorB = (r: 200; g: 200; b: 200; a: 255);  // Light Gray
-  GRAY:           TColorB = (r: 130; g: 130; b: 130; a: 255);  // Gray
-  DARKGRAY:       TColorB = (r: 80; g: 80; b: 80; a: 255);     // Dark Gray
-  YELLOW:         TColorB = (r: 253; g: 249; b: 0; a: 255);    // Yellow
-  GOLD:           TColorB = (r: 255; g: 203; b: 0; a: 255);    // Gold
-  ORANGE:         TColorB = (r: 255; g: 161; b: 0; a: 255);    // Orange
-  PINK:           TColorB = (r: 255; g: 109; b: 194; a: 255);  // Pink
-  RED:            TColorB = (r: 230; g: 41; b: 55; a: 255);    // Red
-  MAROON:         TColorB = (r: 190; g: 33; b: 55; a: 255);    // Maroon
-  GREEN:          TColorB = (r: 0; g: 228; b: 48; a: 255);     // Green
-  LIME:           TColorB = (r: 0; g: 158; b: 47; a: 255);     // Lime
-  DARKGREEN:      TColorB = (r: 0; g: 117; b: 44; a: 255);     // Dark Green
-  SKYBLUE:        TColorB = (r: 102; g: 191; b: 255; a: 255);  // Sky Blue
-  BLUE:           TColorB = (r: 0; g: 121; b: 241; a: 255);    // Blue
-  DARKBLUE:       TColorB = (r: 0; g: 82; b: 172; a: 255);     // Dark Blue
-  PURPLE:         TColorB = (r: 200; g: 122; b: 255; a: 255);  // Purple
-  VIOLET:         TColorB = (r: 135; g: 60; b: 190; a: 255);   // Violet
-  DARKPURPLE:     TColorB = (r: 112; g: 31; b: 126; a: 255);   // Dark Purple
-  BEIGE:          TColorB = (r: 211; g: 176; b: 131; a: 255);  // Beige
-  BROWN:          TColorB = (r: 127; g: 106; b: 79; a: 255);   // Brown
-  DARKBROWN:      TColorB = (r: 76; g: 63; b: 47; a: 255);     // Dark beown
-  WHITE:          TColorB = (r: 255; g: 255; b: 255; a: 255);  // White
-  BLACK:          TColorB = (r: 0; g: 0; b: 0; a: 255);        // Black
-  BLANK:          TColorB = (r: 0; g: 0; b: 0; a: 0);          // Black(Transparent)
-  MAGENTA:        TColorB = (r: 255; g: 0; b: 255; a: 255);    // Magenta
-  RAYWHITE:       TColorB = (r: 245; g: 245; b: 245; a: 255);  // My own White (raylib logo)
+  LIGHTGRAY:      TColorB = (r: 200; g: 200; b: 200; a: 255); // Light Gray
+  GRAY:           TColorB = (r: 130; g: 130; b: 130; a: 255); // Gray
+  DARKGRAY:       TColorB = (r: 80; g: 80; b: 80; a: 255);    // Dark Gray
+  YELLOW:         TColorB = (r: 253; g: 249; b: 0; a: 255);   // Yellow
+  GOLD:           TColorB = (r: 255; g: 203; b: 0; a: 255);   // Gold
+  ORANGE:         TColorB = (r: 255; g: 161; b: 0; a: 255);   // Orange
+  PINK:           TColorB = (r: 255; g: 109; b: 194; a: 255); // Pink
+  RED:            TColorB = (r: 230; g: 41; b: 55; a: 255);   // Red
+  MAROON:         TColorB = (r: 190; g: 33; b: 55; a: 255);   // Maroon
+  GREEN:          TColorB = (r: 0; g: 228; b: 48; a: 255);    // Green
+  LIME:           TColorB = (r: 0; g: 158; b: 47; a: 255);    // Lime
+  DARKGREEN:      TColorB = (r: 0; g: 117; b: 44; a: 255);    // Dark Green
+  SKYBLUE:        TColorB = (r: 102; g: 191; b: 255; a: 255); // Sky Blue
+  BLUE:           TColorB = (r: 0; g: 121; b: 241; a: 255);   // Blue
+  DARKBLUE:       TColorB = (r: 0; g: 82; b: 172; a: 255);    // Dark Blue
+  PURPLE:         TColorB = (r: 200; g: 122; b: 255; a: 255); // Purple
+  VIOLET:         TColorB = (r: 135; g: 60; b: 190; a: 255);  // Violet
+  DARKPURPLE:     TColorB = (r: 112; g: 31; b: 126; a: 255);  // Dark Purple
+  BEIGE:          TColorB = (r: 211; g: 176; b: 131; a: 255); // Beige
+  BROWN:          TColorB = (r: 127; g: 106; b: 79; a: 255);  // Brown
+  DARKBROWN:      TColorB = (r: 76; g: 63; b: 47; a: 255);    // Dark beown
+  WHITE:          TColorB = (r: 255; g: 255; b: 255; a: 255); // White
+  BLACK:          TColorB = (r: 0; g: 0; b: 0; a: 255);       // Black
+  BLANK:          TColorB = (r: 0; g: 0; b: 0; a: 0);         // Black(Transparent)
+  MAGENTA:        TColorB = (r: 255; g: 0; b: 255; a: 255);   // Magenta
+  RAYWHITE:       TColorB = (r: 245; g: 245; b: 245; a: 255); // My own White (raylib logo)
 
    (* Vector2, 2 components *)
    type
@@ -141,11 +139,11 @@ const
      (* Texture, tex data stored in GPU memory (VRAM) *)
      PTexture = ^TTexture;
      TTexture = record
-         id      : LongWord;   // OpenGL texture id
-         width   : Integer; // Texture base width
-         height  : Integer; // Texture base height
-         mipmaps : Integer; // Mipmap levels, 1 by default
-         format  : Integer; // Data format (PixelFormat type)
+         id      : LongWord; // OpenGL texture id
+         width   : Integer;  // Texture base width
+         height  : Integer;  // Texture base height
+         mipmaps : Integer;  // Mipmap levels, 1 by default
+         format  : Integer;  // Data format (PixelFormat type)
        end;
 
      (* Texture2D, same as Texture *)
@@ -159,7 +157,7 @@ const
      (* RenderTexture, fbo for texture rendering *)
      PRenderTexture = ^TRenderTexture;
      TRenderTexture = record
-         id      : LongWord;    // OpenGL framebuffer object id
+         id      : LongWord; // OpenGL framebuffer object id
          texture : TTexture; // Color buffer attachment texture
          depth   : TTexture; // Depth buffer attachment texture
        end;
@@ -227,56 +225,56 @@ const
      (* Mesh, vertex data and vao/vbo *)
      PMesh = ^TMesh;
      TMesh = record
-         vertexCount   : Integer;  // Number of vertices stored in arrays
-         triangleCount : Integer;  // Number of triangles stored (indexed or not)
+         vertexCount   : Integer;   // Number of vertices stored in arrays
+         triangleCount : Integer;   // Number of triangles stored (indexed or not)
          // Vertex attributes data
-         vertices      : PSingle;  // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
-         texcoords     : PSingle;  // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
-         texcoords2    : PSingle;  // Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
-         normals       : PSingle;  // Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
-         tangents      : PSingle;  // Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
-         colors        : PByte;    // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
-         indices       : PWord;    // Vertex indices (in case vertex data comes indexed)
+         vertices      : PSingle;   // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+         texcoords     : PSingle;   // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+         texcoords2    : PSingle;   // Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
+         normals       : PSingle;   // Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
+         tangents      : PSingle;   // Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
+         colors        : PByte;     // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+         indices       : PWord;     // Vertex indices (in case vertex data comes indexed)
          // Animation vertex data
-         animVertices  : PSingle;  // Animated vertex positions (after bones transformations)
-         animNormals   : PSingle;  // Animated normals (after bones transformations)
-         boneIds       : PByte;    // Vertex bone ids, up to 4 bones influence by vertex (skinning)
-         boneWeights   : PSingle;  // Vertex bone weight, up to 4 bones influence by vertex (skinning)
+         animVertices  : PSingle;   // Animated vertex positions (after bones transformations)
+         animNormals   : PSingle;   // Animated normals (after bones transformations)
+         boneIds       : PByte;     // Vertex bone ids, up to 4 bones influence by vertex (skinning)
+         boneWeights   : PSingle;   // Vertex bone weight, up to 4 bones influence by vertex (skinning)
          // OpenGL identifiers
-         vaoId         : LongWord;    // OpenGL Vertex Array Object id
-         vboId         : PLongWord;   // OpenGL Vertex Buffer Objects id (default vertex data)
+         vaoId         : LongWord;  // OpenGL Vertex Array Object id
+         vboId         : PLongWord; // OpenGL Vertex Buffer Objects id (default vertex data)
        end;
 
      (* Shader *)
      PShader = ^TShader;
      TShader = record
-         id    : LongWord;    // Shader program id
-         locs  : PInteger;    // Shader locations array (RL_MAX_SHADER_LOCATIONS)
+         id    : LongWord; // Shader program id
+         locs  : PInteger; // Shader locations array (RL_MAX_SHADER_LOCATIONS)
        end;
 
      (* MaterialMap *)
      PMaterialMap = ^TMaterialMap;
      TMaterialMap = record
          texture : TTexture2D; // Material map texture
-         color   : TColorB;  // Material map color
+         color   : TColorB;    // Material map color
          value   : Single;     // Material map value
        end;
 
      (* Material, includes shader and maps *)
      PMaterial = ^TMaterial;
      TMaterial = record
-         shader  : TShader;                // Material shader
-         maps    : PMaterialMap;           // Material maps array (MAX_MATERIAL_MAPS)
-         params  : array[0..3] of single;  // Material generic parameters (if required)
+         shader  : TShader;               // Material shader
+         maps    : PMaterialMap;          // Material maps array (MAX_MATERIAL_MAPS)
+         params  : array[0..3] of single; // Material generic parameters (if required)
        end;
 
      (* Transform, verctex transformation data *)
      PPTransform = ^PTransform;
      PTransform = ^TTransform;
      TTransform = record
-         translation : TVector3;     // Translation
-         rotation    : TQuaternion;  // Rotation
-         scale       : TVector3;     // Scale
+         translation : TVector3;    // Translation
+         rotation    : TQuaternion; // Rotation
+         scale       : TVector3;    // Scale
        end;
 
      (* Bone, skeletal animation bone *)
@@ -289,16 +287,16 @@ const
      (* Model, meshes, materials and animation data *)
      PModel = ^TModel;
      TModel = record
-         transform        : TMatrix;     // Local transform matrix
-         meshCount        : Integer;     // Number of meshes
-         materialCount    : Integer;     // Number of materials
-         meshes           : PMesh;       // Meshes array
-         materials        : PMaterial;   // Materials array
-         meshMaterial     : PInteger;    // Mesh material number
+         transform        : TMatrix;    // Local transform matrix
+         meshCount        : Integer;    // Number of meshes
+         materialCount    : Integer;    // Number of materials
+         meshes           : PMesh;      // Meshes array
+         materials        : PMaterial;  // Materials array
+         meshMaterial     : PInteger;   // Mesh material number
          // Animation data
-         boneCount        : Integer;     // Number of bones
-         bones            : PBoneInfo;   // Bones information (skeleton)
-         bindPose         : PTransform;  // Bones base transformation (pose)
+         boneCount        : Integer;    // Number of bones
+         bones            : PBoneInfo;  // Bones information (skeleton)
+         bindPose         : PTransform; // Bones base transformation (pose)
        end;
 
      (* ModelAnimation *)
@@ -340,7 +338,7 @@ const
          sampleRate : LongWord;   // Frequency (samples per second)
          sampleSize : LongWord;   // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
          channels   : LongWord;   // Number of channels (1-mono, 2-stereo, ...)
-         data       : Pointer; // Buffer data pointer
+         data       : Pointer;    // Buffer data pointer
        end;
 
      (* Opaque structs declaration *)
@@ -364,7 +362,7 @@ const
      (* Sound *)
      PSound = ^TSound;
      TSound = record
-         stream     : TAudioStream; // Audio stream
+         stream     : TAudioStream;    // Audio stream
          frameCount : LongWord;        // Total number of frames (considering channels)
        end;
 
@@ -409,9 +407,9 @@ const
      (* File path list *)
      PFilePathList = ^TFilePathList;
      TFilePathList = record
-       capacity  : LongWord;  // Filepaths max entries
-       count     : LongWord;  // Filepaths entries count
-       paths     : PPChar; // Filepaths entries
+       capacity  : LongWord; // Filepaths max entries
+       count     : LongWord; // Filepaths entries count
+       paths     : PPChar;   // Filepaths entries
      end;
 
 //----------------------------------------------------------------------------------
@@ -424,21 +422,21 @@ const
      PConfigFlags = ^TConfigFlags;
      TConfigFlags =  Integer;
        const
-         FLAG_VSYNC_HINT                = $00000040; // Set to try enabling V-Sync on GPU
-         FLAG_FULLSCREEN_MODE           = $00000002; // Set to run program in fullscreen
-         FLAG_WINDOW_RESIZABLE          = $00000004; // Set to allow resizable window
-         FLAG_WINDOW_UNDECORATED        = $00000008; // Set to disable window decoration (frame and buttons)
-         FLAG_WINDOW_HIDDEN             = $00000080; // Set to hide window
-         FLAG_WINDOW_MINIMIZED          = $00000200; // Set to minimize window (iconify)
-         FLAG_WINDOW_MAXIMIZED          = $00000400; // Set to maximize window (expanded to monitor)
-         FLAG_WINDOW_UNFOCUSED          = $00000800; // Set to window non focused
-         FLAG_WINDOW_TOPMOST            = $00001000; // Set to window always on top
-         FLAG_WINDOW_ALWAYS_RUN         = $00000100; // Set to allow windows running while minimized
-         FLAG_WINDOW_TRANSPARENT        = $00000010; // Set to allow transparent framebuffer
-         FLAG_WINDOW_HIGHDPI            = $00002000; // Set to support HighDPI
-         FLAG_WINDOW_MOUSE_PASSTHROUGH  = $00004000; // Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
-         FLAG_MSAA_4X_HINT              = $00000020; // Set to try enabling MSAA 4X
-         FLAG_INTERLACED_HINT           = $00010000; // Set to try enabling interlaced video format (for V3D)
+         FLAG_VSYNC_HINT                 =  TConfigFlags($00000040); // Set to try enabling V-Sync on GPU
+         FLAG_FULLSCREEN_MODE            =  TConfigFlags($00000002); // Set to run program in fullscreen
+         FLAG_WINDOW_RESIZABLE           =  TConfigFlags($00000004); // Set to allow resizable window
+         FLAG_WINDOW_UNDECORATED         =  TConfigFlags($00000008); // Set to disable window decoration (frame and buttons)
+         FLAG_WINDOW_HIDDEN              =  TConfigFlags($00000080); // Set to hide window
+         FLAG_WINDOW_MINIMIZED           =  TConfigFlags($00000200); // Set to minimize window (iconify)
+         FLAG_WINDOW_MAXIMIZED           =  TConfigFlags($00000400); // Set to maximize window (expanded to monitor)
+         FLAG_WINDOW_UNFOCUSED           =  TConfigFlags($00000800); // Set to window non focused
+         FLAG_WINDOW_TOPMOST             =  TConfigFlags($00001000); // Set to window always on top
+         FLAG_WINDOW_ALWAYS_RUN          =  TConfigFlags($00000100); // Set to allow windows running while minimized
+         FLAG_WINDOW_TRANSPARENT         =  TConfigFlags($00000010); // Set to allow transparent framebuffer
+         FLAG_WINDOW_HIGHDPI             =  TConfigFlags($00002000); // Set to support HighDPI
+         FLAG_WINDOW_MOUSE_PASSTHROUGH   =  TConfigFlags($00004000); // Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+         FLAG_MSAA_4X_HINT               =  TConfigFlags($00000020); // Set to try enabling MSAA 4X
+         FLAG_INTERLACED_HINT            =  TConfigFlags($00010000); // Set to try enabling interlaced video format (for V3D)
 
      (* Trace log level *)
      // NOTE: Organized by priority level
@@ -446,14 +444,14 @@ const
        PTraceLogLevel = ^TTraceLogLevel;
        TTraceLogLevel =  Integer;
        const
-         LOG_ALL      = 0; // Display all logs
-         LOG_TRACE    = 1; // Trace logging, intended for internal use only
-         LOG_DEBUG    = 2; // Debug logging, used for internal debugging, it should be disabled on release builds
-         LOG_INFO     = 3; // Info logging, used for program execution info
-         LOG_WARNING  = 4; // Warning logging, used on recoverable failures
-         LOG_ERROR    = 5; // Error logging, used on unrecoverable failures
-         LOG_FATAL    = 6; // Fatal logging, used to abort program: exit(EXIT_FAILURE)
-         LOG_NONE     = 7; // Disable logging
+         LOG_ALL      =  TTraceLogLevel(0); // Display all logs
+         LOG_TRACE    =  TTraceLogLevel(1); // Trace logging, intended for internal use only
+         LOG_DEBUG    =  TTraceLogLevel(2); // Debug logging, used for internal debugging, it should be disabled on release builds
+         LOG_INFO     =  TTraceLogLevel(3); // Info logging, used for program execution info
+         LOG_WARNING  =  TTraceLogLevel(4); // Warning logging, used on recoverable failures
+         LOG_ERROR    =  TTraceLogLevel(5); // Error logging, used on unrecoverable failures
+         LOG_FATAL    =  TTraceLogLevel(6); // Fatal logging, used to abort program: exit(EXIT_FAILURE)
+         LOG_NONE     =  TTraceLogLevel(7); // Disable logging
 
      (* Keyboard keys (US keyboard layout) *)
      // NOTE: Use GetKeyPressed() to allow redefining
@@ -463,132 +461,132 @@ const
        TKeyboardKey =  Integer;
        const
          (* Alphanumeric keys *)
-         KEY_NULL              = 0;    // Key: NULL, used for no key pressed
-         KEY_APOSTROPHE        = 39;   // Key: '
-         KEY_COMMA             = 44;   // Key: ,
-         KEY_MINUS             = 45;   // Key: -
-         KEY_PERIOD            = 46;   // Key: .
-         KEY_SLASH             = 47;   // Key: /
-         KEY_ZERO              = 48;   // Key: 0
-         KEY_ONE               = 49;   // Key: 1
-         KEY_TWO               = 50;   // Key: 2
-         KEY_THREE             = 51;   // Key: 3
-         KEY_FOUR              = 52;   // Key: 4
-         KEY_FIVE              = 53;   // Key: 5
-         KEY_SIX               = 54;   // Key: 6
-         KEY_SEVEN             = 55;   // Key: 7
-         KEY_EIGHT             = 56;   // Key: 8
-         KEY_NINE              = 57;   // Key: 9
-         KEY_SEMICOLON         = 59;   // Key: ;
-         KEY_EQUAL             = 61;   // Key: =
-         KEY_A                 = 65;   // Key: A | a
-         KEY_B                 = 66;   // Key: B | b
-         KEY_C                 = 67;   // Key: C | c
-         KEY_D                 = 68;   // Key: D | d
-         KEY_E                 = 69;   // Key: E | e
-         KEY_F                 = 70;   // Key: F | f
-         KEY_G                 = 71;   // Key: G | g
-         KEY_H                 = 72;   // Key: H | h
-         KEY_I                 = 73;   // Key: I | i
-         KEY_J                 = 74;   // Key: J | j
-         KEY_K                 = 75;   // Key: K | k
-         KEY_L                 = 76;   // Key: L | l
-         KEY_M                 = 77;   // Key: M | m
-         KEY_N                 = 78;   // Key: N | n
-         KEY_O                 = 79;   // Key: O | o
-         KEY_P                 = 80;   // Key: P | p
-         KEY_Q                 = 81;   // Key: Q | q
-         KEY_R                 = 82;   // Key: R | r
-         KEY_S                 = 83;   // Key: S | s
-         KEY_T                 = 84;   // Key: T | t
-         KEY_U                 = 85;   // Key: U | u
-         KEY_V                 = 86;   // Key: V | v
-         KEY_W                 = 87;   // Key: W | w
-         KEY_X                 = 88;   // Key: X | x
-         KEY_Y                 = 89;   // Key: Y | y
-         KEY_Z                 = 90;   // Key: Z | z
-         KEY_LEFT_BRACKET      = 91;   // Key: [
-         KEY_BACKSLASH         = 92;   // Key: '\'
-         KEY_RIGHT_BRACKET     = 93;   // Key: ]
-         KEY_GRAVE             = 96;   // Key: `
+         KEY_NULL              = TKeyboardKey(0);   // Key: NULL, used for no key pressed
+         KEY_APOSTROPHE        = TKeyboardKey(39);  // Key: '
+         KEY_COMMA             = TKeyboardKey(44);  // Key: ,
+         KEY_MINUS             = TKeyboardKey(45);  // Key: -
+         KEY_PERIOD            = TKeyboardKey(46);  // Key: .
+         KEY_SLASH             = TKeyboardKey(47);  // Key: /
+         KEY_ZERO              = TKeyboardKey(48);  // Key: 0
+         KEY_ONE               = TKeyboardKey(49);  // Key: 1
+         KEY_TWO               = TKeyboardKey(50);  // Key: 2
+         KEY_THREE             = TKeyboardKey(51);  // Key: 3
+         KEY_FOUR              = TKeyboardKey(52);  // Key: 4
+         KEY_FIVE              = TKeyboardKey(53);  // Key: 5
+         KEY_SIX               = TKeyboardKey(54);  // Key: 6
+         KEY_SEVEN             = TKeyboardKey(55);  // Key: 7
+         KEY_EIGHT             = TKeyboardKey(56);  // Key: 8
+         KEY_NINE              = TKeyboardKey(57);  // Key: 9
+         KEY_SEMICOLON         = TKeyboardKey(59);  // Key: ;
+         KEY_EQUAL             = TKeyboardKey(61);  // Key: =
+         KEY_A                 = TKeyboardKey(65);  // Key: A | a
+         KEY_B                 = TKeyboardKey(66);  // Key: B | b
+         KEY_C                 = TKeyboardKey(67);  // Key: C | c
+         KEY_D                 = TKeyboardKey(68);  // Key: D | d
+         KEY_E                 = TKeyboardKey(69);  // Key: E | e
+         KEY_F                 = TKeyboardKey(70);  // Key: F | f
+         KEY_G                 = TKeyboardKey(71);  // Key: G | g
+         KEY_H                 = TKeyboardKey(72);  // Key: H | h
+         KEY_I                 = TKeyboardKey(73);  // Key: I | i
+         KEY_J                 = TKeyboardKey(74);  // Key: J | j
+         KEY_K                 = TKeyboardKey(75);  // Key: K | k
+         KEY_L                 = TKeyboardKey(76);  // Key: L | l
+         KEY_M                 = TKeyboardKey(77);  // Key: M | m
+         KEY_N                 = TKeyboardKey(78);  // Key: N | n
+         KEY_O                 = TKeyboardKey(79);  // Key: O | o
+         KEY_P                 = TKeyboardKey(80);  // Key: P | p
+         KEY_Q                 = TKeyboardKey(81);  // Key: Q | q
+         KEY_R                 = TKeyboardKey(82);  // Key: R | r
+         KEY_S                 = TKeyboardKey(83);  // Key: S | s
+         KEY_T                 = TKeyboardKey(84);  // Key: T | t
+         KEY_U                 = TKeyboardKey(85);  // Key: U | u
+         KEY_V                 = TKeyboardKey(86);  // Key: V | v
+         KEY_W                 = TKeyboardKey(87);  // Key: W | w
+         KEY_X                 = TKeyboardKey(88);  // Key: X | x
+         KEY_Y                 = TKeyboardKey(89);  // Key: Y | y
+         KEY_Z                 = TKeyboardKey(90);  // Key: Z | z
+         KEY_LEFT_BRACKET      = TKeyboardKey(91);  // Key: [
+         KEY_BACKSLASH         = TKeyboardKey(92);  // Key: '\'
+         KEY_RIGHT_BRACKET     = TKeyboardKey(93);  // Key: ]
+         KEY_GRAVE             = TKeyboardKey(96);  // Key: `
          (* Function keys *)
-         KEY_SPACE             = 32;   // Key: Space
-         KEY_ESCAPE            = 256;  // Key: Esc
-         KEY_ENTER             = 257;  // Key: Enter
-         KEY_TAB               = 258;  // Key: Tab
-         KEY_BACKSPACE         = 259;  // Key: Backspace
-         KEY_INSERT            = 260;  // Key: Ins
-         KEY_DELETE            = 261;  // Key: Del
-         KEY_RIGHT             = 262;  // Key: Cursor right
-         KEY_LEFT              = 263;  // Key: Cursor left
-         KEY_DOWN              = 264;  // Key: Cursor down
-         KEY_UP                = 265;  // Key: Cursor up
-         KEY_PAGE_UP           = 266;  // Key: Page up
-         KEY_PAGE_DOWN         = 267;  // Key: Page down
-         KEY_HOME              = 268;  // Key: Home
-         KEY_END               = 269;  // Key: End
-         KEY_CAPS_LOCK         = 280;  // Key: Caps lock
-         KEY_SCROLL_LOCK       = 281;  // Key: Scroll down
-         KEY_NUM_LOCK          = 282;  // Key: Num lock
-         KEY_PRINT_SCREEN      = 283;  // Key: Print screen
-         KEY_PAUSE             = 284;  // Key: Pause
-         KEY_F1                = 290;  // Key: F1
-         KEY_F2                = 291;  // Key: F2
-         KEY_F3                = 292;  // Key: F3
-         KEY_F4                = 293;  // Key: F4
-         KEY_F5                = 294;  // Key: F5
-         KEY_F6                = 295;  // Key: F6
-         KEY_F7                = 296;  // Key: F7
-         KEY_F8                = 297;  // Key: F8
-         KEY_F9                = 298;  // Key: F9
-         KEY_F10               = 299;  // Key: F10
-         KEY_F11               = 300;  // Key: F11
-         KEY_F12               = 301;  // Key: F12
-         KEY_LEFT_SHIFT        = 340;  // Key: Shift left
-         KEY_LEFT_CONTROL      = 341;  // Key: Control left
-         KEY_LEFT_ALT          = 342;  // Key: Alt left
-         KEY_LEFT_SUPER        = 343;  // Key: Super left
-         KEY_RIGHT_SHIFT       = 344;  // Key: Shift right
-         KEY_RIGHT_CONTROL     = 345;  // Key: Control right
-         KEY_RIGHT_ALT         = 346;  // Key: Alt right
-         KEY_RIGHT_SUPER       = 347;  // Key: Super right
-         KEY_KB_MENU           = 348;  // Key: KB menu
+         KEY_SPACE             = TKeyboardKey(32);  // Key: Space
+         KEY_ESCAPE            = TKeyboardKey(256); // Key: Esc
+         KEY_ENTER             = TKeyboardKey(257); // Key: Enter
+         KEY_TAB               = TKeyboardKey(258); // Key: Tab
+         KEY_BACKSPACE         = TKeyboardKey(259); // Key: Backspace
+         KEY_INSERT            = TKeyboardKey(260); // Key: Ins
+         KEY_DELETE            = TKeyboardKey(261); // Key: Del
+         KEY_RIGHT             = TKeyboardKey(262); // Key: Cursor right
+         KEY_LEFT              = TKeyboardKey(263); // Key: Cursor left
+         KEY_DOWN              = TKeyboardKey(264); // Key: Cursor down
+         KEY_UP                = TKeyboardKey(265); // Key: Cursor up
+         KEY_PAGE_UP           = TKeyboardKey(266); // Key: Page up
+         KEY_PAGE_DOWN         = TKeyboardKey(267); // Key: Page down
+         KEY_HOME              = TKeyboardKey(268); // Key: Home
+         KEY_END               = TKeyboardKey(269); // Key: End
+         KEY_CAPS_LOCK         = TKeyboardKey(280); // Key: Caps lock
+         KEY_SCROLL_LOCK       = TKeyboardKey(281); // Key: Scroll down
+         KEY_NUM_LOCK          = TKeyboardKey(282); // Key: Num lock
+         KEY_PRINT_SCREEN      = TKeyboardKey(283); // Key: Print screen
+         KEY_PAUSE             = TKeyboardKey(284); // Key: Pause
+         KEY_F1                = TKeyboardKey(290); // Key: F1
+         KEY_F2                = TKeyboardKey(291); // Key: F2
+         KEY_F3                = TKeyboardKey(292); // Key: F3
+         KEY_F4                = TKeyboardKey(293); // Key: F4
+         KEY_F5                = TKeyboardKey(294); // Key: F5
+         KEY_F6                = TKeyboardKey(295); // Key: F6
+         KEY_F7                = TKeyboardKey(296); // Key: F7
+         KEY_F8                = TKeyboardKey(297); // Key: F8
+         KEY_F9                = TKeyboardKey(298); // Key: F9
+         KEY_F10               = TKeyboardKey(299); // Key: F10
+         KEY_F11               = TKeyboardKey(300); // Key: F11
+         KEY_F12               = TKeyboardKey(301); // Key: F12
+         KEY_LEFT_SHIFT        = TKeyboardKey(340); // Key: Shift left
+         KEY_LEFT_CONTROL      = TKeyboardKey(341); // Key: Control left
+         KEY_LEFT_ALT          = TKeyboardKey(342); // Key: Alt left
+         KEY_LEFT_SUPER        = TKeyboardKey(343); // Key: Super left
+         KEY_RIGHT_SHIFT       = TKeyboardKey(344); // Key: Shift right
+         KEY_RIGHT_CONTROL     = TKeyboardKey(345); // Key: Control right
+         KEY_RIGHT_ALT         = TKeyboardKey(346); // Key: Alt right
+         KEY_RIGHT_SUPER       = TKeyboardKey(347); // Key: Super right
+         KEY_KB_MENU           = TKeyboardKey(348); // Key: KB menu
          (* Keypad keys *)
-         KEY_KP_0              = 320;  // Key: Keypad 0
-         KEY_KP_1              = 321;  // Key: Keypad 1
-         KEY_KP_2              = 322;  // Key: Keypad 2
-         KEY_KP_3              = 323;  // Key: Keypad 3
-         KEY_KP_4              = 324;  // Key: Keypad 4
-         KEY_KP_5              = 325;  // Key: Keypad 5
-         KEY_KP_6              = 326;  // Key: Keypad 6
-         KEY_KP_7              = 327;  // Key: Keypad 7
-         KEY_KP_8              = 328;  // Key: Keypad 8
-         KEY_KP_9              = 329;  // Key: Keypad 9
-         KEY_KP_DECIMAL        = 330;  // Key: Keypad .
-         KEY_KP_DIVIDE         = 331;  // Key: Keypad /
-         KEY_KP_MULTIPLY       = 332;  // Key: Keypad *
-         KEY_KP_SUBTRACT       = 333;  // Key: Keypad -
-         KEY_KP_ADD            = 334;  // Key: Keypad +
-         KEY_KP_ENTER          = 335;  // Key: Keypad Enter
-         KEY_KP_EQUAL          = 336;  // Key: Keypad =
+         KEY_KP_0              = TKeyboardKey(320); // Key: Keypad 0
+         KEY_KP_1              = TKeyboardKey(321); // Key: Keypad 1
+         KEY_KP_2              = TKeyboardKey(322); // Key: Keypad 2
+         KEY_KP_3              = TKeyboardKey(323); // Key: Keypad 3
+         KEY_KP_4              = TKeyboardKey(324); // Key: Keypad 4
+         KEY_KP_5              = TKeyboardKey(325); // Key: Keypad 5
+         KEY_KP_6              = TKeyboardKey(326); // Key: Keypad 6
+         KEY_KP_7              = TKeyboardKey(327); // Key: Keypad 7
+         KEY_KP_8              = TKeyboardKey(328); // Key: Keypad 8
+         KEY_KP_9              = TKeyboardKey(329); // Key: Keypad 9
+         KEY_KP_DECIMAL        = TKeyboardKey(330); // Key: Keypad .
+         KEY_KP_DIVIDE         = TKeyboardKey(331); // Key: Keypad /
+         KEY_KP_MULTIPLY       = TKeyboardKey(332); // Key: Keypad *
+         KEY_KP_SUBTRACT       = TKeyboardKey(333); // Key: Keypad -
+         KEY_KP_ADD            = TKeyboardKey(334); // Key: Keypad +
+         KEY_KP_ENTER          = TKeyboardKey(335); // Key: Keypad Enter
+         KEY_KP_EQUAL          = TKeyboardKey(336); // Key: Keypad =
          // Android key buttons
-         KEY_BACK              = 4;    // Key: Android back button
-         KEY_MENU              = 82;   // Key: Android menu button
-         KEY_VOLUME_UP         = 24;   // Key: Android volume up button
-         KEY_VOLUME_DOWN       = 25;   // Key: Android volume down button
+         KEY_BACK              = TKeyboardKey(4);  // Key: Android back button
+         KEY_MENU              = TKeyboardKey(82); // Key: Android menu button
+         KEY_VOLUME_UP         = TKeyboardKey(24); // Key: Android volume up button
+         KEY_VOLUME_DOWN       = TKeyboardKey(25); // Key: Android volume down button
 
      (* Mouse buttons *)
      type
        PMouseButton = ^TMouseButton;
        TMouseButton =  Longint;
        const
-         MOUSE_BUTTON_LEFT     = 0; // Mouse button left
-         MOUSE_BUTTON_RIGHT    = 1; // Mouse button right
-         MOUSE_BUTTON_MIDDLE   = 2; // Mouse button middle (pressed wheel)
-         MOUSE_BUTTON_SIDE     = 3; // Mouse button side (advanced mouse device)
-         MOUSE_BUTTON_EXTRA    = 4; // Mouse button extra (advanced mouse device)
-         MOUSE_BUTTON_FORWARD  = 5; // Mouse button forward (advanced mouse device)
-         MOUSE_BUTTON_BACK     = 6; // Mouse button back (advanced mouse device)
+         MOUSE_BUTTON_LEFT     = TMouseButton(0); // Mouse button left
+         MOUSE_BUTTON_RIGHT    = TMouseButton(1); // Mouse button right
+         MOUSE_BUTTON_MIDDLE   = TMouseButton(2); // Mouse button middle (pressed wheel)
+         MOUSE_BUTTON_SIDE     = TMouseButton(3); // Mouse button side (advanced mouse device)
+         MOUSE_BUTTON_EXTRA    = TMouseButton(4); // Mouse button extra (advanced mouse device)
+         MOUSE_BUTTON_FORWARD  = TMouseButton(5); // Mouse button forward (advanced mouse device)
+         MOUSE_BUTTON_BACK     = TMouseButton(6); // Mouse button back (advanced mouse device)
 
          (* Add backwards compatibility support for deprecated names *)
          MOUSE_LEFT_BUTTON = MOUSE_BUTTON_LEFT;
@@ -600,70 +598,70 @@ const
        PMouseCursor = ^TMouseCursor;
        TMouseCursor =  Integer;
        const
-         MOUSE_CURSOR_DEFAULT         = 0;  // Default pointer shape
-         MOUSE_CURSOR_ARROW           = 1;  // Arrow shape
-         MOUSE_CURSOR_IBEAM           = 2;  // Text writing cursor shape
-         MOUSE_CURSOR_CROSSHAIR       = 3;  // Cross shape
-         MOUSE_CURSOR_POINTING_HAND   = 4;  // Pointing hand cursor
-         MOUSE_CURSOR_RESIZE_EW       = 5;  // Horizontal resize/move arrow shape
-         MOUSE_CURSOR_RESIZE_NS       = 6;  // Vertical resize/move arrow shape
-         MOUSE_CURSOR_RESIZE_NWSE     = 7;  // Top-left to bottom-right diagonal resize/move arrow shape
-         MOUSE_CURSOR_RESIZE_NESW     = 8;  // The top-right to bottom-left diagonal resize/move arrow shape
-         MOUSE_CURSOR_RESIZE_ALL      = 9;  // The omni-directional resize/move cursor shape
-         MOUSE_CURSOR_NOT_ALLOWED     = 10; // The operation-not-allowed shape
+         MOUSE_CURSOR_DEFAULT         = TMouseCursor(0);  // Default pointer shape
+         MOUSE_CURSOR_ARROW           = TMouseCursor(1);  // Arrow shape
+         MOUSE_CURSOR_IBEAM           = TMouseCursor(2);  // Text writing cursor shape
+         MOUSE_CURSOR_CROSSHAIR       = TMouseCursor(3);  // Cross shape
+         MOUSE_CURSOR_POINTING_HAND   = TMouseCursor(4);  // Pointing hand cursor
+         MOUSE_CURSOR_RESIZE_EW       = TMouseCursor(5);  // Horizontal resize/move arrow shape
+         MOUSE_CURSOR_RESIZE_NS       = TMouseCursor(6);  // Vertical resize/move arrow shape
+         MOUSE_CURSOR_RESIZE_NWSE     = TMouseCursor(7);  // Top-left to bottom-right diagonal resize/move arrow shape
+         MOUSE_CURSOR_RESIZE_NESW     = TMouseCursor(8);  // The top-right to bottom-left diagonal resize/move arrow shape
+         MOUSE_CURSOR_RESIZE_ALL      = TMouseCursor(9);  // The omni-directional resize/move cursor shape
+         MOUSE_CURSOR_NOT_ALLOWED     = TMouseCursor(10); // The operation-not-allowed shape
 
    (* Gamepad buttons *)
    type
       PGamepadButton = ^TGamepadButton;
       TGamepadButton =  Integer;
       const
-        GAMEPAD_BUTTON_UNKNOWN           = 0;  // Unknown button, just for error checking
-        GAMEPAD_BUTTON_LEFT_FACE_UP      = 1;  // Gamepad left DPAD up button
-        GAMEPAD_BUTTON_LEFT_FACE_RIGHT   = 2;  // Gamepad left DPAD right button
-        GAMEPAD_BUTTON_LEFT_FACE_DOWN    = 3;  // Gamepad left DPAD down button
-        GAMEPAD_BUTTON_LEFT_FACE_LEFT    = 4;  // Gamepad left DPAD left button
-        GAMEPAD_BUTTON_RIGHT_FACE_UP     = 5;  // Gamepad right button up (i.e. PS3: Triangle, Xbox: Y)
-        GAMEPAD_BUTTON_RIGHT_FACE_RIGHT  = 6;  // Gamepad right button right (i.e. PS3: Square, Xbox: X)
-        GAMEPAD_BUTTON_RIGHT_FACE_DOWN   = 7;  // Gamepad right button down (i.e. PS3: Cross, Xbox: A)
-        GAMEPAD_BUTTON_RIGHT_FACE_LEFT   = 8;  // Gamepad right button left (i.e. PS3: Circle, Xbox: B)
-        GAMEPAD_BUTTON_LEFT_TRIGGER_1    = 9;  // Gamepad top/back trigger left (first), it could be a trailing button
-        GAMEPAD_BUTTON_LEFT_TRIGGER_2    = 10; // Gamepad top/back trigger left (second), it could be a trailing button
-        GAMEPAD_BUTTON_RIGHT_TRIGGER_1   = 11; // Gamepad top/back trigger right (one), it could be a trailing button
-        GAMEPAD_BUTTON_RIGHT_TRIGGER_2   = 12; // Gamepad top/back trigger right (second), it could be a trailing button
-        GAMEPAD_BUTTON_MIDDLE_LEFT       = 13; // Gamepad center buttons, left one (i.e. PS3: Select)
-        GAMEPAD_BUTTON_MIDDLE            = 14; // Gamepad center buttons, middle one (i.e. PS3: PS, Xbox: XBOX)
-        GAMEPAD_BUTTON_MIDDLE_RIGHT      = 15; // Gamepad center buttons, right one (i.e. PS3: Start)
-        GAMEPAD_BUTTON_LEFT_THUMB        = 16; // Gamepad joystick pressed button left
-        GAMEPAD_BUTTON_RIGHT_THUMB       = 17; // Gamepad joystick pressed button right
+        GAMEPAD_BUTTON_UNKNOWN           = TGamepadButton(0);  // Unknown button, just for error checking
+        GAMEPAD_BUTTON_LEFT_FACE_UP      = TGamepadButton(1);  // Gamepad left DPAD up button
+        GAMEPAD_BUTTON_LEFT_FACE_RIGHT   = TGamepadButton(2);  // Gamepad left DPAD right button
+        GAMEPAD_BUTTON_LEFT_FACE_DOWN    = TGamepadButton(3);  // Gamepad left DPAD down button
+        GAMEPAD_BUTTON_LEFT_FACE_LEFT    = TGamepadButton(4);  // Gamepad left DPAD left button
+        GAMEPAD_BUTTON_RIGHT_FACE_UP     = TGamepadButton(5);  // Gamepad right button up (i.e. PS3: Triangle, Xbox: Y)
+        GAMEPAD_BUTTON_RIGHT_FACE_RIGHT  = TGamepadButton(6);  // Gamepad right button right (i.e. PS3: Square, Xbox: X)
+        GAMEPAD_BUTTON_RIGHT_FACE_DOWN   = TGamepadButton(7);  // Gamepad right button down (i.e. PS3: Cross, Xbox: A)
+        GAMEPAD_BUTTON_RIGHT_FACE_LEFT   = TGamepadButton(8);  // Gamepad right button left (i.e. PS3: Circle, Xbox: B)
+        GAMEPAD_BUTTON_LEFT_TRIGGER_1    = TGamepadButton(9);  // Gamepad top/back trigger left (first), it could be a trailing button
+        GAMEPAD_BUTTON_LEFT_TRIGGER_2    = TGamepadButton(10); // Gamepad top/back trigger left (second), it could be a trailing button
+        GAMEPAD_BUTTON_RIGHT_TRIGGER_1   = TGamepadButton(11); // Gamepad top/back trigger right (one), it could be a trailing button
+        GAMEPAD_BUTTON_RIGHT_TRIGGER_2   = TGamepadButton(12); // Gamepad top/back trigger right (second), it could be a trailing button
+        GAMEPAD_BUTTON_MIDDLE_LEFT       = TGamepadButton(13); // Gamepad center buttons, left one (i.e. PS3: Select)
+        GAMEPAD_BUTTON_MIDDLE            = TGamepadButton(14); // Gamepad center buttons, middle one (i.e. PS3: PS, Xbox: XBOX)
+        GAMEPAD_BUTTON_MIDDLE_RIGHT      = TGamepadButton(15); // Gamepad center buttons, right one (i.e. PS3: Start)
+        GAMEPAD_BUTTON_LEFT_THUMB        = TGamepadButton(16); // Gamepad joystick pressed button left
+        GAMEPAD_BUTTON_RIGHT_THUMB       = TGamepadButton(17); // Gamepad joystick pressed button right
 
    (* Gamepad axis *)
    type
      PGamepadAxis = ^TGamepadAxis;
      TGamepadAxis =  Integer;
      const
-       GAMEPAD_AXIS_LEFT_X           = 0;  // Gamepad left stick X axis
-       GAMEPAD_AXIS_LEFT_Y           = 1;  // Gamepad left stick Y axis
-       GAMEPAD_AXIS_RIGHT_X          = 2;  // Gamepad right stick X axis
-       GAMEPAD_AXIS_RIGHT_Y          = 3;  // Gamepad right stick Y axis
-       GAMEPAD_AXIS_LEFT_TRIGGER     = 4;  // Gamepad back trigger left, pressure level: [1..-1]
-       GAMEPAD_AXIS_RIGHT_TRIGGER    = 5;  // Gamepad back trigger right, pressure level: [1..-1]
+       GAMEPAD_AXIS_LEFT_X           = TGamepadAxis(0); // Gamepad left stick X axis
+       GAMEPAD_AXIS_LEFT_Y           = TGamepadAxis(1); // Gamepad left stick Y axis
+       GAMEPAD_AXIS_RIGHT_X          = TGamepadAxis(2); // Gamepad right stick X axis
+       GAMEPAD_AXIS_RIGHT_Y          = TGamepadAxis(3); // Gamepad right stick Y axis
+       GAMEPAD_AXIS_LEFT_TRIGGER     = TGamepadAxis(4); // Gamepad back trigger left, pressure level: [1..-1]
+       GAMEPAD_AXIS_RIGHT_TRIGGER    = TGamepadAxis(5); // Gamepad back trigger right, pressure level: [1..-1]
 
      (* Material map index *)
      type
        PMaterialMapIndex = ^TMaterialMapIndex;
        TMaterialMapIndex =  Integer;
        const
-         MATERIAL_MAP_ALBEDO        = 0;  // Albedo material (same as: MATERIAL_MAP_DIFFUSE)
-         MATERIAL_MAP_METALNESS     = 1;  // Metalness material (same as: MATERIAL_MAP_SPECULAR)
-         MATERIAL_MAP_NORMAL        = 2;  // Normal material
-         MATERIAL_MAP_ROUGHNESS     = 3;  // Roughness material
-         MATERIAL_MAP_OCCLUSION     = 4;  // Ambient occlusion material
-         MATERIAL_MAP_EMISSION      = 5;  // Emission material
-         MATERIAL_MAP_HEIGHT        = 6;  // Heightmap material
-         MATERIAL_MAP_CUBEMAP       = 7;  // Cubemap material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
-         MATERIAL_MAP_IRRADIANCE    = 8;  // Irradiance material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
-         MATERIAL_MAP_PREFILTER     = 9;  // Prefilter material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
-         MATERIAL_MAP_BRDF          = 10; // Brdf material
+         MATERIAL_MAP_ALBEDO        = TMaterialMapIndex(0);  // Albedo material (same as: MATERIAL_MAP_DIFFUSE)
+         MATERIAL_MAP_METALNESS     = TMaterialMapIndex(1);  // Metalness material (same as: MATERIAL_MAP_SPECULAR)
+         MATERIAL_MAP_NORMAL        = TMaterialMapIndex(2);  // Normal material
+         MATERIAL_MAP_ROUGHNESS     = TMaterialMapIndex(3);  // Roughness material
+         MATERIAL_MAP_OCCLUSION     = TMaterialMapIndex(4);  // Ambient occlusion material
+         MATERIAL_MAP_EMISSION      = TMaterialMapIndex(5);  // Emission material
+         MATERIAL_MAP_HEIGHT        = TMaterialMapIndex(6);  // Heightmap material
+         MATERIAL_MAP_CUBEMAP       = TMaterialMapIndex(7);  // Cubemap material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+         MATERIAL_MAP_IRRADIANCE    = TMaterialMapIndex(8);  // Irradiance material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+         MATERIAL_MAP_PREFILTER     = TMaterialMapIndex(9);  // Prefilter material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+         MATERIAL_MAP_BRDF          = TMaterialMapIndex(10); // Brdf material
 
          MATERIAL_MAP_DIFFUSE = MATERIAL_MAP_ALBEDO;
          MATERIAL_MAP_SPECULAR = MATERIAL_MAP_METALNESS;
@@ -673,32 +671,32 @@ const
        PShaderLocationIndex = ^TShaderLocationIndex;
        TShaderLocationIndex =  Integer;
        const
-         SHADER_LOC_VERTEX_POSITION     = 0;  // Shader location: vertex attribute: position
-         SHADER_LOC_VERTEX_TEXCOORD01   = 1;  // Shader location: vertex attribute: texcoord01
-         SHADER_LOC_VERTEX_TEXCOORD02   = 2;  // Shader location: vertex attribute: texcoord02
-         SHADER_LOC_VERTEX_NORMAL       = 3;  // Shader location: vertex attribute: normal
-         SHADER_LOC_VERTEX_TANGENT      = 4;  // Shader location: vertex attribute: tangent
-         SHADER_LOC_VERTEX_COLOR        = 5;  // Shader location: vertex attribute: color
-         SHADER_LOC_MATRIX_MVP          = 6;  // Shader location: matrix uniform: model-view-projection
-         SHADER_LOC_MATRIX_VIEW         = 7;  // Shader location: matrix uniform: view (camera transform)
-         SHADER_LOC_MATRIX_PROJECTION   = 8;  // Shader location: matrix uniform: projection
-         SHADER_LOC_MATRIX_MODEL        = 9;  // Shader location: matrix uniform: model (transform)
-         SHADER_LOC_MATRIX_NORMAL       = 10; // Shader location: matrix uniform: normal
-         SHADER_LOC_VECTOR_VIEW         = 11; // Shader location: vector uniform: view
-         SHADER_LOC_COLOR_DIFFUSE       = 12; // Shader location: vector uniform: diffuse color
-         SHADER_LOC_COLOR_SPECULAR      = 13; // Shader location: vector uniform: specular color
-         SHADER_LOC_COLOR_AMBIENT       = 14; // Shader location: vector uniform: ambient color
-         SHADER_LOC_MAP_ALBEDO          = 15; // Shader location: sampler2d texture: albedo (same as: SHADER_LOC_MAP_DIFFUSE)
-         SHADER_LOC_MAP_METALNESS       = 16; // Shader location: sampler2d texture: metalness (same as: SHADER_LOC_MAP_SPECULAR)
-         SHADER_LOC_MAP_NORMAL          = 17; // Shader location: sampler2d texture: normal
-         SHADER_LOC_MAP_ROUGHNESS       = 18; // Shader location: sampler2d texture: roughness
-         SHADER_LOC_MAP_OCCLUSION       = 19; // Shader location: sampler2d texture: occlusion
-         SHADER_LOC_MAP_EMISSION        = 20; // Shader location: sampler2d texture: emission
-         SHADER_LOC_MAP_HEIGHT          = 21; // Shader location: sampler2d texture: height
-         SHADER_LOC_MAP_CUBEMAP         = 22; // Shader location: samplerCube texture: cubemap
-         SHADER_LOC_MAP_IRRADIANCE      = 23; // Shader location: samplerCube texture: irradiance
-         SHADER_LOC_MAP_PREFILTER       = 24; // Shader location: samplerCube texture: prefilter
-         SHADER_LOC_MAP_BRDF            = 25; // Shader location: sampler2d texture: brdf
+         SHADER_LOC_VERTEX_POSITION     = TShaderLocationIndex(0);  // Shader location: vertex attribute: position
+         SHADER_LOC_VERTEX_TEXCOORD01   = TShaderLocationIndex(1);  // Shader location: vertex attribute: texcoord01
+         SHADER_LOC_VERTEX_TEXCOORD02   = TShaderLocationIndex(2);  // Shader location: vertex attribute: texcoord02
+         SHADER_LOC_VERTEX_NORMAL       = TShaderLocationIndex(3);  // Shader location: vertex attribute: normal
+         SHADER_LOC_VERTEX_TANGENT      = TShaderLocationIndex(4);  // Shader location: vertex attribute: tangent
+         SHADER_LOC_VERTEX_COLOR        = TShaderLocationIndex(5);  // Shader location: vertex attribute: color
+         SHADER_LOC_MATRIX_MVP          = TShaderLocationIndex(6);  // Shader location: matrix uniform: model-view-projection
+         SHADER_LOC_MATRIX_VIEW         = TShaderLocationIndex(7);  // Shader location: matrix uniform: view (camera transform)
+         SHADER_LOC_MATRIX_PROJECTION   = TShaderLocationIndex(8);  // Shader location: matrix uniform: projection
+         SHADER_LOC_MATRIX_MODEL        = TShaderLocationIndex(9);  // Shader location: matrix uniform: model (transform)
+         SHADER_LOC_MATRIX_NORMAL       = TShaderLocationIndex(10); // Shader location: matrix uniform: normal
+         SHADER_LOC_VECTOR_VIEW         = TShaderLocationIndex(11); // Shader location: vector uniform: view
+         SHADER_LOC_COLOR_DIFFUSE       = TShaderLocationIndex(12); // Shader location: vector uniform: diffuse color
+         SHADER_LOC_COLOR_SPECULAR      = TShaderLocationIndex(13); // Shader location: vector uniform: specular color
+         SHADER_LOC_COLOR_AMBIENT       = TShaderLocationIndex(14); // Shader location: vector uniform: ambient color
+         SHADER_LOC_MAP_ALBEDO          = TShaderLocationIndex(15); // Shader location: sampler2d texture: albedo (same as: SHADER_LOC_MAP_DIFFUSE)
+         SHADER_LOC_MAP_METALNESS       = TShaderLocationIndex(16); // Shader location: sampler2d texture: metalness (same as: SHADER_LOC_MAP_SPECULAR)
+         SHADER_LOC_MAP_NORMAL          = TShaderLocationIndex(17); // Shader location: sampler2d texture: normal
+         SHADER_LOC_MAP_ROUGHNESS       = TShaderLocationIndex(18); // Shader location: sampler2d texture: roughness
+         SHADER_LOC_MAP_OCCLUSION       = TShaderLocationIndex(19); // Shader location: sampler2d texture: occlusion
+         SHADER_LOC_MAP_EMISSION        = TShaderLocationIndex(20); // Shader location: sampler2d texture: emission
+         SHADER_LOC_MAP_HEIGHT          = TShaderLocationIndex(21); // Shader location: sampler2d texture: height
+         SHADER_LOC_MAP_CUBEMAP         = TShaderLocationIndex(22); // Shader location: samplerCube texture: cubemap
+         SHADER_LOC_MAP_IRRADIANCE      = TShaderLocationIndex(23); // Shader location: samplerCube texture: irradiance
+         SHADER_LOC_MAP_PREFILTER       = TShaderLocationIndex(24); // Shader location: samplerCube texture: prefilter
+         SHADER_LOC_MAP_BRDF            = TShaderLocationIndex(25); // Shader location: sampler2d texture: brdf
 
          SHADER_LOC_MAP_DIFFUSE = SHADER_LOC_MAP_ALBEDO;
          SHADER_LOC_MAP_SPECULAR = SHADER_LOC_MAP_METALNESS;
@@ -708,25 +706,25 @@ const
        PShaderUniformDataType = ^TShaderUniformDataType;
        TShaderUniformDataType =  Integer;
        Const
-         SHADER_UNIFORM_FLOAT      = 0; // Shader uniform type: float
-         SHADER_UNIFORM_VEC2       = 1; // Shader uniform type: vec2 (2 float)
-         SHADER_UNIFORM_VEC3       = 2; // Shader uniform type: vec3 (3 float)
-         SHADER_UNIFORM_VEC4       = 3; // Shader uniform type: vec4 (4 float)
-         SHADER_UNIFORM_INT        = 4; // Shader uniform type: int
-         SHADER_UNIFORM_IVEC2      = 5; // Shader uniform type: ivec2 (2 int)
-         SHADER_UNIFORM_IVEC3      = 6; // Shader uniform type: ivec3 (3 int)
-         SHADER_UNIFORM_IVEC4      = 7; // Shader uniform type: ivec4 (4 int)
-         SHADER_UNIFORM_SAMPLER2D  = 8; // Shader uniform type: sampler2d
+         SHADER_UNIFORM_FLOAT      = TShaderUniformDataType(0); // Shader uniform type: float
+         SHADER_UNIFORM_VEC2       = TShaderUniformDataType(1); // Shader uniform type: vec2 (2 float)
+         SHADER_UNIFORM_VEC3       = TShaderUniformDataType(2); // Shader uniform type: vec3 (3 float)
+         SHADER_UNIFORM_VEC4       = TShaderUniformDataType(3); // Shader uniform type: vec4 (4 float)
+         SHADER_UNIFORM_INT        = TShaderUniformDataType(4); // Shader uniform type: int
+         SHADER_UNIFORM_IVEC2      = TShaderUniformDataType(5); // Shader uniform type: ivec2 (2 int)
+         SHADER_UNIFORM_IVEC3      = TShaderUniformDataType(6); // Shader uniform type: ivec3 (3 int)
+         SHADER_UNIFORM_IVEC4      = TShaderUniformDataType(7); // Shader uniform type: ivec4 (4 int)
+         SHADER_UNIFORM_SAMPLER2D  = TShaderUniformDataType(8); // Shader uniform type: sampler2d
 
     (* Shader attribute data types *)
     type
       PShaderAttributeDataType = ^TShaderAttributeDataType;
       TShaderAttributeDataType =  Longint;
       const
-        SHADER_ATTRIB_FLOAT     = 0; // Shader attribute type: float
-        SHADER_ATTRIB_VEC2      = 1; // Shader attribute type: vec2 (2 float)
-        SHADER_ATTRIB_VEC3      = 2; // Shader attribute type: vec3 (3 float)
-        SHADER_ATTRIB_VEC4      = 3; // Shader attribute type: vec4 (4 float)
+        SHADER_ATTRIB_FLOAT     = TShaderAttributeDataType(0); // Shader attribute type: float
+        SHADER_ATTRIB_VEC2      = TShaderAttributeDataType(1); // Shader attribute type: vec2 (2 float)
+        SHADER_ATTRIB_VEC3      = TShaderAttributeDataType(2); // Shader attribute type: vec3 (3 float)
+        SHADER_ATTRIB_VEC4      = TShaderAttributeDataType(3); // Shader attribute type: vec4 (4 float)
 
      (* Pixel formats *)
      //NOTE: Support depends on OpenGL version and platform
@@ -734,27 +732,27 @@ const
        PPixelFormat = ^TPixelFormat;
        TPixelFormat =  Integer;
        const
-         PIXELFORMAT_UNCOMPRESSED_GRAYSCALE     = 1;  // 8 bit per pixel (no alpha)
-         PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA    = 2;  // 8*2 bpp (2 channels)
-         PIXELFORMAT_UNCOMPRESSED_R5G6B5        = 3;  // 16 bpp
-         PIXELFORMAT_UNCOMPRESSED_R8G8B8        = 4;  // 24 bpp
-         PIXELFORMAT_UNCOMPRESSED_R5G5B5A1      = 5;  // 16 bpp (1 bit alpha)
-         PIXELFORMAT_UNCOMPRESSED_R4G4B4A4      = 6;  // 16 bpp (4 bit alpha)
-         PIXELFORMAT_UNCOMPRESSED_R8G8B8A8      = 7;  // 32 bpp
-         PIXELFORMAT_UNCOMPRESSED_R32           = 8;  // 32 bpp (1 channel - float)
-         PIXELFORMAT_UNCOMPRESSED_R32G32B32     = 9;  // 32*3 bpp (3 channels - float)
-         PIXELFORMAT_UNCOMPRESSED_R32G32B32A32  = 10; // 32*4 bpp (4 channels - float)
-         PIXELFORMAT_COMPRESSED_DXT1_RGB        = 11; // 4 bpp (no alpha)
-         PIXELFORMAT_COMPRESSED_DXT1_RGBA       = 12; // 4 bpp (1 bit alpha)
-         PIXELFORMAT_COMPRESSED_DXT3_RGBA       = 13; // 8 bpp
-         PIXELFORMAT_COMPRESSED_DXT5_RGBA       = 14; // 8 bpp
-         PIXELFORMAT_COMPRESSED_ETC1_RGB        = 15; // 4 bpp
-         PIXELFORMAT_COMPRESSED_ETC2_RGB        = 16; // 4 bpp
-         PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA   = 17; // 8 bpp
-         PIXELFORMAT_COMPRESSED_PVRT_RGB        = 18; // 4 bpp
-         PIXELFORMAT_COMPRESSED_PVRT_RGBA       = 19; // 4 bpp
-         PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA   = 20; // 8 bpp
-         PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA   = 21; // 2 bpp
+         PIXELFORMAT_UNCOMPRESSED_GRAYSCALE     = TPixelFormat(1);  // 8 bit per pixel (no alpha)
+         PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA    = TPixelFormat(2);  // 8*2 bpp (2 channels)
+         PIXELFORMAT_UNCOMPRESSED_R5G6B5        = TPixelFormat(3);  // 16 bpp
+         PIXELFORMAT_UNCOMPRESSED_R8G8B8        = TPixelFormat(4);  // 24 bpp
+         PIXELFORMAT_UNCOMPRESSED_R5G5B5A1      = TPixelFormat(5);  // 16 bpp (1 bit alpha)
+         PIXELFORMAT_UNCOMPRESSED_R4G4B4A4      = TPixelFormat(6);  // 16 bpp (4 bit alpha)
+         PIXELFORMAT_UNCOMPRESSED_R8G8B8A8      = TPixelFormat(7);  // 32 bpp
+         PIXELFORMAT_UNCOMPRESSED_R32           = TPixelFormat(8);  // 32 bpp (1 channel - float)
+         PIXELFORMAT_UNCOMPRESSED_R32G32B32     = TPixelFormat(9);  // 32*3 bpp (3 channels - float)
+         PIXELFORMAT_UNCOMPRESSED_R32G32B32A32  = TPixelFormat(10); // 32*4 bpp (4 channels - float)
+         PIXELFORMAT_COMPRESSED_DXT1_RGB        = TPixelFormat(11); // 4 bpp (no alpha)
+         PIXELFORMAT_COMPRESSED_DXT1_RGBA       = TPixelFormat(12); // 4 bpp (1 bit alpha)
+         PIXELFORMAT_COMPRESSED_DXT3_RGBA       = TPixelFormat(13); // 8 bpp
+         PIXELFORMAT_COMPRESSED_DXT5_RGBA       = TPixelFormat(14); // 8 bpp
+         PIXELFORMAT_COMPRESSED_ETC1_RGB        = TPixelFormat(15); // 4 bpp
+         PIXELFORMAT_COMPRESSED_ETC2_RGB        = TPixelFormat(16); // 4 bpp
+         PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA   = TPixelFormat(17); // 8 bpp
+         PIXELFORMAT_COMPRESSED_PVRT_RGB        = TPixelFormat(18); // 4 bpp
+         PIXELFORMAT_COMPRESSED_PVRT_RGBA       = TPixelFormat(19); // 4 bpp
+         PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA   = TPixelFormat(20); // 8 bpp
+         PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA   = TPixelFormat(21); // 2 bpp
 
    (* Texture parameters: filter mode *)
    //NOTE 1: Filtering considers mipmaps if available in the texture
@@ -763,57 +761,57 @@ const
      PTextureFilter = ^TTextureFilter;
      TTextureFilter =  Integer;
      const
-       TEXTURE_FILTER_POINT            = 0; // No filter, just pixel approximation
-       TEXTURE_FILTER_BILINEAR         = 1; // Linear filtering
-       TEXTURE_FILTER_TRILINEAR        = 2; // Trilinear filtering (linear with mipmaps)
-       TEXTURE_FILTER_ANISOTROPIC_4X   = 3; // Anisotropic filtering 4x
-       TEXTURE_FILTER_ANISOTROPIC_8X   = 4; // Anisotropic filtering 8x
-       TEXTURE_FILTER_ANISOTROPIC_16X  = 5; // Anisotropic filtering 16x
+       TEXTURE_FILTER_POINT            = TTextureFilter(0); // No filter, just pixel approximation
+       TEXTURE_FILTER_BILINEAR         = TTextureFilter(1); // Linear filtering
+       TEXTURE_FILTER_TRILINEAR        = TTextureFilter(2); // Trilinear filtering (linear with mipmaps)
+       TEXTURE_FILTER_ANISOTROPIC_4X   = TTextureFilter(3); // Anisotropic filtering 4x
+       TEXTURE_FILTER_ANISOTROPIC_8X   = TTextureFilter(4); // Anisotropic filtering 8x
+       TEXTURE_FILTER_ANISOTROPIC_16X  = TTextureFilter(5); // Anisotropic filtering 16x
 
    (* Texture parameters: wrap mode *)
    type
      PTextureWrap = ^TTextureWrap;
      TTextureWrap =  Integer;
      Const
-       TEXTURE_WRAP_REPEAT        = 0; // Repeats texture in tiled mode
-       TEXTURE_WRAP_CLAMP         = 1; // Clamps texture to edge pixel in tiled mode
-       TEXTURE_WRAP_MIRROR_REPEAT = 2; // Mirrors and repeats the texture in tiled mode
-       TEXTURE_WRAP_MIRROR_CLAMP  = 3; // Mirrors and clamps to border the texture in tiled mode
+       TEXTURE_WRAP_REPEAT        = TTextureWrap(0); // Repeats texture in tiled mode
+       TEXTURE_WRAP_CLAMP         = TTextureWrap(1); // Clamps texture to edge pixel in tiled mode
+       TEXTURE_WRAP_MIRROR_REPEAT = TTextureWrap(2); // Mirrors and repeats the texture in tiled mode
+       TEXTURE_WRAP_MIRROR_CLAMP  = TTextureWrap(3); // Mirrors and clamps to border the texture in tiled mode
 
    (* Cubemap layouts *)
    type
      PCubemapLayout = ^TCubemapLayout;
      TCubemapLayout =  Integer;
      Const
-       CUBEMAP_LAYOUT_AUTO_DETECT         = 0; // Automatically detect layout type
-       CUBEMAP_LAYOUT_LINE_VERTICAL       = 1; // Layout is defined by a vertical line with faces
-       CUBEMAP_LAYOUT_LINE_HORIZONTAL     = 2; // Layout is defined by an horizontal line with faces
-       CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR = 3; // Layout is defined by a 3x4 cross with cubemap faces
-       CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = 4; // Layout is defined by a 4x3 cross with cubemap faces
-       CUBEMAP_LAYOUT_PANORAMA            = 5; // Layout is defined by a panorama image (equirectangular map)
+       CUBEMAP_LAYOUT_AUTO_DETECT         = TCubemapLayout(0); // Automatically detect layout type
+       CUBEMAP_LAYOUT_LINE_VERTICAL       = TCubemapLayout(1); // Layout is defined by a vertical line with faces
+       CUBEMAP_LAYOUT_LINE_HORIZONTAL     = TCubemapLayout(2); // Layout is defined by an horizontal line with faces
+       CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR = TCubemapLayout(3); // Layout is defined by a 3x4 cross with cubemap faces
+       CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = TCubemapLayout(4); // Layout is defined by a 4x3 cross with cubemap faces
+       CUBEMAP_LAYOUT_PANORAMA            = TCubemapLayout(5); // Layout is defined by a panorama image (equirectangular map)
 
    (* Font type, defines generation method *)
    type
      PFontType = ^TFontType;
      TFontType =  Integer;
      Const
-       FONT_DEFAULT          = 0;    // Default font generation, anti-aliased
-       FONT_BITMAP           = 1;    // Bitmap font generation, no anti-aliasing
-       FONT_SDF              = 2;    // SDF font generation, requires external shader
+       FONT_DEFAULT          = TFontType(0); // Default font generation, anti-aliased
+       FONT_BITMAP           = TFontType(1); // Bitmap font generation, no anti-aliasing
+       FONT_SDF              = TFontType(2); // SDF font generation, requires external shader
 
    (* Color blending modes (pre-defined) *)
    type
      PBlendMode = ^TBlendMode;
      TBlendMode =  Integer;
      Const
-       BLEND_ALPHA             = 0;    // Blend textures considering alpha (default)
-       BLEND_ADDITIVE          = 1;    // Blend textures adding colors
-       BLEND_MULTIPLIED        = 2;    // Blend textures multiplying colors
-       BLEND_ADD_COLORS        = 3;    // Blend textures adding colors (alternative)
-       BLEND_SUBTRACT_COLORS   = 4;    // Blend textures subtracting colors (alternative)
-       BLEND_ALPHA_PREMULTIPLY = 5;    // Blend premultiplied textures considering alpha
-       BLEND_CUSTOM            = 6;    // Blend textures using custom src/dst factors (use rlSetBlendFactors())
-       BLEND_CUSTOM_SEPARATE   = 7;    // Blend textures using custom rgb/alpha separate src/dst factors rlSetBlendFactorsSeparate())
+       BLEND_ALPHA             = TBlendMode(0); // Blend textures considering alpha (default)
+       BLEND_ADDITIVE          = TBlendMode(1); // Blend textures adding colors
+       BLEND_MULTIPLIED        = TBlendMode(2); // Blend textures multiplying colors
+       BLEND_ADD_COLORS        = TBlendMode(3); // Blend textures adding colors (alternative)
+       BLEND_SUBTRACT_COLORS   = TBlendMode(4); // Blend textures subtracting colors (alternative)
+       BLEND_ALPHA_PREMULTIPLY = TBlendMode(5); // Blend premultiplied textures considering alpha
+       BLEND_CUSTOM            = TBlendMode(6); // Blend textures using custom src/dst factors (use rlSetBlendFactors())
+       BLEND_CUSTOM_SEPARATE   = TBlendMode(7); // Blend textures using custom rgb/alpha separate src/dst factors rlSetBlendFactorsSeparate())
 
    (* Gestures *)
    //  NOTE: It could be used as flags to enable only some gestures
@@ -821,36 +819,36 @@ const
      PGesture = ^TGesture;
      TGesture =  Integer;
      Const
-       GESTURE_NONE          = 0;    // No gesture
-       GESTURE_TAP           = 1;    // Tap gesture
-       GESTURE_DOUBLETAP     = 2;    // Double tap gesture
-       GESTURE_HOLD          = 4;    // Hold gesture
-       GESTURE_DRAG          = 8;    // Drag gesture
-       GESTURE_SWIPE_RIGHT   = 16;   // Swipe right gesture
-       GESTURE_SWIPE_LEFT    = 32;   // Swipe left gesture
-       GESTURE_SWIPE_UP      = 64;   // Swipe up gesture
-       GESTURE_SWIPE_DOWN    = 128;  // Swipe down gesture
-       GESTURE_PINCH_IN      = 256;  // Pinch in gesture
-       GESTURE_PINCH_OUT     = 512;  // Pinch out gesture
+       GESTURE_NONE          = TGesture(0);   // No gesture
+       GESTURE_TAP           = TGesture(1);   // Tap gesture
+       GESTURE_DOUBLETAP     = TGesture(2);   // Double tap gesture
+       GESTURE_HOLD          = TGesture(4);   // Hold gesture
+       GESTURE_DRAG          = TGesture(8);   // Drag gesture
+       GESTURE_SWIPE_RIGHT   = TGesture(16);  // Swipe right gesture
+       GESTURE_SWIPE_LEFT    = TGesture(32);  // Swipe left gesture
+       GESTURE_SWIPE_UP      = TGesture(64);  // Swipe up gesture
+       GESTURE_SWIPE_DOWN    = TGesture(128); // Swipe down gesture
+       GESTURE_PINCH_IN      = TGesture(256); // Pinch in gesture
+       GESTURE_PINCH_OUT     = TGesture(512); // Pinch out gesture
 
    (* Camera system modes *)
    type
      PCameraMode = ^TCameraMode;
      TCameraMode =  Integer;
      Const
-       CAMERA_CUSTOM = 0;      // Custom camera
-       CAMERA_FREE = 1;        // Free camera
-       CAMERA_ORBITAL = 2;     // Orbital camera
-       CAMERA_FIRST_PERSON = 3;// First person camera
-       CAMERA_THIRD_PERSON = 4;// Third person camera
+       CAMERA_CUSTOM        = TCameraMode(0); // Custom camera
+       CAMERA_FREE          = TCameraMode(1); // Free camera
+       CAMERA_ORBITAL       = TCameraMode(2); // Orbital camera
+       CAMERA_FIRST_PERSON  = TCameraMode(3); // First person camera
+       CAMERA_THIRD_PERSON  = TCameraMode(4); // Third person camera
 
    (* Camera projection *)
    type
      PCameraProjection = ^TCameraProjection;
      TCameraProjection =  Integer;
      const
-       CAMERA_PERSPECTIVE = 0; // Perspective projection
-       CAMERA_ORTHOGRAPHIC = 1;// Orthographic projection
+       CAMERA_PERSPECTIVE  = TCameraProjection(0); // Perspective projection
+       CAMERA_ORTHOGRAPHIC = TCameraProjection(1); // Orthographic projection
 
      (* N-patch layout *)
      type
@@ -858,9 +856,9 @@ const
       TNPatchLayout =  Integer;
 
       const
-        NPATCH_NINE_PATCH = 0;             // Npatch layout: 3x3 tiles
-        NPATCH_THREE_PATCH_VERTICAL = 1;   // Npatch layout: 1x3 tiles
-        NPATCH_THREE_PATCH_HORIZONTAL = 2; // Npatch layout: 3x1 tiles
+        NPATCH_NINE_PATCH             = TNPatchLayout(0); // Npatch layout: 3x3 tiles
+        NPATCH_THREE_PATCH_VERTICAL   = TNPatchLayout(1); // Npatch layout: 1x3 tiles
+        NPATCH_THREE_PATCH_HORIZONTAL = TNPatchLayout(2); // Npatch layout: 3x1 tiles
 
 
 //------------------------------------------------------------------------------------
@@ -874,93 +872,93 @@ const
 (* Window-related function *)
 
 {Initialize window and OpenGL context}
-procedure InitWindow(width, height: Integer; title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure InitWindow(width, height: Integer; title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'InitWindow';
 {Check if KEY_ESCAPE pressed or Close icon pressed}
-function WindowShouldClose: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function WindowShouldClose: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WindowShouldClose';
 {Close window and unload OpenGL context}
-procedure CloseWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure CloseWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CloseWindow';
 {Check if window has been initialized successfully}
-function IsWindowReady: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsWindowReady: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowReady';
 {Check if window is currently fullscreen }
-function IsWindowFullscreen: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsWindowFullscreen: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowFullscreen';
 {Check if window is currently hidden (only PLATFORM_DESKTOP)}
-function IsWindowHidden: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsWindowHidden: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowHidden';
 {Check if window is currently minimized (only PLATFORM_DESKTOP)}
-function IsWindowMinimized: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsWindowMinimized: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowMinimized';
 {Check if window is currently maximized (only PLATFORM_DESKTOP)}
-function IsWindowMaximized: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsWindowMaximized: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowMaximized';
 {Check if window is currently focused (only PLATFORM_DESKTOP)}
-function IsWindowFocused: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsWindowFocused: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowFocused';
 {Check if window has been resized last frame}
-function IsWindowResized: Boolean;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsWindowResized: Boolean;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowResized';
 {Check if one specific window flag is enabled}
-function IsWindowState(flag: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsWindowState(flag: TConfigFlags): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowState';
 {Set window configuration state using flags (only PLATFORM_DESKTOP)}
-procedure SetWindowState(flags: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetWindowState(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowState';
 {Clear window configuration state flags}
-procedure ClearWindowState(flags: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ClearWindowState(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ClearWindowState';
 {Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)}
-procedure ToggleFullscreen; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ToggleFullscreen; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ToggleFullscreen';
 {Set window state: maximized, if resizable (only PLATFORM_DESKTOP)}
-procedure MaximizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure MaximizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MaximizeWindow';
 {Set window state: minimized, if resizable (only PLATFORM_DESKTOP)}
-procedure MinimizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure MinimizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MinimizeWindow';
 {Set window state: not minimized/maximized (only PLATFORM_DESKTOP)}
-procedure RestoreWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure RestoreWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'RestoreWindow';
 {Set icon for window (only PLATFORM_DESKTOP)}
-procedure SetWindowIcon(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetWindowIcon(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowIcon';
 {Set title for window (only PLATFORM_DESKTOP)}
-procedure SetWindowTitle(title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetWindowTitle(title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowTitle';
 {Set window position on screen (only PLATFORM_DESKTOP)}
-procedure SetWindowPosition(x, y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetWindowPosition(x, y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowPosition';
 {Set monitor for the current window (fullscreen mode)}
-procedure SetWindowMonitor(monitor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetWindowMonitor(monitor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowMonitor';
 {Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)}
-procedure SetWindowMinSize(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetWindowMinSize(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowMinSize';
 {Set window dimensions}
-procedure SetWindowSize(width, height: Integer);cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetWindowSize(width, height: Integer);cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowSize';
 {Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)}
-procedure SetWindowOpacity(opacity: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetWindowOpacity(opacity: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowOpacity';
 {Get native window handle}
-function GetWindowHandle: Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetWindowHandle: Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWindowHandle';
 {Get current screen width}
-function GetScreenWidth: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetScreenWidth: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenWidth';
 {Get current screen height}
-function GetScreenHeight: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetScreenHeight: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenHeight';
 {Get current render width (it considers HiDPI)}
-function GetRenderWidth: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetRenderWidth: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRenderWidth';
 {Get current render height (it considers HiDPI)}
-function GetRenderHeight: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetRenderHeight: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRenderHeight';
 {Get number of connected monitors}
-function GetMonitorCount: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMonitorCount: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorCount';
 {Get current connected monitor}
-function GetCurrentMonitor: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCurrentMonitor: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCurrentMonitor';
 {Get specified monitor position}
-function GetMonitorPosition(monitor: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMonitorPosition(monitor: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorPosition';
 {Get specified monitor width (current video mode used by monitor)}
-function GetMonitorWidth(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMonitorWidth(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorWidth';
 {Get specified monitor height (current video mode used by monitor)}
-function GetMonitorHeight(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMonitorHeight(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorHeight';
 {Get specified monitor physical width in millimetres}
-function GetMonitorPhysicalWidth(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMonitorPhysicalWidth(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorPhysicalWidth';
 {Get specified monitor physical height in millimetres}
-function GetMonitorPhysicalHeight(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMonitorPhysicalHeight(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorPhysicalHeight';
 {Get specified monitor refresh rate}
-function GetMonitorRefreshRate(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMonitorRefreshRate(monitor: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorRefreshRate';
 {Get window position XY on monitor}
-function GetWindowPosition: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetWindowPosition: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWindowPosition';
 {Get window scale DPI factor}
-function GetWindowScaleDPI: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetWindowScaleDPI: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWindowScaleDPI';
 {Get the human-readable, UTF-8 encoded name of the primary monitor}
-function GetMonitorName(monitor: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMonitorName(monitor: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorName';
 {Set clipboard text content}
-procedure SetClipboardText(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetClipboardText(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetClipboardText';
 {Get clipboard text content}
-function GetClipboardText: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetClipboardText: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetClipboardText';
 {Enable waiting for events on EndDrawing(), no automatic event polling}
-procedure EnableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EnableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EnableEventWaiting';
 {Disable waiting for events on EndDrawing(), automatic events polling}
-procedure DisableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DisableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DisableEventWaiting';
 
 (* Custom frame control functions *)
 // NOTE: Those functions are intended for advance users that want full control over the frame processing
@@ -968,146 +966,146 @@ procedure DisableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$END
 // To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
 
 {Swap back buffer with front buffer (screen drawing)}
-procedure SwapScreenBuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SwapScreenBuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SwapScreenBuffer';
 {Register all input events}
-procedure PollInputEvents; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure PollInputEvents; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PollInputEvents';
 {Wait for some time (halt program execution) }
-procedure WaitTime(ms: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure WaitTime(ms: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaitTime';
 
 (* Cursor-related functions *)
 
 {Shows cursor}
-procedure ShowCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ShowCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ShowCursor';
 {Hides cursor}
-procedure HideCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure HideCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'HideCursor';
 {Check if cursor is not visible}
-function IsCursorHidden: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsCursorHidden: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsCursorHidden';
 {Enables cursor (unlock cursor)}
-procedure EnableCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EnableCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EnableCursor';
 {Disables cursor (lock cursor)}
-procedure DisableCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DisableCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DisableCursor';
 {Check if cursor is on the current screen.}
-function IsCursorOnScreen: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsCursorOnScreen: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsCursorOnScreen';
 
 (* Drawing-related functions *)
 
 {Set background color (framebuffer clear color)}
-procedure ClearBackground(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ClearBackground(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ClearBackground';
 {Setup canvas (framebuffer) to start drawing}
-procedure BeginDrawing; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure BeginDrawing; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'BeginDrawing';
 {End canvas drawing and swap buffers (double buffering)}
-procedure EndDrawing; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EndDrawing; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EndDrawing';
 {Initialize 2D mode with custom camera (2D)}
-procedure BeginMode2D(camera: TCamera2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure BeginMode2D(camera: TCamera2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'BeginMode2D';
 {Ends 2D mode with custom camera}
-procedure EndMode2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EndMode2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EndMode2D';
 {Initializes 3D mode with custom camera (3D)}
-procedure BeginMode3D(camera: TCamera3D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure BeginMode3D(camera: TCamera3D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'BeginMode3D';
 {Ends 3D mode and returns to default 2D orthographic mode}
-procedure EndMode3D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EndMode3D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EndMode3D';
 {Initializes render texture for drawing}
-procedure BeginTextureMode(target: TRenderTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure BeginTextureMode(target: TRenderTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'BeginTextureMode';
 {Ends drawing to render texture}
-procedure EndTextureMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EndTextureMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EndTextureMode';
 {Begin custom shader drawing}
-procedure BeginShaderMode(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure BeginShaderMode(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'BeginShaderMode';
 {End custom shader drawing (use default shader)}
-procedure EndShaderMode;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EndShaderMode;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EndShaderMode';
 {Begin blending mode (alpha, additive, multiplied)}
-procedure BeginBlendMode(mode: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure BeginBlendMode(mode: TBlendMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'BeginBlendMode';
 {End blending mode (reset to default: alpha blending)}
-procedure EndBlendMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EndBlendMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EndBlendMode';
 {Begin scissor mode (define screen area for following drawing)}
-procedure BeginScissorMode(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure BeginScissorMode(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'BeginScissorMode';
 {End scissor mode}
-procedure EndScissorMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EndScissorMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EndScissorMode';
 {Begin stereo rendering (requires VR simulator)}
-procedure BeginVrStereoMode(config: TVrStereoConfig); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure BeginVrStereoMode(config: TVrStereoConfig); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'BeginVrStereoMode';
 {End stereo rendering (requires VR simulator)}
-procedure EndVrStereoMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure EndVrStereoMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EndVrStereoMode';
 
 (* VR stereo config functions for VR simulator *)
 
 {Load VR stereo config for VR simulator device parameters}
-function LoadVrStereoConfig(device: TVrDeviceInfo): TVrStereoConfig; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadVrStereoConfig(device: TVrDeviceInfo): TVrStereoConfig; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadVrStereoConfig';
 {Unload VR stereo config }
-procedure UnloadVrStereoConfig(config: TVrStereoConfig); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadVrStereoConfig(config: TVrStereoConfig); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadVrStereoConfig';
 
 
 (* Shader management functions *)
 // NOTE: Shader functionality is not available on OpenGL 1.1
 
 {Load shader from files and bind default locations}
-function LoadShader(vsFileName, fsFileName: PChar): TShader; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadShader(vsFileName, fsFileName: PChar): TShader; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadShader';
 {Load shader from code strings and bind default locations}
-function LoadShaderFromMemory(vsCode, fsCode: PChar): TShader;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadShaderFromMemory(vsCode, fsCode: PChar): TShader;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadShaderFromMemory';
 {Get shader uniform location}
-function GetShaderLocation(shader: TShader; uniformName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetShaderLocation(shader: TShader; uniformName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShaderLocation';
 {Get shader attribute location}
-function GetShaderLocationAttrib(shader:TShader; attribName:PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetShaderLocationAttrib(shader:TShader; attribName:PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShaderLocationAttrib';
 {Set shader uniform value}
-procedure SetShaderValue(shader: TShader; locIndex: Integer; value: Pointer; uniformType: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetShaderValue(shader: TShader; locIndex: Integer; value: Pointer; uniformType: TShaderUniformDataType); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShaderValue';
 {Set shader uniform value vector}
-procedure SetShaderValueV(shader: TShader; locIndex: Integer; value: Pointer; uniformType, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetShaderValueV(shader: TShader; locIndex: Integer; value: Pointer; uniformType: TShaderUniformDataType; count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShaderValueV';
 {Set shader uniform value (matrix 4x4)}
-procedure SetShaderValueMatrix(shader: TShader; locIndex: Integer; mat:TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetShaderValueMatrix(shader: TShader; locIndex: Integer; mat:TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShaderValueMatrix';
 {Set shader uniform value for texture (sampler2d) }
-procedure SetShaderValueTexture(shader: TShader; locIndex: Integer; texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetShaderValueTexture(shader: TShader; locIndex: Integer; texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShaderValueTexture';
 {Unload shader from GPU memory (VRAM)}
-procedure UnloadShader(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadShader(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadShader';
 
 
 (* Screen-space-related functions *)
 
 {Get a ray trace from mouse position}
-function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMouseRay';
 {Get camera transform matrix (view matrix)}
-function GetCameraMatrix(camera: TCamera): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCameraMatrix(camera: TCamera): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCameraMatrix';
 {Get camera 2d transform matrix}
-function GetCameraMatrix2D(camera: TCamera2D): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCameraMatrix2D(camera: TCamera2D): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCameraMatrix2D';
 {Get the screen space position for a 3d world space position}
-function GetWorldToScreen(position: TVector3; camera: TCamera): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetWorldToScreen(position: TVector3; camera: TCamera): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorldToScreen';
 {Get size position for a 3d world space position}
-function GetWorldToScreenEx(position: TVector3; camera: TCamera; width, height: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetWorldToScreenEx(position: TVector3; camera: TCamera; width, height: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorldToScreenEx';
 {Get the screen space position for a 2d camera world space position}
-function GetWorldToScreen2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetWorldToScreen2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorldToScreen2D';
 {Get the world space position for a 2d camera screen space position}
-function GetScreenToWorld2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetScreenToWorld2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorld2D';
 
 
 (* Timing-related functions *)
 
 {Set target FPS (maximum)}
-procedure SetTargetFPS(fps: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetTargetFPS(fps: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTargetFPS';
 {Returns current FPS}
-function GetFPS: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetFPS: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFPS';
 {Returns time in seconds for last frame drawn (delta time)}
-function GetFrameTime: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetFrameTime: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFrameTime';
 {Returns elapsed time in seconds since InitWindow()}
-function GetTime: Double; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetTime: Double; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTime';
 
 (* Misc. functions *)
 
 {Get a random value between min and max (both included)}
-function GetRandomValue(min, max: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetRandomValue(min, max: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRandomValue';
 {Set the seed for the random number generator}
-procedure SetRandomSeed(seed: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetRandomSeed(seed: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetRandomSeed';
 {Takes a screenshot of current screen (filename extension defines format)}
-procedure TakeScreenshot(fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure TakeScreenshot(fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TakeScreenshot';
 {Setup init configuration flags (view FLAGS)}
-procedure SetConfigFlags(flags:LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetConfigFlags(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetConfigFlags';
 {Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)}
-procedure TraceLog(logLevel: Integer; text: PChar); cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure TraceLog(logLevel: TTraceLogLevel; text: PChar); cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TraceLog';
 {Set the current threshold (minimum) log level}
-procedure SetTraceLogLevel(logLevel: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetTraceLogLevel(logLevel: TTraceLogLevel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTraceLogLevel';
 {Internal memory allocator}
-function MemAlloc(size: LongWord): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function MemAlloc(size: LongWord): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MemAlloc';
 {Internal memory reallocator}
-function MemRealloc(ptr: Pointer; size: LongWord): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function MemRealloc(ptr: Pointer; size: LongWord): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MemRealloc';
 {Internal memory free}
-procedure MemFree(ptr: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure MemFree(ptr: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MemFree';
 {Open URL with default system browser (if available)}
-procedure OpenURL(const url: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure OpenURL(const url: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'OpenURL';
 
 (* Set custom callbacks *)
 (* Callbacks to hook some internal functions *)
@@ -1119,85 +1117,85 @@ type
   TLoadFileTextCallback = function(fileName: PChar): PChar; cdecl;
   TSaveFileTextCallback = function(fileName, text: PChar): Boolean; cdecl;
 
-  { Set custom trace log }
-  procedure SetTraceLogCallback(callback: TTraceLogCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-  { Set custom file binary data loader }
-  procedure SetLoadFileDataCallback(callback: TLoadFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-  { Set custom file binary data saver }
-  procedure SetSaveFileDataCallback(callback: TSaveFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-  { Set custom file text data loader }
-  procedure SetLoadFileTextCallback(callback: TLoadFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
-  { Set custom file text data saver }
-  procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+{ Set custom trace log }
+procedure SetTraceLogCallback(callback: TTraceLogCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTraceLogCallback';
+{ Set custom file binary data loader }
+procedure SetLoadFileDataCallback(callback: TLoadFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetLoadFileDataCallback';
+{ Set custom file binary data saver }
+procedure SetSaveFileDataCallback(callback: TSaveFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSaveFileDataCallback';
+{ Set custom file text data loader }
+procedure SetLoadFileTextCallback(callback: TLoadFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetLoadFileTextCallback';
+{ Set custom file text data saver }
+procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSaveFileTextCallback';
 
 
 (* Files management functions *)
 
 {Load file data as byte array (read)}
-function LoadFileData(fileName: PChar; bytesRead: PLongWord): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadFileData(fileName: PChar; bytesRead: PLongWord): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFileData';
 {Unload file data allocated by LoadFileData()}
-procedure UnloadFileData(data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadFileData(data: PByte); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFileData';
 {Save data to file from byte array (write), returns true on success}
-function SaveFileData(fileName: PChar; data: Pointer; bytesToWrite: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function SaveFileData(fileName: PChar; data: Pointer; bytesToWrite: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileData';
 {Export data to code (.h), returns true on success}
-function ExportDataAsCode(data: PByte; size: LongWord; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ExportDataAsCode(data: PChar; size: LongWord; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportDataAsCode';
 {Load text data from file (read), returns a '\0' terminated string}
-function LoadFileText(fileName: Pchar): Pchar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadFileText(fileName: Pchar): Pchar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFileText';
 {Unload file text data allocated by LoadFileText()}
-procedure UnloadFileText(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadFileText(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFileText';
 {Save text data to file (write), string must be '\0' terminated, returns true on success}
-function SaveFileText(fileName, text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function SaveFileText(fileName, text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileText';
 {Check if file exists}
-function FileExists(fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function FileExists(fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileExists';
 {Check if a directory path exists}
-function DirectoryExists(dirPath: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function DirectoryExists(dirPath: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DirectoryExists';
 {Check file extension (including point: .png, .wav)}
-function IsFileExtension(fileName, ext: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsFileExtension(fileName, ext: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileExtension';
 {Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)}
-function GetFileLength(fileName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetFileLength(fileName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileLength';
 {Get pointer to extension for a filename string (includes dot: '.png')}
-function GetFileExtension(fileName: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetFileExtension(fileName: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileExtension';
 {Get pointer to filename for a path string }
-function GetFileName(filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetFileName(filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileName';
 {Get filename string without extension (uses static string)}
-function GetFileNameWithoutExt(filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetFileNameWithoutExt(filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileNameWithoutExt';
 {Get full path for a given fileName with path (uses static string)}
-function GetDirectoryPath(filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetDirectoryPath(filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetDirectoryPath';
 {Get previous directory path for a given path (uses static string)}
-function GetPrevDirectoryPath(dirPath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetPrevDirectoryPath(dirPath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPrevDirectoryPath';
 {Get current working directory (uses static string)}
-function GetWorkingDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetWorkingDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorkingDirectory';
 {Get the directory if the running application (uses static string)}
-function GetApplicationDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetApplicationDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetApplicationDirectory';
 {Change working directory, return true on success}
-function ChangeDirectory(dir: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ChangeDirectory(dir: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ChangeDirectory';
 {Check if a given path is a file or a directory}
-function IsPathFile(path: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsPathFile(path: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsPathFile';
 {Load directory filepaths}
-function LoadDirectoryFiles(dirPath: PChar): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadDirectoryFiles(dirPath: PChar): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFiles';
 {Load directory filepaths with extension filtering and recursive directory scan}
-function LoadDirectoryFilesEx(basePath, filter: PChar; scanSubdirs: Boolean): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadDirectoryFilesEx(basePath, filter: PChar; scanSubdirs: Boolean): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFilesEx';
 {Unload filepaths}
-procedure UnloadDirectoryFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadDirectoryFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadDirectoryFiles';
 {Check if a file has been dropped into window}
-function IsFileDropped: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsFileDropped: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileDropped';
 {Load dropped filepaths}
-function LoadDroppedFiles: TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadDroppedFiles: TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDroppedFiles';
 {Unload dropped filepaths}
-procedure UnloadDroppedFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadDroppedFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadDroppedFiles';
 {Get file modification time (last write time)}
-function GetFileModTime(fileName: PChar): QWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetFileModTime(fileName: PChar): QWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileModTime';
 
 (* Compression/Encoding functionality *)
 
 {Compress data (DEFLATE algorithm), memory must be MemFree()}
-function CompressData(const data: Pointer; dataSize: Integer; compDataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CompressData(const data: Pointer; dataSize: Integer; compDataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CompressData';
 {Decompress data (DEFLATE algorithm), memory must be MemFree()}
-function DecompressData(const compData: Pointer; compDataSize: Integer; dataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function DecompressData(const compData: Pointer; compDataSize: Integer; dataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecompressData';
 {Encode data to Base64 string, memory must be MemFree()}
-function EncodeDataBase64(const data: PChar; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function EncodeDataBase64(const data: PChar; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EncodeDataBase64';
 {Decode Base64 string data, memory must be MemFree()}
-function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
 
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
@@ -1206,126 +1204,126 @@ function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl
 (* Input-related functions: keyboard *)
 
 {Check if a key has been pressed once}
-function IsKeyPressed(key: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsKeyPressed(key: TKeyboardKey): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyPressed';
 {Check if a key is being pressed}
-function IsKeyDown(key: Integer): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsKeyDown(key: TKeyboardKey): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyDown';
 {Check if a key has been released once}
-function IsKeyReleased(key: Integer): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsKeyReleased(key: TKeyboardKey): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyReleased';
 {Check if a key is NOT being pressed}
-function IsKeyUp(key: Integer): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsKeyUp(key: TKeyboardKey): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyUp';
 {Set a custom key to exit program (default is ESC)}
-procedure SetExitKey(key: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetExitKey(key: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetExitKey';
 {Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty}
-function GetKeyPressed: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetKeyPressed: TKeyboardKey; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetKeyPressed';
 {Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty}
-function GetCharPressed: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCharPressed: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCharPressed';
 
 (* Input-related functions: gamepads *)
 
 {Check if a gamepad is available}
-function IsGamepadAvailable(gamepad: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsGamepadAvailable(gamepad: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGamepadAvailable';
 {Get gamepad internal name id}
-function GetGamepadName(gamepad: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGamepadName(gamepad: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadName';
 {Check if a gamepad button has been pressed once}
-function IsGamepadButtonPressed(gamepad, button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsGamepadButtonPressed(gamepad: Integer; button: TGamepadButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGamepadButtonPressed';
 {Check if a gamepad button is being pressed}
-function IsGamepadButtonDown(gamepad, button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsGamepadButtonDown(gamepad: Integer; button: TGamepadButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGamepadButtonDown';
 {Check if a gamepad button has been released once}
-function IsGamepadButtonReleased(gamepad, button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsGamepadButtonReleased(gamepad: Integer; button: TGamepadButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGamepadButtonReleased';
 {Check if a gamepad button is NOT being pressed}
-function IsGamepadButtonUp(gamepad, button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsGamepadButtonUp(gamepad: Integer; button: TGamepadButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGamepadButtonUp';
 {Get the last gamepad button pressed}
-function GetGamepadButtonPressed: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGamepadButtonPressed: TGamepadButton; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadButtonPressed';
 {Get gamepad axis count for a gamepad}
-function GetGamepadAxisCount(gamepad: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGamepadAxisCount(gamepad: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadAxisCount';
 {Get axis movement value for a gamepad axis}
-function GetGamepadAxisMovement(gamepad, axis: Integer): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGamepadAxisMovement(gamepad: Integer; axis: TGamepadAxis): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadAxisMovement';
 {Set internal gamepad mappings (SDL_GameControllerDB)}
-function SetGamepadMappings(mappings: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function SetGamepadMappings(mappings: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadMappings';
 
 (* Input-related functions: mouse *)
 
 {Check if a mouse button has been pressed once}
-function IsMouseButtonPressed(button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsMouseButtonPressed(button: TMouseButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMouseButtonPressed';
 {Check if a mouse button is being pressed}
-function IsMouseButtonDown(button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsMouseButtonDown(button: TMouseButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMouseButtonDown';
 {Check if a mouse button has been released once}
-function IsMouseButtonReleased(button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsMouseButtonReleased(button: TMouseButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMouseButtonReleased';
 {Check if a mouse button is NOT being pressed}
-function IsMouseButtonUp(button: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsMouseButtonUp(button: TMouseButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMouseButtonUp';
 {Get mouse position X}
-function GetMouseX: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMouseX: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMouseX';
 {Get mouse position Y}
-function GetMouseY: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMouseY: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMouseY';
 {Get mouse position XY}
-function GetMousePosition: TVector2; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMousePosition: TVector2; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMousePosition';
 {Get mouse delta between frames}
-function GetMouseDelta: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMouseDelta: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMouseDelta';
 {Set mouse position XY}
-procedure SetMousePosition(x,y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetMousePosition(x,y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMousePosition';
 {Set mouse offset}
-procedure SetMouseOffset(offsetX, offsetY: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetMouseOffset(offsetX, offsetY: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMouseOffset';
 {Set mouse scaling}
-procedure SetMouseScale(scaleX, scaleY: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetMouseScale(scaleX, scaleY: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMouseScale';
 {Get mouse wheel movement for X or Y, whichever is larger}
-function GetMouseWheelMove: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMouseWheelMove: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMouseWheelMove';
 {Get mouse wheel movement for both X and Y}
-function GetMouseWheelMoveV: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMouseWheelMoveV: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMouseWheelMoveV';
 { Set mouse cursor}
-procedure SetMouseCursor(cursor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetMouseCursor(cursor: TMouseCursor); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMouseCursor';
 
 (* Input-related functions: touch *)
 
 {Get touch position X for touch point 0 (relative to screen size)}
-function GetTouchX: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetTouchX: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTouchX';
 {Get touch position Y for touch point 0 (relative to screen size)}
-function GetTouchY: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetTouchY: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTouchY';
 {Get touch point identifier for given index}
-function GetTouchPointId(index: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetTouchPointId(index: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTouchPointId';
 {Get touch position XY for a touch point index (relative to screen size)}
-function GetTouchPosition(index: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetTouchPosition(index: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTouchPosition';
 {Get touch points count}
-function GetTouchPointCount: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetTouchPointCount: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTouchPointCount';
 {Get last touch event registered}
-function GetTouchEvent: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetTouchEvent: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTouchEvent';
 
 //------------------------------------------------------------------------------------
 // Gestures and Touch Handling Functions (Module: rgestures)
 //------------------------------------------------------------------------------------
 
 {Enable a set of gestures using flags}
-procedure SetGesturesEnabled(flags: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetGesturesEnabled(flags: TGesture); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGesturesEnabled';
 {Check if a gesture have been detected}
-function IsGestureDetected(gesture: Integer): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsGestureDetected(gesture: TGesture): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGestureDetected';
 {Get latest detected gesture}
-function GetGestureDetected: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGestureDetected: TGesture; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGestureDetected';
 {Get gesture hold time in milliseconds}
-function GetGestureHoldDuration: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGestureHoldDuration: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGestureHoldDuration';
 {Get gesture drag vector}
-function GetGestureDragVector: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGestureDragVector: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGestureDragVector';
 {Get gesture drag angle}
-function GetGestureDragAngle: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGestureDragAngle: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGestureDragAngle';
 {Get gesture pinch delta}
-function GetGesturePinchVector: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGesturePinchVector: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGesturePinchVector';
 {Get gesture pinch angle}
-function GetGesturePinchAngle: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGesturePinchAngle: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGesturePinchAngle';
 
 //------------------------------------------------------------------------------------
 // Camera System Functions (Module: rcamera)
 //------------------------------------------------------------------------------------
 
 {Set camera mode (multiple camera modes available)}
-procedure SetCameraMode(camera: TCamera; mode: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetCameraMode(camera: TCamera; mode: TCameraMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraMode';
 {Update camera position for selected mode}
-procedure UpdateCamera(camera: PCamera); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UpdateCamera(camera: PCamera); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateCamera';
 {Set camera pan key to combine with mouse movement (free camera)}
-procedure SetCameraPanControl(keyPan: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetCameraPanControl(keyPan: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraPanControl';
 {Set camera alt key to combine with mouse movement (free camera)}
-procedure SetCameraAltControl(keyAlt: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetCameraAltControl(keyAlt: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraAltControl';
 {Set camera smooth zoom key to combine with mouse (free camera)}
-procedure SetCameraSmoothZoomControl(keySmoothZoom: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetCameraSmoothZoomControl(keySmoothZoom: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraSmoothZoomControl';
 {Set camera move controls (1st person and 3rd person cameras)}
-procedure SetCameraMoveControls(keyFront, keyBack, keyRight, keyLeft, keyUp, keyDown: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetCameraMoveControls(keyFront, keyBack, keyRight, keyLeft, keyUp, keyDown: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraMoveControls';
 
 //------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
@@ -1335,107 +1333,107 @@ procedure SetCameraMoveControls(keyFront, keyBack, keyRight, keyLeft, keyUp, key
 // defining a font char white rectangle would allow drawing everything in a single draw call
 
 {Set texture and rectangle to be used on shapes drawing}
-procedure SetShapesTexture(texture: TTexture2D; source: TRectangle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetShapesTexture(texture: TTexture2D; source: TRectangle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShapesTexture';
 
 (* Basic shapes drawing functions *)
 
 {Draw a pixel}
-procedure DrawPixel(posX, posY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawPixel(posX, posY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPixel';
 {Draw a pixel (Vector version)}
-procedure DrawPixelV(position: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawPixelV(position: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPixelV';
 {Draw a line}
-procedure DrawLine(startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawLine(startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLine';
 {Draw a line (Vector version)}
-procedure DrawLineV(startPos, endPos: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawLineV(startPos, endPos: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineV';
 {Draw a line defining thickness}
-procedure DrawLineEx(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawLineEx(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineEx';
 {Draw a line using cubic-bezier curves in-out}
-procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezier';
 {Draw line using quadratic bezier curves with a control point}
-procedure DrawLineBezierQuad(startPos, endPos, controlPos: TVector2; thick: Single; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawLineBezierQuad(startPos, endPos, controlPos: TVector2; thick: Single; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezierQuad';
 {Draw line using cubic bezier curves with 2 control points}
-procedure DrawLineBezierCubic(startPos, endPos, startControlPos, endControlPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawLineBezierCubic(startPos, endPos, startControlPos, endControlPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezierCubic';
 {Draw lines sequence}
-procedure DrawLineStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawLineStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineStrip';
 {Draw a color-filled circle}
-procedure DrawCircle(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCircle(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircle';
 {Draw a piece of a circle}
-procedure DrawCircleSector(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCircleSector(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleSector';
 {Draw circle sector outline}
-procedure DrawCircleSectorLines(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCircleSectorLines(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleSectorLines';
 {Draw a gradient-filled circle}
-procedure DrawCircleGradient(centerX, centerY: Integer; radius: Single; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCircleGradient(centerX, centerY: Integer; radius: Single; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleGradient';
 {Draw a color-filled circle (Vector version)}
-procedure DrawCircleV(center: TVector2; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCircleV(center: TVector2; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleV';
 {Draw circle outline}
-procedure DrawCircleLines(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCircleLines(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleLines';
 {Draw ellipse}
-procedure DrawEllipse(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawEllipse(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawEllipse';
 {Draw ellipse outline}
-procedure DrawEllipseLines(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawEllipseLines(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawEllipseLines';
 {Draw ring}
-procedure DrawRing(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRing(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRing';
 {Draw ring outline}
-procedure DrawRingLines(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRingLines(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRingLines';
 {Draw a color-filled rectangle}
-procedure DrawRectangle(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangle(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangle';
 {Draw a color-filled rectangle (Vector version)}
-procedure DrawRectangleV(position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangleV(position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleV';
 {Draw a color-filled rectangle}
-procedure DrawRectangleRec(rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangleRec(rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRec';
 {Draw a color-filled rectangle with pro parameters}
-procedure DrawRectanglePro(rec: TRectangle; origin: TVector2; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectanglePro(rec: TRectangle; origin: TVector2; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectanglePro';
 {Draw a vertical-gradient-filled rectangle}
-procedure DrawRectangleGradientV(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangleGradientV(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientV';
 {Draw a horizontal-gradient-filled rectangle}
-procedure DrawRectangleGradientH(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangleGradientH(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientH';
 {Draw a gradient-filled rectangle with custom vertex colors}
-procedure DrawRectangleGradientEx(rec: TRectangle; col1, col2, col3, col4: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangleGradientEx(rec: TRectangle; col1, col2, col3, col4: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientEx';
 {Draw rectangle outline}
-procedure DrawRectangleLines(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangleLines(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleLines';
 {Draw rectangle outline with extended parameters}
-procedure DrawRectangleLinesEx(rec: TRectangle; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangleLinesEx(rec: TRectangle; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleLinesEx';
 {Draw rectangle with rounded edges}
-procedure DrawRectangleRounded(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangleRounded(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRounded';
 {Draw rectangle with rounded edges outline}
-procedure DrawRectangleRoundedLines(rec: TRectangle; roundness: Single; segments: Integer; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRectangleRoundedLines(rec: TRectangle; roundness: Single; segments: Integer; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRoundedLines';
 {Draw a color-filled triangle (vertex in counter-clockwise order!)}
-procedure DrawTriangle(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTriangle(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangle';
 {Draw triangle outline (vertex in counter-clockwise order!)}
-procedure DrawTriangleLines(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTriangleLines(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleLines';
 {Draw a triangle fan defined by points (first vertex is the center)}
-procedure DrawTriangleFan(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTriangleFan(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleFan';
 {Draw a triangle strip defined by points}
-procedure DrawTriangleStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTriangleStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleStrip';
 {Draw a regular polygon (Vector version)}
-procedure DrawPoly(center: TVector2; sides: Integer; radius: Single; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawPoly(center: TVector2; sides: Integer; radius: Single; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPoly';
 {Draw a polygon outline of n sides}
-procedure DrawPolyLines(center: TVector2; sides: Integer; radius, rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawPolyLines(center: TVector2; sides: Integer; radius, rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPolyLines';
 {Draw a polygon outline of n sides with extended parameters }
-procedure DrawPolyLinesEx(center: TVector2; sides: Integer; radius, rotation, lineThick: single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawPolyLinesEx(center: TVector2; sides: Integer; radius, rotation, lineThick: single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPolyLinesEx';
 
 (* Basic shapes collision detection functions *)
 
 {Check collision between two rectangles}
-function CheckCollisionRecs(rec1, rec2: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionRecs(rec1, rec2: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionRecs';
 {Check collision between two circles}
-function CheckCollisionCircles(center1: TVector2; radius1: Single; center2: TVector2; radius2: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionCircles(center1: TVector2; radius1: Single; center2: TVector2; radius2: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionCircles';
 {Check collision between circle and rectangle}
-function CheckCollisionCircleRec(center: TVector2; radius: Single; rec: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionCircleRec(center: TVector2; radius: Single; rec: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionCircleRec';
 {Check if point is inside rectangle}
-function CheckCollisionPointRec(point: TVector2; rec: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionPointRec(point: TVector2; rec: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointRec';
 {Check if point is inside circle}
-function CheckCollisionPointCircle(point, center: TVector2; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionPointCircle(point, center: TVector2; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointCircle';
 {Check if point is inside a triangle}
-function CheckCollisionPointTriangle(point, p1, p2, p3: TVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionPointTriangle(point, p1, p2, p3: TVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointTriangle';
 {Check if point is within a polygon described by array of vertices}
-function CheckCollisionPointPoly(point: TVector2; points: PVector2; pointCount: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionPointPoly(point: TVector2; points: PVector2; pointCount: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointPoly';
 {Check the collision between two lines defined by two points each, returns collision point by reference}
-function CheckCollisionLines(startPos1, endPos1, startPos2, endPos2: TVector2; collisionPoint: PVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionLines(startPos1, endPos1, startPos2, endPos2: TVector2; collisionPoint: PVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionLines';
 {Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]}
-function CheckCollisionPointLine(point, p1, p2: TVector2; threshold: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionPointLine(point, p1, p2: TVector2; threshold: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointLine';
 {Get collision rectangle for two rectangles collision}
-function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCollisionRec';
 
 //------------------------------------------------------------------------------------
 // Texture Loading and Drawing Functions (Module: textures)
@@ -1445,231 +1443,231 @@ function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external {$
 // NOTE: This functions do not require GPU access
 
 {Load image from file into CPU memory (RAM)}
-function LoadImage(fileName: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadImage(fileName: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImage';
 {Load image from RAW file data}
-function LoadImageRaw(fileName: PChar; width, height, format, headerSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadImageRaw(fileName: PChar; width, height, format: TPixelFormat; headerSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageRaw';
 {Load image sequence from file (frames appended to image.data)}
-function LoadImageAnim(fileName: PChar; frames: PInteger):TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadImageAnim(fileName: PChar; frames: PInteger):TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageAnim';
 {Load image from memory buffer, fileType refers to extension: i.e. '.png'}
-function LoadImageFromMemory(fileType: PChar; fileData: Pointer; dataSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadImageFromMemory(fileType: PChar; fileData: PByte; dataSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageFromMemory';
 {Load image from GPU texture data}
-function LoadImageFromTexture(texture: TTexture2D): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadImageFromTexture(texture: TTexture2D): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageFromTexture';
 {Load image from screen buffer and (screenshot)}
-function LoadImageFromScreen: TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadImageFromScreen: TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageFromScreen';
 {Unload image from CPU memory (RAM)}
-procedure UnloadImage(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadImage(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadImage';
 {Export image data to file, returns true on success}
-function ExportImage(image: TImage; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ExportImage(image: TImage; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImage';
 {Export image as code file defining an array of bytes, returns true on success  }
-function ExportImageAsCode(image: TImage; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ExportImageAsCode(image: TImage; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageAsCode';
 
 
 (* Image generation functions *)
 
 {Generate image: plain color}
-function GenImageColor(width, height: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImageColor(width, height: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageColor';
 {Generate image: vertical gradient}
-function GenImageGradientV(width, height: Integer; top, bottom: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImageGradientV(width, height: Integer; top, bottom: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientV';
 {Generate image: horizontal gradient}
-function GenImageGradientH(width, height: Integer; left, right: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImageGradientH(width, height: Integer; left, right: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientH';
 {Generate image: radial gradient}
-function GenImageGradientRadial(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImageGradientRadial(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientRadial';
 {Generate image: checked}
-function GenImageChecked(width, height, checksX, checksY: Integer; col1, col2: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImageChecked(width, height, checksX, checksY: Integer; col1, col2: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageChecked';
 {Generate image: white noise}
-function GenImageWhiteNoise(width, height: Integer; factor: Single): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImageWhiteNoise(width, height: Integer; factor: Single): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageWhiteNoise';
 {Generate image: perlin noise}
-function GenImagePerlinNoise(width, height, offsetX, offsetY: Integer; scale: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImagePerlinNoise(width, height, offsetX, offsetY: Integer; scale: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImagePerlinNoise';
 {Generate image: cellular algorithm, bigger tileSize means bigger cells}
-function GenImageCellular(width, height, tileSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImageCellular(width, height, tileSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageCellular';
 {Generate image: grayscale image from text data}
-function GenImageText(width, height: Integer; const text: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImageText(width, height: Integer; const text: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageText';
 
 
 (* Image manipulation functions *)
 
 {Create an image duplicate (useful for transformations)}
-function ImageCopy(image: TImage): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ImageCopy(image: TImage): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageCopy';
 {Create an image from another image piece}
-function ImageFromImage(image: TImage; rec: TRectangle): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ImageFromImage(image: TImage; rec: TRectangle): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFromImage';
 {Create an image from text (default font)}
-function ImageText(text: PChar; fontSize: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ImageText(text: PChar; fontSize: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageText';
 {Create an image from text (custom sprite font)}
-function ImageTextEx(font: TFont; text: PChar; fontSize, spacing: Single; tint: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ImageTextEx(font: TFont; text: PChar; fontSize, spacing: Single; tint: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageTextEx';
 {Convert image data to desired format}
-procedure ImageFormat(image: PImage; newFormat: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageFormat(image: PImage; newFormat: TPixelFormat); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFormat';
 {Convert image to POT (power-of-two)}
-procedure ImageToPOT(image: PImage; fill: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageToPOT(image: PImage; fill: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageToPOT';
 {Crop an image to a defined rectangle}
-procedure ImageCrop(image: PImage; crop: TRectangle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageCrop(image: PImage; crop: TRectangle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageCrop';
 {Crop image depending on alpha value}
-procedure ImageAlphaCrop(image: PImage; threshold: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageAlphaCrop(image: PImage; threshold: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageAlphaCrop';
 {Clear alpha channel to desired color}
-procedure ImageAlphaClear(image: PImage; color: TColorB; threshold: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageAlphaClear(image: PImage; color: TColorB; threshold: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageAlphaClear';
 {Apply alpha mask to image}
-procedure ImageAlphaMask(image: PImage; alphaMask: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageAlphaMask(image: PImage; alphaMask: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageAlphaMask';
 {Premultiply alpha channel}
-procedure ImageAlphaPremultiply(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageAlphaPremultiply(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageAlphaPremultiply';
 {Apply Gaussian blur using a box blur approximation}
-procedure ImageBlurGaussian(image: PImage; blurSize: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageBlurGaussian(image: PImage; blurSize: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageBlurGaussian';
 {Resize image (Bicubic scaling algorithm)}
-procedure ImageResize(image: PImage; newWidth, newHeight: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageResize(image: PImage; newWidth, newHeight: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageResize';
 {Resize image (Nearest-Neighbor scaling algorithm)}
-procedure ImageResizeNN(image: PImage; newWidth, newHeight: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageResizeNN(image: PImage; newWidth, newHeight: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageResizeNN';
 {Resize canvas and fill with color}
-procedure ImageResizeCanvas(image: PImage; newWidth, newHeight, offsetX, offsetY: Integer; fill: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageResizeCanvas(image: PImage; newWidth, newHeight, offsetX, offsetY: Integer; fill: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageResizeCanvas';
 {Compute all mipmap levels for a provided image}
-procedure ImageMipmaps(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageMipmaps(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageMipmaps';
 {Dither image data to 16bpp or lower (Floyd-Steinberg dithering)}
-procedure ImageDither(image: PImage; rBpp, gBpp, bBpp, aBpp: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDither(image: PImage; rBpp, gBpp, bBpp, aBpp: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDither';
 {Flip image vertically}
-procedure ImageFlipVertical(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageFlipVertical(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFlipVertical';
 {Flip image horizontally}
-procedure ImageFlipHorizontal(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageFlipHorizontal(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFlipHorizontal';
 {Rotate image clockwise 90deg}
-procedure ImageRotateCW(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageRotateCW(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageRotateCW';
 {Rotate image counter-clockwise 90deg}
-procedure ImageRotateCCW(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageRotateCCW(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageRotateCCW';
 {Modify image color: tint}
-procedure ImageColorTint(image: PImage; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageColorTint(image: PImage; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorTint';
 {Modify image color: invert}
-procedure ImageColorInvert(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageColorInvert(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorInvert';
 {Modify image color: grayscale}
-procedure ImageColorGrayscale(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageColorGrayscale(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorGrayscale';
 {Modify image color: contrast (-100 to 100)}
-procedure ImageColorContrast(image: PImage; contrast: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageColorContrast(image: PImage; contrast: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorContrast';
 {Modify image color: brightness (-255 to 255)}
-procedure ImageColorBrightness(image: PImage; brightness: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageColorBrightness(image: PImage; brightness: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorBrightness';
 {Modify image color: replace color}
-procedure ImageColorReplace(image: PImage; color, replace: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageColorReplace(image: PImage; color, replace: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorReplace';
 {Load color data from image as a Color array (RGBA - 32bit)}
-function LoadImageColors(image: TImage): PColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadImageColors(image: TImage): PColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageColors';
 {Load colors palette from image as a Color array (RGBA - 32bit)}
-function LoadImagePalette(image: TImage; maxPaletteSize: Integer; colorCount: PInteger): PColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadImagePalette(image: TImage; maxPaletteSize: Integer; colorCount: PInteger): PColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImagePalette';
 {Unload color data loaded with LoadImageColors()}
-procedure UnloadImageColors(colors: PColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadImageColors(colors: PColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadImageColors';
 {Unload colors palette loaded with LoadImagePalette()}
-procedure UnloadImagePalette(colors: PColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadImagePalette(colors: PColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadImagePalette';
 {Get image alpha border rectangle}
-function GetImageAlphaBorder(image: TImage; threshold: Single): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetImageAlphaBorder(image: TImage; threshold: Single): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetImageAlphaBorder';
 {Get image pixel color at (x, y) position}
-function GetImageColor(image: TImage; x, y: Integer): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetImageColor(image: TImage; x, y: Integer): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetImageColor';
 
 (* Image drawing functions *)
 // NOTE: Image software-rendering functions (CPU)
 
 {Clear image background with given color}
-procedure ImageClearBackground(dst: PImage; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageClearBackground(dst: PImage; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageClearBackground';
 {Draw pixel within an image}
-procedure ImageDrawPixel(dst: PImage; posX, posY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawPixel(dst: PImage; posX, posY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawPixel';
 {Draw pixel within an image (Vector version)}
-procedure ImageDrawPixelV(dst: PImage; position: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawPixelV(dst: PImage; position: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawPixelV';
 {Draw line within an image}
-procedure ImageDrawLine(dst: PImage; startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawLine(dst: PImage; startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawLine';
 {Draw line within an image (Vector version)}
-procedure ImageDrawLineV(dst: PImage; start, _end: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawLineV(dst: PImage; start, _end: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawLineV';
 {Draw a filled circle within an image}
-procedure ImageDrawCircle(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawCircle(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircle';
 {Draw a filled circle within an image (Vector version)}
-procedure ImageDrawCircleV(dst: PImage; center: TVector2; radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawCircleV(dst: PImage; center: TVector2; radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircleV';
 {Draw circle outline within an image}
-procedure ImageDrawCircleLines(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawCircleLines(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircleLines';
 {Draw circle outline within an image (Vector version)}
-procedure ImageDrawCircleLinesV(dst: PImage; center: TVector2; radius: Integer; color: TColor); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawCircleLinesV(dst: PImage; center: TVector2; radius: Integer; color: TColor); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircleLinesV';
 {Draw rectangle within an image}
-procedure ImageDrawRectangle(dst: PImage; posX, posY, width, height: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawRectangle(dst: PImage; posX, posY, width, height: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangle';
 {Draw rectangle within an image (Vector version)}
-procedure ImageDrawRectangleV(dst: PImage; position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawRectangleV(dst: PImage; position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleV';
 {Draw rectangle within an image}
-procedure ImageDrawRectangleRec(dst: PImage; rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawRectangleRec(dst: PImage; rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleRec';
 {Draw rectangle lines within an image}
-procedure ImageDrawRectangleLines(dst: PImage; rec: TRectangle; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawRectangleLines(dst: PImage; rec: TRectangle; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleLines';
 {Draw a source image within a destination image (tint applied to source)}
-procedure ImageDraw(dst: PImage; src: TImage; srcRec, dstRec: TRectangle; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDraw(dst: PImage; src: TImage; srcRec, dstRec: TRectangle; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDraw';
 {Draw text (using default font) within an image (destination)}
-procedure ImageDrawText(dst: PImage; text: PChar; posX, posY, fontSize: Integer; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawText(dst: PImage; text: PChar; posX, posY, fontSize: Integer; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawText';
 {Draw text (custom sprite font) within an image (destination)}
-procedure ImageDrawTextEx(dst: PImage; font: TFont; text: PChar; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ImageDrawTextEx(dst: PImage; font: TFont; text: PChar; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTextEx';
 
 (* Texture loading functions *)
 // NOTE: These functions require GPU access
 
 {Load texture from file into GPU memory (VRAM)}
-function LoadTexture(fileName: PChar): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadTexture(fileName: PChar): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTexture';
 {Load texture from image data}
-function LoadTextureFromImage(image: TImage): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadTextureFromImage(image: TImage): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTextureFromImage';
 {Load cubemap from image, multiple image cubemap layouts supported}
-function LoadTextureCubemap(image: TImage; layout: Integer): TTextureCubemap; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadTextureCubemap(image: TImage; layout: TCubemapLayout): TTextureCubemap; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTextureCubemap';
 {Load texture for rendering (framebuffer)}
-function LoadRenderTexture(width, height: Integer): TRenderTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadRenderTexture(width, height: Integer): TRenderTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadRenderTexture';
 {Unload texture from GPU memory (VRAM)}
-procedure UnloadTexture(texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadTexture(texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadTexture';
 {Unload render texture from GPU memory (VRAM)}
-procedure UnloadRenderTexture(target: TRenderTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadRenderTexture(target: TRenderTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadRenderTexture';
 {Update GPU texture with new data}
-procedure UpdateTexture(texture: TTexture2D; pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UpdateTexture(texture: TTexture2D; pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateTexture';
 {Update GPU texture rectangle with new data}
-procedure UpdateTextureRec(texture: TTexture2D; rec: TRectangle; pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UpdateTextureRec(texture: TTexture2D; rec: TRectangle; pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateTextureRec';
 
 
 (* Texture configuration functions *)
 
 {Generate GPU mipmaps for a texture}
-procedure GenTextureMipmaps(texture: PTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure GenTextureMipmaps(texture: PTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenTextureMipmaps';
 {Set texture scaling filter mode}
-procedure SetTextureFilter(texture: TTexture2D; filter: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetTextureFilter(texture: TTexture2D; filter: TTextureFilter); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTextureFilter';
 {Set texture wrapping mode}
-procedure SetTextureWrap(texture: TTexture2D; wrap: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetTextureWrap(texture: TTexture2D; wrap: TTextureWrap); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTextureWrap';
 
 
 (* Texture drawing functions *)
 
 {Draw a Texture2D}
-procedure DrawTexture(texture: TTexture2D; posX, posY: Integer; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTexture(texture: TTexture2D; posX, posY: Integer; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTexture';
 {Draw a Texture2D with position defined as Vector2}
-procedure DrawTextureV(texture: TTexture2D; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTextureV(texture: TTexture2D; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureV';
 {Draw a Texture2D with extended parameters}
-procedure DrawTextureEx(texture: TTexture2D; position: TVector2; rotation, scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTextureEx(texture: TTexture2D; position: TVector2; rotation, scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureEx';
 {Draw a part of a texture defined by a rectangle}
-procedure DrawTextureRec(texture: TTexture2D; source: TRectangle; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTextureRec(texture: TTexture2D; source: TRectangle; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureRec';
 {Draw a part of a texture defined by a rectangle with 'pro' parameters}
-procedure DrawTexturePro(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTexturePro(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTexturePro';
 {Draws a texture (or part of it) that stretches or shrinks nicely}
-procedure DrawTextureNPatch(texture: TTexture2D; nPatchInfo: TNPatchInfo; dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTextureNPatch(texture: TTexture2D; nPatchInfo: TNPatchInfo; dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureNPatch';
 
 
 (* Color/pixel related functions *)
 
 {Get color with alpha applied, alpha goes from 0.0f to 1.0f}
-function Fade(color: TColorB; alpha: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function Fade(color: TColorB; alpha: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Fade';
 {Get hexadecimal value for a Color}
-function ColorToInt(color: TColorB): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorToInt(color: TColorB): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorToInt';
 {Get Color normalized as float [0..1]}
-function ColorNormalize(color: TColorB): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorNormalize(color: TColorB): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorNormalize';
 {Get Color from normalized values [0..1]}
-function ColorFromNormalized(normalized: TVector4): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorFromNormalized(normalized: TVector4): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorFromNormalized';
 {Get HSV values for a Color, hue [0..360], saturation/value [0..1]}
-function ColorToHSV(color: TColorB): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorToHSV(color: TColorB): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorToHSV';
 {Get a Color from HSV values, hue [0..360], saturation/value [0..1]}
-function ColorFromHSV(hue, saturation, value: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorFromHSV(hue, saturation, value: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorFromHSV';
 {Get color multiplied with another color}
-function ColorTint(color, tint: TColorB): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorTint(color, tint: TColorB): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorTint';
 {Get color with brightness correction, brightness factor goes from -1.0 to 1.0}
-function ColorBrightness(color: TColorB; factor: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorBrightness(color: TColorB; factor: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorBrightness';
 {Get color with contrast correction, contrast values between -1.0 and 1.0}
-function ColorContrast(color: TColorB; contrast: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorContrast(color: TColorB; contrast: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorContrast';
 {Get color with alpha applied, alpha goes from 0.0 to 1.0}
-function ColorAlpha(color: TColorB; alpha: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorAlpha(color: TColorB; alpha: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorAlpha';
 {Get src alpha-blended into dst color with tint}
-function ColorAlphaBlend(dst, src, tint: TColorB): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ColorAlphaBlend(dst, src, tint: TColorB): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorAlphaBlend';
 {Get Color structure from hexadecimal value}
-function GetColor(hexValue: LongWord): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetColor(hexValue: LongWord): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetColor';
 {Get Color from a source pixel pointer of certain format}
-function GetPixelColor(srcPtr: Pointer; format: Integer): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetPixelColor(srcPtr: Pointer; format: TPixelFormat): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPixelColor';
 {Set color formatted into destination pixel pointer}
-procedure SetPixelColor(dstPtr: Pointer; color: TColorB; format: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetPixelColor(dstPtr: Pointer; color: TColorB; format: TPixelFormat); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetPixelColor';
 {Get pixel data size in bytes for certain format}
-function GetPixelDataSize(width, height, format: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetPixelDataSize(width, height: Integer; format: TPixelFormat): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPixelDataSize';
 
 //------------------------------------------------------------------------------------
 // TFont Loading and Text Drawing Functions (Module: text)
@@ -1678,113 +1676,113 @@ function GetPixelDataSize(width, height, format: Integer): Integer; cdecl; exter
 (* Font loading/unloading functions *)
 
 {Get the default Font}
-function GetFontDefault: TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetFontDefault: TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFontDefault';
 {Load font from file into GPU memory (VRAM)}
-function LoadFont(fileName: PChar): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadFont(const fileName: PChar): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFont';
 {Load font from file with extended parameters, use NULL for fontChars and 0 for glyphCount to load the default character set}
-function LoadFontEx(fileName: Pchar; fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadFontEx(const fileName: Pchar; fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
 {Load font from Image (XNA style)}
-function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromImage';
 {Load font from memory buffer, fileType refers to extension: i.e. '.ttf'}
-function LoadFontFromMemory(fileType: PChar; fileData: Pointer; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadFontFromMemory(fileType: PChar; fileData: PByte; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromMemory';
 {Load font data for further uses}
-function LoadFontData(fileData: Pointer; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount, _type: Integer): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadFontData(const fileData: PByte; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount, _type: Integer): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontData';
 {Generate image font atlas using chars info}
-function GenImageFontAtlas(chars: PGlyphInfo; recs: PPRectangle; glyphCount, fontSize, padding, packMethod: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenImageFontAtlas(chars: PGlyphInfo; recs: PPRectangle; glyphCount, fontSize, padding, packMethod: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageFontAtlas';
 {Unload font chars info data (RAM)}
-procedure UnloadFontData(chars: PGlyphInfo; glyphCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadFontData(chars: PGlyphInfo; glyphCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFontData';
 {Unload Font from GPU memory (VRAM)}
-procedure UnloadFont(font: TFont); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadFont(font: TFont); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFont';
 {Export font as code file, returns true on success}
-procedure ExportFontAsCode(font: TFont; fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ExportFontAsCode(font: TFont; const fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportFontAsCode';
 
 
 (* Text drawing functions *)
 
 {Draw current FPS}
-procedure DrawFPS(posX, posY: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawFPS(posX, posY: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawFPS';
 {Draw text (using default font)}
-procedure DrawText(text: PChar; posX, posY, fontSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawText(text: PChar; posX, posY, fontSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawText';
 {Draw text using font and additional parameters}
-procedure DrawTextEx(font: TFont; text: PChar; position: TVector2; fontSize, spacing: Single; tint:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTextEx(font: TFont; text: PChar; position: TVector2; fontSize, spacing: Single; tint:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextEx';
 {Draw text using Font and pro parameters (rotation)}
-procedure DrawTextPro(font: TFont; text: PChar; position, origin: TVector2; rotation, fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTextPro(font: TFont; text: PChar; position, origin: TVector2; rotation, fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextPro';
 {Draw one character (codepoint)}
-procedure DrawTextCodepoint(font: TFont; codepoint: Integer; position: TVector2; fontSize: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTextCodepoint(font: TFont; codepoint: Integer; position: TVector2; fontSize: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextCodepoint';
 {Draw multiple character (codepoint)}
-procedure DrawTextCodepoints(font: TFont; const codepoints: PInteger; count: Integer; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTextCodepoints(font: TFont; const codepoints: PInteger; count: Integer; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextCodepoints';
 
 
 (* Text font info functions *)
 
 {Measure string width for default font}
-function MeasureText(text: PChar; fontSize: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function MeasureText(const text: PChar; fontSize: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureText';
 {Measure string size for Font}
-function MeasureTextEx(font: TFont; text: PChar; fontSize, spacing: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function MeasureTextEx(font: TFont; const text: PChar; fontSize, spacing: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureTextEx';
 {Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found}
-function GetGlyphIndex(font: TFont; codepoint: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGlyphIndex(font: TFont; codepoint: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGlyphIndex';
 {Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found}
-function GetGlyphInfo(font: TFont; codepoint: Integer): TGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGlyphInfo(font: TFont; codepoint: Integer): TGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGlyphInfo';
 {Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found}
-function GetGlyphAtlasRec(font: TFont; codepoint: Integer): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetGlyphAtlasRec(font: TFont; codepoint: Integer): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGlyphAtlasRec';
 
 
 (* Text codepoints management functions (unicode characters) *)
 
 {Load UTF-8 text encoded from codepoints array}
-function LoadUTF8( codepoints: PInteger; length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadUTF8(const codepoints: PInteger; length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadUTF8';
 {Unload UTF-8 text encoded from codepoints array}
-procedure UnloadUTF8(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadUTF8(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadUTF8';
 {Load all codepoints from a UTF-8 text string, codepoints count returned by parameter}
-function LoadCodepoints(text: PChar; count: PInteger): PInteger; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadCodepoints(text: PChar; count: PInteger): PInteger; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadCodepoints';
 {Unload codepoints data from memory}
-procedure UnloadCodepoints(codepoints: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadCodepoints(codepoints: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadCodepoints';
 {Get total number of codepoints in a UTF-8 encoded string}
-function GetCodepointCount(text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCodepointCount(text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepointCount';
 {Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
-function GetCodepoint(text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCodepoint(text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepoint';
 {Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
-function GetCodepointNext(text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCodepointNext(text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepointNext';
 {Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
-function GetCodepointPrevious(text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetCodepointPrevious(text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepointPrevious';
 {Encode one codepoint into UTF-8 byte array (array length returned as parameter)}
-function CodepointToUTF8(codepoint: Integer; utf8Size: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CodepointToUTF8(codepoint: Integer; utf8Size: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CodepointToUTF8';
 
 
 (* Text strings management functions (no UTF-8 strings, only byte chars) *)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
 
 {Copy one string to another, returns bytes copied}
-function TextCopy(dst, src: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextCopy(dst, src: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextCopy';
 {Check if two text string are equal}
-function TextIsEqual(text1, text2: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextIsEqual(text1, text2: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextIsEqual';
 {Get text length, checks for '\0' ending}
-function TextLength(text: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextLength(text: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextLength';
 
 {Text formatting with variables (sprintf() style)}
-function TextFormat(text: PChar): PChar; cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextFormat(text: PChar): PChar; cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFormat';
 {Get a piece of a text string}
-function TextSubtext(text: PChar; position, length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextSubtext(text: PChar; position, length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSubtext';
 {Replace text string (WARNING: memory must be freed!)}
-function TextReplace(text, replace, by: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextReplace(text, replace, by: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplace';
 {Insert text in a position (WARNING: memory must be freed!)}
-function TextInsert(text, insert: PChar; position: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextInsert(text, insert: PChar; position: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextInsert';
 {Join text strings with delimiter}
-function TextJoin(textList: PPChar; count: Integer; delimiter: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextJoin(textList: PPChar; count: Integer; delimiter: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextJoin';
 {Split text into multiple strings}
-function TextSplit(text: PChar; delimiter: Char; count: PInteger): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextSplit(text: PChar; delimiter: Char; count: PInteger): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSplit';
 {Append text at specific position and move cursor!}
-procedure TextAppend(text, append: PChar; position: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure TextAppend(text, append: PChar; position: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextAppend';
 {Find first text occurrence within a string}
-function TextFindIndex(text, find: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextFindIndex(text, find: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFindIndex';
 {Get upper case version of provided string}
-function TextToUpper(text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextToUpper(text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToUpper';
 {Get lower case version of provided string}
-function TextToLower(text: PChar):PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextToLower(text: PChar):PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToLower';
 {Get Pascal case notation version of provided string}
-function TextToPascal(text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextToPascal(text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToPascal';
 {Get integer value from text (negative values not supported)}
-function TextToInteger(text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function TextToInteger(text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToInteger';
 
 //------------------------------------------------------------------------------------
 // Basic 3d Shapes Drawing Functions (Module: models)
@@ -1793,47 +1791,47 @@ function TextToInteger(text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATI
 (* Basic geometric 3D shapes drawing functions *)
 
 {Draw a line in 3D world space}
-procedure DrawLine3D(startPos, endPos: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawLine3D(startPos, endPos: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLine3D';
 {Draw a point in 3D space, actually a small line}
-procedure DrawPoint3D(position: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawPoint3D(position: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPoint3D';
 {Draw a circle in 3D world space}
-procedure DrawCircle3D(center: TVector3; radius: Single; rotationAxis: TVector3; rotationAngle: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCircle3D(center: TVector3; radius: Single; rotationAxis: TVector3; rotationAngle: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircle3D';
 {Draw a color-filled triangle (vertex in counter-clockwise order!)}
-procedure DrawTriangle3D(v1, v2, v3: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTriangle3D(v1, v2, v3: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangle3D';
 {Draw a triangle strip defined by points}
-procedure DrawTriangleStrip3D(points: PVector3; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawTriangleStrip3D(points: PVector3; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleStrip3D';
 {Draw cube}
-procedure DrawCube(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCube(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCube';
 {Draw cube (Vector version)}
-procedure DrawCubeV(position, size: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCubeV(position, size: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCubeV';
 {Draw cube wires}
-procedure DrawCubeWires(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCubeWires(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCubeWires';
 {Draw cube wires (Vector version)}
-procedure DrawCubeWiresV(position, size: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCubeWiresV(position, size: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCubeWiresV';
 {Draw sphere}
-procedure DrawSphere(centerPos: TVector3; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawSphere(centerPos: TVector3; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSphere';
 {Draw sphere with extended parameters}
-procedure DrawSphereEx(centerPos: TVector3; radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawSphereEx(centerPos: TVector3; radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSphereEx';
 {Draw sphere wires}
-procedure DrawSphereWires(centerPos: TVector3; radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawSphereWires(centerPos: TVector3; radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSphereWires';
 {Draw a cylinder/cone}
-procedure DrawCylinder(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCylinder(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinder';
 {Draw a cylinder with base at startPos and top at endPos}
-procedure DrawCylinderEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCylinderEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderEx';
 {Draw a cylinder/cone wires}
-procedure DrawCylinderWires(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCylinderWires(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderWires';
 {Draw a cylinder wires with base at startPos and top at endPos}
-procedure DrawCylinderWiresEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCylinderWiresEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderWiresEx';
 {Draw a capsule with the center of its sphere caps at startPos and endPos}
-procedure DrawCapsule(startPos, endPos: TVector3;  radius: Single; slices, rings: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCapsule(startPos, endPos: TVector3;  radius: Single; slices, rings: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCapsule';
 {Draw capsule wireframe with the center of its sphere caps at startPos and endPos}
-procedure DrawCapsuleWires(startPos, endPos: TVector3;  radius: Single; slices, rings: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawCapsuleWires(startPos, endPos: TVector3;  radius: Single; slices, rings: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCapsuleWires';
 {Draw a plane XZ}
-procedure DrawPlane(centerPos: TVector3; size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawPlane(centerPos: TVector3; size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPlane';
 {Draw a ray line}
-procedure DrawRay(ray: TRay; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawRay(ray: TRay; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRay';
 {Draw a grid (centered at (0, 0, 0))}
-procedure DrawGrid(slices: Integer; spacing: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawGrid(slices: Integer; spacing: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawGrid';
 
 //------------------------------------------------------------------------------------
 // TModel 3d Loading and Drawing Functions (Module: models)
@@ -1842,128 +1840,128 @@ procedure DrawGrid(slices: Integer; spacing: Single); cdecl; external {$IFNDEF R
 (* Model management functions *)
 
 {Load model from files (meshes and materials)}
-function LoadModel(fileName: PChar): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadModel(fileName: PChar): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModel';
 {Load model from generated mesh (default material)}
-function LoadModelFromMesh(mesh: TMesh): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadModelFromMesh(mesh: TMesh): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModelFromMesh';
 {Unload model (including meshes) from memory (RAM and/or VRAM)}
-procedure UnloadModel(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadModel(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModel';
 {Unload model (but not meshes) from memory (RAM and/or VRAM)}
-procedure UnloadModelKeepMeshes(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadModelKeepMeshes(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelKeepMeshes';
 {Compute model bounding box limits (considers all meshes)}
-function GetModelBoundingBox(model: TModel): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetModelBoundingBox(model: TModel): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetModelBoundingBox';
 
 
 (* Model drawing functions *)
 
 {Draw a model (with texture if set)}
-procedure DrawModel(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawModel(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModel';
 {Draw a model with extended parameters}
-procedure DrawModelEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawModelEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelEx';
 {Draw a model wires (with texture if set)}
-procedure DrawModelWires(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawModelWires(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelWires';
 {Draw a model wires (with texture if set) with extended parameters}
-procedure DrawModelWiresEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawModelWiresEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelWiresEx';
 {Draw bounding box (wires)}
-procedure DrawBoundingBox(box: TBoundingBox; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawBoundingBox(box: TBoundingBox; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBoundingBox';
 {Draw a billboard texture}
-procedure DrawBillboard(camera: TCamera; texture: TTexture2D; position: TVector3; size: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawBillboard(camera: TCamera; texture: TTexture2D; position: TVector3; size: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboard';
 {Draw a billboard texture defined by source}
-procedure DrawBillboardRec(camera: TCamera; texture: TTexture2D; source: TRectangle; position: TVector3; size: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawBillboardRec(camera: TCamera; texture: TTexture2D; source: TRectangle; position: TVector3; size: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboardRec';
 {Draw a billboard texture defined by source and rotation}
-procedure DrawBillboardPro(camera: TCamera; texture: TTexture2D; source: TRectangle; position, up: TVector3; size, origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawBillboardPro(camera: TCamera; texture: TTexture2D; source: TRectangle; position, up: TVector3; size, origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboardPro';
 
 
 (* Mesh management functions *)
 
 {Upload mesh vertex data in GPU and provide VAO/VBO ids}
-procedure UploadMesh(mesh: PMesh; _dynamic: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UploadMesh(mesh: PMesh; _dynamic: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UploadMesh';
 {Update mesh vertex data in GPU for a specific buffer index}
-procedure UpdateMeshBuffer(mesh: TMesh; index: Integer; const data: Pointer; dataSize, offset: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UpdateMeshBuffer(mesh: TMesh; index: Integer; const data: Pointer; dataSize, offset: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateMeshBuffer';
 {Unload mesh data from CPU and GPU}
-procedure UnloadMesh(mesh: TMesh); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadMesh(mesh: TMesh); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMesh';
 {Draw a 3d mesh with material and transform}
-procedure DrawMesh(mesh: TMesh; material: TMaterial; transform: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawMesh(mesh: TMesh; material: TMaterial; transform: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawMesh';
 {Draw multiple mesh instances with material and different transforms}
-procedure DrawMeshInstanced(mesh: TMesh; material: TMaterial;const transforms: PMatrix; instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DrawMeshInstanced(mesh: TMesh; material: TMaterial; const transforms: PMatrix; instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawMeshInstanced';
 {Export mesh data to file, returns true on success}
-function ExportMesh(mesh: TMesh; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ExportMesh(mesh: TMesh; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportMesh';
 {Compute mesh bounding box limits}
-function GetMeshBoundingBox(mesh: TMesh): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMeshBoundingBox(mesh: TMesh): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMeshBoundingBox';
 {Compute mesh tangents}
-procedure GenMeshTangents(mesh: PMesh); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure GenMeshTangents(mesh: PMesh); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshTangents';
 
 (* Mesh generation functions *)
 
 {Generate polygonal mesh}
-function GenMeshPoly(sides: Integer; radius: Single): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshPoly(sides: Integer; radius: Single): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshPoly';
 {Generate plane mesh (with subdivisions)}
-function GenMeshPlane(width, length: Single; resX, resZ: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshPlane(width, length: Single; resX, resZ: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshPlane';
 {Generate cuboid mesh}
-function GenMeshCube(width, height, length: Single): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshCube(width, height, length: Single): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshCube';
 {Generate sphere mesh (standard sphere)}
-function GenMeshSphere(radius: Single; rings, slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshSphere(radius: Single; rings, slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshSphere';
 {Generate half-sphere mesh (no bottom cap)}
-function GenMeshHemiSphere(radius: Single; rings, slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshHemiSphere(radius: Single; rings, slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshHemiSphere';
 {Generate cylinder mesh}
-function GenMeshCylinder(radius, height: Single; slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshCylinder(radius, height: Single; slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshCylinder';
 {Generate cone/pyramid mesh}
-function GenMeshCone(radius, height: Single; slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshCone(radius, height: Single; slices: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshCone';
 {Generate torus mesh}
-function GenMeshTorus(radius, size: Single; radSeg, sides: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshTorus(radius, size: Single; radSeg, sides: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshTorus';
 {Generate trefoil knot mesh}
-function GenMeshKnot(radius, size: Single; radSeg, sides: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshKnot(radius, size: Single; radSeg, sides: Integer): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshKnot';
 {Generate heightmap mesh from image data}
-function GenMeshHeightmap(heightmap: TImage; size: TVector3): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshHeightmap(heightmap: TImage; size: TVector3): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshHeightmap';
 {Generate cubes-based map mesh from image data}
-function GenMeshCubicmap(cubicmap: TImage; cubeSize: TVector3): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GenMeshCubicmap(cubicmap: TImage; cubeSize: TVector3): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshCubicmap';
 
 
 (* Material loading/unloading functions *)
 
 {Load materials from model file}
-function LoadMaterials(fileName: PChar; materialCount: PInteger): PMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadMaterials(fileName: PChar; materialCount: PInteger): PMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMaterials';
 {Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)}
-function LoadMaterialDefault: TMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadMaterialDefault: TMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMaterialDefault';
 {Unload material from GPU memory (VRAM)}
-procedure UnloadMaterial(material: TMaterial); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadMaterial(material: TMaterial); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMaterial';
 {Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)}
-procedure SetMaterialTexture(material: PMaterial; mapType: Integer; texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetMaterialTexture(material: PMaterial; mapType: TMaterialMapIndex; texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMaterialTexture';
 {Set material for a mesh}
-procedure SetModelMeshMaterial(model: PModel; meshId, materialId: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetModelMeshMaterial(model: PModel; meshId, materialId: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetModelMeshMaterial';
 
 
 (* Model animations loading/unloading functions *)
 
 {Load model animations from file}
-function LoadModelAnimations(fileName: PChar; animCount: PLongWord): PModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadModelAnimations(fileName: PChar; animCount: PLongWord): PModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModelAnimations';
 {Update model animation pose}
-procedure UpdateModelAnimation(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UpdateModelAnimation(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimation';
 {Unload animation data}
-procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimation';
 {Unload animation array data}
-procedure UnloadModelAnimations(animations: PModelAnimation; count: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadModelAnimations(animations: PModelAnimation; count: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimations';
 {Check model animation skeleton match}
-function IsModelAnimationValid(model: TModel; anim: TModelAnimation): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsModelAnimationValid(model: TModel; anim: TModelAnimation): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsModelAnimationValid';
 
 
 (* Collision detection functions *)
 
 {Check collision between two spheres}
-function CheckCollisionSpheres(center1: TVector3; radius1: Single; center2: TVector3; radius2: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionSpheres(center1: TVector3; radius1: Single; center2: TVector3; radius2: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionSpheres';
 {Check collision between two bounding boxes}
-function CheckCollisionBoxes(box1, box2: TBoundingBox): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionBoxes(box1, box2: TBoundingBox): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionBoxes';
 {Check collision between box and sphere}
-function CheckCollisionBoxSphere(box: TBoundingBox; center: TVector3; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function CheckCollisionBoxSphere(box: TBoundingBox; center: TVector3; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionBoxSphere';
 {Get collision info between ray and sphere}
-function GetRayCollisionSphere(ray:TRay; center: TVector3; radius: Single): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetRayCollisionSphere(ray: TRay; center: TVector3; radius: Single): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRayCollisionSphere';
 {Get collision info between ray and box}
-function GetRayCollisionBox(ray: TRay; box: TBoundingBox): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetRayCollisionBox(ray: TRay; box: TBoundingBox): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRayCollisionBox';
 {Get collision info between ray and mesh}
-function GetRayCollisionMesh(ray: TRay; mesh: TMesh; transform: TMatrix): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetRayCollisionMesh(ray: TRay; mesh: TMesh; transform: TMatrix): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRayCollisionMesh';
 {Get collision info between ray and triangle}
-function GetRayCollisionTriangle(ray: TRay; p1, p2, p3: TVector3): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetRayCollisionTriangle(ray: TRay; p1, p2, p3: TVector3): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRayCollisionTriangle';
 {Get collision info between ray and quad}
-function GetRayCollisionQuad(ray: TRay; p1, p2, p3, p4: TVector3): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetRayCollisionQuad(ray: TRay; p1, p2, p3, p4: TVector3): TRayCollision; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRayCollisionQuad';
 
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
@@ -1975,142 +1973,142 @@ TAudioCallback = procedure (bufferData: Pointer; frames: LongWord); cdecl;
 (* Audio device management functions *)
 
 {Initialize audio device and context}
-procedure InitAudioDevice; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure InitAudioDevice; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'InitAudioDevice';
 {Close the audio device and context}
-procedure CloseAudioDevice; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure CloseAudioDevice; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CloseAudioDevice';
 {Check if audio device has been initialized successfully}
-function IsAudioDeviceReady: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsAudioDeviceReady: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsAudioDeviceReady';
 {Set master volume (listener)}
-procedure SetMasterVolume(volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetMasterVolume(volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMasterVolume';
 
 
 (* Wave/Sound loading/unloading functions *)
 
 {Load wave data from file}
-function LoadWave(fileName: PChar): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadWave(fileName: PChar): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWave';
 {Load wave from memory buffer, fileType refers to extension: i.e. '.wav' }
-function LoadWaveFromMemory(fileType: PChar; fileData: Pointer; dataSize: Integer): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadWaveFromMemory(fileType: PChar; fileData: PByte; dataSize: Integer): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWaveFromMemory';
 {Load sound from file}
-function LoadSound(fileName: PChar): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadSound(fileName: PChar): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSound';
 {Load sound from wave data}
-function LoadSoundFromWave(wave: TWave): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadSoundFromWave(wave: TWave): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSoundFromWave';
 {Update sound buffer with new data}
-procedure UpdateSound(sound: TSound; data: Pointer; sampleCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UpdateSound(sound: TSound; data: Pointer; sampleCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateSound';
 {Unload wave data}
-procedure UnloadWave(wave: TWave); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadWave(wave: TWave); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadWave';
 {Unload sound}
-procedure UnloadSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadSound';
 {Export wave data to file, returns true on success}
-function ExportWave(wave: TWave; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ExportWave(wave: TWave; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportWave';
 {Export wave sample data to code (.h), returns true on success}
-function ExportWaveAsCode(wave: TWave; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function ExportWaveAsCode(wave: TWave; fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportWaveAsCode';
 
 
 (* Wave/Sound management functions *)
 
 {Play a sound}
-procedure PlaySound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure PlaySound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PlaySound';
 {Stop playing a sound}
-procedure StopSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure StopSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'StopSound';
 {Pause a sound}
-procedure PauseSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure PauseSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PauseSound';
 {Resume a paused sound}
-procedure ResumeSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ResumeSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ResumeSound';
 {Play a sound (using multichannel buffer pool)}
-procedure PlaySoundMulti(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure PlaySoundMulti(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PlaySoundMulti';
 {Stop any sound playing (using multichannel buffer pool)}
-procedure StopSoundMulti; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure StopSoundMulti; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'StopSoundMulti';
 {Get number of sounds playing in the multichannel}
-function GetSoundsPlaying: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetSoundsPlaying: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSoundsPlaying';
 {Check if a sound is currently playing}
-function IsSoundPlaying(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsSoundPlaying(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsSoundPlaying';
 {Set volume for a sound (1.0 is max level)}
-procedure SetSoundVolume(sound: TSound; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetSoundVolume(sound: TSound; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSoundVolume';
 {Set pitch for a sound (1.0 is base level)}
-procedure SetSoundPitch(sound: TSound; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetSoundPitch(sound: TSound; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSoundPitch';
 {Set pan for a sound (0.5 is center)}
-procedure SetSoundPan(sound: TSound; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetSoundPan(sound: TSound; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSoundPan';
 {Copy a wave to a new wave}
-function WaveCopy(wave: TWave): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function WaveCopy(wave: TWave): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaveCopy';
 {Crop a wave to defined samples range}
-procedure WaveCrop(wave: PWave; initSample, finalSample: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure WaveCrop(wave: PWave; initSample, finalSample: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaveCrop';
 {Convert wave data to desired format}
-procedure WaveFormat(wave: PWave; sampleRate, sampleSize, channels: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure WaveFormat(wave: PWave; sampleRate, sampleSize, channels: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaveFormat';
 {Load samples data from wave as a floats array}
-function LoadWaveSamples(wave: TWave): PSingle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadWaveSamples(wave: TWave): PSingle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWaveSamples';
 {Unload samples data loaded with LoadWaveSamples()}
-procedure UnloadWaveSamples(samples: PSingle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadWaveSamples(samples: PSingle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadWaveSamples';
 
 
 (* Music management functions *)
 
 {Load music stream from file}
-function LoadMusicStream(fileName: PChar): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadMusicStream(fileName: PChar): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMusicStream';
 {Load music stream from data}
-function LoadMusicStreamFromMemory(fileType: PChar; const data: Pointer; dataSize: Integer): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadMusicStreamFromMemory(fileType: PChar; const data: PByte; dataSize: Integer): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMusicStreamFromMemory';
 {Unload music stream}
-procedure UnloadMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMusicStream';
 {Start music playing}
-procedure PlayMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure PlayMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PlayMusicStream';
 {Check if music is playing}
-function IsMusicStreamPlaying(music: TMusic): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsMusicStreamPlaying(music: TMusic): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMusicStreamPlaying';
 {Updates buffers for music streaming}
-procedure UpdateMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UpdateMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateMusicStream';
 {Stop music playing}
-procedure StopMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure StopMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'StopMusicStream';
 {Pause music playing}
-procedure PauseMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure PauseMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PauseMusicStream';
 {Resume playing paused music}
-procedure ResumeMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ResumeMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ResumeMusicStream';
 {Seek music to a position (in seconds)}
-procedure SeekMusicStream(music: TMusic; position: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SeekMusicStream(music: TMusic; position: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SeekMusicStream';
 {Set volume for music (1.0 is max level)}
-procedure SetMusicVolume(music: TMusic; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetMusicVolume(music: TMusic; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMusicVolume';
 {Set pitch for a music (1.0 is base level)}
-procedure SetMusicPitch(music: TMusic; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetMusicPitch(music: TMusic; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMusicPitch';
 {Set pan for a music (0.5 = center)}
-procedure SetMusicPan(music: TMusic; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetMusicPan(music: TMusic; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMusicPan';
 {Get music time length (in seconds)}
-function GetMusicTimeLength(music: TMusic): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMusicTimeLength(music: TMusic): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMusicTimeLength';
 {Get current music time played (in seconds)}
-function GetMusicTimePlayed(music: TMusic): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function GetMusicTimePlayed(music: TMusic): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMusicTimePlayed';
 
 
 (* AudioStream management functions *)
 
 {Load audio stream (to stream raw audio pcm data)}
-function LoadAudioStream(sampleRate, sampleSize, channels: LongWord): TAudioStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function LoadAudioStream(sampleRate, sampleSize, channels: LongWord): TAudioStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadAudioStream';
 {Unload audio stream and free memory}
-procedure UnloadAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UnloadAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadAudioStream';
 {Update audio stream buffers with data}
-procedure UpdateAudioStream(stream: TAudioStream; data: Pointer; frameCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure UpdateAudioStream(stream: TAudioStream; data: Pointer; frameCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateAudioStream';
 {Check if any audio stream buffers requires refill}
-function IsAudioStreamProcessed(stream: TAudioStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsAudioStreamProcessed(stream: TAudioStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsAudioStreamProcessed';
 {Play audio stream}
-procedure PlayAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure PlayAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PlayAudioStream';
 {Pause audio stream}
-procedure PauseAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure PauseAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PauseAudioStream';
 {Resume audio stream}
-procedure ResumeAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure ResumeAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ResumeAudioStream';
 {Check if audio stream is playing}
-function IsAudioStreamPlaying(stream: TAudioStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function IsAudioStreamPlaying(stream: TAudioStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsAudioStreamPlaying';
 {Stop audio stream}
-procedure StopAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure StopAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'StopAudioStream';
 {Set volume for audio stream (1.0 is max level)}
-procedure SetAudioStreamVolume(stream: TAudioStream; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetAudioStreamVolume(stream: TAudioStream; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamVolume';
 {Set pitch for audio stream (1.0 is base level)}
-procedure SetAudioStreamPitch(stream: TAudioStream; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetAudioStreamPitch(stream: TAudioStream; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamPitch';
 {Set pan for audio stream (0.5 is centered)}
-procedure SetAudioStreamPan(stream: TAudioStream; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetAudioStreamPan(stream: TAudioStream; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamPan';
 {Default size for new audio streams}
-procedure SetAudioStreamBufferSizeDefault(size: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetAudioStreamBufferSizeDefault(size: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamBufferSizeDefault';
 {Audio thread callback to request new data}
-procedure SetAudioStreamCallback(stream: TAudioStream; callback: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure SetAudioStreamCallback(stream: TAudioStream; callback: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamCallback';
 
 {Attach audio stream processor to stream}
-procedure AttachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure AttachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'AttachAudioStreamProcessor';
 {Detach audio stream processor from stream}
-procedure DetachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure DetachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DetachAudioStreamProcessor';
 
 
 (* Custom Misc Functions to help simplify a few things *)
@@ -2139,8 +2137,6 @@ uses
   {$linklib libraylib.a}
   {$endif}
 {$endif}
-
-
 
 function Vector2Create(aX: single; aY: single): TVector2;
 begin
@@ -2217,7 +2213,6 @@ begin
   aCam^.fovy := aFOVY;
   aCam^.projection := aType;
 end;
-
 
 
 initialization
