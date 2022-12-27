@@ -37,6 +37,13 @@
 
 unit raymath;
 
+{$mode objfpc}{$H+}
+{$packrecords c}
+{$ALIGN 8}
+{$MINENUMSIZE 4}
+// Include configuration file
+{$I raylib.inc}
+
 interface
 
 uses raylib;
@@ -55,141 +62,252 @@ type
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Utils math
 //----------------------------------------------------------------------------------
-function  Clamp(value, min, max : Single): Single; cdecl; external cDllName;   // Clamp float value
-function  Lerp(start, end_, amount : Single): Single; cdecl; external cDllName; // Calculate linear interpolation between two floats
-function  Normalize(value, start, end_: Single): Single; cdecl; external cDllName; // Normalize input value within input range
-function  Remap(value, inputStart, inputEnd, outputStart, outputEnd : Single): Single; cdecl; external cDllName;// Remap input value within input range to output range
-function  Wrap(value, min, max: Single): Single; cdecl; external cDllName;// Wrap input value from min to max
-function  FloatEquals(x, y: Single): longint; cdecl; external cDllName;// Check whether two given floats are almost equal
+{ Clamp float value }
+function  Clamp(value, min, max : Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Clamp';
+{ Calculate linear interpolation between two floats }
+function  Lerp(start, end_, amount : Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Lerp';
+{ Normalize input value within input range }
+function  Normalize(value, start, end_: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Normalize';
+{ Remap input value within input range to output range }
+function  Remap(value, inputStart, inputEnd, outputStart, outputEnd : Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Remap';
+{ Wrap input value from min to max }
+function  Wrap(value, min, max: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Wrap';
+{ Check whether two given floats are almost equal }
+function  FloatEquals(x, y: Single): longint; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FloatEquals';
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector2 math
 //----------------------------------------------------------------------------------
-function  Vector2Zero: TVector2; cdecl; external cDllName;// Vector with components value 0.0
-function  Vector2One: TVector2; cdecl; external cDllName;// Vector with components value 1.0
-function  Vector2Add(v1, v2 : TVector2): TVector2; cdecl; external cDllName;// Add two vectors (v1 + v2)
-function  Vector2AddValue(v: TVector2; add: Single): TVector2;cdecl; external cDllName; // Add vector and float value
-function  Vector2Subtract(v1, v2 : TVector2): TVector2; cdecl; external cDllName;// Subtract two vectors (v1 - v2)
-function  Vector2SubtractValue( v: TVector2; sub:Single): TVector2; cdecl; external cDllName;// Subtract vector by float value
-function  Vector2Length(v : TVector2): Single; cdecl; external cDllName; // Calculate vector length
-function  Vector2LengthSqr(v : TVector2): Single; cdecl; external cDllName; // Calculate vector square length
-function  Vector2DotProduct(v1, v2 : TVector2): Single; cdecl; external cDllName; // Calculate two vectors dot product
-function  Vector2Distance(v1, v2 : TVector2): Single; cdecl; external cDllName;// Calculate distance between two vectors
-function  Vector2DistanceSqr(v1, v2 : TVector2): Single; cdecl; external cDllName;// Calculate square distance between two vectors
-function  Vector2Angle(v1, v2 : TVector2): Single; cdecl; external cDllName;// Calculate angle from two vectors in X-axis
-function  Vector2Scale(v : TVector2; scale : Single): TVector2; cdecl; external cDllName;// Scale vector (multiply by value)
-function  Vector2Multiply(v1, v2 : TVector2): TVector2; cdecl; external cDllName;// Multiply vector by vector
-function  Vector2Negate(v : TVector2): TVector2; cdecl; external cDllName;// Negate vector
-function  Vector2Divide(v1, v2 : TVector2): TVector2; cdecl; external cDllName;// Divide vector by vector
-function  Vector2Normalize(v : TVector2): TVector2; cdecl; external cDllName; // Normalize provided vector
-function  Vector2Lerp(v1, v2 : TVector2; amount : Single): TVector2; cdecl; external cDllName;// Calculate linear interpolation between two vectors
-function  Vector2Reflect(v, normal : TVector2): TVector2; cdecl; external cDllName;// Calculate reflected vector to normal
-function  Vector2Rotate(v: TVector2; angle:Single): TVector2; cdecl; external cDllName;// Rotate vector by angle
-function  Vector2MoveTowards(v, target:Tvector2; maxDistance: Single): TVector2; cdecl; external cDllName; // Move Vector towards target
-function  Vector2Invert(v: TVector2): TVector2; cdecl; external cDllName;//Invert the given vector
-function  Vector2Clamp(v, min, max: TVector2): TVector2; cdecl; external cDllName;// Clamp the components of the vector between min and max values specified by the given vectors
-function  Vector2ClampValue(v, min, max: TVector2): TVector2; cdecl; external cDllName;// Clamp the magnitude of the vector between two min and max values
-function  Vector2Equals(p, q: TVector2): TVector2; cdecl; external cDllName;// Check whether two given vectors are almost equal
+{ Vector with components value 0.0 }
+function Vector2Zero: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Zero';
+{ Vector with components value 1.0 }
+function Vector2One: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2One';
+{ Add two vectors (v1 + v2) }
+function Vector2Add(v1, v2 : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Add';
+{ Add vector and float value }
+function Vector2AddValue(v: TVector2; add: Single): TVector2;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2AddValue';
+{ Subtract two vectors (v1 - v2) }
+function Vector2Subtract(v1, v2 : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Subtract';
+{ Subtract vector by float value }
+function Vector2SubtractValue( v: TVector2; sub:Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2SubtractValue';
+{ Calculate vector length }
+function Vector2Length(v : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Length';
+{ Calculate vector square length }
+function Vector2LengthSqr(v : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2LengthSqr';
+{ Calculate two vectors dot product }
+function Vector2DotProduct(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2DotProduct';
+{ Calculate distance between two vectors }
+function Vector2Distance(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Distance';
+{ Calculate square distance between two vectors }
+function Vector2DistanceSqr(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2DistanceSqr';
+{ Calculate angle from two vectors in X-axis }
+function Vector2Angle(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Angle';
+{ Scale vector (multiply by value) }
+function Vector2Scale(v : TVector2; scale : Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Scale';
+{ Multiply vector by vector }
+function Vector2Multiply(v1, v2 : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Multiply';
+{ Negate vector }
+function Vector2Negate(v : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Negate';
+{ Divide vector by vector }
+function Vector2Divide(v1, v2 : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Divide';
+{ Normalize provided vector }
+function Vector2Normalize(v : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Normalize';
+{ Calculate linear interpolation between two vectors }
+function Vector2Lerp(v1, v2 : TVector2; amount : Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Lerp';
+{ Calculate reflected vector to normal }
+function Vector2Reflect(v, normal : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Reflect';
+{ Rotate vector by angle }
+function Vector2Rotate(v: TVector2; angle:Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Rotate';
+{ Move Vector towards target }
+function Vector2MoveTowards(v, target:Tvector2; maxDistance: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2MoveTowards';
+{ Invert the given vector }
+function Vector2Invert(v: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Invert';
+{ Clamp the components of the vector between min and max values specified by the given vectors }
+function Vector2Clamp(v, min, max: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Clamp';
+{ Clamp the magnitude of the vector between two min and max values }
+function Vector2ClampValue(v, min, max: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2ClampValue';
+{ Check whether two given vectors are almost equal }
+function Vector2Equals(p, q: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Equals';
 
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector3 math
 //----------------------------------------------------------------------------------
-function  Vector3Zero(): TVector3; cdecl; external cDllName;// Vector with components value 0.0
-function  Vector3One(): TVector3; cdecl; external cDllName;// Vector with components value 1.0
-function  Vector3Add(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Add two vectors
-function  Vector3AddValue(v: Tvector3; add: single): TVector3; cdecl; external cDllName; // Add vector and float value
-function  Vector3Subtract(v1, v2 : TVector3): TVector3; cdecl; external cDllName; // Subtract two vectors
-function  Vector3SubtractValue(v: TVector3; sub:Single): Tvector3;  cdecl; external cDllName; // Subtract two vectors
-function  Vector3Scale(a: TVector3; scalar:Single): TVector3; cdecl; external cDllName;// Multiply vector by scalar
-function  Vector3Multiply(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Multiply vector by vector
-function  Vector3CrossProduct(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Calculate two vectors cross product
-function  Vector3Perpendicular(v : TVector3): TVector3; cdecl; external cDllName;// Calculate one vector perpendicular vector
-function  Vector3Length(v : TVector3): Single; cdecl; external cDllName;// Calculate vector length
-function  Vector3LengthSqr(v: TVector3): Single; cdecl; external cDllName;// Calculate vector square length
-function  Vector3DotProduct(v1, v2 : TVector3): Single; cdecl; external cDllName;// Calculate two vectors dot product
-function  Vector3Distance(v1, v2 : TVector3): Single; cdecl; external cDllName;// Calculate distance between two vectors
-function  Vector3DistanceSqr(v1, v2 : TVector3): Single; cdecl; external cDllName;// Calculate square distance between two vectors
-function  Vector3Angle(v1, v2: TVector3): Single; cdecl; external cDllName;// Calculate angle between two vectors in XY and XZ
-function  Vector3Negate(aV : TVector3): TVector3; cdecl; external cDllName;// Negate provided vector (invert direction)
-function  Vector3Divide(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Divide vector by vector
-function  Vector3Normalize(v : TVector3): TVector3; cdecl; external cDllName; // Normalize provided vector
-procedure Vector3OrthoNormalize(v1, v2 : PVector3); cdecl; external cDllName;// Orthonormalize provided vectors
-function  Vector3Transform(v : TVector3; mat : TMatrix): TVector3; cdecl; external cDllName;// Transforms a Vector3 by a given Matrix
-function  Vector3RotateByQuaternion(v : TVector3; q : TQuaternion): TVector3; cdecl; external cDllName;// Transform a vector by quaternion rotation
-function  Vector3RotateByAxisAngle(v : TVector3; axis: TVector3; angle: single): TVector3; cdecl; external cDllName;// Rotates a vector around an axis
-function  Vector3Lerp(v1, v2 : TVector3; amount : Single): TVector3; cdecl; external cDllName;// Calculate linear interpolation between two vectors
-function  Vector3Reflect(v, normal : TVector3): TVector3; cdecl; external cDllName;// Calculate reflected vector to normal
-function  Vector3Min(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Return min value for each pair of components
-function  Vector3Max(v1, v2 : TVector3): TVector3; cdecl; external cDllName;// Return max value for each pair of components
-function  Vector3Barycenter(p, a, b, c : TVector3): TVector3; cdecl; external cDllName;// Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
-function  Vector3Unproject(source:TVector3; projection:TMatrix; view:TMatrix):TVector3; cdecl; external cDllName;// Projects a Vector3 from screen space into object space
-function  Vector3ToFloatV(v : TVector3): TFloat3; cdecl; external cDllName;// Returns Vector3 as float array
-function  Vector3Invert(v: TVector3): TVector3; cdecl; external cDllName;// Invert the given vector
-function  Vector3Clamp(v, min, max: TVector3): TVector3; cdecl; external cDllName;// Clamp the components of the vector between min and max values specified by the given vectors
-function  Vector3ClampValue(v: TVector3; min, max: Single): TVector3; cdecl; external cDllName;// Clamp the magnitude of the vector between two values
-function  Vector3Equals(p, q: TVector3): longint; cdecl; external cDllName;// Check whether two given vectors are almost equal
-function  Vector3Refract(v, n: TVector3; r: Single): TVector3; cdecl; external cDllName;
+{ Vector with components value 0.0 }
+function Vector3Zero(): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Zero';
+{ Vector with components value 1.0 }
+function Vector3One(): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3One';
+{ Add two vectors }
+function Vector3Add(v1, v2 : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Add';
+{ Add vector and float value }
+function Vector3AddValue(v: Tvector3; add: single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3AddValue';
+{ Subtract two vectors }
+function Vector3Subtract(v1, v2 : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Subtract';
+{ Subtract vector by float value }
+function Vector3SubtractValue(v: TVector3; sub:Single): Tvector3;  cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3SubtractValue';
+{ Multiply vector by scalar }
+function Vector3Scale(a: TVector3; scalar:Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Scale';
+{ Multiply vector by vector }
+function Vector3Multiply(v1, v2 : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Multiply';
+{ Calculate two vectors cross product }
+function Vector3CrossProduct(v1, v2 : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3CrossProduct';
+{ Calculate one vector perpendicular vector }
+function Vector3Perpendicular(v : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Perpendicular';
+{ Calculate vector length }
+function Vector3Length(v : TVector3): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Length';
+{ Calculate vector square length }
+function Vector3LengthSqr(v: TVector3): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3LengthSqr';
+{ Calculate two vectors dot product }
+function Vector3DotProduct(v1, v2 : TVector3): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3DotProduct';
+{ Calculate distance between two vectors }
+function Vector3Distance(v1, v2 : TVector3): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Distance';
+{ Calculate square distance between two vectors }
+function Vector3DistanceSqr(v1, v2 : TVector3): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3DistanceSqr';
+{ Calculate angle between two vectors in XY and XZ }
+function Vector3Angle(v1, v2: TVector3): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Angle';
+{ Negate provided vector (invert direction) }
+function Vector3Negate(aV : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Negate';
+{ Divide vector by vector }
+function Vector3Divide(v1, v2 : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Divide';
+{ Normalize provided vector }
+function Vector3Normalize(v : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Normalize';
+{ Orthonormalize provided vectors }
+procedure Vector3OrthoNormalize(v1, v2 : PVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3OrthoNormalize';
+{ Transforms a Vector3 by a given Matrix }
+function Vector3Transform(v : TVector3; mat : TMatrix): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Transform';
+{ Transform a vector by quaternion rotation }
+function Vector3RotateByQuaternion(v : TVector3; q : TQuaternion): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3RotateByQuaternion';
+{ Rotates a vector around an axis }
+function Vector3RotateByAxisAngle(v : TVector3; axis: TVector3; angle: single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3RotateByAxisAngle';
+{ Calculate linear interpolation between two vectors }
+function Vector3Lerp(v1, v2 : TVector3; amount : Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Lerp';
+{ Calculate reflected vector to normal }
+function Vector3Reflect(v, normal : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Reflect';
+{ Return min value for each pair of components }
+function Vector3Min(v1, v2 : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Min';
+{ Return max value for each pair of components }
+function Vector3Max(v1, v2 : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Max';
+{ Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c) }
+function Vector3Barycenter(p, a, b, c : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Barycenter';
+{ Projects a Vector3 from screen space into object space }
+function Vector3Unproject(source:TVector3; projection:TMatrix; view:TMatrix):TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Unproject';
+{ Returns Vector3 as float array }
+function Vector3ToFloatV(v : TVector3): TFloat3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3ToFloatV';
+{ Invert the given vector }
+function Vector3Invert(v: TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Invert';
+{ Clamp the components of the vector between min and max values specified by the given vectors }
+function Vector3Clamp(v, min, max: TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Clamp';
+{ Clamp the magnitude of the vector between two values }
+function Vector3ClampValue(v: TVector3; min, max: Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3ClampValue';
+{ Check whether two given vectors are almost equal }
+function Vector3Equals(p, q: TVector3): longint; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Equals';
+{ Compute the direction of a refracted ray where v specifies the normalized direction of the incoming ray, n specifies the
+  normalized normal vector of the interface of two optical media, and r specifies the ratio of the refractive index of the medium
+  from where the ray comes to the refractive index of the medium on the other side of the surface }
+function Vector3Refract(v, n: TVector3; r: Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Refract';
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Matrix math
 //----------------------------------------------------------------------------------
-function  MatrixDeterminant(mat : TMatrix) : Single; cdecl; external cDllName; // Compute matrix determinant
-function  MatrixTrace(mat : TMatrix): Single; cdecl; external cDllName;// Returns the trace of the matrix (sum of the values along the diagonal)
-function  MatrixTranspose(mat : TMatrix): TMatrix; cdecl; external cDllName;// Transposes provided matrix
-function  MatrixInvert(mat : TMatrix): TMatrix; cdecl; external cDllName; // Invert provided matrix
-// rem // function  MatrixNormalize(mat : TMatrix): TMatrix; cdecl; external cDllName;// Normalize provided matrix
-function  MatrixIdentity: TMatrix; cdecl; external cDllName;// Returns identity matrix
-function  MatrixAdd(left : TMatrix; right : TMatrix): TMatrix; cdecl; external cDllName;// Add two matrices
-function  MatrixSubtract(left : TMatrix; right : TMatrix): TMatrix; cdecl; external cDllName;// Subtract two matrices (left - right)
-function  MatrixMultiply(left : TMatrix; right : TMatrix): TMatrix; cdecl; external cDllName;// Returns two matrix multiplication
-function  MatrixTranslate(x, y, z : Single): TMatrix; cdecl; external cDllName;// Returns translation matrix
-function  MatrixRotate(axis : TVector3; angle : Single): TMatrix; cdecl; external cDllName;// Create rotation matrix from axis and angle
-function  MatrixRotateX(angle : Single): TMatrix; cdecl; external cDllName;// Returns x-rotation matrix (angle in radians)
-function  MatrixRotateY(angle : Single): TMatrix; cdecl; external cDllName;// Returns y-rotation matrix (angle in radians)
-function  MatrixRotateZ(angle : Single): TMatrix; cdecl; external cDllName;// Returns z-rotation matrix (angle in radians)
-function  MatrixRotateXYZ(angle : TVector3): TMatrix; cdecl; external cDllName;// Returns xyz-rotation matrix (angles in radians)
-function  MatrixRotateZYX(angle : TVector3): TMatrix; cdecl; external cDllName;// Returns zyx-rotation matrix (angles in radians)
-function  MatrixScale(x, y, z : Single): TMatrix; cdecl; external cDllName;// Returns scaling matrix
-function  MatrixFrustum(left, right, bottom, top, near_, far_ : double): TMatrix; cdecl; external cDllName;// Returns perspective projection matrix
-function  MatrixPerspective(fovy, aspect, near_, far_ : double): TMatrix; cdecl; external cDllName;// Returns perspective projection matrix
-function  MatrixOrtho(left, right, bottom, top, near_, far_ : double): TMatrix; cdecl; external cDllName;// Returns orthographic projection matrix
-function  MatrixLookAt(eye, target, up : TVector3): TMatrix; cdecl; external cDllName;// Returns camera look-at matrix (view matrix)
-function  MatrixToFloatV(mat : TMatrix): TFloat16; cdecl; external cDllName; // Returns float array of matrix data
+{Compute matrix determinant }
+function MatrixDeterminant(mat : TMatrix) : Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixDeterminant';
+{ Returns the trace of the matrix (sum of the values along the diagonal) }
+function MatrixTrace(mat : TMatrix): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixTrace';
+{ Transposes provided matrix }
+function MatrixTranspose(mat : TMatrix): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixTranspose';
+{ Invert provided matrix }
+function MatrixInvert(mat : TMatrix): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixInvert';
+{ Returns identity matrix }
+function MatrixIdentity: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixIdentity';
+{ Add two matrices }
+function MatrixAdd(left : TMatrix; right : TMatrix): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixAdd';
+{ Subtract two matrices (left - right) }
+function MatrixSubtract(left : TMatrix; right : TMatrix): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixSubtract';
+{ Returns two matrix multiplication }
+function MatrixMultiply(left : TMatrix; right : TMatrix): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixMultiply';
+{ Returns translation matrix }
+function MatrixTranslate(x, y, z : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixTranslate';
+{ Create rotation matrix from axis and angle }
+function MatrixRotate(axis : TVector3; angle : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixRotate';
+{ Returns x-rotation matrix (angle in radians) }
+function MatrixRotateX(angle : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixRotateX';
+{ Returns y-rotation matrix (angle in radians) }
+function MatrixRotateY(angle : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixRotateY';
+{ Returns z-rotation matrix (angle in radians) }
+function MatrixRotateZ(angle : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixRotateZ';
+{ Returns xyz-rotation matrix (angles in radians) }
+function MatrixRotateXYZ(angle : TVector3): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixRotateXYZ';
+{ Returns zyx-rotation matrix (angles in radians) }
+function MatrixRotateZYX(angle : TVector3): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixRotateZYX';
+{ Returns scaling matrix }
+function MatrixScale(x, y, z : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixScale';
+{ Returns perspective projection matrix }
+function MatrixFrustum(left, right, bottom, top, near_, far_ : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixFrustum';
+{ Returns perspective projection matrix }
+function MatrixPerspective(fovy, aspect, near_, far_ : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixPerspective';
+{ Returns orthographic projection matrix }
+function MatrixOrtho(left, right, bottom, top, near_, far_ : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixOrtho';
+{ Returns camera look-at matrix (view matrix) }
+function MatrixLookAt(eye, target, up : TVector3): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixLookAt';
+{ Returns float array of matrix data }
+function MatrixToFloatV(mat : TMatrix): TFloat16; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixToFloatV';
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Quaternion math
 //----------------------------------------------------------------------------------
-function  QuaternionAdd(q1, q2: TQuaternion): TQuaternion; cdecl; external cDllName;// Add two quaternions
-function  QuaternionAddValue(q: TQuaternion ; add: single): TQuaternion; cdecl; external cDllName;// Add quaternion and float value
-function  QuaternionSubtract(q1, q2: TQuaternion): TQuaternion; cdecl; external cDllName;// Subtract two quaternions
-function  QuaternionSubtractValue(q:TQuaternion; sub:single): TQuaternion; cdecl; external cDllName;// Subtract quaternion and float value
-function  QuaternionIdentity(): TQuaternion; cdecl; external cDllName;// Returns identity quaternion
-function  QuaternionLength(q : TQuaternion): Single; cdecl; external cDllName;// Computes the length of a quaternion
-function  QuaternionNormalize(q : TQuaternion): TQuaternion; cdecl; external cDllName;// Normalize provided quaternion
-function  QuaternionInvert(q : TQuaternion): TQuaternion; cdecl; external cDllName;// Invert provided quaternion
-function  QuaternionMultiply(q1, q2 : TQuaternion): TQuaternion; cdecl; external cDllName;// Calculate two quaternion multiplication
-function  QuaternionScale(q:TQuaternion;mul:single): TQuaternion; cdecl; external cDllName;// Scale quaternion by float value
-function  QuaternionDivide( q1, q2: TQuaternion): TQuaternion; cdecl; external cDllName;// Divide two quaternions
-function  QuaternionLerp(q1, q2 : TQuaternion; amount : Single): TQuaternion; cdecl; external cDllName;// Calculate linear interpolation between two quaternions
-function  QuaternionNlerp(q1, q2 : TQuaternion; amount : Single): TQuaternion; cdecl; external cDllName;// Calculate slerp-optimized interpolation between two quaternions
-function  QuaternionSlerp(q1, q2 : TQuaternion; amount : Single): TQuaternion; cdecl; external cDllName;// Calculates spherical linear interpolation between two quaternions
-function  QuaternionFromVector3ToVector3(from, to_ : TVector3): TQuaternion; cdecl; external cDllName;// Calculate quaternion based on the rotation from one vector to another
-function  QuaternionFromMatrix(mat : TMatrix): TQuaternion; cdecl; external cDllName;// Returns a quaternion for a given rotation matrix
-function  QuaternionToMatrix(q : TQuaternion): TMatrix; cdecl; external cDllName;// Returns a matrix for a given quaternion
-function  QuaternionFromAxisAngle(axis : TVector3; angle : Single): TQuaternion; cdecl; external cDllName;// Returns rotation quaternion for an angle and axis
-procedure QuaternionToAxisAngle(q : TQuaternion; uutAxis : PVector3; outAngle : PSingle); cdecl; external cDllName;// Returns the rotation angle and axis for a given quaternion
-function  QuaternionFromEuler(pitch, yaw, roll : Single): TQuaternion; cdecl; external cDllName;// Returns the quaternion equivalent to Euler angles
-function  QuaternionToEuler(q : TQuaternion): TVector3; cdecl; external cDllName;// Return the Euler angles equivalent to quaternion (roll, pitch, yaw)
-function  QuaternionTransform(q : TQuaternion; mat : TMatrix): TQuaternion; cdecl; external cDllName;// Transform a quaternion given a transformation matrix
-function  QuaternionEquals(p, q: TQuaternion): longint; cdecl; external cDllName;// Check whether two given quaternions are almost equal
+{ Add two quaternions }
+function QuaternionAdd(q1, q2: TQuaternion): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionAdd';
+{ Add quaternion and float value }
+function QuaternionAddValue(q: TQuaternion ; add: single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionAddValue';
+{ Subtract two quaternions }
+function QuaternionSubtract(q1, q2: TQuaternion): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionSubtract';
+{ Subtract quaternion and float value }
+function QuaternionSubtractValue(q:TQuaternion; sub:single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionSubtractValue';
+{ Returns identity quaternion }
+function QuaternionIdentity(): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionIdentity';
+{ Computes the length of a quaternion }
+function QuaternionLength(q : TQuaternion): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionLength';
+{ Normalize provided quaternion }
+function QuaternionNormalize(q : TQuaternion): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionNormalize';
+{ Invert provided quaternion }
+function QuaternionInvert(q : TQuaternion): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionInvert';
+{ Calculate two quaternion multiplication }
+function QuaternionMultiply(q1, q2 : TQuaternion): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionMultiply';
+{ Scale quaternion by float value }
+function QuaternionScale(q:TQuaternion;mul:single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionScale';
+{ Divide two quaternions }
+function QuaternionDivide( q1, q2: TQuaternion): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionDivide';
+{ Calculate linear interpolation between two quaternions }
+function QuaternionLerp(q1, q2 : TQuaternion; amount : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionLerp';
+{ Calculate slerp-optimized interpolation between two quaternions }
+function QuaternionNlerp(q1, q2 : TQuaternion; amount : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionNlerp';
+{ Calculates spherical linear interpolation between two quaternions }
+function QuaternionSlerp(q1, q2 : TQuaternion; amount : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionSlerp';
+{ Calculate quaternion based on the rotation from one vector to another }
+function QuaternionFromVector3ToVector3(from, to_ : TVector3): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionFromVector3ToVector3';
+{ Returns a quaternion for a given rotation matrix }
+function QuaternionFromMatrix(mat : TMatrix): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionFromMatrix';
+{ Returns a matrix for a given quaternion }
+function QuaternionToMatrix(q : TQuaternion): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionToMatrix';
+{ Returns rotation quaternion for an angle and axis }
+function QuaternionFromAxisAngle(axis : TVector3; angle : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionFromAxisAngle';
+{ Returns the rotation angle and axis for a given quaternion }
+procedure QuaternionToAxisAngle(q : TQuaternion; uutAxis : PVector3; outAngle : PSingle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionToAxisAngle';
+{ Returns the quaternion equivalent to Euler angles }
+function QuaternionFromEuler(pitch, yaw, roll : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionFromEuler';
+{ Return the Euler angles equivalent to quaternion (roll, pitch, yaw) }
+function QuaternionToEuler(q : TQuaternion): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionToEuler';
+{ Transform a quaternion given a transformation matrix }
+function QuaternionTransform(q : TQuaternion; mat : TMatrix): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionTransform';
+{ Check whether two given quaternions are almost equal }
+function QuaternionEquals(p, q: TQuaternion): longint; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionEquals';
 
 // Custom Misc Functions
 function fMinf(a, b: Single):single;
 function fMaxf(a, b: Single):single;
-//sinf
-//cosf
+
 implementation
+uses Math;
 
 function fMinf(a, b: Single): single;
 begin
@@ -206,5 +324,8 @@ begin
   else
     Result := b;
 end;
+
+initialization
+SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);
 
 end.

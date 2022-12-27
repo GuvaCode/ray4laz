@@ -118,14 +118,23 @@ const
   RL_TEXTURE_WRAP_MIRROR_CLAMP = $8742;             // GL_MIRROR_CLAMP_EXT
 
   (* Matrix modes (equivalent to OpenGL) *)
-  RL_MODELVIEW = $1700;                             // GL_MODELVIEW
-  RL_PROJECTION = $1701;                            // GL_PROJECTION
-  RL_TEXTURE = $1702;                               // GL_TEXTURE }
+type
+  PrlMatrixMode = ^TrlMatrixMode;
+  TrlMatrixMode = Integer;
+const
+  RL_MODELVIEW  = TrlMatrixMode($1700); // GL_MODELVIEW
+  RL_PROJECTION = TrlMatrixMode($1701); // GL_PROJECTION
+  RL_TEXTURE    = TrlMatrixMode($1702); // GL_TEXTURE
 
   (* Primitive assembly draw modes *)
-  RL_LINES = $0001;                                 // GL_LINES
-  RL_TRIANGLES = $0004;                             // GL_TRIANGLES
-  RL_QUADS = $0007;                                 // GL_QUADS
+type
+  PrlDrawMode = ^TrlDrawMode;
+  TrlDrawMode = Integer;
+const
+  RL_LINES     = TrlDrawMode($0001); // GL_LINES
+  RL_TRIANGLES = TrlDrawMode($0004); // GL_TRIANGLES
+  RL_QUADS     = TrlDrawMode($0007); // GL_QUADS
+
 
   (* GL equivalent data types *)
   RL_UNSIGNED_BYTE = $1401;                         // GL_UNSIGNED_BYTE
@@ -225,11 +234,11 @@ type
   PrlGlVersion = ^TrlGlVersion;
   TrlGlVersion =  Integer;
   const
-    OPENGL_11 = 1;            // OpenGL 1.1
-    OPENGL_21 = 2;            // OpenGL 2.1 (GLSL 120)
-    OPENGL_33 = 3;            // OpenGL 3.3 (GLSL 330)
-    OPENGL_43 = 4;            // OpenGL 4.3 (using GLSL 330)
-    OPENGL_ES_20 = 5;         // OpenGL ES 2.0 (GLSL 100)
+    OPENGL_11 = TrlGlVersion(1);    // OpenGL 1.1
+    OPENGL_21 = TrlGlVersion(2);    // OpenGL 2.1 (GLSL 120)
+    OPENGL_33 = TrlGlVersion(3);    // OpenGL 3.3 (GLSL 330)
+    OPENGL_43 = TrlGlVersion(4);    // OpenGL 4.3 (using GLSL 330)
+    OPENGL_ES_20 = TrlGlVersion(5); // OpenGL ES 2.0 (GLSL 100)
 
 type
   (* Trace log level *)
@@ -237,14 +246,14 @@ type
   PrlTraceLogLevel = ^TrlTraceLogLevel;
   TrlTraceLogLevel =  Integer;
   const
-    RL_LOG_ALL = 0;         // Display all logs
-    RL_LOG_TRACE = 1;       // Trace logging, intended for internal use only
-    RL_LOG_DEBUG = 2;       // Debug logging, used for internal debugging, it should be disabled on release builds
-    RL_LOG_INFO = 3;        // Info logging, used for program execution info
-    RL_LOG_WARNING = 4;     // Warning logging, used on recoverable failures
-    RL_LOG_ERROR = 5;       // Error logging, used on unrecoverable failures
-    RL_LOG_FATAL = 6;       // Fatal logging, used to abort program: exit(EXIT_FAILURE)
-    RL_LOG_NONE = 7;        // Disable logging
+    RL_LOG_ALL     = TrlTraceLogLevel(0); // Display all logs
+    RL_LOG_TRACE   = TrlTraceLogLevel(1); // Trace logging, intended for internal use only
+    RL_LOG_DEBUG   = TrlTraceLogLevel(2); // Debug logging, used for internal debugging, it should be disabled on release builds
+    RL_LOG_INFO    = TrlTraceLogLevel(3); // Info logging, used for program execution info
+    RL_LOG_WARNING = TrlTraceLogLevel(4); // Warning logging, used on recoverable failures
+    RL_LOG_ERROR   = TrlTraceLogLevel(5); // Error logging, used on unrecoverable failures
+    RL_LOG_FATAL   = TrlTraceLogLevel(6); // Fatal logging, used to abort program: exit(EXIT_FAILURE)
+    RL_LOG_NONE    = TrlTraceLogLevel(7); // Disable logging
 
 
 type
@@ -253,27 +262,27 @@ type
   PrlPixelFormat = ^TrlPixelFormat;
   TrlPixelFormat =  Integer;
   const
-    RL_PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1;         // 8 bit per pixel (no alpha)
-    RL_PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA = 2;        // 8*2 bpp (2 channels)
-    RL_PIXELFORMAT_UNCOMPRESSED_R5G6B5 = 3;            // 16 bpp
-    RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8 = 4;            // 24 bpp
-    RL_PIXELFORMAT_UNCOMPRESSED_R5G5B5A1 = 5;          // 16 bpp (1 bit alpha)
-    RL_PIXELFORMAT_UNCOMPRESSED_R4G4B4A4 = 6;          // 16 bpp (4 bit alpha)
-    RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 = 7;          // 32 bpp
-    RL_PIXELFORMAT_UNCOMPRESSED_R32 = 8;               // 32 bpp (1 channel - float)
-    RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32 = 9;         // 32*3 bpp (3 channels - float)
-    RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 = 10;     // 32*4 bpp (4 channels - float)
-    RL_PIXELFORMAT_COMPRESSED_DXT1_RGB = 11;           // 4 bpp (no alpha)
-    RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA = 12;          // 4 bpp (1 bit alpha)
-    RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA = 13;          // 8 bpp
-    RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA = 14;          // 8 bpp
-    RL_PIXELFORMAT_COMPRESSED_ETC1_RGB = 15;           // 4 bpp
-    RL_PIXELFORMAT_COMPRESSED_ETC2_RGB = 16;           // 4 bpp
-    RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA = 17;      // 8 bpp
-    RL_PIXELFORMAT_COMPRESSED_PVRT_RGB = 18;           // 4 bpp
-    RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA = 19;          // 4 bpp
-    RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA = 20;      // 8 bpp
-    RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA = 21;      // 2 bpp
+    RL_PIXELFORMAT_UNCOMPRESSED_GRAYSCALE    = TrlPixelFormat(1);  // 8 bit per pixel (no alpha)
+    RL_PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA   = TrlPixelFormat(2);  // 8*2 bpp (2 channels)
+    RL_PIXELFORMAT_UNCOMPRESSED_R5G6B5       = TrlPixelFormat(3);  // 16 bpp
+    RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8       = TrlPixelFormat(4);  // 24 bpp
+    RL_PIXELFORMAT_UNCOMPRESSED_R5G5B5A1     = TrlPixelFormat(5);  // 16 bpp (1 bit alpha)
+    RL_PIXELFORMAT_UNCOMPRESSED_R4G4B4A4     = TrlPixelFormat(6);  // 16 bpp (4 bit alpha)
+    RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8     = TrlPixelFormat(7);  // 32 bpp
+    RL_PIXELFORMAT_UNCOMPRESSED_R32          = TrlPixelFormat(8);  // 32 bpp (1 channel - float)
+    RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32    = TrlPixelFormat(9);  // 32*3 bpp (3 channels - float)
+    RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 = TrlPixelFormat(10); // 32*4 bpp (4 channels - float)
+    RL_PIXELFORMAT_COMPRESSED_DXT1_RGB       = TrlPixelFormat(11); // 4 bpp (no alpha)
+    RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA      = TrlPixelFormat(12); // 4 bpp (1 bit alpha)
+    RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA      = TrlPixelFormat(13); // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA      = TrlPixelFormat(14); // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_ETC1_RGB       = TrlPixelFormat(15); // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_ETC2_RGB       = TrlPixelFormat(16); // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA  = TrlPixelFormat(17); // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_PVRT_RGB       = TrlPixelFormat(18); // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA      = TrlPixelFormat(19); // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA  = TrlPixelFormat(20); // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA  = TrlPixelFormat(21); // 2 bpp
 
 type
   (* Texture parameters: filter mode *)
@@ -282,61 +291,60 @@ type
   PrlTextureFilter = ^TrlTextureFilter;
   TrlTextureFilter =  Integer;
   const
-    RL_TEXTURE_FILTER_POINT = 0;            // No filter, just pixel approximation
-    RL_TEXTURE_FILTER_BILINEAR = 1;         // Linear filtering
-    RL_TEXTURE_FILTER_TRILINEAR = 2;        // Trilinear filtering (linear with mipmaps)
-    RL_TEXTURE_FILTER_ANISOTROPIC_4X = 3;   // Anisotropic filtering 4x
-    RL_TEXTURE_FILTER_ANISOTROPIC_8X = 4;   // Anisotropic filtering 8x
-    RL_TEXTURE_FILTER_ANISOTROPIC_16X = 5;  // Anisotropic filtering 16x
-
+    RL_TEXTURE_FILTER_POINT           = TrlTextureFilter(0); // No filter, just pixel approximation
+    RL_TEXTURE_FILTER_BILINEAR        = TrlTextureFilter(1); // Linear filtering
+    RL_TEXTURE_FILTER_TRILINEAR       = TrlTextureFilter(2); // Trilinear filtering (linear with mipmaps)
+    RL_TEXTURE_FILTER_ANISOTROPIC_4X  = TrlTextureFilter(3); // Anisotropic filtering 4x
+    RL_TEXTURE_FILTER_ANISOTROPIC_8X  = TrlTextureFilter(4); // Anisotropic filtering 8x
+    RL_TEXTURE_FILTER_ANISOTROPIC_16X = TrlTextureFilter(5); // Anisotropic filtering 16x
 
 type
   (* Color blending modes (pre-defined) *)
   PrlBlendMode = ^TrlBlendMode;
   TrlBlendMode =  Integer;
   const
-    RL_BLEND_ALPHA = 0;              // Blend textures considering alpha (default)
-    RL_BLEND_ADDITIVE = 1;           // Blend textures adding colors
-    RL_BLEND_MULTIPLIED = 2;         // Blend textures multiplying colors
-    RL_BLEND_ADD_COLORS = 3;         // Blend textures adding colors (alternative)
-    RL_BLEND_SUBTRACT_COLORS = 4;    // Blend textures subtracting colors (alternative)
-    RL_BLEND_ALPHA_PREMULTIPLY = 5;  // Blend premultiplied textures considering alpha
-    RL_BLEND_CUSTOM = 6;             // Blend textures using custom src/dst factors (use rlSetBlendFactors())
-    RL_BLEND_CUSTOM_SEPARATE = 7;    // Blend textures using custom src/dst factors (use rlSetBlendFactorsSeparate())
+    RL_BLEND_ALPHA             = TrlBlendMode(0); // Blend textures considering alpha (default)
+    RL_BLEND_ADDITIVE          = TrlBlendMode(1); // Blend textures adding colors
+    RL_BLEND_MULTIPLIED        = TrlBlendMode(2); // Blend textures multiplying colors
+    RL_BLEND_ADD_COLORS        = TrlBlendMode(3); // Blend textures adding colors (alternative)
+    RL_BLEND_SUBTRACT_COLORS   = TrlBlendMode(4); // Blend textures subtracting colors (alternative)
+    RL_BLEND_ALPHA_PREMULTIPLY = TrlBlendMode(5); // Blend premultiplied textures considering alpha
+    RL_BLEND_CUSTOM            = TrlBlendMode(6); // Blend textures using custom src/dst factors (use rlSetBlendFactors())
+    RL_BLEND_CUSTOM_SEPARATE   = TrlBlendMode(7); // Blend textures using custom src/dst factors (use rlSetBlendFactorsSeparate())
 
 type
   (* Shader location point type *)
   PrlShaderLocationIndex = ^TrlShaderLocationIndex;
   TrlShaderLocationIndex =  Integer;
   const
-    RL_SHADER_LOC_VERTEX_POSITION = 0;     // Shader location: vertex attribute: position
-    RL_SHADER_LOC_VERTEX_TEXCOORD01 = 1;   // Shader location: vertex attribute: texcoord01
-    RL_SHADER_LOC_VERTEX_TEXCOORD02 = 2;   // Shader location: vertex attribute: texcoord02
-    RL_SHADER_LOC_VERTEX_NORMAL = 3;       // Shader location: vertex attribute: normal
-    RL_SHADER_LOC_VERTEX_TANGENT = 4;      // Shader location: vertex attribute: tangent
-    RL_SHADER_LOC_VERTEX_COLOR = 5;        // Shader location: vertex attribute: color
-    RL_SHADER_LOC_MATRIX_MVP = 6;          // Shader location: matrix uniform: model-view-projection
-    RL_SHADER_LOC_MATRIX_VIEW = 7;         // Shader location: matrix uniform: view (camera transform)
-    RL_SHADER_LOC_MATRIX_PROJECTION = 8;   // Shader location: matrix uniform: projection
-    RL_SHADER_LOC_MATRIX_MODEL = 9;        // Shader location: matrix uniform: model (transform)
-    RL_SHADER_LOC_MATRIX_NORMAL = 10;      // Shader location: matrix uniform: normal
-    RL_SHADER_LOC_VECTOR_VIEW = 11;        // Shader location: vector uniform: view
-    RL_SHADER_LOC_COLOR_DIFFUSE = 12;      // Shader location: vector uniform: diffuse color
-    RL_SHADER_LOC_COLOR_SPECULAR = 13;     // Shader location: vector uniform: specular color
-    RL_SHADER_LOC_COLOR_AMBIENT = 14;      // Shader location: vector uniform: ambient color
-    RL_SHADER_LOC_MAP_ALBEDO = 15;         // Shader location: sampler2d texture: albedo (same as: RL_SHADER_LOC_MAP_DIFFUSE)
-    RL_SHADER_LOC_MAP_METALNESS = 16;      // Shader location: sampler2d texture: metalness (same as: RL_SHADER_LOC_MAP_SPECULAR)
-    RL_SHADER_LOC_MAP_NORMAL = 17;         // Shader location: sampler2d texture: normal
-    RL_SHADER_LOC_MAP_ROUGHNESS = 18;      // Shader location: sampler2d texture: roughness
-    RL_SHADER_LOC_MAP_OCCLUSION = 19;      // Shader location: sampler2d texture: occlusion
-    RL_SHADER_LOC_MAP_EMISSION = 20;       // Shader location: sampler2d texture: emission
-    RL_SHADER_LOC_MAP_HEIGHT = 21;         // Shader location: sampler2d texture: height
-    RL_SHADER_LOC_MAP_CUBEMAP = 22;        // Shader location: samplerCube texture: cubemap
-    RL_SHADER_LOC_MAP_IRRADIANCE = 23;     // Shader location: samplerCube texture: irradiance
-    RL_SHADER_LOC_MAP_PREFILTER = 24;      // Shader location: samplerCube texture: prefilter
-    RL_SHADER_LOC_MAP_BRDF = 25;           // Shader location: sampler2d texture: brdf
+    RL_SHADER_LOC_VERTEX_POSITION   = TrlShaderLocationIndex(0);  // Shader location: vertex attribute: position
+    RL_SHADER_LOC_VERTEX_TEXCOORD01 = TrlShaderLocationIndex(1);  // Shader location: vertex attribute: texcoord01
+    RL_SHADER_LOC_VERTEX_TEXCOORD02 = TrlShaderLocationIndex(2);  // Shader location: vertex attribute: texcoord02
+    RL_SHADER_LOC_VERTEX_NORMAL     = TrlShaderLocationIndex(3);  // Shader location: vertex attribute: normal
+    RL_SHADER_LOC_VERTEX_TANGENT    = TrlShaderLocationIndex(4);  // Shader location: vertex attribute: tangent
+    RL_SHADER_LOC_VERTEX_COLOR      = TrlShaderLocationIndex(5);  // Shader location: vertex attribute: color
+    RL_SHADER_LOC_MATRIX_MVP        = TrlShaderLocationIndex(6);  // Shader location: matrix uniform: model-view-projection
+    RL_SHADER_LOC_MATRIX_VIEW       = TrlShaderLocationIndex(7);  // Shader location: matrix uniform: view (camera transform)
+    RL_SHADER_LOC_MATRIX_PROJECTION = TrlShaderLocationIndex(8);  // Shader location: matrix uniform: projection
+    RL_SHADER_LOC_MATRIX_MODEL      = TrlShaderLocationIndex(9);  // Shader location: matrix uniform: model (transform)
+    RL_SHADER_LOC_MATRIX_NORMAL     = TrlShaderLocationIndex(10); // Shader location: matrix uniform: normal
+    RL_SHADER_LOC_VECTOR_VIEW       = TrlShaderLocationIndex(11); // Shader location: vector uniform: view
+    RL_SHADER_LOC_COLOR_DIFFUSE     = TrlShaderLocationIndex(12); // Shader location: vector uniform: diffuse color
+    RL_SHADER_LOC_COLOR_SPECULAR    = TrlShaderLocationIndex(13); // Shader location: vector uniform: specular color
+    RL_SHADER_LOC_COLOR_AMBIENT     = TrlShaderLocationIndex(14); // Shader location: vector uniform: ambient color
+    RL_SHADER_LOC_MAP_ALBEDO        = TrlShaderLocationIndex(15); // Shader location: sampler2d texture: albedo (same as: RL_SHADER_LOC_MAP_DIFFUSE)
+    RL_SHADER_LOC_MAP_METALNESS     = TrlShaderLocationIndex(16); // Shader location: sampler2d texture: metalness (same as: RL_SHADER_LOC_MAP_SPECULAR)
+    RL_SHADER_LOC_MAP_NORMAL        = TrlShaderLocationIndex(17); // Shader location: sampler2d texture: normal
+    RL_SHADER_LOC_MAP_ROUGHNESS     = TrlShaderLocationIndex(18); // Shader location: sampler2d texture: roughness
+    RL_SHADER_LOC_MAP_OCCLUSION     = TrlShaderLocationIndex(19); // Shader location: sampler2d texture: occlusion
+    RL_SHADER_LOC_MAP_EMISSION      = TrlShaderLocationIndex(20); // Shader location: sampler2d texture: emission
+    RL_SHADER_LOC_MAP_HEIGHT        = TrlShaderLocationIndex(21); // Shader location: sampler2d texture: height
+    RL_SHADER_LOC_MAP_CUBEMAP       = TrlShaderLocationIndex(22); // Shader location: samplerCube texture: cubemap
+    RL_SHADER_LOC_MAP_IRRADIANCE    = TrlShaderLocationIndex(23); // Shader location: samplerCube texture: irradiance
+    RL_SHADER_LOC_MAP_PREFILTER     = TrlShaderLocationIndex(24); // Shader location: samplerCube texture: prefilter
+    RL_SHADER_LOC_MAP_BRDF          = TrlShaderLocationIndex(25); // Shader location: sampler2d texture: brdf
 
-    RL_SHADER_LOC_MAP_DIFFUSE = RL_SHADER_LOC_MAP_ALBEDO;
+    RL_SHADER_LOC_MAP_DIFFUSE  = RL_SHADER_LOC_MAP_ALBEDO;
     RL_SHADER_LOC_MAP_SPECULAR = RL_SHADER_LOC_MAP_METALNESS;
 
 
@@ -345,15 +353,15 @@ type
   PrlShaderUniformDataType = ^TrlShaderUniformDataType;
   TrlShaderUniformDataType =  Integer;
   const
-    RL_SHADER_UNIFORM_FLOAT = 0;      // Shader uniform type: float
-    RL_SHADER_UNIFORM_VEC2 = 1;       // Shader uniform type: vec2 (2 float)
-    RL_SHADER_UNIFORM_VEC3 = 2;       // Shader uniform type: vec3 (3 float)
-    RL_SHADER_UNIFORM_VEC4 = 3;       // Shader uniform type: vec4 (4 float)
-    RL_SHADER_UNIFORM_INT = 4;        // Shader uniform type: int
-    RL_SHADER_UNIFORM_IVEC2 = 5;      // Shader uniform type: ivec2 (2 int)
-    RL_SHADER_UNIFORM_IVEC3 = 6;      // Shader uniform type: ivec3 (3 int)
-    RL_SHADER_UNIFORM_IVEC4 = 7;      // Shader uniform type: ivec4 (4 int)
-    RL_SHADER_UNIFORM_SAMPLER2D = 8;  // Shader uniform type: sampler2d
+    RL_SHADER_UNIFORM_FLOAT     = TrlShaderUniformDataType(0); // Shader uniform type: float
+    RL_SHADER_UNIFORM_VEC2      = TrlShaderUniformDataType(1); // Shader uniform type: vec2 (2 float)
+    RL_SHADER_UNIFORM_VEC3      = TrlShaderUniformDataType(2); // Shader uniform type: vec3 (3 float)
+    RL_SHADER_UNIFORM_VEC4      = TrlShaderUniformDataType(3); // Shader uniform type: vec4 (4 float)
+    RL_SHADER_UNIFORM_INT       = TrlShaderUniformDataType(4); // Shader uniform type: int
+    RL_SHADER_UNIFORM_IVEC2     = TrlShaderUniformDataType(5); // Shader uniform type: ivec2 (2 int)
+    RL_SHADER_UNIFORM_IVEC3     = TrlShaderUniformDataType(6); // Shader uniform type: ivec3 (3 int)
+    RL_SHADER_UNIFORM_IVEC4     = TrlShaderUniformDataType(7); // Shader uniform type: ivec4 (4 int)
+    RL_SHADER_UNIFORM_SAMPLER2D = TrlShaderUniformDataType(8); // Shader uniform type: sampler2d
 
 
 type
@@ -361,10 +369,10 @@ type
   PrlShaderAttributeDataType = ^TrlShaderAttributeDataType;
   TrlShaderAttributeDataType =  Integer;
   const
-    RL_SHADER_ATTRIB_FLOAT = 0;  // Shader attribute type: float
-    RL_SHADER_ATTRIB_VEC2  = 1;  // Shader attribute type: vec2 (2 float)
-    RL_SHADER_ATTRIB_VEC3  = 2;  // Shader attribute type: vec3 (3 float)
-    RL_SHADER_ATTRIB_VEC4  = 3;  // Shader attribute type: vec4 (4 float)
+    RL_SHADER_ATTRIB_FLOAT = TrlShaderAttributeDataType(0); // Shader attribute type: float
+    RL_SHADER_ATTRIB_VEC2  = TrlShaderAttributeDataType(1); // Shader attribute type: vec2 (2 float)
+    RL_SHADER_ATTRIB_VEC3  = TrlShaderAttributeDataType(2); // Shader attribute type: vec3 (3 float)
+    RL_SHADER_ATTRIB_VEC4  = TrlShaderAttributeDataType(3); // Shader attribute type: vec4 (4 float)
 
 type
   (* Framebuffer attachment type *)
@@ -372,38 +380,38 @@ type
   PrlFramebufferAttachType = ^TrlFramebufferAttachType;
   TrlFramebufferAttachType =  Integer;
   const
-    RL_ATTACHMENT_COLOR_CHANNEL0 = 0;  // Framebuffer attachmment type: color 0
-    RL_ATTACHMENT_COLOR_CHANNEL1 = 1;  // Framebuffer attachmment type: color 1
-    RL_ATTACHMENT_COLOR_CHANNEL2 = 2;  // Framebuffer attachmment type: color 2
-    RL_ATTACHMENT_COLOR_CHANNEL3 = 3;  // Framebuffer attachmment type: color 3
-    RL_ATTACHMENT_COLOR_CHANNEL4 = 4;  // Framebuffer attachmment type: color 4
-    RL_ATTACHMENT_COLOR_CHANNEL5 = 5;  // Framebuffer attachmment type: color 5
-    RL_ATTACHMENT_COLOR_CHANNEL6 = 6;  // Framebuffer attachmment type: color 6
-    RL_ATTACHMENT_COLOR_CHANNEL7 = 7;  // Framebuffer attachmment type: color 7
-    RL_ATTACHMENT_DEPTH = 100;         // Framebuffer attachmment type: depth
-    RL_ATTACHMENT_STENCIL = 200;       // Framebuffer attachmment type: stencil
+    RL_ATTACHMENT_COLOR_CHANNEL0 = TrlFramebufferAttachType(0);   // Framebuffer attachmment type: color 0
+    RL_ATTACHMENT_COLOR_CHANNEL1 = TrlFramebufferAttachType(1);   // Framebuffer attachmment type: color 1
+    RL_ATTACHMENT_COLOR_CHANNEL2 = TrlFramebufferAttachType(2);   // Framebuffer attachmment type: color 2
+    RL_ATTACHMENT_COLOR_CHANNEL3 = TrlFramebufferAttachType(3);   // Framebuffer attachmment type: color 3
+    RL_ATTACHMENT_COLOR_CHANNEL4 = TrlFramebufferAttachType(4);   // Framebuffer attachmment type: color 4
+    RL_ATTACHMENT_COLOR_CHANNEL5 = TrlFramebufferAttachType(5);   // Framebuffer attachmment type: color 5
+    RL_ATTACHMENT_COLOR_CHANNEL6 = TrlFramebufferAttachType(6);   // Framebuffer attachmment type: color 6
+    RL_ATTACHMENT_COLOR_CHANNEL7 = TrlFramebufferAttachType(7);   // Framebuffer attachmment type: color 7
+    RL_ATTACHMENT_DEPTH          = TrlFramebufferAttachType(100); // Framebuffer attachmment type: depth
+    RL_ATTACHMENT_STENCIL        = TrlFramebufferAttachType(200); // Framebuffer attachmment type: stencil
 
 type
   (* Framebuffer texture attachment type *)
   PrlFramebufferAttachTextureType = ^TrlFramebufferAttachTextureType;
   TrlFramebufferAttachTextureType =  Integer;
   const
-    RL_ATTACHMENT_CUBEMAP_POSITIVE_X = 0;  // Framebuffer texture attachment type: cubemap, +X side
-    RL_ATTACHMENT_CUBEMAP_NEGATIVE_X = 1;  // Framebuffer texture attachment type: cubemap, -X side
-    RL_ATTACHMENT_CUBEMAP_POSITIVE_Y = 2;  // Framebuffer texture attachment type: cubemap, +Y side
-    RL_ATTACHMENT_CUBEMAP_NEGATIVE_Y = 3;  // Framebuffer texture attachment type: cubemap, -Y side
-    RL_ATTACHMENT_CUBEMAP_POSITIVE_Z = 4;  // Framebuffer texture attachment type: cubemap, +Z side
-    RL_ATTACHMENT_CUBEMAP_NEGATIVE_Z = 5;  // Framebuffer texture attachment type: cubemap, -Z side
-    RL_ATTACHMENT_TEXTURE2D = 100;         // Framebuffer texture attachment type: texture2d
-    RL_ATTACHMENT_RENDERBUFFER = 200;      // Framebuffer texture attachment type: renderbuffer
+    RL_ATTACHMENT_CUBEMAP_POSITIVE_X = TrlFramebufferAttachTextureType(0);   // Framebuffer texture attachment type: cubemap, +X side
+    RL_ATTACHMENT_CUBEMAP_NEGATIVE_X = TrlFramebufferAttachTextureType(1);   // Framebuffer texture attachment type: cubemap, -X side
+    RL_ATTACHMENT_CUBEMAP_POSITIVE_Y = TrlFramebufferAttachTextureType(2);   // Framebuffer texture attachment type: cubemap, +Y side
+    RL_ATTACHMENT_CUBEMAP_NEGATIVE_Y = TrlFramebufferAttachTextureType(3);   // Framebuffer texture attachment type: cubemap, -Y side
+    RL_ATTACHMENT_CUBEMAP_POSITIVE_Z = TrlFramebufferAttachTextureType(4);   // Framebuffer texture attachment type: cubemap, +Z side
+    RL_ATTACHMENT_CUBEMAP_NEGATIVE_Z = TrlFramebufferAttachTextureType(5);   // Framebuffer texture attachment type: cubemap, -Z side
+    RL_ATTACHMENT_TEXTURE2D          = TrlFramebufferAttachTextureType(100); // Framebuffer texture attachment type: texture2d
+    RL_ATTACHMENT_RENDERBUFFER       = TrlFramebufferAttachTextureType(200); // Framebuffer texture attachment type: renderbuffer
 
 type
   (* Face culling mode *)
   PrlCullMode = ^TrlCullMode;
   TrlCullMode = Integer;
   const
-    RL_CULL_FACE_FRONT = 0;
-    RL_CULL_FACE_BACK =1;
+    RL_CULL_FACE_FRONT = TrlCullMode(0);
+    RL_CULL_FACE_BACK  = TrlCullMode(1);
 
 
 //------------------------------------------------------------------------------------
@@ -411,50 +419,50 @@ type
 //------------------------------------------------------------------------------------
 
 {Choose the current matrix to be transformed}
-procedure rlMatrixMode(mode: Integer); cdecl; external cDllName;
+procedure rlMatrixMode(mode: TrlMatrixMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlMatrixMode';
 {Push the current matrix to stack}
-procedure rlPushMatrix; cdecl; external cDllName;
+procedure rlPushMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlPushMatrix';
 {Pop lattest inserted matrix from stack}
-procedure rlPopMatrix; cdecl; external cDllName;
+procedure rlPopMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlPopMatrix';
 {Reset current matrix to identity matrix}
-procedure rlLoadIdentity; cdecl; external cDllName;
+procedure rlLoadIdentity; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadIdentity';
 {Multiply the current matrix by a translation matrix}
-procedure rlTranslatef(x, y, z: Single); cdecl; external cDllName;
+procedure rlTranslatef(x, y, z: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlTranslatef';
 {Multiply the current matrix by a rotation matrix}
-procedure rlRotatef(angle, x, y, z: Single); cdecl; external cDllName;
+procedure rlRotatef(angle, x, y, z: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlRotatef';
 {Multiply the current matrix by a scaling matrix}
-procedure rlScalef(x, y, z: Single); cdecl; external cDllName;
+procedure rlScalef(x, y, z: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlScalef';
 {Multiply the current matrix by another matrix}
-procedure rlMultMatrixf(const matf: PSingle); cdecl; external cDllName;
-procedure rlFrustum(left, right, bottom, top, znear, zfar: Double); cdecl; external cDllName;
-procedure rlOrtho(left, right, bottom, top, znear, zfar: Double); cdecl; external cDllName;
+procedure rlMultMatrixf(const matf: PSingle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlMultMatrixf';
+procedure rlFrustum(left, right, bottom, top, znear, zfar: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlFrustum';
+procedure rlOrtho(left, right, bottom, top, znear, zfar: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlOrtho';
 {Set the viewport area}
-procedure rlViewport(x, y, width, height: Integer); cdecl; external cDllName;
+procedure rlViewport(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlViewport';
 
 //------------------------------------------------------------------------------------
 // Functions Declaration - Vertex level operations
 //------------------------------------------------------------------------------------
 
 {Initialize drawing mode (how to organize vertex)}
-procedure rlBegin(mode: Integer); cdecl; external cDllName;
+procedure rlBegin(mode: TrlDrawMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlBegin';
 {Finish vertex providing}
-procedure rlEnd; cdecl; external cDllName;
+procedure rlEnd; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnd';
 {Define one vertex (position) - 2 int}
-procedure rlVertex2i(x, y: Integer); cdecl; external cDllName;
+procedure rlVertex2i(x, y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlVertex2i';
 {Define one vertex (position) - 2 float}
-procedure rlVertex2f(x, y: Single); cdecl; external cDllName;
+procedure rlVertex2f(x, y: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlVertex2f';
 {Define one vertex (position) - 3 float}
-procedure rlVertex3f(x, y, z: Single); cdecl; external cDllName;
+procedure rlVertex3f(x, y, z: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlVertex3f';
 {Define one vertex (texture coordinate) - 2 float}
-procedure rlTexCoord2f(x, y: Single); cdecl; external cDllName;
+procedure rlTexCoord2f(x, y: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlTexCoord2f';
 {Define one vertex (normal) - 3 float}
-procedure rlNormal3f(x, y, z: Single); cdecl; external cDllName;
+procedure rlNormal3f(x, y, z: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlNormal3f';
 {Define one vertex (color) - 4 byte}
-procedure rlColor4ub(r, g, b, a: Byte); cdecl; external cDllName;
+procedure rlColor4ub(r, g, b, a: Byte); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlColor4ub';
 {Define one vertex (color) - 3 float}
-procedure rlColor3f(x, y, z: Single); cdecl; external cDllName;
+procedure rlColor3f(x, y, z: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlColor3f';
 {Define one vertex (color) - 4 float}
-procedure rlColor4f(x, y, z, w: Single); cdecl; external cDllName;
+procedure rlColor4f(x, y, z, w: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlColor4f';
 
 //------------------------------------------------------------------------------------
 // Functions Declaration - OpenGL style functions (common to 1.1, 3.3+, ES2)
@@ -465,115 +473,115 @@ procedure rlColor4f(x, y, z, w: Single); cdecl; external cDllName;
 (* Vertex buffers state *)
 
 {Enable vertex array (VAO, if supported)}
-function rlEnableVertexArray(vaoId: LongWord): Boolean; cdecl; external cDllName;
+function rlEnableVertexArray(vaoId: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableVertexArray';
 {Disable vertex array (VAO, if supported)}
-procedure rlDisableVertexArray; cdecl; external cDllName;
+procedure rlDisableVertexArray; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableVertexArray';
 {Enable vertex buffer (VBO)}
-procedure rlEnableVertexBuffer(id: LongWord); cdecl; external cDllName;
+procedure rlEnableVertexBuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableVertexBuffer';
 {Disable vertex buffer (VBO)}
-procedure rlDisableVertexBuffer; cdecl; external cDllName;
+procedure rlDisableVertexBuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableVertexBuffer';
 {Enable vertex buffer element (VBO element)}
-procedure rlEnableVertexBufferElement(id: LongWord); cdecl; external cDllName;
+procedure rlEnableVertexBufferElement(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableVertexBufferElement';
 {Disable vertex buffer element (VBO element)}
-procedure rlDisableVertexBufferElement; cdecl; external cDllName;
+procedure rlDisableVertexBufferElement; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableVertexBufferElement';
 {Enable vertex attribute index}
-procedure rlEnableVertexAttribute(index: LongWord); cdecl; external cDllName;
+procedure rlEnableVertexAttribute(index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableVertexAttribute';
 {Disable vertex attribute index}
-procedure rlDisableVertexAttribute(index: LongWord); cdecl; external cDllName;
+procedure rlDisableVertexAttribute(index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableVertexAttribute';
 {$if defined(GRAPHICS_API_OPENGL_11)}
 {Enable attribute state pointer}
-procedure rlEnableStatePointer(vertexAttribType: Integer; buffer: Pointer); cdecl; external cDllName;
+procedure rlEnableStatePointer(vertexAttribType: Integer; buffer: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableStatePointer';
 {Disable attribute state pointer}
-procedure rlDisableStatePointer(vertexAttribType: Integer); cdecl; external cDllName;
+procedure rlDisableStatePointer(vertexAttribType: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableStatePointer';
 {$endif}
 
 (* Textures state *)
 
 {Select and active a texture slot}
-procedure rlActiveTextureSlot(slot: Integer); cdecl; external cDllName;
+procedure rlActiveTextureSlot(slot: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlActiveTextureSlot';
 {Enable texture}
-procedure rlEnableTexture(id: LongWord); cdecl; external cDllName;
+procedure rlEnableTexture(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableTexture';
 {Disable texture}
-procedure rlDisableTexture; cdecl; external cDllName;
+procedure rlDisableTexture; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableTexture';
 {Enable texture cubemap}
-procedure rlEnableTextureCubemap(id: LongWord); cdecl; external cDllName;
+procedure rlEnableTextureCubemap(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableTextureCubemap';
 {Disable texture cubemap}
-procedure rlDisableTextureCubemap; cdecl; external cDllName;
+procedure rlDisableTextureCubemap; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableTextureCubemap';
 {Set texture parameters (filter, wrap)}
-procedure rlTextureParameters(id: LongWord; param, value: Integer); cdecl; external cDllName;
+procedure rlTextureParameters(id: LongWord; param, value: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlTextureParameters';
 
 (* Shader state *)
 
 {Enable shader program}
-procedure rlEnableShader(id: LongWord); cdecl; external cDllName;
+procedure rlEnableShader(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableShader';
 {Disable shader program}
-procedure rlDisableShader; cdecl; external cDllName;
+procedure rlDisableShader; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableShader';
 
 (* Framebuffer state *)
 
 {Enable render texture (fbo)}
-procedure rlEnableFramebuffer(id: LongWord); cdecl; external cDllName;
+procedure rlEnableFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableFramebuffer';
 {Disable render texture (fbo), return to default framebuffer}
-procedure rlDisableFramebuffer; cdecl; external cDllName;
+procedure rlDisableFramebuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableFramebuffer';
 {Activate multiple draw color buffers}
-procedure rlActiveDrawBuffers(count: Integer); cdecl; external cDllName;
+procedure rlActiveDrawBuffers(count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlActiveDrawBuffers';
 
 (* General render state *)
 
 {Enable color blending}
-procedure rlEnableColorBlend; cdecl; external cDllName;
+procedure rlEnableColorBlend; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableColorBlend';
 {Disable color blending}
-procedure rlDisableColorBlend; cdecl; external cDllName;
+procedure rlDisableColorBlend; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableColorBlend';
 {Enable depth test}
-procedure rlEnableDepthTest; cdecl; external cDllName;
+procedure rlEnableDepthTest; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableDepthTest';
 {Disable depth test}
-procedure rlDisableDepthTest; cdecl; external cDllName;
+procedure rlDisableDepthTest; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableDepthTest';
 {Enable depth write}
-procedure rlEnableDepthMask; cdecl; external cDllName;
+procedure rlEnableDepthMask; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableDepthMask';
 {Disable depth write}
-procedure rlDisableDepthMask; cdecl; external cDllName;
+procedure rlDisableDepthMask; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableDepthMask';
 {Enable backface culling}
-procedure rlEnableBackfaceCulling; cdecl; external cDllName;
+procedure rlEnableBackfaceCulling; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableBackfaceCulling';
 {Disable backface culling}
-procedure rlDisableBackfaceCulling; cdecl; external cDllName;
+procedure rlDisableBackfaceCulling; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableBackfaceCulling';
 {Set face culling mode}
-procedure rlSetCullFace(mode: Integer); cdecl; external cDllName;
+procedure rlSetCullFace(mode: TrlCullMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetCullFace';
 {Enable scissor test}
-procedure rlEnableScissorTest; cdecl; external cDllName;
+procedure rlEnableScissorTest; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableScissorTest';
 {Disable scissor test}
-procedure rlDisableScissorTest; cdecl; external cDllName;
+procedure rlDisableScissorTest; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableScissorTest';
 {Scissor test}
-procedure rlScissor(x, y, width, height: Integer); cdecl; external cDllName;
+procedure rlScissor(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlScissor';
 {Enable wire mode}
-procedure rlEnableWireMode; cdecl; external cDllName;
+procedure rlEnableWireMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableWireMode';
 {Disable wire mode}
-procedure rlDisableWireMode; cdecl; external cDllName;
+procedure rlDisableWireMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableWireMode';
 {Set the line drawing width}
-procedure rlSetLineWidth(width: Single); cdecl; external cDllName;
+procedure rlSetLineWidth(width: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetLineWidth';
 {Get the line drawing width}
-function rlGetLineWidth: Single; cdecl; external cDllName;
+function rlGetLineWidth: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLineWidth';
 {Enable line aliasing}
-procedure rlEnableSmoothLines; cdecl; external cDllName;
+procedure rlEnableSmoothLines; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableSmoothLines';
 {Disable line aliasing}
-procedure rlDisableSmoothLines; cdecl; external cDllName;
+procedure rlDisableSmoothLines; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableSmoothLines';
 {Enable stereo rendering}
-procedure rlEnableStereoRender; cdecl; external cDllName;
+procedure rlEnableStereoRender; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableStereoRender';
 {Disable stereo rendering}
-procedure rlDisableStereoRender; cdecl; external cDllName;
+procedure rlDisableStereoRender; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableStereoRender';
 {Check if stereo render is enabled}
-function rlIsStereoRenderEnabled: Boolean; cdecl; external cDllName;
+function rlIsStereoRenderEnabled: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlIsStereoRenderEnabled';
 {Clear color buffer with color}
-procedure rlClearColor(r, g, b, a: Byte); cdecl; external cDllName;
+procedure rlClearColor(r, g, b, a: Byte); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlClearColor';
 {Clear used screen buffers (color and depth)}
-procedure rlClearScreenBuffers; cdecl; external cDllName;
+procedure rlClearScreenBuffers; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlClearScreenBuffers';
 {Check and log OpenGL error codes}
-procedure rlCheckErrors; cdecl; external cDllName;
+procedure rlCheckErrors; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCheckErrors';
 {Set blending mode}
-procedure rlSetBlendMode(mode: Integer); cdecl; external cDllName;
+procedure rlSetBlendMode(mode: TrlBlendMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetBlendMode';
 {Set blending mode factor and equation (using OpenGL factors)}
-procedure rlSetBlendFactors(glSrcFactor, glDstFactor, glEquation: Integer); cdecl; external cDllName;
+procedure rlSetBlendFactors(glSrcFactor, glDstFactor, glEquation: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetBlendFactors';
 {Set blending mode factors and equations separately (using OpenGL factors)}
-procedure rlSetBlendFactorsSeparate(glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha: Integer); cdecl; external cDllName;
+procedure rlSetBlendFactorsSeparate(glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetBlendFactorsSeparate';
 
 //------------------------------------------------------------------------------------
 // Functions Declaration - rlgl functionality
@@ -582,187 +590,187 @@ procedure rlSetBlendFactorsSeparate(glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, 
 (* rlgl initialization functions *)
 
 {Initialize rlgl (buffers, shaders, textures, states)}
-procedure rlglInit(width, height: Integer); cdecl; external cDllName;
+procedure rlglInit(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlglInit';
 {De-inititialize rlgl (buffers, shaders, textures)}
-procedure rlglClose; cdecl; external cDllName;
+procedure rlglClose; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlglClose';
 {Load OpenGL extensions (loader function required)}
-procedure rlLoadExtensions(loader: Pointer); cdecl; external cDllName;
+procedure rlLoadExtensions(loader: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadExtensions';
 {Get current OpenGL version}
-function rlGetVersion: Integer; cdecl; external cDllName;
+function rlGetVersion: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetVersion';
 {Set current framebuffer width}
-procedure rlSetFramebufferWidth(width: Integer); cdecl; external cDllName;
+procedure rlSetFramebufferWidth(width: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetFramebufferWidth';
 {Get default framebuffer width}
-function rlGetFramebufferWidth: Integer; cdecl; external cDllName;
+function rlGetFramebufferWidth: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetFramebufferWidth';
 {Set current framebuffer height}
-procedure rlSetFramebufferHeight(height: Integer); cdecl; external cDllName;
+procedure rlSetFramebufferHeight(height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetFramebufferHeight';
 {Get default framebuffer height}
-function rlGetFramebufferHeight: Integer; cdecl; external cDllName;
+function rlGetFramebufferHeight: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetFramebufferHeight';
 {Get default texture id}
-function rlGetTextureIdDefault: LongWord; cdecl; external cDllName;
+function rlGetTextureIdDefault: LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetTextureIdDefault';
 {Get default shader id}
-function rlGetShaderIdDefault: LongWord; cdecl; external cDllName;
+function rlGetShaderIdDefault: LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetShaderIdDefault';
 {Get default shader locations}
-function rlGetShaderLocsDefault: PInteger; cdecl; external cDllName;
+function rlGetShaderLocsDefault: PInteger; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetShaderLocsDefault';
 
 (* Render batch management *)
 // NOTE: rlgl provides a default render batch to behave like OpenGL 1.1 immediate mode
 // but this render batch API is exposed in case of custom batches are required
 
 {Load a render batch system}
-function rlLoadRenderBatch(numBuffers, bufferElements: Integer): TrlRenderBatch; cdecl; external cDllName;
+function rlLoadRenderBatch(numBuffers, bufferElements: Integer): TrlRenderBatch; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadRenderBatch';
 {Unload render batch system}
-procedure rlUnloadRenderBatch(batch: TrlRenderBatch); cdecl; external cDllName;
+procedure rlUnloadRenderBatch(batch: TrlRenderBatch); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadRenderBatch';
 {Draw render batch data (Update->Draw->Reset)}
-procedure rlDrawRenderBatch(batch: PrlRenderBatch); cdecl; external cDllName;
+procedure rlDrawRenderBatch(batch: PrlRenderBatch); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawRenderBatch';
 {Set the active render batch for rlgl (NULL for default internal)}
-procedure rlSetRenderBatchActive(batch: PrlRenderBatch); cdecl; external cDllName;
+procedure rlSetRenderBatchActive(batch: PrlRenderBatch); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetRenderBatchActive';
 {Update and draw internal render batch}
-procedure rlDrawRenderBatchActive; cdecl; external cDllName;
+procedure rlDrawRenderBatchActive; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawRenderBatchActive';
 {Check internal buffer overflow for a given number of vertex}
-function rlCheckRenderBatchLimit(vCount: Integer): Boolean; cdecl; external cDllName;
+function rlCheckRenderBatchLimit(vCount: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCheckRenderBatchLimit';
 {Set current texture for render batch and check buffers limits}
-procedure rlSetTexture(id: Integer); cdecl; external cDllName;
+procedure rlSetTexture(id: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetTexture';
 
 //------------------------------------------------------------------------------------------------------------------------
 
 (* Vertex buffers management *)
 
 {Load vertex array (vao) if supported  }
-function rlLoadVertexArray: LongWord; cdecl; external cDllName;
+function rlLoadVertexArray: LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadVertexArray';
 {Load a vertex buffer attribute}
-function rlLoadVertexBuffer(const buffer: Pointer; size: Integer; dynamic_: Boolean): LongWord; cdecl; external cDllName;
+function rlLoadVertexBuffer(const buffer: Pointer; size: Integer; dynamic_: Boolean): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadVertexBuffer';
 {Load a new attributes element buffer}
-function rlLoadVertexBufferElement(const buffer: Pointer; size: Integer; dynamic_: Boolean): LongWord; cdecl; external cDllName;
+function rlLoadVertexBufferElement(const buffer: Pointer; size: Integer; dynamic_: Boolean): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadVertexBufferElement';
 {Update GPU buffer with new data}
-procedure rlUpdateVertexBuffer(bufferId: LongWord; const data: Pointer; dataSize, offset: Integer); cdecl; external cDllName;
+procedure rlUpdateVertexBuffer(bufferId: LongWord; const data: Pointer; dataSize, offset: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateVertexBuffer';
 {Update vertex buffer elements with new data}
-procedure rlUpdateVertexBufferElements(id: LongWord; const data: Pointer; dataSize, offset: Integer); cdecl; external cDllName;
-procedure rlUnloadVertexArray(vaoId: LongWord); cdecl; external cDllName;
-procedure rlUnloadVertexBuffer(vboId: LongWord); cdecl; external cDllName;
-procedure rlSetVertexAttribute(index: LongWord; compSize, type_: Integer; normalized: Boolean; stride: Integer; const pointer_:pointer); cdecl; external cDllName;
-procedure rlSetVertexAttributeDivisor(index: LongWord; divisor: Integer); cdecl; external cDllName;
+procedure rlUpdateVertexBufferElements(id: LongWord; const data: Pointer; dataSize, offset: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateVertexBufferElements';
+procedure rlUnloadVertexArray(vaoId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadVertexArray';
+procedure rlUnloadVertexBuffer(vboId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadVertexBuffer';
+procedure rlSetVertexAttribute(index: LongWord; compSize, type_: Integer; normalized: Boolean; stride: Integer; const pointer_:pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttribute';
+procedure rlSetVertexAttributeDivisor(index: LongWord; divisor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttributeDivisor';
 {Set vertex attribute default value }
-procedure rlSetVertexAttributeDefault(locIndex: Integer; value:pointer; attribType, count: Integer); cdecl; external cDllName;
-procedure rlDrawVertexArray(offset, count: Integer); cdecl; external cDllName;
-procedure rlDrawVertexArrayElements(offset, count: Integer; const buffer: Pointer); cdecl; external cDllName;
-procedure rlDrawVertexArrayInstanced(offset, count, instances: Integer); cdecl; external cDllName;
-procedure rlDrawVertexArrayElementsInstanced(offset, count: Integer; const buffer: Pointer; instances: Integer); cdecl; external cDllName;
+procedure rlSetVertexAttributeDefault(locIndex: Integer; value:pointer; attribType, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttributeDefault';
+procedure rlDrawVertexArray(offset, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArray';
+procedure rlDrawVertexArrayElements(offset, count: Integer; const buffer: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArrayElements';
+procedure rlDrawVertexArrayInstanced(offset, count, instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArrayInstanced';
+procedure rlDrawVertexArrayElementsInstanced(offset, count: Integer; const buffer: Pointer; instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArrayElementsInstanced';
 
 (* Textures management *)
 
 {Load texture in GPU}
-function rlLoadTexture(const data: Pointer; width, height, format, mipmapCount: Integer): LongWord; cdecl; external cDllName;
+function rlLoadTexture(const data: Pointer; width, height: Integer; format: TrlPixelFormat; mipmapCount: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load depth texture/renderbuffer (to be attached to fbo)}
-function rlLoadTextureDepth(width, height: Integer; useRenderBuffer: boolean): LongWord; cdecl; external cDllName;
+function rlLoadTextureDepth(width, height: Integer; useRenderBuffer: boolean): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load texture cubemap}
-function rlLoadTextureCubemap(const data: Pointer; size, format: Integer): LongWord; cdecl; external cDllName;
+function rlLoadTextureCubemap(const data: Pointer; size: Integer; format: TrlPixelFormat): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Update GPU texture with new data}
-procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height, format: Integer; data: Pointer); cdecl; external cDllName;
+procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height: Integer; format: TrlPixelFormat; data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get OpenGL internal formats}
-procedure rlGetGlTextureFormats(format: Integer; glInternalFormat, glFormat, glType: PLongWord); cdecl; external cDllName;
+procedure rlGetGlTextureFormats(format: TrlPixelFormat; glInternalFormat, glFormat, glType: PLongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get name string for pixel format}
-function rlGetPixelFormatName(format: LongWord): PChar; cdecl; external cDllName;
+function rlGetPixelFormatName(format: TrlPixelFormat): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload texture from GPU memory}
-procedure rlUnloadTexture(id: LongWord); cdecl; external cDllName;
+procedure rlUnloadTexture(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Generate mipmap data for selected texture}
-procedure rlGenTextureMipmaps(id: LongWord; width, height, format: Integer; mipmaps:PInteger); cdecl; external cDllName;
+procedure rlGenTextureMipmaps(id: LongWord; width, height: Integer; format: TrlPixelFormat; mipmaps:PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Read texture pixel data}
-function rlReadTexturePixels(id: LongWord; width, height, format: Integer): Pointer; cdecl; external cDllName;
+function rlReadTexturePixels(id: LongWord; width, height: Integer; format: TrlPixelFormat): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Read screen pixel data (color buffer)}
-function rlReadScreenPixels(width, height: Integer): PByte; cdecl; external cDllName;
+function rlReadScreenPixels(width, height: Integer): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Framebuffer management (fbo) *)
 
 {Load an empty framebuffer}
-function rlLoadFramebuffer(width, height: Integer): LongWord; cdecl; external cDllName;
+function rlLoadFramebuffer(width, height: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Attach texture/renderbuffer to a framebuffer}
-procedure rlFramebufferAttach(fboId, texId: LongWord; attachType, texType, mipLevel: Integer); cdecl; external cDllName;
+procedure rlFramebufferAttach(fboId, texId: LongWord; attachType: TrlFramebufferAttachType; texType: TrlFramebufferAttachTextureType; mipLevel: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Verify framebuffer is complete}
-function rlFramebufferComplete(id: LongWord): Boolean; cdecl; external cDllName;
+function rlFramebufferComplete(id: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Delete framebuffer from GPU}
-procedure rlUnloadFramebuffer(id: LongWord); cdecl; external cDllName;
+procedure rlUnloadFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Shaders management *)
 
 {Load shader from code strings}
-function rlLoadShaderCode(vsCode, fsCode: PChar): LongWord; cdecl; external cDllName;
+function rlLoadShaderCode(vsCode, fsCode: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Compile custom shader and return shader id (type: GL_VERTEX_SHADER,GL_FRAGMENT_SHADER)}
-function rlCompileShader(shaderCode: PChar; type_: Integer): LongWord; cdecl; external cDllName;
+function rlCompileShader(shaderCode: PChar; type_: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load custom shader program}
-function rlLoadShaderProgram(vShaderId, fShaderId: LongWord): LongWord; cdecl; external cDllName;
+function rlLoadShaderProgram(vShaderId, fShaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload shader program}
-procedure rlUnloadShaderProgram(id: LongWord); cdecl; external cDllName;
+procedure rlUnloadShaderProgram(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get shader location uniform}
-function rlGetLocationUniform(shaderId: LongWord; uniformName: PChar): LongWord; cdecl; external cDllName;
+function rlGetLocationUniform(shaderId: LongWord; uniformName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get shader location attribute}
-function rlGetLocationAttrib(shaderId: LongWord; attribName: PChar): LongWord; cdecl; external cDllName;
+function rlGetLocationAttrib(shaderId: LongWord; attribName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set shader value uniform}
-procedure rlSetUniform(locIndex: Integer; value: Pointer; uniformType, count: Integer); cdecl; external cDllName;
+procedure rlSetUniform(locIndex: Integer; value: Pointer; uniformType, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set shader value matrix}
-procedure rlSetUniformMatrix(locIndex: Integer; mat: TMatrix); cdecl; external cDllName;
+procedure rlSetUniformMatrix(locIndex: Integer; mat: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set shader value sampler}
-procedure rlSetUniformSampler(locIndex: Integer; textureId: LongWord); cdecl; external cDllName;
+procedure rlSetUniformSampler(locIndex: Integer; textureId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set shader currently active (id and locations)}
-procedure rlSetShader(id: LongWord; locs: PInteger); cdecl; external cDllName;
+procedure rlSetShader(id: LongWord; locs: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 
 (* Compute shader management *)
 
 {Load compute shader program}
-function rlLoadComputeShaderProgram(shaderId: LongWord): LongWord; cdecl; external cDllName;
+function rlLoadComputeShaderProgram(shaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Dispatch compute shader (equivalent to *draw* for graphics pilepine)}
-procedure rlComputeShaderDispatch(groupX, groupY, groupZ: LongWord); cdecl; external cDllName;
+procedure rlComputeShaderDispatch(groupX, groupY, groupZ: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Shader buffer storage object management (ssbo) *)
 
 {Load shader storage buffer object (SSBO)}
-function rlLoadShaderBuffer(size: LongWord; data: Pointer; usageHint: LongWord): LongWord; cdecl; external cDllName;
+function rlLoadShaderBuffer(size: LongWord; data: Pointer; usageHint: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Unload shader storage buffer object (SSBO)}
-procedure rlUnloadShaderBuffer(ssboId: LongWord); cdecl; external cDllName;
+procedure rlUnloadShaderBuffer(ssboId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Update SSBO buffer data}
-procedure rlUpdateShaderBuffer(id: LongWord; data: Pointer; dataSize, offset: LongWord); cdecl; external cDllName;
+procedure rlUpdateShaderBuffer(id: LongWord; data: Pointer; dataSize, offset: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Bind SSBO buffer}
-procedure rlBindShaderBuffer(id, index: LongWord); cdecl; external cDllName;
+procedure rlBindShaderBuffer(id, index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Read SSBO buffer data (GPU->CPU)}
-procedure rlReadShaderBuffer(id: LongWord; dest: Pointer; count, offset: LongWord); cdecl; external cDllName;
+procedure rlReadShaderBuffer(id: LongWord; dest: Pointer; count, offset: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Copy SSBO data between buffers}
-procedure rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count: LongWord); cdecl; external cDllName;
+procedure rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get SSBO buffer size}
-function rlGetShaderBufferSize(id: LongWord): LongWord; cdecl; external cDllName;
+function rlGetShaderBufferSize(id: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Buffer management *)
 
 {Bind image texture}
-procedure rlBindImageTexture(id, index, format: Integer; readonly: Boolean); cdecl; external cDllName;
+procedure rlBindImageTexture(id, index, format: Integer; readonly: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Matrix state management *)
 
 {Get internal modelview matrix}
-function rlGetMatrixModelview: TMatrix; cdecl; external cDllName;
+function rlGetMatrixModelview: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get internal projection matrix}
-function rlGetMatrixProjection: TMatrix; cdecl; external cDllName;
+function rlGetMatrixProjection: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get internal accumulated transform matrix}
-function rlGetMatrixTransform: TMatrix; cdecl; external cDllName;
+function rlGetMatrixTransform: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get internal projection matrix for stereo render (selected eye)}
-function rlGetMatrixProjectionStereo(eye: Integer): TMatrix; cdecl; external cDllName;
+function rlGetMatrixProjectionStereo(eye: Integer): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Get internal view offset matrix for stereo render (selected eye)}
-function rlGetMatrixViewOffsetStereo(eye: Integer): TMatrix; cdecl; external cDllName;
+function rlGetMatrixViewOffsetStereo(eye: Integer): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set a custom projection matrix (replaces internal projection matrix)}
-procedure rlSetMatrixProjection(proj: TMatrix); cdecl; external cDllName;
+procedure rlSetMatrixProjection(proj: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set a custom modelview matrix (replaces internal modelview matrix)}
-procedure rlSetMatrixModelview(view: TMatrix); cdecl; external cDllName;
+procedure rlSetMatrixModelview(view: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set eyes projection matrices for stereo rendering}
-procedure rlSetMatrixProjectionStereo(right, left: TMatrix); cdecl; external cDllName;
+procedure rlSetMatrixProjectionStereo(right, left: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Set eyes view offsets matrices for stereo rendering}
-procedure rlSetMatrixViewOffsetStereo(right, left: TMatrix); cdecl; external cDllName;
+procedure rlSetMatrixViewOffsetStereo(right, left: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 (* Quick and dirty cube/quad buffers load->draw->unload *)
 
 {Load and draw a cube}
-procedure rlLoadDrawCube; cdecl; external cDllName;
+procedure rlLoadDrawCube; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 {Load and draw a quad}
-procedure rlLoadDrawQuad; cdecl; external cDllName;
+procedure rlLoadDrawQuad; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
 
 implementation
 
