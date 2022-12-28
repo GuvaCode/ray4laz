@@ -51,7 +51,11 @@
 unit rlgl;
 
 {$mode objfpc}{$H+}
-
+{$packrecords c}
+{$ALIGN 8}
+{$MINENUMSIZE 4}
+// Include configuration file
+{$I raylib.inc}
 
 
 interface

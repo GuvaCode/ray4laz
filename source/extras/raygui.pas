@@ -13,7 +13,12 @@
 
 unit raygui;
 
-{$mode ObjFPC}{$H+}
+{$mode objfpc}{$H+}
+{$packrecords c}
+{$ALIGN 8}
+{$MINENUMSIZE 4}
+// Include configuration file
+{$I ../raylib.inc}
 
 interface
 
@@ -484,136 +489,136 @@ type
 (*Global gui state control functions*)
 
 {Enable gui controls (global state)}
-procedure GuiEnable; cdecl; external cDllName;
+procedure GuiEnable; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiEnable';
 {Disable gui controls (global state)}
-procedure GuiDisable; cdecl; external cDllName;
+procedure GuiDisable; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDisable';
 {Lock gui controls (global state)}
-procedure GuiLock; cdecl; external cDllName;
+procedure GuiLock; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLock';
 {Unlock gui controls (global state)}
-procedure GuiUnlock; cdecl; external cDllName;
+procedure GuiUnlock; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiUnlock';
 {Check if gui is locked (global state)}
-function  GuiIsLocked: Boolean; cdecl; external cDllName;
+function  GuiIsLocked: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiIsLocked';
 {Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f}
-procedure GuiFade(alpha: Single); cdecl; external cDllName;
+procedure GuiFade(alpha: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiFade';
 {Set gui state (global state)}
-procedure GuiSetState(state: TGuiControlState); cdecl; external cDllName;
+procedure GuiSetState(state: TGuiControlState); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSetState';
 {Get gui state (global state)}
-function GuiGetState: TGuiControlState; cdecl; external cDllName;
+function GuiGetState: TGuiControlState; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetState';
 
 (*Font set/get functions*)
 
 {Set gui custom font (global state)}
-procedure GuiSetFont(font: TFont); cdecl; external cDllName;
+procedure GuiSetFont(font: TFont); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSetFont';
 {Get gui custom font (global state)}
-function GuiGetFont:TFont; cdecl; external cDllName;
+function GuiGetFont:TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetFont';
 
 (*Style set/get functions*)
 
 {Set one style property}
-procedure GuiSetStyle(control: TGuiControl; property_: TGuiControlState; value: Integer); cdecl; external cDllName;
+procedure GuiSetStyle(control: TGuiControl; property_: Integer; value: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSetStyle';
 {Get one style property}
-function GuiGetStyle(control: TGuiControl; property_: TGuiControlState): Integer; cdecl; external cDllName;
+function GuiGetStyle(control: TGuiControl; property_: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetStyle';
 
 (*Container/separator controls, useful for controls organization*)
 
 {Window Box control, shows a window that can be closed}
-function GuiWindowBox(bounds: TRectangle; const title: PChar): Boolean; cdecl; external cDllName;
+function GuiWindowBox(bounds: TRectangle; const title: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiWindowBox';
 {Group Box control with text name}
-procedure GuiGroupBox(bounds: TRectangle; const text:PChar); cdecl; external cDllName;
+procedure GuiGroupBox(bounds: TRectangle; const text:PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGroupBox';
 {Line separator control, could contain text}
-procedure GuiLine(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+procedure GuiLine(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLine';
 {Panel control, useful to group controls}
-procedure GuiPanel(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+procedure GuiPanel(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiPanel';
 {Tab Bar control, returns TAB to be closed or -1}
-function GuiTabBar(bounds: TRectangle; const text: PPChar; count: Integer; active: PInteger): Integer; cdecl; external cDllName;
+function GuiTabBar(bounds: TRectangle; const text: PPChar; count: Integer; active: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTabBar';
 {Scroll Panel control}
-function GuiScrollPanel(bounds: TRectangle; const text: PChar; content: TRectangle; scroll: PVector2): TRectangle; cdecl; external cDllName;
+function GuiScrollPanel(bounds: TRectangle; const text: PChar; content: TRectangle; scroll: PVector2): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiScrollPanel';
 
 (*Basic controls set*)
 
 {Label control, shows text}
-procedure GuiLabel(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+procedure GuiLabel(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLabel';
 {Button control, returns true when clicked}
-function GuiButton(bounds: TRectangle; const text: PChar): Boolean; cdecl; external cDllName;
+function GuiButton(bounds: TRectangle; const text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiButton';
 {Label button control, show true when clicked}
-function GuiLabelButton(bounds: TRectangle; const text: PChar): Boolean; cdecl; external cDllName;
+function GuiLabelButton(bounds: TRectangle; const text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLabelButton';
 {Toggle Button control, returns true when active}
-function GuiToggle(bounds: TRectangle; const text: PChar; active: Boolean): Boolean; cdecl; external cDllName;
+function GuiToggle(bounds: TRectangle; const text: PChar; active: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiToggle';
 {Toggle Group control, returns active toggle index}
-function GuiToggleGroup(bounds: TRectangle; const text: PChar; active: Integer): Integer; cdecl; external cDllName;
+function GuiToggleGroup(bounds: TRectangle; const text: PChar; active: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiToggleGroup';
 {Check Box control, returns true when active}
-function GuiCheckBox(bounds: TRectangle; const text: PChar; checked: Boolean): Boolean; cdecl; external cDllName;
+function GuiCheckBox(bounds: TRectangle; const text: PChar; checked: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiCheckBox';
 {Combo Box control, returns selected item index}
-function GuiComboBox(bounds: TRectangle; const text: PChar; active: Integer): Integer; cdecl; external cDllName;
+function GuiComboBox(bounds: TRectangle; const text: PChar; active: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiComboBox';
 {Dropdown Box control, returns selected item}
-function GuiDropdownBox(bounds: TRectangle; const text: PChar; active: PInteger; editMode: Boolean): Boolean; cdecl; external cDllName;
+function GuiDropdownBox(bounds: TRectangle; const text: PChar; active: PInteger; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDropdownBox';
 {Spinner control, returns selected value}
-function GuiSpinner(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Boolean; cdecl; external cDllName;
+function GuiSpinner(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSpinner';
 {Value Box control, updates input text with numbers}
-function GuiValueBox(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Boolean; cdecl; external cDllName;
+function GuiValueBox(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiValueBox';
 {Text Box control, updates input text}
-function GuiTextBox(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Boolean; cdecl; external cDllName;
+function GuiTextBox(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextBox';
 {Text Box control with multiple lines}
-function GuiTextBoxMulti(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Boolean; cdecl; external cDllName;
+function GuiTextBoxMulti(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextBoxMulti';
 {Slider control, returns selected value}
-function GuiSlider(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external cDllName;
+function GuiSlider(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSlider';
 {Slider Bar control, returns selected value}
-function GuiSliderBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external cDllName;
+function GuiSliderBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSliderBar';
 {Progress Bar control, shows current progress value}
-function GuiProgressBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external cDllName;
+function GuiProgressBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiProgressBar';
 {Status Bar control, shows info text}
-procedure GuiStatusBar(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+procedure GuiStatusBar(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiStatusBar';
 {Dummy control for placeholders}
-procedure GuiDummyRec(bounds: TRectangle; const text: PChar); cdecl; external cDllName;
+procedure GuiDummyRec(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDummyRec';
 {Scroll Bar control}
-function GuiScrollBar(bounds: TRectangle; value, minValue, maxValue: Integer): Integer; cdecl; external cDllName;
+function GuiScrollBar(bounds: TRectangle; value, minValue, maxValue: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiScrollBar';
 {Grid control}
-function GuiGrid(bounds: TRectangle; const text: PChar; spacing:Single; subdivs: Integer): TVector2; cdecl; external cDllName;
+function GuiGrid(bounds: TRectangle; const text: PChar; spacing:Single; subdivs: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGrid';
 
 (*Advance controls set*)
 
 {List View control, returns selected list item index}
-function GuiListView(bounds: TRectangle; const text: PChar; scrollIndex: PInteger; active: Integer): Integer; cdecl; external cDllName;
+function GuiListView(bounds: TRectangle; const text: PChar; scrollIndex: PInteger; active: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListView';
 {List View with extended parameters}
-function GuiListViewEx(bounds: TRectangle; const text: PPChar; count: Integer; focus: PInteger; scrollIndex: PInteger; active: Integer): Integer; cdecl; external cDllName;
+function GuiListViewEx(bounds: TRectangle; const text: PPChar; count: Integer; focus: PInteger; scrollIndex: PInteger; active: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListViewEx';
 {Message Box control, displays a message}
-function GuiMessageBox(bounds: TRectangle; const title, message, buttons: PChar): Integer; cdecl; external cDllName;
+function GuiMessageBox(bounds: TRectangle; const title, message, buttons: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiMessageBox';
 {Text Input Box control, ask for text}
-function GuiTextInputBox(bounds: TRectangle; const title, message, buttons, text: PChar; textMaxSize: Integer; secretViewActive: PInteger): Integer; cdecl; external cDllName;
+function GuiTextInputBox(bounds: TRectangle; const title, message, buttons, text: PChar; textMaxSize: Integer; secretViewActive: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextInputBox';
 {Color Picker control (multiple color controls)}
-function GuiColorPicker(bounds: TRectangle; const text: PChar; color: TColorB): TColorB ; cdecl; external cDllName;
+function GuiColorPicker(bounds: TRectangle; const text: PChar; color: TColorB): TColorB ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorPicker';
 {Color Panel control}
-function GuiColorPanel(bounds: TRectangle; const text: PChar; color: TColorB): TColorB ; cdecl; external cDllName;
+function GuiColorPanel(bounds: TRectangle; const text: PChar; color: TColorB): TColorB ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorPanel';
 {Color Bar Alpha control}
-function GuiColorBarAlpha(bounds: TRectangle; const text: PChar; alpha: Single): Single ; cdecl; external cDllName;
+function GuiColorBarAlpha(bounds: TRectangle; const text: PChar; alpha: Single): Single ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorBarAlpha';
 {Color Bar Hue control}
-function GuiColorBarHue(bounds:TRectangle; const text: PChar; value: Single): Single ; cdecl; external cDllName;
+function GuiColorBarHue(bounds:TRectangle; const text: PChar; value: Single): Single ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorBarHue';
 
 (* Styles loading functions *)
 {Load style file over global style variable (.rgs)}
-procedure GuiLoadStyle(const fileName: PChar); cdecl; external cDllName;
+procedure GuiLoadStyle(const fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadStyle';
 {Load style default over global style }
-procedure GuiLoadStyleDefault; cdecl; external cDllName;
+procedure GuiLoadStyleDefault; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadStyleDefault';
 
 (* Tooltips management functions *)
 {Enable gui tooltips (global state)}
-procedure GuiEnableTooltip; cdecl; external cDllName;
+procedure GuiEnableTooltip; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiEnableTooltip';
 {Disable gui tooltips (global state)}
-procedure GuiDisableTooltip; cdecl; external cDllName;
+procedure GuiDisableTooltip; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDisableTooltip';
 {Set tooltip string}
-procedure GuiSetTooltip(const tooltip: PChar); cdecl; external cDllName;
+procedure GuiSetTooltip(const tooltip: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSetTooltip';
 
 (* Icons functionality *)
 {Get text with icon id prepended (if supported)}
-function GuiIconText(iconId: TGuiIconName; const text: PChar): PChar; cdecl; external cDllName;
+function GuiIconText(iconId: TGuiIconName; const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiIconText';
 
 {$IFDEF RAYGUI_NO_RICONS}
 {Get full icons data pointer}
-function GuiGetIcons: Pointer; cdecl; external cDllName;
+function GuiGetIcons: Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetIcons';
 {Load raygui icons file (.rgi) into internal icons data}
-function GuiLoadIcons(const fileName: PChar; loadIconsName: Boolean): PPChar; cdecl; external cDllName;
+function GuiLoadIcons(const fileName: PChar; loadIconsName: Boolean): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadIcons';
 {Gui icons functionality}
-procedure GuiDrawIcon(iconId, posX, posY, pixelSize: Integer; color: TColorB); cdecl; external cDllName;
+procedure GuiDrawIcon(iconId, posX, posY, pixelSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDrawIcon';
 {$ENDIF}
 
 implementation
