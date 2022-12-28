@@ -659,119 +659,122 @@ procedure rlDrawVertexArrayElementsInstanced(offset, count: Integer; const buffe
 (* Textures management *)
 
 {Load texture in GPU}
-function rlLoadTexture(const data: Pointer; width, height: Integer; format: TrlPixelFormat; mipmapCount: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlLoadTexture(const data: Pointer; width, height: Integer; format: TrlPixelFormat; mipmapCount: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadTexture';
 {Load depth texture/renderbuffer (to be attached to fbo)}
-function rlLoadTextureDepth(width, height: Integer; useRenderBuffer: boolean): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlLoadTextureDepth(width, height: Integer; useRenderBuffer: boolean): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadTextureDepth';
 {Load texture cubemap}
-function rlLoadTextureCubemap(const data: Pointer; size: Integer; format: TrlPixelFormat): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlLoadTextureCubemap(const data: Pointer; size: Integer; format: TrlPixelFormat): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadTextureCubemap';
 {Update GPU texture with new data}
-procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height: Integer; format: TrlPixelFormat; data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height: Integer; format: TrlPixelFormat; data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateTexture';
 {Get OpenGL internal formats}
-procedure rlGetGlTextureFormats(format: TrlPixelFormat; glInternalFormat, glFormat, glType: PLongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlGetGlTextureFormats(format: TrlPixelFormat; glInternalFormat, glFormat, glType: PLongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetGlTextureFormats';
 {Get name string for pixel format}
-function rlGetPixelFormatName(format: TrlPixelFormat): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlGetPixelFormatName(format: TrlPixelFormat): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetPixelFormatName';
 {Unload texture from GPU memory}
-procedure rlUnloadTexture(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlUnloadTexture(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadTexture';
 {Generate mipmap data for selected texture}
-procedure rlGenTextureMipmaps(id: LongWord; width, height: Integer; format: TrlPixelFormat; mipmaps:PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlGenTextureMipmaps(id: LongWord; width, height: Integer; format: TrlPixelFormat; mipmaps: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGenTextureMipmaps';
 {Read texture pixel data}
-function rlReadTexturePixels(id: LongWord; width, height: Integer; format: TrlPixelFormat): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlReadTexturePixels(id: LongWord; width, height: Integer; format: TrlPixelFormat): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlReadTexturePixels';
 {Read screen pixel data (color buffer)}
-function rlReadScreenPixels(width, height: Integer): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlReadScreenPixels(width, height: Integer): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlReadScreenPixels';
 
 
 (* Framebuffer management (fbo) *)
 
 {Load an empty framebuffer}
-function rlLoadFramebuffer(width, height: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlLoadFramebuffer(width, height: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadFramebuffer';
 {Attach texture/renderbuffer to a framebuffer}
-procedure rlFramebufferAttach(fboId, texId: LongWord; attachType: TrlFramebufferAttachType; texType: TrlFramebufferAttachTextureType; mipLevel: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlFramebufferAttach(fboId, texId: LongWord; attachType: TrlFramebufferAttachType; texType: TrlFramebufferAttachTextureType; mipLevel: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlFramebufferAttach';
 {Verify framebuffer is complete}
-function rlFramebufferComplete(id: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlFramebufferComplete(id: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlFramebufferComplete';
 {Delete framebuffer from GPU}
-procedure rlUnloadFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlUnloadFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadFramebuffer';
 
 (* Shaders management *)
 
 {Load shader from code strings}
-function rlLoadShaderCode(vsCode, fsCode: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlLoadShaderCode(vsCode, fsCode: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderCode';
 {Compile custom shader and return shader id (type: GL_VERTEX_SHADER,GL_FRAGMENT_SHADER)}
-function rlCompileShader(shaderCode: PChar; type_: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlCompileShader(shaderCode: PChar; type_: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCompileShader';
 {Load custom shader program}
-function rlLoadShaderProgram(vShaderId, fShaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlLoadShaderProgram(vShaderId, fShaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderProgram';
 {Unload shader program}
-procedure rlUnloadShaderProgram(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlUnloadShaderProgram(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadShaderProgram';
 {Get shader location uniform}
-function rlGetLocationUniform(shaderId: LongWord; uniformName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlGetLocationUniform(shaderId: LongWord; uniformName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationUniform';
 {Get shader location attribute}
-function rlGetLocationAttrib(shaderId: LongWord; attribName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlGetLocationAttrib(shaderId: LongWord; attribName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationAttrib';
 {Set shader value uniform}
-procedure rlSetUniform(locIndex: Integer; value: Pointer; uniformType, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlSetUniform(locIndex: Integer; value: Pointer; uniformType: TrlShaderUniformDataType; count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniform';
 {Set shader value matrix}
-procedure rlSetUniformMatrix(locIndex: Integer; mat: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlSetUniformMatrix(locIndex: Integer; mat: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniformMatrix';
 {Set shader value sampler}
-procedure rlSetUniformSampler(locIndex: Integer; textureId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlSetUniformSampler(locIndex: Integer; textureId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniformSampler';
 {Set shader currently active (id and locations)}
-procedure rlSetShader(id: LongWord; locs: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlSetShader(id: LongWord; locs: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetShader';
 
 
 (* Compute shader management *)
 
 {Load compute shader program}
-function rlLoadComputeShaderProgram(shaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlLoadComputeShaderProgram(shaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadComputeShaderProgram';
 {Dispatch compute shader (equivalent to *draw* for graphics pilepine)}
-procedure rlComputeShaderDispatch(groupX, groupY, groupZ: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlComputeShaderDispatch(groupX, groupY, groupZ: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlComputeShaderDispatch';
 
 (* Shader buffer storage object management (ssbo) *)
 
 {Load shader storage buffer object (SSBO)}
-function rlLoadShaderBuffer(size: LongWord; data: Pointer; usageHint: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlLoadShaderBuffer(size: LongWord; data: Pointer; usageHint: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderBuffer';
 {Unload shader storage buffer object (SSBO)}
-procedure rlUnloadShaderBuffer(ssboId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlUnloadShaderBuffer(ssboId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadShaderBuffer';
 {Update SSBO buffer data}
-procedure rlUpdateShaderBuffer(id: LongWord; data: Pointer; dataSize, offset: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlUpdateShaderBuffer(id: LongWord; data: Pointer; dataSize, offset: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateShaderBuffer';
 {Bind SSBO buffer}
-procedure rlBindShaderBuffer(id, index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlBindShaderBuffer(id, index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlBindShaderBuffer';
 {Read SSBO buffer data (GPU->CPU)}
-procedure rlReadShaderBuffer(id: LongWord; dest: Pointer; count, offset: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlReadShaderBuffer(id: LongWord; dest: Pointer; count, offset: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlReadShaderBuffer';
 {Copy SSBO data between buffers}
-procedure rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCopyShaderBuffer';
 {Get SSBO buffer size}
-function rlGetShaderBufferSize(id: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlGetShaderBufferSize(id: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetShaderBufferSize';
 
 (* Buffer management *)
 
 {Bind image texture}
-procedure rlBindImageTexture(id, index, format: Integer; readonly: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlBindImageTexture(id, index: Integer; format: TrlPixelFormat; readonly: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlBindImageTexture';
 
 (* Matrix state management *)
 
 {Get internal modelview matrix}
-function rlGetMatrixModelview: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlGetMatrixModelview: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetMatrixModelview';
 {Get internal projection matrix}
-function rlGetMatrixProjection: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlGetMatrixProjection: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetMatrixProjection';
 {Get internal accumulated transform matrix}
-function rlGetMatrixTransform: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlGetMatrixTransform: TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetMatrixTransform';
 {Get internal projection matrix for stereo render (selected eye)}
-function rlGetMatrixProjectionStereo(eye: Integer): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlGetMatrixProjectionStereo(eye: Integer): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetMatrixProjectionStereo';
 {Get internal view offset matrix for stereo render (selected eye)}
-function rlGetMatrixViewOffsetStereo(eye: Integer): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+function rlGetMatrixViewOffsetStereo(eye: Integer): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetMatrixViewOffsetStereo';
 {Set a custom projection matrix (replaces internal projection matrix)}
-procedure rlSetMatrixProjection(proj: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlSetMatrixProjection(proj: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetMatrixProjection';
 {Set a custom modelview matrix (replaces internal modelview matrix)}
-procedure rlSetMatrixModelview(view: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlSetMatrixModelview(view: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetMatrixModelview';
 {Set eyes projection matrices for stereo rendering}
-procedure rlSetMatrixProjectionStereo(right, left: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlSetMatrixProjectionStereo(right, left: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetMatrixProjectionStereo';
 {Set eyes view offsets matrices for stereo rendering}
-procedure rlSetMatrixViewOffsetStereo(right, left: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlSetMatrixViewOffsetStereo(right, left: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetMatrixViewOffsetStereo';
 
 (* Quick and dirty cube/quad buffers load->draw->unload *)
 
 {Load and draw a cube}
-procedure rlLoadDrawCube; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlLoadDrawCube; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadDrawCube';
 {Load and draw a quad}
-procedure rlLoadDrawQuad; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};
+procedure rlLoadDrawQuad; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadDrawQuad';
 
 implementation
+uses Math;
 
+initialization
+  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);
 end.
