@@ -814,7 +814,7 @@ const
        BLEND_CUSTOM_SEPARATE   = TBlendMode(7); // Blend textures using custom rgb/alpha separate src/dst factors rlSetBlendFactorsSeparate())
 
    (* Gestures *)
-   //  NOTE: It could be used as flags to enable only some gestures
+   // NOTE: Provided as bit-wise flags to enable only desired gestures
    type
      PGesture = ^TGesture;
      TGesture =  Integer;

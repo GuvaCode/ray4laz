@@ -15,8 +15,8 @@
 *
 *   LICENSE: zlib/libpng
 *
-*   Copyright (c) 2015-2021 Ramon Santamaria (@raysan5)
-*   Pascal header 2021 Gunko Vadim (@guvacode)
+*   Copyright (c) 2015-2023 Ramon Santamaria (@raysan5)
+*   Pascal header 2021-2023 Gunko Vadim (@guvacode)
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
 *   will the authors be held liable for any damages arising from the use of this software.

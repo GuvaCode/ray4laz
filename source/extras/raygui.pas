@@ -7,7 +7,7 @@
 *   raygui is a tools-dev-focused immediate-mode-gui library based on raylib but also       *
 *   available as a standalone library, as long as input and drawing functions are provided. *
 *                                                                                           *
-*   pascal header by Gunko Vadim                                                            *
+*   pascal header 2021 - 2023 by Gunko Vadim                                                *
 *                                                                                           *
 *********************************************************************************************}
 
