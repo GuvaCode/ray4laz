@@ -3,13 +3,8 @@ raylib v4.5-dev
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
-
-unit raylib;
 {$mode objfpc}{$H+}
-{$packrecords c}
-{$ALIGN 8}
-{$MINENUMSIZE 4}
-
+unit raylib;
 // Include configuration file
 {$I raylib.inc}
 
@@ -29,8 +24,12 @@ const
 
  (* Color, 4 components, R8G8B8A8 (32bit) *)
  type
+   { TColorB }
    TColorB = record
        r,g,b,a : byte; // Color value
+       {$IFDEF Adv_Record}
+       constructor Create(aR, aG, aB, aA: Byte);
+       {$ENDIF}
      end;
   PColorB = ^TColorB;
   TColor = TColorB;
@@ -72,6 +71,9 @@ const
      TVector2 = record
          x : single; // Vector x component
          y : single; // Vector y component
+         {$IFDEF Adv_Record}
+         constructor Create(aX, aY: Single);
+         {$ENDIF}
        end;
 
      (* Vector3, 3 components *)
@@ -80,6 +82,9 @@ const
          x : single; // Vector x component
          y : single; // Vector y component
          z : single; // Vector z component
+         {$IFDEF Adv_Record}
+         constructor Create(aX, aY, aZ: Single);
+         {$ENDIF}
        end;
 
      (* Vector4, 4 components *)
@@ -89,6 +94,9 @@ const
          y : single; // Vector y component
          z : single; // Vector z component
          w : single; // Vector w component
+         {$IFDEF Adv_Record}
+         constructor Create(aX, aY, aZ, aW: Single);
+         {$ENDIF}
        end;
 
      (* Quaternion, 4 components (Vector4 alias) *)
@@ -124,9 +132,13 @@ const
          y      : single; // Rectangle top-left corner position y
          width  : single; // Rectangle width
          height : single; // Rectangle height
+         {$IFDEF Adv_Record}
+         constructor Create(aX, aY, aWidth, aHeight: Single);
+         {$ENDIF}
        end;
 
      (* Image, pixel data stored in CPU memory (RAM) *)
+
      PImage = ^TImage;
      TImage = record
          data    : pointer; // Image raw data
@@ -207,7 +219,7 @@ const
          up         : TVector3; // Camera up vector (rotation over its axis)
          fovy       : single;   // Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
          projection : Integer;  // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
-       end;
+     end;
 
      (* Camera type fallback, defaults to Camera3D *)
      PCamera = ^TCamera;
@@ -1111,7 +1123,7 @@ procedure OpenURL(const url: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllNam
 (* Callbacks to hook some internal functions *)
 // WARNING: This callbacks are intended for advance users
 type
-  TTraceLogCallback = procedure(logLevel: Integer; const text: PChar); cdecl; varargs; // , va_list args varargs ???
+  TTraceLogCallback = procedure(logLevel: TTraceLogLevel; const Text: PChar; Args: Pointer); cdecl varargs;
   TLoadFileDataCallback = function(const fileName: PChar; out bytesRead: LongWord): PChar; cdecl;
   TSaveFileDataCallback = function(const fileName: PChar; data: Pointer; bytesToWrite: LongWord): Boolean; cdecl;
   TLoadFileTextCallback = function(const fileName: PChar): PChar; cdecl;
@@ -2122,6 +2134,10 @@ procedure ColorSet(aColor: PColorB; aR: Byte; aG: Byte; aB: Byte; aA: Byte);
 
 function RectangleCreate(aX: Single; aY: Single; aWidth: Single; aHeight: Single): TRectangle;
 procedure RectangleSet(aRect: PRectangle; aX: Single; aY: Single; aWidth: Single; aHeight: Single);
+
+function BoundingBoxCreate(aMin, aMax: TVector3): TBoundingBox;
+procedure BoundingBoxSet(aBoundingBox: PBoundingBox; aMin, aMax: TVector3);
+
 function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer): TCamera3D;
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer);
 
@@ -2196,6 +2212,18 @@ begin
   aRect^.Height := aHeight;
 end;
 
+function BoundingBoxCreate(aMin, aMax: TVector3): TBoundingBox;
+begin
+  Result.min := aMin;
+  Result.max := aMax;
+end;
+
+procedure BoundingBoxSet(aBoundingBox: PBoundingBox; aMin, aMax: TVector3);
+begin
+  aBoundingBox^.min := aMin;
+  aBoundingBox^.max := aMax;
+end;
+
 function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer): TCamera3D;
 begin
   Result.position := aPosition;
@@ -2214,6 +2242,49 @@ begin
   aCam^.projection := aType;
 end;
 
+{$IFDEF Adv_Record}
+{ TColorB }
+constructor TColorB.Create(aR, aG, aB, aA: Byte);
+begin
+  Self.R := aR;
+  Self.G := aG;
+  Self.B := aB;
+  Self.A := aA;
+end;
+
+{ TRectangle }
+constructor TRectangle.Create(aX, aY, aWidth, aHeight: Single);
+begin
+  Self.X := aX;
+  Self.Y := aY;
+  Self.Width := aWidth;
+  Self.Height := aHeight;
+end;
+
+{ TVector4 }
+constructor TVector4.Create(aX, aY, aZ, aW: Single);
+begin
+  self.x:=aX;
+  self.y:=aY;
+  self.z:=aZ;
+  self.w:=aW;
+end;
+
+{ TVector3 }
+constructor TVector3.Create(aX, aY, aZ: Single);
+begin
+  self.x:=aX;
+  self.y:=aY;
+  self.z:=aZ;
+end;
+
+{ TVector2 }
+constructor TVector2.Create(aX, aY: Single);
+begin
+  self.x:=aX;
+  self.y:=ay;
+end;
+{$ENDIF}
 
 initialization
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);

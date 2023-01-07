@@ -73,28 +73,24 @@ begin
     '  screenHeight = 450;'+ LineEnding  + LineEnding +
     'begin' + LineEnding +
     '  // Initialization'+ LineEnding +
-    '  //--------------------------------------------------------------------------------------' + LineEnding +
     '  InitWindow(screenWidth, screenHeight, ''raylib - simple project'');'+ LineEnding +
-    '  SetTargetFPS(60);// Set our game to run at 60 frames-per-second'+ LineEnding +
-    '  //--------------------------------------------------------------------------------------'+ LineEnding +
+    '  SetTargetFPS(60);// Set our game to run at 60 frames-per-second'+ LineEnding +  LineEnding +
+
     '  // Main game loop'+ LineEnding +
     '  while not WindowShouldClose() do'+ LineEnding +
     '    begin'+ LineEnding +
     '      // Update'+ LineEnding +
-    '      //----------------------------------------------------------------------------------'+ LineEnding +
-    '      // TODO: Update your variables here'+ LineEnding +
-    '      //----------------------------------------------------------------------------------'+ LineEnding + LineEnding +
+    '      // TODO: Update your variables here'+ LineEnding + LineEnding +
     '      // Draw'+ LineEnding +
-    '      //----------------------------------------------------------------------------------'+ LineEnding +
     '      BeginDrawing();'+ LineEnding +
     '        ClearBackground(RAYWHITE);'+ LineEnding +
     '        DrawText(''raylib in lazarus !!!'', 20, 20, 10, DARKGRAY);'+ LineEnding +
     '      EndDrawing();'+ LineEnding +
-    '    end;'+ LineEnding +
+    '    end;'+ LineEnding + LineEnding +
+
     '  // De-Initialization'+ LineEnding +
-    '  //--------------------------------------------------------------------------------------'+ LineEnding +
     '  CloseWindow();        // Close window and OpenGL context'+ LineEnding +
-    '  //--------------------------------------------------------------------------------------'+ LineEnding +
+
     'end.'+ LineEnding + LineEnding;
 
   AProject.MainFile.SetSourceText(Source);

@@ -5,6 +5,7 @@
 {.$DEFINE RAY_STATIC}
 {$ENDIF}
 
+
 //Use selected OpenGL graphics backend, should be supported by platform
 //Those preprocessor defines are only used on rlgl module, if OpenGL version is
 //required by any other module, use rlGetVersion() to check it
@@ -16,4 +17,20 @@
 {.$define GRAPHICS_API_OPENGL_ES2}
 
 // Default internal render batch elements limits
-{.$define RL_DEFAULT_BATCH_BUFFER_ELEMENTS}     
+{.$define RL_DEFAULT_BATCH_BUFFER_ELEMENTS}
+
+// Other Settings
+
+// Switch to advanced record like Delphi mode
+{.$define Adv_Record}
+
+{$IFDEF Adv_Record}
+{$modeSwitch advancedRecords}
+{$ENDIF}
+
+{$packrecords c}
+{$ALIGN 8}
+{$MINENUMSIZE 4}
+
+
+
