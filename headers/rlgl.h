@@ -596,6 +596,7 @@ RLAPI void rlDisableTexture(void);                      // Disable texture
 RLAPI void rlEnableTextureCubemap(unsigned int id);     // Enable texture cubemap
 RLAPI void rlDisableTextureCubemap(void);               // Disable texture cubemap
 RLAPI void rlTextureParameters(unsigned int id, int param, int value); // Set texture parameters (filter, wrap)
+RLAPI void rlCubemapParameters(unsigned int id, int param, int value); // Set cubemap parameters (filter, wrap)
 
 // Shader state
 RLAPI void rlEnableShader(unsigned int id);             // Enable shader program
@@ -789,10 +790,17 @@ RLAPI void rlLoadDrawQuad(void);     // Load and draw a quad
 #endif
 
 #if defined(GRAPHICS_API_OPENGL_ES2)
-    #define GL_GLEXT_PROTOTYPES
-    //#include <EGL/egl.h>              // EGL library -> not required, platform layer
-    #include <GLES2/gl2.h>              // OpenGL ES 2.0 library
-    #include <GLES2/gl2ext.h>           // OpenGL ES 2.0 extensions library
+    // NOTE: OpenGL ES 2.0 can be enabled on PLATFORM_DESKTOP,
+    // in that case, functions are loaded from a custom glad for OpenGL ES 2.0 
+    #if defined(PLATFORM_DESKTOP)
+        #define GLAD_GLES2_IMPLEMENTATION
+        #include "external/glad_gles2.h"
+    #else
+        #define GL_GLEXT_PROTOTYPES
+        //#include <EGL/egl.h>          // EGL library -> not required, platform layer
+        #include <GLES2/gl2.h>          // OpenGL ES 2.0 library
+        #include <GLES2/gl2ext.h>       // OpenGL ES 2.0 extensions library
+    #endif
 
     // It seems OpenGL ES 2.0 instancing entry points are not defined on Raspberry Pi
     // provided headers (despite being defined in official Khronos GLES2 headers)
@@ -1617,6 +1625,50 @@ void rlTextureParameters(unsigned int id, int param, int value)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+// Set cubemap parameters (wrap mode/filter mode)
+void rlCubemapParameters(unsigned int id, int param, int value)
+{
+#if !defined(GRAPHICS_API_OPENGL_11)
+    glBindTexture(GL_TEXTURE_CUBE_MAP, id);
+
+    // Reset anisotropy filter, in case it was set
+    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
+
+    switch (param)
+    {
+        case RL_TEXTURE_WRAP_S:
+        case RL_TEXTURE_WRAP_T:
+        {
+            if (value == RL_TEXTURE_WRAP_MIRROR_CLAMP)
+            {
+                if (RLGL.ExtSupported.texMirrorClamp) glTexParameteri(GL_TEXTURE_CUBE_MAP, param, value);
+                else TRACELOG(RL_LOG_WARNING, "GL: Clamp mirror wrap mode not supported (GL_MIRROR_CLAMP_EXT)");
+            }
+            else glTexParameteri(GL_TEXTURE_CUBE_MAP, param, value);
+
+        } break;
+        case RL_TEXTURE_MAG_FILTER:
+        case RL_TEXTURE_MIN_FILTER: glTexParameteri(GL_TEXTURE_CUBE_MAP, param, value); break;
+        case RL_TEXTURE_FILTER_ANISOTROPIC:
+        {
+            if (value <= RLGL.ExtSupported.maxAnisotropyLevel) glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, (float)value);
+            else if (RLGL.ExtSupported.maxAnisotropyLevel > 0.0f)
+            {
+                TRACELOG(RL_LOG_WARNING, "GL: Maximum anisotropic filter level supported is %iX", id, (int)RLGL.ExtSupported.maxAnisotropyLevel);
+                glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, (float)value);
+            }
+            else TRACELOG(RL_LOG_WARNING, "GL: Anisotropic filtering not supported");
+        } break;
+#if defined(GRAPHICS_API_OPENGL_33)
+        case RL_TEXTURE_MIPMAP_BIAS_RATIO: glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_LOD_BIAS, value/100.0f);
+#endif
+        default: break;
+    }
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+#endif
+}
+
 // Enable shader program
 void rlEnableShader(unsigned int id)
 {
@@ -2144,6 +2196,12 @@ void rlLoadExtensions(void *loader)
 #endif  // GRAPHICS_API_OPENGL_33
 
 #if defined(GRAPHICS_API_OPENGL_ES2)
+
+    #if defined(PLATFORM_DESKTOP)
+    if (gladLoadGLES2((GLADloadfunc)loader) == 0) TRACELOG(RL_LOG_WARNING, "GLAD: Cannot load OpenGL ES2.0 functions");
+    else TRACELOG(RL_LOG_INFO, "GLAD: OpenGL ES2.0 loaded successfully");
+    #endif
+
     // Get supported extensions list
     GLint numExt = 0;
     const char **extList = RL_MALLOC(512*sizeof(const char *)); // Allocate 512 strings pointers (2 KB)

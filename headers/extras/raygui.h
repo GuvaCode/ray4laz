@@ -572,6 +572,7 @@ RAYGUIAPI const char *GuiIconText(int iconId, const char *text); // Get text wit
 RAYGUIAPI unsigned int *GuiGetIcons(void);                      // Get raygui icons data pointer
 RAYGUIAPI char **GuiLoadIcons(const char *fileName, bool loadIconsName);  // Load raygui icons file (.rgi) into internal icons data
 RAYGUIAPI void GuiDrawIcon(int iconId, int posX, int posY, int pixelSize, Color color);
+RAYGUIAPI void GuiSetIconScale(int scale);                      // Set icon drawing size
 
 #if !defined(RAYGUI_CUSTOM_ICONS)
 //----------------------------------------------------------------------------------
@@ -3796,6 +3797,13 @@ void GuiDrawIcon(int iconId, int posX, int posY, int pixelSize, Color color)
         }
     }
 }
+
+// Set icon drawing size
+void GuiSetIconScale(int scale)
+{
+    if (scale >= 1) guiIconScale = scale;
+}
+
 #endif      // !RAYGUI_NO_ICONS
 
 //----------------------------------------------------------------------------------
@@ -3876,7 +3884,7 @@ static Rectangle GetTextBounds(int control, Rectangle bounds)
     // Consider TEXT_PADDING properly, depends on control type and TEXT_ALIGNMENT
     switch (control)
     {
-        case COMBOBOX: bounds.width -= (GuiGetStyle(control, COMBO_BUTTON_WIDTH) + GuiGetStyle(control, COMBO_BUTTON_SPACING)); break;
+        case COMBOBOX: textBounds.width -= (GuiGetStyle(control, COMBO_BUTTON_WIDTH) + GuiGetStyle(control, COMBO_BUTTON_SPACING)); break;
         //case VALUEBOX: break;   // NOTE: ValueBox text value always centered, text padding applies to label
         default:
         {
@@ -4108,13 +4116,13 @@ static void GuiTooltip(Rectangle controlRec)
 
         if ((controlRec.x + textSize.x + 16) > GetScreenWidth()) controlRec.x -= (textSize.x + 16 - controlRec.width);
 
-        GuiPanel((Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, GuiGetStyle(DEFAULT, TEXT_SIZE) + 8 }, NULL);
+        GuiPanel((Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, GuiGetStyle(DEFAULT, TEXT_SIZE) + 8.f }, NULL);
 
         int textPadding = GuiGetStyle(LABEL, TEXT_PADDING);
         int textAlignment = GuiGetStyle(LABEL, TEXT_ALIGNMENT);
         GuiSetStyle(LABEL, TEXT_PADDING, 0);
         GuiSetStyle(LABEL, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
-        GuiLabel((Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, GuiGetStyle(DEFAULT, TEXT_SIZE) + 8 }, guiTooltipPtr);
+        GuiLabel((Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, GuiGetStyle(DEFAULT, TEXT_SIZE) + 8.f }, guiTooltipPtr);
         GuiSetStyle(LABEL, TEXT_ALIGNMENT, textAlignment);
         GuiSetStyle(LABEL, TEXT_PADDING, textPadding);
     }

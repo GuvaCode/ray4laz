@@ -619,6 +619,8 @@ function GuiGetIcons: Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$END
 function GuiLoadIcons(const fileName: PChar; loadIconsName: Boolean): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadIcons';
 {Gui icons functionality}
 procedure GuiDrawIcon(iconId, posX, posY, pixelSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDrawIcon';
+{Set icon drawing size}
+procedure GuiSetIconScale(scale: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetIcons';
 {$ENDIF}
 
 implementation

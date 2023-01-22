@@ -513,6 +513,8 @@ procedure rlEnableTextureCubemap(id: LongWord); cdecl; external {$IFNDEF RAY_STA
 procedure rlDisableTextureCubemap; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableTextureCubemap';
 {Set texture parameters (filter, wrap)}
 procedure rlTextureParameters(id: LongWord; param, value: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlTextureParameters';
+{Set cubemap parameters (filter, wrap)}
+procedure rlCubemapParameters(id: LongWord; param, value: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlTextureParameters';
 
 (* Shader state *)
 
