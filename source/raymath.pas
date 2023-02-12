@@ -102,6 +102,8 @@ function Vector2Distance(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RA
 function Vector2DistanceSqr(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2DistanceSqr';
 { Calculate angle from two vectors in X-axis }
 function Vector2Angle(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Angle';
+{ Calculate angle defined by a two vectors line }
+function Vector2LineAngle(start, end_: TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2LineAngle';
 { Scale vector (multiply by value) }
 function Vector2Scale(v : TVector2; scale : Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Scale';
 { Multiply vector by vector }
