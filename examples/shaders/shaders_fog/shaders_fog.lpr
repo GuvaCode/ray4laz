@@ -69,7 +69,7 @@ begin
   // Using just 1 point lights
   CreateLight(LIGHT_POINT, Vector3Create( 0, 2, 6 ), Vector3Zero(), WHITE, shader);
 
-  SetCameraMode(camera, CAMERA_ORBITAL);  // Set an orbital camera mode
+
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
 
   //--------------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@camera);              // Update camera
+      UpdateCamera(@camera,CAMERA_ORBITAL);              // Update camera
       if IsKeyDown(KEY_UP) then
         begin
             fogDensity += 0.001;

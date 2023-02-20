@@ -59,7 +59,7 @@ begin
 	end;
 
        currentModel := 0;
-       SetCameraMode(camera, CAMERA_ORBITAL);  // Set a orbital camera mode
+       DisableCursor;
        SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop
@@ -67,7 +67,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@camera);      // Update our camera to orbit
+      UpdateCamera(@camera,CAMERA_ORBITAL);      // Update our camera to orbit
       // Cycle between models on mouse click
       if IsMouseButtonPressed(MOUSE_BUTTON_LEFT) then currentModel := (currentModel + 1) mod MAX_VOX_FILES;
 

@@ -92,7 +92,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
  camera.fovy := 45.0;
  camera.projection := CAMERA_PERSPECTIVE;
 
- SetCameraMode(camera, CAMERA_FREE);
+ DisableCursor;
 
 SetTargetFPS(60);
 
@@ -101,7 +101,7 @@ SetTargetFPS(60);
 
   // Update
   //----------------------------------------------------------------------------------
-   UpdateCamera(@camera);
+   UpdateCamera(@camera,CAMERA_FREE);
    earthRotation += (5.0*rotationSpeed);
    earthOrbitRotation += (365/360.0*(5.0*rotationSpeed)*rotationSpeed);
    moonRotation += (2.0*rotationSpeed);

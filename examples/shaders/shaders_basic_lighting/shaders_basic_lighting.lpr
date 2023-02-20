@@ -76,12 +76,12 @@ begin
   cube.materials[0].shader := shader;
 
   // Using 4 point lights: gold, red, green and blue
-  lights[0] := CreateLight(LIGHT_POINT, Vector3Create( -2, 1, -2 ), Vector3Zero(), YELLOW, shader);
-  lights[1] := CreateLight(LIGHT_POINT, Vector3Create( 2, 1, 2 ), Vector3Zero(), RED, shader);
-  lights[2] := CreateLight(LIGHT_POINT, Vector3Create( -2, 1, 2 ), Vector3Zero(), GREEN, shader);
-  lights[3] := CreateLight(LIGHT_POINT, Vector3Create( 2, 1, -2 ), Vector3Zero(), BLUE, shader);
+  lights[0] := CreateLight(LIGHT_POINT, Vector3Create( -2, 3, -2 ), Vector3Zero(), YELLOW, shader);
+  lights[1] := CreateLight(LIGHT_POINT, Vector3Create( 2, 3, 2 ), Vector3Zero(), RED, shader);
+  lights[2] := CreateLight(LIGHT_POINT, Vector3Create( -2, 3, 2 ), Vector3Zero(), GREEN, shader);
+  lights[3] := CreateLight(LIGHT_POINT, Vector3Create( 2, 3, -2 ), Vector3Zero(), BLUE, shader);
 
-  SetCameraMode(camera, CAMERA_ORBITAL);  // Set an orbital camera mode
+
 
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-     UpdateCamera(@camera);              // Update camera
+     UpdateCamera(@camera,CAMERA_ORBITAL);              // Update camera
 
      // Check key inputs to enable/disable lights
      if IsKeyPressed(KEY_Y) then  lights[0].enabled := not lights[0].enabled;

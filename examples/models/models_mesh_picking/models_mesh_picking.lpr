@@ -63,7 +63,7 @@ begin
    Sp := Vector3Create(-30.0, 5.0, 5.0);
    Sr := 4.0;
 
-   SetCameraMode(Camera, CAMERA_FREE); // Set a free camera mode
+   DisableCursor;
 
    SetTargetFPS(60); // Set our game to run at 60 frames-per-second
 
@@ -73,7 +73,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@Camera);
+      UpdateCamera(@Camera,CAMERA_FREE);
 
       // Display information about closest hit
       Collision := Default(TRayCollision);

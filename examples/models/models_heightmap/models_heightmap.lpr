@@ -36,7 +36,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
 
 
  UnloadImage(image);                     // Unload heightmap image from RAM, already uploaded to VRAM
- SetCameraMode(camera, CAMERA_ORBITAL);  // Set an orbital camera mode
+
 
 
 
@@ -45,7 +45,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
  begin
    // Update
  //----------------------------------------------------------------------------------
- UpdateCamera(@camera);              // Update camera
+ UpdateCamera(@camera,CAMERA_ORBITAL);              // Update camera
  //----------------------------------------------------------------------------------
 
 

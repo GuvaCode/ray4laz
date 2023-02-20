@@ -46,7 +46,7 @@ begin
 
   Position := Vector3Create(0.0, 0.0, 0.0);    // Set model position
 
-  SetCameraMode(Camera, CAMERA_FREE);         // Set an orbital camera mode
+  DisableCursor;
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@Camera);
+      UpdateCamera(@Camera,CAMERA_FREE);
       //----------------------------------------------------------------------------------
 
       // Draw

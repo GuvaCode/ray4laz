@@ -63,12 +63,12 @@ begin
       // Check collisions player vs enemy-box
       if CheckCollisionBoxes(
         BoundingBoxCreate(
-          TVector3.Create(PlayerPosition.X - PlayerSize.X / 2, PlayerPosition.Y - PlayerSize.Y / 2, PlayerPosition.Z - PlayerSize.Z / 2),
-          TVector3.Create(PlayerPosition.X + PlayerSize.X / 2, PlayerPosition.Y + PlayerSize.Y / 2, PlayerPosition.Z + PlayerSize.Z / 2)
+          Vector3Create(PlayerPosition.X - PlayerSize.X / 2, PlayerPosition.Y - PlayerSize.Y / 2, PlayerPosition.Z - PlayerSize.Z / 2),
+          Vector3Create(PlayerPosition.X + PlayerSize.X / 2, PlayerPosition.Y + PlayerSize.Y / 2, PlayerPosition.Z + PlayerSize.Z / 2)
         ),
         BoundingBoxCreate(
-          TVector3.Create(EnemyBoxPos.X - EnemyBoxSize.X / 2, EnemyBoxPos.Y - EnemyBoxSize.Y / 2, EnemyBoxPos.Z - EnemyBoxSize.Z / 2),
-          TVector3.Create(EnemyBoxPos.X + enemyBoxSize.X / 2, EnemyBoxPos.Y + EnemyBoxSize.Y / 2, EnemyBoxPos.Z + EnemyBoxSize.Z / 2)
+          Vector3Create(EnemyBoxPos.X - EnemyBoxSize.X / 2, EnemyBoxPos.Y - EnemyBoxSize.Y / 2, EnemyBoxPos.Z - EnemyBoxSize.Z / 2),
+          Vector3Create(EnemyBoxPos.X + enemyBoxSize.X / 2, EnemyBoxPos.Y + EnemyBoxSize.Y / 2, EnemyBoxPos.Z + EnemyBoxSize.Z / 2)
         )
       ) then Collision := True;
 

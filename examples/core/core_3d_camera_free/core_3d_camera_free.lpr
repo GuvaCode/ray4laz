@@ -30,7 +30,7 @@ begin
 
   CubePosition := Vector3Create(0.0, 0.0, 0.0);
 
-  SetCameraMode(Camera, CAMERA_FREE); // Set a free camera mode
+
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //---------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ begin
     //-------------------------------------------------------------------------------------------
     // TODO: Update your variables here
     //-------------------------------------------------------------------------------------------
-    UpdateCamera(@Camera);
+    UpdateCamera(@Camera,CAMERA_FREE);
 
     if IsKeyDown(KEY_Z) then
       Camera.Target := Vector3Create(0.0, 0.0, 0.0);

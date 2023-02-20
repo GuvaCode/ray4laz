@@ -46,14 +46,14 @@ begin
  animId := 0;
  anims := LoadModelAnimations('resources/models/m3d/CesiumMan.m3d', @animsCount);
 
- SetCameraMode(camera, CAMERA_FREE); // Set free camera mode
+ disableCursor;
  SetTargetFPS(60);// Set our game to run at 60 frames-per-second
 
   // Main game loop
   while not WindowShouldClose() do
     begin
       // Update
-      UpdateCamera(@camera);
+      UpdateCamera(@camera,CAMERA_FREE);
       // Play animation when spacebar is held down
       if animsCount>=1 then
        begin

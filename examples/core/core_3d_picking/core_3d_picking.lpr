@@ -37,7 +37,7 @@ begin
 
   Collision := Default(TRayCollision);
 
-  SetCameraMode(Camera, CAMERA_FREE); // Set a free camera mode
+
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop
@@ -45,7 +45,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-          UpdateCamera(@Camera);
+          UpdateCamera(@Camera,CAMERA_FREE);
 
     if IsMouseButtonPressed(MOUSE_BUTTON_LEFT) then
     begin

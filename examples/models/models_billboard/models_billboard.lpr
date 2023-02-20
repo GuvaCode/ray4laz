@@ -56,7 +56,7 @@ begin
   // Here we choose to rotate around the image center
   // NOTE: (-1, 1) is the range where origin.x, origin.y is inside the texture
   RotateOrigin := Vector2Create(0.0, 0.0);
-  SetCameraMode(Camera, CAMERA_ORBITAL); // Set an orbital camera mode
+
 
   // Distance is needed for the correct billboard draw order
   // Larger distance (further away from the camera) should be drawn prior to smaller distance.
@@ -69,7 +69,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@Camera);
+      UpdateCamera(@Camera,CAMERA_ORBITAL);
       Rotation := Rotation + 0.4;
       DistanceStatic := Vector3Distance(Camera.Position, BillPositionStatic);
       DistanceRotating := Vector3Distance(Camera.Position, BillPositionRotating);
@@ -87,10 +87,10 @@ begin
          if DistanceStatic > DistanceRotating then
          begin
            DrawBillboard(Camera, Bill, BillPositionStatic, 2.0, WHITE);
-           DrawBillboardPro(Camera, Bill, Source, BillPositionRotating, BillUp, TVector2.Create(1.0, 1.0), RotateOrigin, Rotation, WHITE);
+           DrawBillboardPro(Camera, Bill, Source, BillPositionRotating, BillUp, Vector2Create(1.0, 1.0), RotateOrigin, Rotation, WHITE);
          end else
          begin
-           DrawBillboardPro(Camera, Bill, Source, BillPositionRotating, BillUp, TVector2.Create(1.0, 1.0), RotateOrigin, Rotation, WHITE);
+           DrawBillboardPro(Camera, Bill, Source, BillPositionRotating, BillUp, Vector2Create(1.0, 1.0), RotateOrigin, Rotation, WHITE);
            DrawBillboard(Camera, Bill, BillPositionStatic, 2.0, WHITE);
          end;
 

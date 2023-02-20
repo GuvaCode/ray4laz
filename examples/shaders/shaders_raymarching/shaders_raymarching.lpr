@@ -41,7 +41,7 @@ begin
                      Vector3Create(0.0,0.0,0.7),
                      Vector3Create(0.0,1.0,00.0),65,CAMERA_PERSPECTIVE);
 
- SetCameraMode(camera, CAMERA_FREE); // Set camera mode
+
  // Load raymarching shader
  // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
  shader := LoadShader(nil, TextFormat('resources/shaders/glsl%i/raymarching.fs', GLSL_VERSION));

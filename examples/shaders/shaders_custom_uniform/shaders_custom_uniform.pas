@@ -62,7 +62,7 @@ begin
   // Create a RenderTexture2D to be used for render to texture
   target := LoadRenderTexture(screenWidth, screenHeight);
   // Setup orbital camera
-  SetCameraMode(cam, CAMERA_ORBITAL); // Set an orbital camera mode
+
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   // -------------------------------------------------------------------------
   // Main game loop
@@ -77,7 +77,7 @@ begin
 
     SetShaderValue(shader, swirlCenterLoc, @swirlCenter, SHADER_UNIFORM_VEC2);
 
-    UpdateCamera(@cam); // Update camera
+    UpdateCamera(@cam,CAMERA_ORBITAL); // Update camera
     // -----------------------------------------------------------------------
 
     // Draw

@@ -175,7 +175,8 @@ begin
        UnloadImage(img);
    end;
 
-  SetCameraMode(camera, CAMERA_FIRST_PERSON);  // Set a first person camera mode
+  DisableCursor;
+
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop
@@ -183,7 +184,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@camera);
+      UpdateCamera(@camera,CAMERA_FIRST_PERSON);
 
       //----------------------------------------------------------------------------------
 

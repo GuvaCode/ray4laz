@@ -104,7 +104,7 @@ begin
 
   CurrentModel := 0;
 
-  SetCameraMode(Camera, CAMERA_ORBITAL); // Set a orbital camera mode
+
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -113,7 +113,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@Camera);
+      UpdateCamera(@Camera,CAMERA_ORBITAL);
 
       if IsMouseButtonPressed(MOUSE_BUTTON_LEFT) then
         CurrentModel := (CurrentModel + 1) mod NUM_MODELS; // Cycle between the textures

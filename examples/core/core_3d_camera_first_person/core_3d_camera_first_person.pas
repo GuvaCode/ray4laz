@@ -35,14 +35,14 @@ begin
    colors[i] := ColorCreate(GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255);
   end;
 
-  SetCameraMode(camera, CAMERA_FIRST_PERSON); // Set a first person camera mode
+
   SetTargetFPS(60);                           // Set our game to run at 60 frames-per-second
 
   // Main game loop
   while not WindowShouldClose do
   begin
    // Update
-   UpdateCamera(@camera);                  // Update camera
+   UpdateCamera(@camera,CAMERA_FIRST_PERSON);                  // Update camera
    // Draw
    BeginDrawing();
    ClearBackground(RAYWHITE);

@@ -43,9 +43,10 @@ begin
       UnloadImage(imMap);             // Unload image from RAM
 
       Vector3Set(@mapPosition,-16.0,0.0,-8.0);  // Set model position
-      SetCameraMode(camera, CAMERA_FIRST_PERSON);     // Set camera mode
+
 
       SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+      DisableCursor;
       //--------------------------------------------------------------------------------------
 
   //--------------------------------------------------------------------------------------
@@ -56,7 +57,7 @@ begin
       // update
       oldCamPos := camera.position;    // Store old camera position
 
-        UpdateCamera(@camera);      // Update camera
+        UpdateCamera(@camera,CAMERA_FIRST_PERSON);      // Update camera
 
         // Check player collision (we simplify to 2D collision detection)
         Vector2Set(@playerPos,camera.position.x,camera.position.z);

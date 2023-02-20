@@ -83,8 +83,7 @@ begin
   MatDefault := LoadMaterialDefault();
   MatDefault.Maps[MATERIAL_MAP_DIFFUSE].Color := BLUE;
 
-  // Set an orbital camera mode
-  SetCameraMode(Camera, CAMERA_ORBITAL);
+
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
 
@@ -94,7 +93,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@Camera);
+      UpdateCamera(@Camera,CAMERA_ORBITAL);
       // Update the light shader with the camera view position
       CameraPos := [Camera.Position.X, Camera.Position.Y, Camera.Position.Z];
       SetShaderValue(Shader, Shader.Locs[SHADER_LOC_VECTOR_VIEW], @CameraPos[0], SHADER_UNIFORM_VEC3);

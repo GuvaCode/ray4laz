@@ -39,9 +39,9 @@ begin
 
   // NOTE: bounds are calculated from the original size of the model,
   // if model is scaled on drawing, bounds must be also scaled
-  SetCameraMode(Camera, CAMERA_FREE);     // Set a free camera mode
-  Selected := False;          // Selected object flag
 
+  Selected := False;          // Selected object flag
+  DisableCursor;
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop
@@ -49,7 +49,7 @@ begin
     begin
       // Update
       //-------------------------------------------------------------------------------
-      UpdateCamera(@Camera);
+      UpdateCamera(@Camera,CAMERA_FREE);
 
        // Load new models/textures on drag&drop
        if IsFileDropped() then

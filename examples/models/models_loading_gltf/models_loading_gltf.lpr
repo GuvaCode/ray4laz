@@ -59,7 +59,7 @@ begin
 
   position := Vector3Create( 0.0, 0.0, 0.0 );    // Set model position
 
-  SetCameraMode(camera, CAMERA_FREE);     // Set free camera mode
+
 
   DisableCursor();                    // Limit cursor to relative movement inside the window
 
@@ -81,7 +81,7 @@ begin
       UpdateModelAnimation(model, anim, animCurrentFrame);
 
       // Update camera
-      UpdateCamera(@camera);
+      UpdateCamera(@camera,CAMERA_FREE);
 
       //----------------------------------------------------------------------------------
 

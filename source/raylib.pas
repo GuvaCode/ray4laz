@@ -2134,9 +2134,9 @@ procedure AttachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCall
 {Detach audio stream processor from stream}
 procedure DetachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DetachAudioStreamProcessor';
 {Attach audio stream processor to the entire audio pipeline}
-procedure AttachAudioMixedProcessor(processor: TAudioCallback);
+procedure AttachAudioMixedProcessor(processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'AttachAudioMixedProcessor';
 {Detach audio stream processor from the entire audio pipeline}
-procedure DetachAudioMixedProcessor(processor: TAudioCallback);
+procedure DetachAudioMixedProcessor(processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DetachAudioMixedProcessor';
 
 
 (* Custom Misc Functions to help simplify a few things *)

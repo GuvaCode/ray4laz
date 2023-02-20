@@ -45,9 +45,7 @@ begin
   AnimsCount := 0;
   Anims := LoadModelAnimations('resources/models/iqm/guyanim.iqm', @AnimsCount);
   AnimFrameCounter := 0;
-
-  SetCameraMode(Camera, CAMERA_FREE); // Set free camera mode
-
+  DisableCursor;
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop
@@ -55,7 +53,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@Camera);
+      UpdateCamera(@Camera,CAMERA_FIRST_PERSON);
 
         // Play animation when spacebar is held down
         if IsKeyDown(KEY_SPACE) then
