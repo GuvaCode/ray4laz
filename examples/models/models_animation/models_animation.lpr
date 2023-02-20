@@ -92,6 +92,9 @@ begin
     end;
   // De-Initialization
   //--------------------------------------------------------------------------------------
+  UnloadTexture(texture);                     // Unload texture
+  UnloadModelAnimations(anims, animsCount);   // Unload model animations data
+  UnloadModel(model);                         // Unload model
   CloseWindow();        // Close window and OpenGL context
   //--------------------------------------------------------------------------------------
 end.

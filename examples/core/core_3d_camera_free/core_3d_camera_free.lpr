@@ -26,6 +26,8 @@ begin
   Camera.Fovy := 45.0;                                  // Camera field-of-view Y
   Camera.Projection := CAMERA_PERSPECTIVE;              // Camera mode type
 
+  DisableCursor(); // Limit cursor to relative movement inside the window
+
   CubePosition := Vector3Create(0.0, 0.0, 0.0);
 
   SetCameraMode(Camera, CAMERA_FREE); // Set a free camera mode

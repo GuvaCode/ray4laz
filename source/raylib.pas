@@ -1326,18 +1326,8 @@ function GetGesturePinchAngle: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllN
 // Camera System Functions (Module: rcamera)
 //------------------------------------------------------------------------------------
 
-{Set camera mode (multiple camera modes available)}
-procedure SetCameraMode(camera: TCamera; mode: TCameraMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraMode';
 {Update camera position for selected mode}
-procedure UpdateCamera(camera: PCamera); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateCamera';
-{Set camera pan key to combine with mouse movement (free camera)}
-procedure SetCameraPanControl(keyPan: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraPanControl';
-{Set camera alt key to combine with mouse movement (free camera)}
-procedure SetCameraAltControl(keyAlt: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraAltControl';
-{Set camera smooth zoom key to combine with mouse (free camera)}
-procedure SetCameraSmoothZoomControl(keySmoothZoom: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraSmoothZoomControl';
-{Set camera move controls (1st person and 3rd person cameras)}
-procedure SetCameraMoveControls(keyFront, keyBack, keyRight, keyLeft, keyUp, keyDown: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetCameraMoveControls';
+procedure UpdateCamera(camera: PCamera; mode: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateCamera';
 
 //------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
@@ -2143,6 +2133,10 @@ procedure SetAudioStreamCallback(stream: TAudioStream; callback: TAudioCallback)
 procedure AttachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'AttachAudioStreamProcessor';
 {Detach audio stream processor from stream}
 procedure DetachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DetachAudioStreamProcessor';
+{Attach audio stream processor to the entire audio pipeline}
+procedure AttachAudioMixedProcessor(processor: TAudioCallback);
+{Detach audio stream processor from the entire audio pipeline}
+procedure DetachAudioMixedProcessor(processor: TAudioCallback);
 
 
 (* Custom Misc Functions to help simplify a few things *)
