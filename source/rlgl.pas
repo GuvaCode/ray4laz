@@ -1,6 +1,6 @@
 {**********************************************************************************************
 *
-*   rlgl v4.2 - A multi-OpenGL abstraction layer with an immediate-mode style API
+*   rlgl v4.5 - A multi-OpenGL abstraction layer with an immediate-mode style API
 *
 *   An abstraction layer for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0)
 *   that provides a pseudo-OpenGL 1.1 immediate-mode style API (rlVertex, rlTranslate, rlRotate...)
@@ -179,6 +179,8 @@ const
 
   (* GL blending functions/equations *)
   RL_FUNC_ADD = $8006;                              // GL_FUNC_ADD
+  RL_MIN = $8007;                                   // GL_MIN
+  RL_MAX = $8008;                                   // GL_MAX
   RL_FUNC_SUBTRACT = $800A;                         // GL_FUNC_SUBTRACT
   RL_FUNC_REVERSE_SUBTRACT = $800B;                 // GL_FUNC_REVERSE_SUBTRACT
   RL_BLEND_EQUATION = $8009;                        // GL_BLEND_EQUATION

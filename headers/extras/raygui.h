@@ -113,7 +113,7 @@
 *   VERSIONS HISTORY:
 *       3.5 (xx-xxx-2022) ADDED: Multiple new icons, useful for code editing tools
 *                         ADDED: GuiTabBar(), based on GuiToggle()
-*                         REMOVED: Unneeded icon editing functions 
+*                         REMOVED: Unneeded icon editing functions
 *                         REDESIGNED: GuiDrawText() to divide drawing by lines
 *                         REMOVED: MeasureTextEx() dependency, logic directly implemented
 *                         REMOVED: DrawTextEx() dependency, logic directly implemented
@@ -1726,7 +1726,7 @@ bool GuiButton(Rectangle bounds, const char *text)
     //--------------------------------------------------------------------
     GuiDrawRectangle(bounds, GuiGetStyle(BUTTON, BORDER_WIDTH), Fade(GetColor(GuiGetStyle(BUTTON, BORDER + (state*3))), guiAlpha), Fade(GetColor(GuiGetStyle(BUTTON, BASE + (state*3))), guiAlpha));
     GuiDrawText(text, GetTextBounds(BUTTON, bounds), GuiGetStyle(BUTTON, TEXT_ALIGNMENT), Fade(GetColor(GuiGetStyle(BUTTON, TEXT + (state*3))), guiAlpha));
-    
+
     if (state == STATE_FOCUSED) GuiTooltip(bounds);
     //------------------------------------------------------------------
 
@@ -2166,7 +2166,7 @@ bool GuiTextBox(Rectangle bounds, char *text, int textSize, bool editMode)
     {
         GuiDrawRectangle(bounds, GuiGetStyle(TEXTBOX, BORDER_WIDTH), Fade(GetColor(GuiGetStyle(TEXTBOX, BORDER + (state*3))), guiAlpha), Fade(GetColor(GuiGetStyle(TEXTBOX, BASE_COLOR_DISABLED)), guiAlpha));
     }
-    else GuiDrawRectangle(bounds, 1, Fade(GetColor(GuiGetStyle(TEXTBOX, BORDER + (state*3))), guiAlpha), BLANK);
+    else GuiDrawRectangle(bounds, GuiGetStyle(TEXTBOX, BORDER_WIDTH), Fade(GetColor(GuiGetStyle(TEXTBOX, BORDER + (state*3))), guiAlpha), BLANK);
 
     if (editMode)
     {
@@ -2477,7 +2477,7 @@ bool GuiTextBoxMulti(Rectangle bounds, char *text, int textSize, bool editMode)
     {
         GuiDrawRectangle(bounds, GuiGetStyle(TEXTBOX, BORDER_WIDTH), Fade(GetColor(GuiGetStyle(TEXTBOX, BORDER + (state*3))), guiAlpha), Fade(GetColor(GuiGetStyle(TEXTBOX, BASE_COLOR_DISABLED)), guiAlpha));
     }
-    else GuiDrawRectangle(bounds, 1, Fade(GetColor(GuiGetStyle(TEXTBOX, BORDER + (state*3))), guiAlpha), BLANK);
+    else GuiDrawRectangle(bounds, GuiGetStyle(TEXTBOX, BORDER_WIDTH), Fade(GetColor(GuiGetStyle(TEXTBOX, BORDER + (state*3))), guiAlpha), BLANK);
 
     int wrapMode = 1;      // 0-No wrap, 1-Char wrap, 2-Word wrap
     Vector2 cursorPos = { textAreaBounds.x, textAreaBounds.y };
@@ -2486,7 +2486,7 @@ bool GuiTextBoxMulti(Rectangle bounds, char *text, int textSize, bool editMode)
     //int lastSpaceWidth = 0;
     //int lastSpaceCursorPos = 0;
 
-    for (int i = 0, codepointSize = 0; text[i] != '\0'; i += codepointSize)
+    for (int i = 0, codepointSize = 0; (text != NULL) && (text[i] != '\0'); i += codepointSize)
     {
         int codepoint = GetCodepointNext(text + i, &codepointSize);
         int index = GetGlyphIndex(guiFont, codepoint);      // If requested codepoint is not found, we get '?' (0x3f)
@@ -3462,9 +3462,9 @@ void GuiLoadStyle(const char *fileName)
         int propertyCount = 0;
 
         fread(signature, 1, 4, rgsFile);
-        fread(&version, 1, sizeof(short), rgsFile);
-        fread(&reserved, 1, sizeof(short), rgsFile);
-        fread(&propertyCount, 1, sizeof(int), rgsFile);
+        fread(&version, sizeof(short), 1, rgsFile);
+        fread(&reserved, sizeof(short), 1, rgsFile);
+        fread(&propertyCount, sizeof(int), 1, rgsFile);
 
         if ((signature[0] == 'r') &&
             (signature[1] == 'G') &&
@@ -3477,9 +3477,9 @@ void GuiLoadStyle(const char *fileName)
 
             for (int i = 0; i < propertyCount; i++)
             {
-                fread(&controlId, 1, sizeof(short), rgsFile);
-                fread(&propertyId, 1, sizeof(short), rgsFile);
-                fread(&propertyValue, 1, sizeof(unsigned int), rgsFile);
+                fread(&controlId, sizeof(short), 1, rgsFile);
+                fread(&propertyId, sizeof(short), 1, rgsFile);
+                fread(&propertyValue, sizeof(unsigned int), 1, rgsFile);
 
                 if (controlId == 0) // DEFAULT control
                 {
@@ -3496,7 +3496,7 @@ void GuiLoadStyle(const char *fileName)
 #if !defined(RAYGUI_STANDALONE)
             // Load custom font if available
             int fontDataSize = 0;
-            fread(&fontDataSize, 1, sizeof(int), rgsFile);
+            fread(&fontDataSize, sizeof(int), 1, rgsFile);
 
             if (fontDataSize > 0)
             {
@@ -3504,24 +3504,24 @@ void GuiLoadStyle(const char *fileName)
                 int fontType = 0;   // 0-Normal, 1-SDF
                 Rectangle whiteRec = { 0 };
 
-                fread(&font.baseSize, 1, sizeof(int), rgsFile);
-                fread(&font.glyphCount, 1, sizeof(int), rgsFile);
-                fread(&fontType, 1, sizeof(int), rgsFile);
+                fread(&font.baseSize, sizeof(int), 1, rgsFile);
+                fread(&font.glyphCount, sizeof(int), 1, rgsFile);
+                fread(&fontType, sizeof(int), 1, rgsFile);
 
                 // Load font white rectangle
-                fread(&whiteRec, 1, sizeof(Rectangle), rgsFile);
+                fread(&whiteRec, sizeof(Rectangle), 1, rgsFile);
 
                 // Load font image parameters
                 int fontImageUncompSize = 0;
                 int fontImageCompSize = 0;
-                fread(&fontImageUncompSize, 1, sizeof(int), rgsFile);
-                fread(&fontImageCompSize, 1, sizeof(int), rgsFile);
+                fread(&fontImageUncompSize, sizeof(int), 1, rgsFile);
+                fread(&fontImageCompSize, sizeof(int), 1, rgsFile);
 
                 Image imFont = { 0 };
                 imFont.mipmaps = 1;
-                fread(&imFont.width, 1, sizeof(int), rgsFile);
-                fread(&imFont.height, 1, sizeof(int), rgsFile);
-                fread(&imFont.format, 1, sizeof(int), rgsFile);
+                fread(&imFont.width, sizeof(int), 1, rgsFile);
+                fread(&imFont.height, sizeof(int), 1, rgsFile);
+                fread(&imFont.format, sizeof(int), 1, rgsFile);
 
                 if (fontImageCompSize < fontImageUncompSize)
                 {
@@ -3551,16 +3551,16 @@ void GuiLoadStyle(const char *fileName)
 
                 // Load font recs data
                 font.recs = (Rectangle *)RAYGUI_CALLOC(font.glyphCount, sizeof(Rectangle));
-                for (int i = 0; i < font.glyphCount; i++) fread(&font.recs[i], 1, sizeof(Rectangle), rgsFile);
+                for (int i = 0; i < font.glyphCount; i++) fread(&font.recs[i], sizeof(Rectangle), 1, rgsFile);
 
                 // Load font chars info data
                 font.glyphs = (GlyphInfo *)RAYGUI_CALLOC(font.glyphCount, sizeof(GlyphInfo));
                 for (int i = 0; i < font.glyphCount; i++)
                 {
-                    fread(&font.glyphs[i].value, 1, sizeof(int), rgsFile);
-                    fread(&font.glyphs[i].offsetX, 1, sizeof(int), rgsFile);
-                    fread(&font.glyphs[i].offsetY, 1, sizeof(int), rgsFile);
-                    fread(&font.glyphs[i].advanceX, 1, sizeof(int), rgsFile);
+                    fread(&font.glyphs[i].value, sizeof(int), 1, rgsFile);
+                    fread(&font.glyphs[i].offsetX, sizeof(int), 1, rgsFile);
+                    fread(&font.glyphs[i].offsetY, sizeof(int), 1, rgsFile);
+                    fread(&font.glyphs[i].advanceX, sizeof(int), 1, rgsFile);
                 }
 
                 GuiSetFont(font);
@@ -3746,10 +3746,10 @@ char **GuiLoadIcons(const char *fileName, bool loadIconsName)
         short iconSize = 0;
 
         fread(signature, 1, 4, rgiFile);
-        fread(&version, 1, sizeof(short), rgiFile);
-        fread(&reserved, 1, sizeof(short), rgiFile);
-        fread(&iconCount, 1, sizeof(short), rgiFile);
-        fread(&iconSize, 1, sizeof(short), rgiFile);
+        fread(&version, sizeof(short), 1, rgiFile);
+        fread(&reserved, sizeof(short), 1, rgiFile);
+        fread(&iconCount, sizeof(short), 1, rgiFile);
+        fread(&iconSize, sizeof(short), 1, rgiFile);
 
         if ((signature[0] == 'r') &&
             (signature[1] == 'G') &&
@@ -3762,13 +3762,13 @@ char **GuiLoadIcons(const char *fileName, bool loadIconsName)
                 for (int i = 0; i < iconCount; i++)
                 {
                     guiIconsName[i] = (char *)RAYGUI_MALLOC(RAYGUI_ICON_MAX_NAME_LENGTH);
-                    fread(guiIconsName[i], RAYGUI_ICON_MAX_NAME_LENGTH, 1, rgiFile);
+                    fread(guiIconsName[i], 1, RAYGUI_ICON_MAX_NAME_LENGTH, rgiFile);
                 }
             }
             else fseek(rgiFile, iconCount*RAYGUI_ICON_MAX_NAME_LENGTH, SEEK_CUR);
 
             // Read icons data directly over internal icons array
-            fread(guiIconsPtr, iconCount*(iconSize*iconSize/32), sizeof(unsigned int), rgiFile);
+            fread(guiIconsPtr, sizeof(unsigned int), iconCount*(iconSize*iconSize/32), rgiFile);
         }
 
         fclose(rgiFile);
@@ -4048,7 +4048,7 @@ static void GuiDrawText(const char *text, Rectangle bounds, int alignment, Color
 #endif
             //DrawTextEx(guiFont, text, position, (float)GuiGetStyle(DEFAULT, TEXT_SIZE), (float)GuiGetStyle(DEFAULT, TEXT_SPACING), tint);
 
-            // Get size in bytes of text, 
+            // Get size in bytes of text,
             // considering end of line and line break
             int size = 0;
             for (int c = 0; (lines[i][c] != '\0') && (lines[i][c] != '\n'); c++, size++){ }
@@ -4116,13 +4116,13 @@ static void GuiTooltip(Rectangle controlRec)
 
         if ((controlRec.x + textSize.x + 16) > GetScreenWidth()) controlRec.x -= (textSize.x + 16 - controlRec.width);
 
-        GuiPanel((Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, GuiGetStyle(DEFAULT, TEXT_SIZE) + 8.f }, NULL);
+        GuiPanel(RAYGUI_CLITERAL(Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, GuiGetStyle(DEFAULT, TEXT_SIZE) + 8.f }, NULL);
 
         int textPadding = GuiGetStyle(LABEL, TEXT_PADDING);
         int textAlignment = GuiGetStyle(LABEL, TEXT_ALIGNMENT);
         GuiSetStyle(LABEL, TEXT_PADDING, 0);
         GuiSetStyle(LABEL, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
-        GuiLabel((Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, GuiGetStyle(DEFAULT, TEXT_SIZE) + 8.f }, guiTooltipPtr);
+        GuiLabel(RAYGUI_CLITERAL(Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, GuiGetStyle(DEFAULT, TEXT_SIZE) + 8.f }, guiTooltipPtr);
         GuiSetStyle(LABEL, TEXT_ALIGNMENT, textAlignment);
         GuiSetStyle(LABEL, TEXT_PADDING, textPadding);
     }
@@ -4318,8 +4318,8 @@ static int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue)
     bool isVertical = (bounds.width > bounds.height)? false : true;
 
     // The size (width or height depending on scrollbar type) of the spinner buttons
-    const int spinnerSize = GuiGetStyle(SCROLLBAR, ARROWS_VISIBLE)? 
-        (isVertical? (int)bounds.width - 2*GuiGetStyle(SCROLLBAR, BORDER_WIDTH) : 
+    const int spinnerSize = GuiGetStyle(SCROLLBAR, ARROWS_VISIBLE)?
+        (isVertical? (int)bounds.width - 2*GuiGetStyle(SCROLLBAR, BORDER_WIDTH) :
         (int)bounds.height - 2*GuiGetStyle(SCROLLBAR, BORDER_WIDTH)) : 0;
 
     // Arrow buttons [<] [>] [∧] [∨]
@@ -4340,9 +4340,9 @@ static int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue)
     int sliderSize = GuiGetStyle(SCROLLBAR, SCROLL_SLIDER_SIZE);
 
     // Calculate rectangles for all of the components
-    arrowUpLeft = RAYGUI_CLITERAL(Rectangle){ 
-        (float)bounds.x + GuiGetStyle(SCROLLBAR, BORDER_WIDTH), 
-        (float)bounds.y + GuiGetStyle(SCROLLBAR, BORDER_WIDTH), 
+    arrowUpLeft = RAYGUI_CLITERAL(Rectangle){
+        (float)bounds.x + GuiGetStyle(SCROLLBAR, BORDER_WIDTH),
+        (float)bounds.y + GuiGetStyle(SCROLLBAR, BORDER_WIDTH),
         (float)spinnerSize, (float)spinnerSize };
 
     if (isVertical)
@@ -4413,17 +4413,17 @@ static int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue)
     if (GuiGetStyle(SCROLLBAR, ARROWS_VISIBLE))
     {
 #if defined(RAYGUI_NO_ICONS)
-        GuiDrawText(isVertical? "^" : "<", 
+        GuiDrawText(isVertical? "^" : "<",
             RAYGUI_CLITERAL(Rectangle){ arrowUpLeft.x, arrowUpLeft.y, isVertical? bounds.width : bounds.height, isVertical? bounds.width : bounds.height },
             TEXT_ALIGN_CENTER, Fade(GetColor(GuiGetStyle(DROPDOWNBOX, TEXT + (state*3))), guiAlpha));
-        GuiDrawText(isVertical? "v" : ">", 
+        GuiDrawText(isVertical? "v" : ">",
             RAYGUI_CLITERAL(Rectangle){ arrowDownRight.x, arrowDownRight.y, isVertical? bounds.width : bounds.height, isVertical? bounds.width : bounds.height },
             TEXT_ALIGN_CENTER, Fade(GetColor(GuiGetStyle(DROPDOWNBOX, TEXT + (state*3))), guiAlpha));
 #else
-        GuiDrawText(isVertical? "#121#" : "#118#", 
+        GuiDrawText(isVertical? "#121#" : "#118#",
             RAYGUI_CLITERAL(Rectangle){ arrowUpLeft.x, arrowUpLeft.y, isVertical? bounds.width : bounds.height, isVertical? bounds.width : bounds.height },
             TEXT_ALIGN_CENTER, Fade(GetColor(GuiGetStyle(SCROLLBAR, TEXT + state*3)), guiAlpha));   // ICON_ARROW_UP_FILL / ICON_ARROW_LEFT_FILL
-        GuiDrawText(isVertical? "#120#" : "#119#", 
+        GuiDrawText(isVertical? "#120#" : "#119#",
             RAYGUI_CLITERAL(Rectangle){ arrowDownRight.x, arrowDownRight.y, isVertical? bounds.width : bounds.height, isVertical? bounds.width : bounds.height },
             TEXT_ALIGN_CENTER, Fade(GetColor(GuiGetStyle(SCROLLBAR, TEXT + state*3)), guiAlpha));   // ICON_ARROW_DOWN_FILL / ICON_ARROW_RIGHT_FILL
 #endif

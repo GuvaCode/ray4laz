@@ -1,5 +1,5 @@
 {
-raylib v4.5-dev
+raylib v4.5
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
@@ -919,6 +919,8 @@ procedure MinimizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} n
 procedure RestoreWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'RestoreWindow';
 {Set icon for window (only PLATFORM_DESKTOP)}
 procedure SetWindowIcon(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowIcon';
+{Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)}
+procedure SetWindowIcons(images: PImage; count: integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowIcons';
 {Set title for window (only PLATFORM_DESKTOP)}
 procedure SetWindowTitle(const title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowTitle';
 {Set window position on screen (only PLATFORM_DESKTOP)}
@@ -1328,7 +1330,8 @@ function GetGesturePinchAngle: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllN
 
 {Update camera position for selected mode}
 procedure UpdateCamera(camera: PCamera; mode: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateCamera';
-
+{Update camera movement/rotation}
+procedure UpdateCameraPro(camera: PCamera; movement, rotation: TVector3; zoom: single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateCameraPro';
 //------------------------------------------------------------------------------------
 // Basic Shapes Drawing Functions (Module: shapes)
 //------------------------------------------------------------------------------------
@@ -1859,8 +1862,6 @@ function LoadModelFromMesh(mesh: TMesh): TModel; cdecl; external {$IFNDEF RAY_ST
 function IsModelReady(model: TModel): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsModelReady';
 {Unload model (including meshes) from memory (RAM and/or VRAM)}
 procedure UnloadModel(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModel';
-{Unload model (but not meshes) from memory (RAM and/or VRAM)}
-procedure UnloadModelKeepMeshes(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelKeepMeshes';
 {Compute model bounding box limits (considers all meshes)}
 function GetModelBoundingBox(model: TModel): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetModelBoundingBox';
 
@@ -2034,12 +2035,6 @@ procedure StopSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName
 procedure PauseSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PauseSound';
 {Resume a paused sound}
 procedure ResumeSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ResumeSound';
-{Play a sound (using multichannel buffer pool)}
-procedure PlaySoundMulti(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PlaySoundMulti';
-{Stop any sound playing (using multichannel buffer pool)}
-procedure StopSoundMulti; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'StopSoundMulti';
-{Get number of sounds playing in the multichannel}
-function GetSoundsPlaying: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSoundsPlaying';
 {Check if a sound is currently playing}
 function IsSoundPlaying(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsSoundPlaying';
 {Set volume for a sound (1.0 is max level)}

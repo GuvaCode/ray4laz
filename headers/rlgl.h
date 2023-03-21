@@ -1,6 +1,6 @@
 /**********************************************************************************************
 *
-*   rlgl v4.2 - A multi-OpenGL abstraction layer with an immediate-mode style API
+*   rlgl v4.5 - A multi-OpenGL abstraction layer with an immediate-mode style API
 *
 *   An abstraction layer for multiple OpenGL versions (1.1, 2.1, 3.3 Core, 4.3 Core, ES 2.0)
 *   that provides a pseudo-OpenGL 1.1 immediate-mode style API (rlVertex, rlTranslate, rlRotate...)
@@ -106,7 +106,7 @@
 #ifndef RLGL_H
 #define RLGL_H
 
-#define RLGL_VERSION  "4.2"
+#define RLGL_VERSION  "4.5"
 
 // Function specifiers in case library is build/used as a shared library (Windows)
 // NOTE: Microsoft specifiers to tell compiler that symbols are imported/exported from a .dll
@@ -298,6 +298,8 @@
 
 // GL blending functions/equations
 #define RL_FUNC_ADD                             0x8006      // GL_FUNC_ADD
+#define RL_MIN                                  0x8007      // GL_MIN
+#define RL_MAX                                  0x8008      // GL_MAX
 #define RL_FUNC_SUBTRACT                        0x800A      // GL_FUNC_SUBTRACT
 #define RL_FUNC_REVERSE_SUBTRACT                0x800B      // GL_FUNC_REVERSE_SUBTRACT
 #define RL_BLEND_EQUATION                       0x8009      // GL_BLEND_EQUATION
@@ -3473,7 +3475,7 @@ void rlUnloadFramebuffer(unsigned int id)
 
     unsigned int depthIdU = (unsigned int)depthId;
     if (depthType == GL_RENDERBUFFER) glDeleteRenderbuffers(1, &depthIdU);
-    else if (depthType == GL_RENDERBUFFER) glDeleteTextures(1, &depthIdU);
+    else if (depthType == GL_TEXTURE) glDeleteTextures(1, &depthIdU);
 
     // NOTE: If a texture object is deleted while its image is attached to the *currently bound* framebuffer,
     // the texture image is automatically detached from the currently bound framebuffer.
