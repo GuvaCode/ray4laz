@@ -76,10 +76,10 @@ begin
   cube.materials[0].shader := shader;
 
   // Using 4 point lights: gold, red, green and blue
-  lights[0] := CreateLight(LIGHT_POINT, Vector3Create( -2, 3, -2 ), Vector3Zero(), YELLOW, shader);
-  lights[1] := CreateLight(LIGHT_POINT, Vector3Create( 2, 3, 2 ), Vector3Zero(), RED, shader);
-  lights[2] := CreateLight(LIGHT_POINT, Vector3Create( -2, 3, 2 ), Vector3Zero(), GREEN, shader);
-  lights[3] := CreateLight(LIGHT_POINT, Vector3Create( 2, 3, -2 ), Vector3Zero(), BLUE, shader);
+  lights[0] := CreateLight(LIGHT_POINT, Vector3Create( -2, 1, -2 ), Vector3Zero(), YELLOW, shader);
+  lights[1] := CreateLight(LIGHT_POINT, Vector3Create( 2, 1, 2 ), Vector3Zero(), RED, shader);
+  lights[2] := CreateLight(LIGHT_POINT, Vector3Create( -2, 1, 2 ), Vector3Zero(), GREEN, shader);
+  lights[3] := CreateLight(LIGHT_POINT, Vector3Create( 2, 1, -2 ), Vector3Zero(), BLUE, shader);
 
 
 
