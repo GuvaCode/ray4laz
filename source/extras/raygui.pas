@@ -448,7 +448,7 @@ type
     const
       TEXT_INNER_PADDING = TGuiTextBoxProperty(16);
       TEXT_LINES_SPACING = TGuiTextBoxProperty(17);
-
+      TEXT_ALIGNMENT_VERTICAL = TGuiTextBoxProperty(18);    // TextBoxMulti vertical alignment: 0-CENTERED, 1-UP, 2-DOWN
 type
   // Spinner
   PGuiSpinnerProperty = ^TGuiSpinnerProperty;
@@ -613,14 +613,16 @@ procedure GuiSetTooltip(const tooltip: PChar); cdecl; external {$IFNDEF RAY_STAT
 function GuiIconText(iconId: TGuiIconName; const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiIconText';
 
 {$IFDEF RAYGUI_NO_RICONS}
+{Set icon drawing size}
+procedure GuiSetIconScale(scale: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetIcons';
 {Get full icons data pointer}
 function GuiGetIcons: Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetIcons';
 {Load raygui icons file (.rgi) into internal icons data}
 function GuiLoadIcons(const fileName: PChar; loadIconsName: Boolean): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadIcons';
 {Gui icons functionality}
 procedure GuiDrawIcon(iconId, posX, posY, pixelSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDrawIcon';
-{Set icon drawing size}
-procedure GuiSetIconScale(scale: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetIcons';
+
+
 {$ENDIF}
 
 implementation
