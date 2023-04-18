@@ -449,6 +449,9 @@ type
       TEXT_INNER_PADDING = TGuiTextBoxProperty(16);
       TEXT_LINES_SPACING = TGuiTextBoxProperty(17);
       TEXT_ALIGNMENT_VERTICAL = TGuiTextBoxProperty(18);    // TextBoxMulti vertical alignment: 0-CENTERED, 1-UP, 2-DOWN
+      TEXT_MULTILINE = TGuiTextBoxProperty(19);              // TextBox supports multiple lines
+      TEXT_WRAP_MODE = TGuiTextBoxProperty(20);             // TextBox wrap mode for multiline: 0-NO_WRAP, 1-CHAR_WRAP, 2-WORD_WRAP
+
 type
   // Spinner
   PGuiSpinnerProperty = ^TGuiSpinnerProperty;
