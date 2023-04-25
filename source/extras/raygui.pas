@@ -253,7 +253,7 @@ type
     ICON_REG_EXP                   = TGuiIconName(216);
     ICON_FOLDER                    = TGuiIconName(217);
     ICON_FILE                      = TGuiIconName(218);
-    RICON_219                      = TGuiIconName(219);
+    ICON_SAND_TIMER                = TGuiIconName(219);
     RICON_220                      = TGuiIconName(220);
     RICON_221                      = TGuiIconName(221);
     RICON_222                      = TGuiIconName(222);
@@ -561,8 +561,6 @@ function GuiSpinner(bounds: TRectangle; const text: PChar; value: PInteger; minV
 function GuiValueBox(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiValueBox';
 {Text Box control, updates input text}
 function GuiTextBox(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextBox';
-{Text Box control with multiple lines}
-function GuiTextBoxMulti(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextBoxMulti';
 {Slider control, returns selected value}
 function GuiSlider(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSlider';
 {Slider Bar control, returns selected value}

@@ -1,5 +1,5 @@
 {
-raylib v4.6
+raylib v4.6 - dev
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
