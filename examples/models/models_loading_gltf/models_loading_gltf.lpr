@@ -96,6 +96,7 @@ begin
       EndMode3D();
 
       DrawText('Use the UP/DOWN arrow keys to switch animation', 10, 10, 20, GRAY);
+      DrawText(TextFormat('Animation: %s', anim.name), 10, GetScreenHeight() - 20, 10, DARKGRAY);
       EndDrawing();
     end;
   // De-Initialization
