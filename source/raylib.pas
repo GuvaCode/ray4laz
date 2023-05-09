@@ -318,6 +318,7 @@ const
          frameCount : Integer;     // Number of animation frames
          bones : PBoneInfo;        // Bones information (skeleton)
          framePoses : PPTransform; // Poses array by frame
+         name : : array[0..31] of Char; // Animation name
        end;
 
       (* Ray, ray for raycasting *)
