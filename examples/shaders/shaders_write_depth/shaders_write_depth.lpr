@@ -87,7 +87,7 @@ begin
                            Vector3Create(0.0,1.0,0.0), 45, CAMERA_PERSPECTIVE);
 
 
-   SetCameraMode(camera, CAMERA_ORBITAL);
+
    SetTargetFPS(60);// Set our game to run at 60 frames-per-second
 
   //--------------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@camera);
+      UpdateCamera(@camera,CAMERA_ORBITAL);
       //----------------------------------------------------------------------------------
 
       // Draw

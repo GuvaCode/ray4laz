@@ -159,6 +159,9 @@ begin
     end;
 
   // De-Initialization
+  UnloadMesh(mesh);       // Unload the mesh
+  UnloadShader(shader);   // Unload shader
+
   CloseWindow();        // Close window and OpenGL context
 end.
 
