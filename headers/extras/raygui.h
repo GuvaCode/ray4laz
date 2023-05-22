@@ -1,6 +1,6 @@
 /*******************************************************************************************
 *
-*   raygui v3.6-dev - A simple and easy-to-use immediate-mode gui library
+*   raygui v3.6 - A simple and easy-to-use immediate-mode gui library
 *
 *   DESCRIPTION:
 *       raygui is a tools-dev-focused immediate-mode-gui library based on raylib but also
@@ -15,10 +15,12 @@
 *       - Multiple tools provided for raygui development
 *
 *   POSSIBLE IMPROVEMENTS:
-*       - Allow some controls to work in exclusive mode: GuiSlider(), GuiScrollBar()
+*       - Redesign functions that require a value as parameter to be returned, pass by reference
 *       - Better standalone mode API for easy plug of custom backends
+*       - Externalize required inputs in some way, allow user customization
 *
 *   LIMITATIONS:
+*       - No multi-line word-wraped text box support
 *       - No auto-layout mechanism provided, up to the user to define controls position and size
 *       - Standalone mode requires library modification and some user work to plug another backend
 *
@@ -128,13 +130,16 @@
 *           Draw text bounds rectangles for debug
 *
 *   VERSIONS HISTORY:
-*       3.6 (xx-Jun-2023) ADDED: New icon: SAND_TIMER
+*       3.6 (10-May-2023) ADDED: New icon: SAND_TIMER
 *                         ADDED: GuiLoadStyleFromMemory() (binary only)
 *                         REVIEWED: GuiScrollBar() horizontal movement key
 *                         REVIEWED: GuiTextBox() crash on cursor movement
+*                         REVIEWED: GuiTextBox(), additional inputs support
 *                         REVIEWED: GuiLabelButton(), avoid text cut
 *                         REVIEWED: GuiTextInputBox(), password input
 *                         REVIEWED: Local GetCodepointNext(), aligned with raylib
+*                         REDESIGNED: GuiSlider*()/GuiScrollBar() to support out-of-bounds
+*
 *       3.5 (20-Apr-2023) ADDED: GuiTabBar(), based on GuiToggle()
 *                         ADDED: Helper functions to split text in separate lines
 *                         ADDED: Multiple new icons, useful for code editing tools
@@ -146,6 +151,7 @@
 *                         REVIEWED: Library header info, more info, better organized
 *                         REDESIGNED: GuiTextBox() to support cursor movement
 *                         REDESIGNED: GuiDrawText() to divide drawing by lines
+*
 *       3.2 (22-May-2022) RENAMED: Some enum values, for unification, avoiding prefixes
 *                         REMOVED: GuiScrollBar(), only internal
 *                         REDESIGNED: GuiPanel() to support text parameter
@@ -155,6 +161,7 @@
 *                         REDESIGNED: GuiColorBarAlpha() to support text parameter
 *                         REDESIGNED: GuiColorBarHue() to support text parameter
 *                         REDESIGNED: GuiTextInputBox() to support password
+*
 *       3.1 (12-Jan-2022) REVIEWED: Default style for consistency (aligned with rGuiLayout v2.5 tool)
 *                         REVIEWED: GuiLoadStyle() to support compressed font atlas image data and unload previous textures
 *                         REVIEWED: External icons usage logic
@@ -162,10 +169,12 @@
 *                         RENAMED: Multiple controls properties definitions to prepend RAYGUI_
 *                         RENAMED: RICON_ references to RAYGUI_ICON_ for library consistency
 *                         Projects updated and multiple tweaks
+*
 *       3.0 (04-Nov-2021) Integrated ricons data to avoid external file
 *                         REDESIGNED: GuiTextBoxMulti()
 *                         REMOVED: GuiImageButton*()
 *                         Multiple minor tweaks and bugs corrected
+*
 *       2.9 (17-Mar-2021) REMOVED: Tooltip API
 *       2.8 (03-May-2020) Centralized rectangles drawing to GuiDrawRectangle()
 *       2.7 (20-Feb-2020) ADDED: Possible tooltips API
@@ -175,6 +184,7 @@
 *                         Replaced property INNER_PADDING by TEXT_PADDING, renamed some properties
 *                         ADDED: 8 new custom styles ready to use
 *                         Multiple minor tweaks and bugs corrected
+*
 *       2.5 (28-May-2019) Implemented extended GuiTextBox(), GuiValueBox(), GuiSpinner()
 *       2.3 (29-Apr-2019) ADDED: rIcons auxiliar library and support for it, multiple controls reviewed
 *                         Refactor all controls drawing mechanism to use control state
@@ -236,9 +246,9 @@
 #define RAYGUI_H
 
 #define RAYGUI_VERSION_MAJOR 3
-#define RAYGUI_VERSION_MINOR 5
+#define RAYGUI_VERSION_MINOR 6
 #define RAYGUI_VERSION_PATCH 0
-#define RAYGUI_VERSION  "3.5"
+#define RAYGUI_VERSION  "3.6"
 
 #if !defined(RAYGUI_STANDALONE)
     #include "raylib.h"
@@ -903,6 +913,11 @@ typedef enum {
     #define RAYGUI_CLITERAL(name) (name)
 #endif
 
+// Check if two rectangles are equal, used to validate a slider bounds as an id
+#ifndef CHECK_BOUNDS_ID
+    #define CHECK_BOUNDS_ID(src, dst) ((src.x == dst.x) && (src.y == dst.y) && (src.width == dst.width) && (src.height == dst.height))
+#endif
+
 #if !defined(RAYGUI_NO_ICONS) && !defined(RAYGUI_CUSTOM_ICONS)
 
 // Embedded icons, no external file provided
@@ -1219,6 +1234,9 @@ static unsigned int guiIconScale = 1;           // Gui icon default scale (if ic
 
 static bool guiTooltip = false;                 // Tooltip enabled/disabled
 static const char *guiTooltipPtr = NULL;        // Tooltip string pointer (string provided by user)
+
+static bool guiSliderDragging = false;          // Gui slider drag state (no inputs processed except dragged slider)
+static Rectangle guiSliderActive = { 0 };       // Gui slider active bounds rectangle, used as an unique identifier
 
 static unsigned int textBoxCursorIndex = 0;     // Cursor index, shared by all GuiTextBox*()
 //static int blinkCursorFrameCounter = 0;       // Frame counter for cursor blinking
@@ -1750,7 +1768,7 @@ bool GuiButton(Rectangle bounds, const char *text)
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -1788,7 +1806,7 @@ bool GuiLabelButton(Rectangle bounds, const char *text)
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -1818,7 +1836,7 @@ bool GuiToggle(Rectangle bounds, const char *text, bool active)
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -1907,7 +1925,7 @@ bool GuiCheckBox(Rectangle bounds, const char *text, bool checked)
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -1967,7 +1985,7 @@ int GuiComboBox(Rectangle bounds, const char *text, int active)
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked && (itemCount > 1))
+    if ((state != STATE_DISABLED) && !guiLocked && (itemCount > 1) && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -2029,7 +2047,7 @@ bool GuiDropdownBox(Rectangle bounds, const char *text, int *active, bool editMo
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && (editMode || !guiLocked) && (itemCount > 1))
+    if ((state != STATE_DISABLED) && (editMode || !guiLocked) && (itemCount > 1) && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -2163,7 +2181,7 @@ bool GuiTextBox(Rectangle bounds, char *text, int bufferSize, bool editMode)
 
     // Auto-cursor movement logic
     // NOTE: Cursor moves automatically when key down after some time
-    if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_BACKSPACE)) autoCursorCooldownCounter++;
+    if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_BACKSPACE) || IsKeyDown(KEY_DELETE)) autoCursorCooldownCounter++;
     else
     {
         autoCursorCooldownCounter = 0;      // GLOBAL: Cursor cooldown counter
@@ -2176,7 +2194,7 @@ bool GuiTextBox(Rectangle bounds, char *text, int bufferSize, bool editMode)
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -2223,7 +2241,39 @@ bool GuiTextBox(Rectangle bounds, char *text, int bufferSize, bool editMode)
                 text[textLength] = '\0';
             }
 
-            // Delete codepoint from text, at current cursor position
+            // Move cursor to start
+            if ((textLength > 0) && IsKeyPressed(KEY_HOME))
+            {
+                textBoxCursorIndex = 0;
+            }
+
+            // Move cursor to end
+            if ((textLength > textBoxCursorIndex) && IsKeyPressed(KEY_END))
+            {
+                textBoxCursorIndex = textLength;
+            }
+
+            // Delete codepoint from text, after current cursor position
+            if ((textLength > textBoxCursorIndex) && (IsKeyPressed(KEY_DELETE) || (IsKeyDown(KEY_DELETE) && (autoCursorCooldownCounter >= AUTO_CURSOR_COOLDOWN))))
+            {
+                autoCursorDelayCounter++;
+
+                if (IsKeyPressed(KEY_DELETE) || (autoCursorDelayCounter%AUTO_CURSOR_DELAY) == 0)      // Delay every movement some frames
+                {
+                    int nextCodepointSize = 0;
+                    GetCodepointNext(text + textBoxCursorIndex, &nextCodepointSize);
+
+                    // Move backward text from cursor position
+                    for (int i = textBoxCursorIndex; i < textLength; i++) text[i] = text[i + nextCodepointSize];
+
+                    textLength -= codepointSize;
+
+                    // Make sure text last character is EOL
+                    text[textLength] = '\0';
+                }
+            }
+            
+            // Delete codepoint from text, before current cursor position
             if ((textLength > 0) && (IsKeyPressed(KEY_BACKSPACE) || (IsKeyDown(KEY_BACKSPACE) && (autoCursorCooldownCounter >= AUTO_CURSOR_COOLDOWN))))
             {
                 autoCursorDelayCounter++;
@@ -2236,8 +2286,8 @@ bool GuiTextBox(Rectangle bounds, char *text, int bufferSize, bool editMode)
                     // Move backward text from cursor position
                     for (int i = (textBoxCursorIndex - prevCodepointSize); i < textLength; i++) text[i] = text[i + prevCodepointSize];
 
-                    // Prevent textBoxCursorIndex from decrementing past 0
-                    if(textBoxCursorIndex > 0)
+                    // Prevent cursor index from decrementing past 0
+                    if (textBoxCursorIndex > 0)
                     {
                         textBoxCursorIndex -= codepointSize;
                         textLength -= codepointSize;
@@ -2383,7 +2433,7 @@ bool GuiSpinner(Rectangle bounds, const char *text, int *value, int minValue, in
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -2458,7 +2508,7 @@ bool GuiValueBox(Rectangle bounds, const char *text, int *value, int minValue, i
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -2571,11 +2621,29 @@ float GuiSliderPro(Rectangle bounds, const char *textLeft, const char *textRight
     {
         Vector2 mousePoint = GetMousePosition();
 
-        if (CheckCollisionPointRec(mousePoint, bounds))
+        if (guiSliderDragging) // Keep dragging outside of bounds
+        {
+            if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
+            {
+                if (CHECK_BOUNDS_ID(bounds, guiSliderActive))
+                {
+                    // Get equivalent value and slider position from mousePoint.x
+                    value = ((maxValue - minValue)*(mousePoint.x - (float)(bounds.x + sliderWidth/2)))/(float)(bounds.width - sliderWidth) + minValue;
+                }
+            }
+            else
+            {
+                guiSliderDragging = false;
+                guiSliderActive = RAYGUI_CLITERAL(Rectangle){ 0, 0, 0, 0 };
+            }
+        }
+        else if (CheckCollisionPointRec(mousePoint, bounds))
         {
             if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
             {
                 state = STATE_PRESSED;
+                guiSliderDragging = true;
+                guiSliderActive = bounds; // Store bounds as an identifier when dragging starts
 
                 // Get equivalent value and slider position from mousePoint.x
                 value = ((maxValue - minValue)*(mousePoint.x - (float)(bounds.x + sliderWidth/2)))/(float)(bounds.width - sliderWidth) + minValue;
@@ -2720,7 +2788,7 @@ void GuiDummyRec(Rectangle bounds, const char *text)
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -2780,7 +2848,7 @@ int GuiListViewEx(Rectangle bounds, const char **text, int count, int *focus, in
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -2918,7 +2986,7 @@ Color GuiColorPanel(Rectangle bounds, const char *text, Color color)
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         Vector2 mousePoint = GetMousePosition();
 
@@ -2991,12 +3059,30 @@ float GuiColorBarAlpha(Rectangle bounds, const char *text, float alpha)
     {
         Vector2 mousePoint = GetMousePosition();
 
-        if (CheckCollisionPointRec(mousePoint, bounds) ||
-            CheckCollisionPointRec(mousePoint, selector))
+        if (guiSliderDragging) // Keep dragging outside of bounds
+        {
+            if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
+            {
+                if (CHECK_BOUNDS_ID(bounds, guiSliderActive))
+                {
+                    alpha = (mousePoint.x - bounds.x)/bounds.width;
+                    if (alpha <= 0.0f) alpha = 0.0f;
+                    if (alpha >= 1.0f) alpha = 1.0f;
+                }
+            }
+            else
+            {
+                guiSliderDragging = false;
+                guiSliderActive = RAYGUI_CLITERAL(Rectangle){ 0, 0, 0, 0 };
+            }
+        }
+        else if (CheckCollisionPointRec(mousePoint, bounds) || CheckCollisionPointRec(mousePoint, selector))
         {
             if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
             {
                 state = STATE_PRESSED;
+                guiSliderDragging = true;
+                guiSliderActive = bounds; // Store bounds as an identifier when dragging starts
 
                 alpha = (mousePoint.x - bounds.x)/bounds.width;
                 if (alpha <= 0.0f) alpha = 0.0f;
@@ -3056,12 +3142,30 @@ float GuiColorBarHue(Rectangle bounds, const char *text, float hue)
     {
         Vector2 mousePoint = GetMousePosition();
 
-        if (CheckCollisionPointRec(mousePoint, bounds) ||
-            CheckCollisionPointRec(mousePoint, selector))
+        if (guiSliderDragging) // Keep dragging outside of bounds
+        {
+            if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
+            {
+                if (CHECK_BOUNDS_ID(bounds, guiSliderActive))
+                {
+                    hue = (mousePoint.y - bounds.y)*360/bounds.height;
+                    if (hue <= 0.0f) hue = 0.0f;
+                    if (hue >= 359.0f) hue = 359.0f;
+                }
+            }
+            else
+            {
+                guiSliderDragging = false;
+                guiSliderActive = RAYGUI_CLITERAL(Rectangle){ 0, 0, 0, 0 };
+            }
+        }
+        else if (CheckCollisionPointRec(mousePoint, bounds) || CheckCollisionPointRec(mousePoint, selector))
         {
             if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
             {
                 state = STATE_PRESSED;
+                guiSliderDragging = true;
+                guiSliderActive = bounds; // Store bounds as an identifier when dragging starts
 
                 hue = (mousePoint.y - bounds.y)*360/bounds.height;
                 if (hue <= 0.0f) hue = 0.0f;
@@ -3293,7 +3397,7 @@ Vector2 GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs)
 
     // Update control
     //--------------------------------------------------------------------
-    if ((state != STATE_DISABLED) && !guiLocked)
+    if ((state != STATE_DISABLED) && !guiLocked && !guiSliderDragging)
     {
         if (CheckCollisionPointRec(mousePoint, bounds))
         {
@@ -4135,7 +4239,7 @@ static void GuiDrawRectangle(Rectangle rec, int borderWidth, Color borderColor, 
 // Draw tooltip using control bounds
 static void GuiTooltip(Rectangle controlRec)
 {
-    if (!guiLocked && guiTooltip && (guiTooltipPtr != NULL))
+    if (!guiLocked && guiTooltip && (guiTooltipPtr != NULL) && !guiSliderDragging)
     {
         Vector2 textSize = MeasureTextEx(GuiGetFont(), guiTooltipPtr, GuiGetStyle(DEFAULT, TEXT_SIZE), GuiGetStyle(DEFAULT, TEXT_SPACING));
 
@@ -4403,9 +4507,27 @@ static int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue)
     {
         Vector2 mousePoint = GetMousePosition();
 
-        if (CheckCollisionPointRec(mousePoint, bounds))
+        if (guiSliderDragging) // Keep dragging outside of bounds
+        {
+            if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
+            {
+                if (CHECK_BOUNDS_ID(bounds, guiSliderActive))
+                {
+                    if (isVertical) value += (int)(GetMouseDelta().y/(scrollbar.height - slider.height)*valueRange);
+                    else value += (int)(GetMouseDelta().x/(scrollbar.width - slider.width)*valueRange);
+                }
+            }
+            else
+            {
+                guiSliderDragging = false;
+                guiSliderActive = RAYGUI_CLITERAL(Rectangle){ 0, 0, 0, 0 };
+            }
+        }
+        else if (CheckCollisionPointRec(mousePoint, bounds))
         {
             state = STATE_FOCUSED;
+            guiSliderDragging = true;
+            guiSliderActive = bounds; // Store bounds as an identifier when dragging starts
 
             // Handle mouse wheel
             int wheel = (int)GetMouseWheelMove();
@@ -4428,8 +4550,8 @@ static int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue)
             }
             else if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
             {
-                if (isVertical) value += (GetMouseDelta().y/(scrollbar.height - slider.height)*valueRange);
-                else value += (GetMouseDelta().x/(scrollbar.width - slider.width)*valueRange);
+                if (isVertical) value += (int)(GetMouseDelta().y/(scrollbar.height - slider.height)*valueRange);
+                else value += (int)(GetMouseDelta().x/(scrollbar.width - slider.width)*valueRange);
             }
 
             // Keyboard control on mouse hover scrollbar

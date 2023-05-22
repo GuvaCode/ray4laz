@@ -1476,12 +1476,12 @@ function ExportImageAsCode(image: TImage; const fileName: PChar): Boolean; cdecl
 
 {Generate image: plain color}
 function GenImageColor(width, height: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageColor';
-{Generate image: vertical gradient}
-function GenImageGradientV(width, height: Integer; top, bottom: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientV';
-{Generate image: horizontal gradient}
-function GenImageGradientH(width, height: Integer; left, right: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientH';
+{Generate image: linear gradient, direction in degrees [0..360], 0=Vertical gradient}
+function GenImageGradientLinear(width, height, direction: Integer; start, end_: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientLinear';
 {Generate image: radial gradient}
-function GenImageGradientRadial(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientRadial';
+function GenImageGradientRadial(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientRadial';;
+{Generate image: square gradient}
+function GenImageGradientSquare(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientSquare';  ;
 {Generate image: checked}
 function GenImageChecked(width, height, checksX, checksY: Integer; col1, col2: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageChecked';
 {Generate image: white noise}
