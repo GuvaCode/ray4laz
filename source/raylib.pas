@@ -1479,9 +1479,9 @@ function GenImageColor(width, height: Integer; color: TColorB): TImage; cdecl; e
 {Generate image: linear gradient, direction in degrees [0..360], 0=Vertical gradient}
 function GenImageGradientLinear(width, height, direction: Integer; start, end_: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientLinear';
 {Generate image: radial gradient}
-function GenImageGradientRadial(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientRadial';;
+function GenImageGradientRadial(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientRadial';
 {Generate image: square gradient}
-function GenImageGradientSquare(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientSquare';  ;
+function GenImageGradientSquare(width, height: Integer; density: Single; inner, outer: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageGradientSquare';
 {Generate image: checked}
 function GenImageChecked(width, height, checksX, checksY: Integer; col1, col2: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageChecked';
 {Generate image: white noise}
@@ -1534,6 +1534,8 @@ procedure ImageDither(image: PImage; rBpp, gBpp, bBpp, aBpp: Integer); cdecl; ex
 procedure ImageFlipVertical(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFlipVertical';
 {Flip image horizontally}
 procedure ImageFlipHorizontal(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFlipHorizontal';
+{Rotate image by input angle in degrees (-359 to 359)}
+procedure ImageRotate(image: PImage; degrees: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageRotate';
 {Rotate image clockwise 90deg}
 procedure ImageRotateCW(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageRotateCW';
 {Rotate image counter-clockwise 90deg}
