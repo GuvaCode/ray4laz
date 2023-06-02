@@ -101,7 +101,7 @@ begin
   target := LoadRenderTexture(screenWidth, screenHeight);
 
   // Setup orbital camera
-  SetCameraMode(camera, CAMERA_ORBITAL);  // Set an orbital camera mode
+
 
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@camera);              // Update camera
+      UpdateCamera(@camera,CAMERA_ORBITAL);              // Update camera
 
       if IsKeyPressed(KEY_RIGHT) then inc(currentShader) else
       if IsKeyPressed(KEY_LEFT) then dec(currentShader);

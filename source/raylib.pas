@@ -9,10 +9,13 @@ unit raylib;
 {$I raylib.inc}
 
 interface
+
+
 const
   cDllName = {$IFDEF WINDOWS} 'raylib.dll' {$IFEND}
              {$IFDEF DARWIN} 'libraylib.dylib' {$IFEND}
              {$IFDEF LINUX} 'libraylib.so' {$IFEND};
+
 
 const
   DEG2RAD = (PI / 180.0);
@@ -27,9 +30,6 @@ const
    { TColorB }
    TColorB = record
        r,g,b,a : byte; // Color value
-       {$IFDEF Adv_Record}
-       constructor Create(aR, aG, aB, aA: Byte);
-       {$ENDIF}
      end;
   PColorB = ^TColorB;
   TColor = TColorB;
@@ -71,9 +71,6 @@ const
      TVector2 = record
          x : single; // Vector x component
          y : single; // Vector y component
-         {$IFDEF Adv_Record}
-         constructor Create(aX, aY: Single);
-         {$ENDIF}
        end;
 
      (* Vector3, 3 components *)
@@ -82,9 +79,6 @@ const
          x : single; // Vector x component
          y : single; // Vector y component
          z : single; // Vector z component
-         {$IFDEF Adv_Record}
-         constructor Create(aX, aY, aZ: Single);
-         {$ENDIF}
        end;
 
      (* Vector4, 4 components *)
@@ -94,9 +88,6 @@ const
          y : single; // Vector y component
          z : single; // Vector z component
          w : single; // Vector w component
-         {$IFDEF Adv_Record}
-         constructor Create(aX, aY, aZ, aW: Single);
-         {$ENDIF}
        end;
 
      (* Quaternion, 4 components (Vector4 alias) *)
@@ -132,9 +123,6 @@ const
          y      : single; // Rectangle top-left corner position y
          width  : single; // Rectangle width
          height : single; // Rectangle height
-         {$IFDEF Adv_Record}
-         constructor Create(aX, aY, aWidth, aHeight: Single);
-         {$ENDIF}
        end;
 
      (* Image, pixel data stored in CPU memory (RAM) *)
@@ -2158,6 +2146,7 @@ procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY:
 implementation
 uses
   Math;
+
 {$IFDEF linux}
   {$IFDEF RAY_STATIC}
   {$linklib c}
@@ -2167,6 +2156,7 @@ uses
   {$linklib libraylib.a}
   {$endif}
 {$endif}
+
 
 function Vector2Create(aX: single; aY: single): TVector2;
 begin
@@ -2255,50 +2245,6 @@ begin
   aCam^.fovy := aFOVY;
   aCam^.projection := aType;
 end;
-
-{$IFDEF Adv_Record}
-{ TColorB }
-constructor TColorB.Create(aR, aG, aB, aA: Byte);
-begin
-  Self.R := aR;
-  Self.G := aG;
-  Self.B := aB;
-  Self.A := aA;
-end;
-
-{ TRectangle }
-constructor TRectangle.Create(aX, aY, aWidth, aHeight: Single);
-begin
-  Self.X := aX;
-  Self.Y := aY;
-  Self.Width := aWidth;
-  Self.Height := aHeight;
-end;
-
-{ TVector4 }
-constructor TVector4.Create(aX, aY, aZ, aW: Single);
-begin
-  self.x:=aX;
-  self.y:=aY;
-  self.z:=aZ;
-  self.w:=aW;
-end;
-
-{ TVector3 }
-constructor TVector3.Create(aX, aY, aZ: Single);
-begin
-  self.x:=aX;
-  self.y:=aY;
-  self.z:=aZ;
-end;
-
-{ TVector2 }
-constructor TVector2.Create(aX, aY: Single);
-begin
-  self.x:=aX;
-  self.y:=ay;
-end;
-{$ENDIF}
 
 initialization
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);

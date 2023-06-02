@@ -174,8 +174,8 @@ begin
 
 
        // Third GUI column
-       if GuiTextBoxMulti(RectangleCreate( 320, 25, 225, 140 ), multiTextBoxText, 256,
-       multiTextBoxEditMode) then multiTextBoxEditMode := not multiTextBoxEditMode;
+     //  if GuiTextBoxMulti(RectangleCreate( 320, 25, 225, 140 ), multiTextBoxText, 256,
+    //   multiTextBoxEditMode) then multiTextBoxEditMode := not multiTextBoxEditMode;
 
        colorPickerValue := GuiColorPicker(RectangleCreate( 320, 185, 196, 192 ),'Color picker', colorPickerValue);
 

@@ -20,14 +20,6 @@
 {.$define RL_DEFAULT_BATCH_BUFFER_ELEMENTS}
 
 // Other Settings
-
-// Switch to advanced record like Delphi mode
-{.$define Adv_Record}
-
-{$IFDEF Adv_Record}
-{$modeSwitch advancedRecords}
-{$ENDIF}
-
 {$packrecords c}
 {$ALIGN 8}
 {$MINENUMSIZE 4}
