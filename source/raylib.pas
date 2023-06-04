@@ -10,11 +10,12 @@ unit raylib;
 
 interface
 
-
+{$IFNDEF RAY_STATIC}
 const
   cDllName = {$IFDEF WINDOWS} 'raylib.dll' {$IFEND}
              {$IFDEF DARWIN} 'libraylib.dylib' {$IFEND}
              {$IFDEF LINUX} 'libraylib.so' {$IFEND};
+{$ENDIF}
 
 
 const
