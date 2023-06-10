@@ -1,6 +1,6 @@
 {********************************************************************************************
 *                                                                                           *
-*   raygui v3.6 - A simple and easy-to-use immediate-mode gui library                   *
+*   raygui v4.0-dev - A simple and easy-to-use immediate-mode gui library                   *
 *                                                                                           *
 *   DESCRIPTION:                                                                            *
 *                                                                                           *
@@ -522,79 +522,6 @@ procedure GuiSetStyle(control: TGuiControl; property_: Integer; value: Integer);
 {Get one style property}
 function GuiGetStyle(control: TGuiControl; property_: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetStyle';
 
-(*Container/separator controls, useful for controls organization*)
-
-{Window Box control, shows a window that can be closed}
-function GuiWindowBox(bounds: TRectangle; const title: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiWindowBox';
-{Group Box control with text name}
-procedure GuiGroupBox(bounds: TRectangle; const text:PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGroupBox';
-{Line separator control, could contain text}
-procedure GuiLine(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLine';
-{Panel control, useful to group controls}
-procedure GuiPanel(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiPanel';
-{Tab Bar control, returns TAB to be closed or -1}
-function GuiTabBar(bounds: TRectangle; const text: PPChar; count: Integer; active: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTabBar';
-{Scroll Panel control}
-function GuiScrollPanel(bounds: TRectangle; const text: PChar; content: TRectangle; scroll: PVector2): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiScrollPanel';
-
-(*Basic controls set*)
-
-{Label control, shows text}
-procedure GuiLabel(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLabel';
-{Button control, returns true when clicked}
-function GuiButton(bounds: TRectangle; const text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiButton';
-{Label button control, show true when clicked}
-function GuiLabelButton(bounds: TRectangle; const text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLabelButton';
-{Toggle Button control, returns true when active}
-function GuiToggle(bounds: TRectangle; const text: PChar; active: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiToggle';
-{Toggle Group control, returns active toggle index}
-function GuiToggleGroup(bounds: TRectangle; const text: PChar; active: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiToggleGroup';
-{Check Box control, returns true when active}
-function GuiCheckBox(bounds: TRectangle; const text: PChar; checked: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiCheckBox';
-{Combo Box control, returns selected item index}
-function GuiComboBox(bounds: TRectangle; const text: PChar; active: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiComboBox';
-{Dropdown Box control, returns selected item}
-function GuiDropdownBox(bounds: TRectangle; const text: PChar; active: PInteger; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDropdownBox';
-{Spinner control, returns selected value}
-function GuiSpinner(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSpinner';
-{Value Box control, updates input text with numbers}
-function GuiValueBox(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiValueBox';
-{Text Box control, updates input text}
-function GuiTextBox(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextBox';
-{Slider control, returns selected value}
-function GuiSlider(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSlider';
-{Slider Bar control, returns selected value}
-function GuiSliderBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSliderBar';
-{Progress Bar control, shows current progress value}
-function GuiProgressBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiProgressBar';
-{Status Bar control, shows info text}
-procedure GuiStatusBar(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiStatusBar';
-{Dummy control for placeholders}
-procedure GuiDummyRec(bounds: TRectangle; const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDummyRec';
-{Scroll Bar control}
-function GuiScrollBar(bounds: TRectangle; value, minValue, maxValue: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiScrollBar';
-{Grid control}
-function GuiGrid(bounds: TRectangle; const text: PChar; spacing:Single; subdivs: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGrid';
-
-(*Advance controls set*)
-
-{List View control, returns selected list item index}
-function GuiListView(bounds: TRectangle; const text: PChar; scrollIndex: PInteger; active: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListView';
-{List View with extended parameters}
-function GuiListViewEx(bounds: TRectangle; const text: PPChar; count: Integer; focus: PInteger; scrollIndex: PInteger; active: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListViewEx';
-{Message Box control, displays a message}
-function GuiMessageBox(bounds: TRectangle; const title, message, buttons: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiMessageBox';
-{Text Input Box control, ask for text}
-function GuiTextInputBox(bounds: TRectangle; const title, message, buttons, text: PChar; textMaxSize: Integer; secretViewActive: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextInputBox';
-{Color Picker control (multiple color controls)}
-function GuiColorPicker(bounds: TRectangle; const text: PChar; color: TColorB): TColorB ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorPicker';
-{Color Panel control}
-function GuiColorPanel(bounds: TRectangle; const text: PChar; color: TColorB): TColorB ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorPanel';
-{Color Bar Alpha control}
-function GuiColorBarAlpha(bounds: TRectangle; const text: PChar; alpha: Single): Single ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorBarAlpha';
-{Color Bar Hue control}
-function GuiColorBarHue(bounds:TRectangle; const text: PChar; value: Single): Single ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorBarHue';
-
 (* Styles loading functions *)
 {Load style file over global style variable (.rgs)}
 procedure GuiLoadStyle(const fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadStyle';
@@ -622,9 +549,86 @@ function GuiGetIcons: Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$END
 function GuiLoadIcons(const fileName: PChar; loadIconsName: Boolean): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadIcons';
 {Gui icons functionality}
 procedure GuiDrawIcon(iconId, posX, posY, pixelSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDrawIcon';
-
-
 {$ENDIF}
+
+// Controls
+//----------------------------------------------------------------------------------------------------------
+
+(*Container/separator controls, useful for controls organization*)
+
+{Window Box control, shows a window that can be closed}
+function GuiWindowBox(bounds: TRectangle; const title: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiWindowBox';
+{Group Box control with text name}
+function GuiGroupBox(bounds: TRectangle; const text:PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGroupBox';
+{Line separator control, could contain text}
+function GuiLine(bounds: TRectangle; const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLine';
+{Panel control, useful to group controls}
+function GuiPanel(bounds: TRectangle; const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiPanel';
+{Tab Bar control, returns TAB to be closed or -1}
+function GuiTabBar(bounds: TRectangle; const text: PPChar; count: Integer; active: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTabBar';
+{Scroll Panel control}
+function GuiScrollPanel(bounds: TRectangle; const text: PChar; content: TRectangle; scroll: PVector2; view: PRectangle): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiScrollPanel';
+
+(*Basic controls set*)
+
+{Label control, shows text}
+function GuiLabel(bounds: TRectangle; const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLabel';
+{Button control, returns true when clicked}
+function GuiButton(bounds: TRectangle; const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiButton';
+{Label button control, show true when clicked}
+function GuiLabelButton(bounds: TRectangle; const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLabelButton';
+{Toggle Button control, returns true when active}
+function GuiToggle(bounds: TRectangle; const text: PChar; active: PBoolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiToggle';
+{Toggle Group control, returns active toggle index}
+function GuiToggleGroup(bounds: TRectangle; const text: PChar; active: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiToggleGroup';
+{Check Box control, returns true when active}
+function GuiCheckBox(bounds: TRectangle; const text: PChar; checked: PBoolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiCheckBox';
+{Combo Box control, returns selected item index}
+function GuiComboBox(bounds: TRectangle; const text: PChar; active: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiComboBox';
+
+{Dropdown Box control, returns selected item}
+function GuiDropdownBox(bounds: TRectangle; const text: PChar; active: PInteger; editMode: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDropdownBox';
+{Spinner control, returns selected value}
+function GuiSpinner(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSpinner';
+{Value Box control, updates input text with numbers}
+function GuiValueBox(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiValueBox';
+{Text Box control, updates input text}
+function GuiTextBox(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextBox';
+
+{Slider control, returns selected value}
+function GuiSlider(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value: PSingle; minValue, maxValue: Single): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSlider';
+{Slider Bar control, returns selected value}
+function GuiSliderBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value, minValue, maxValue: Single): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSliderBar';
+
+
+{Progress Bar control, shows current progress value}
+function GuiProgressBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value: PSingle; minValue, maxValue: Single): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiProgressBar';
+{Status Bar control, shows info text}
+function GuiStatusBar(bounds: TRectangle; const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiStatusBar';
+{Dummy control for placeholders}
+function GuiDummyRec(bounds: TRectangle; const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDummyRec';
+{Grid control}
+function GuiGrid(bounds: TRectangle; const text: PChar; spacing: Single; subdivs: Integer; mouseCell: TVector2): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGrid';
+
+
+(*Advance controls set*)
+
+{List View control, returns selected list item index}
+function GuiListView(bounds: TRectangle; const text: PChar; scrollIndex: PInteger; active: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListView';
+{List View with extended parameters}
+function GuiListViewEx(bounds: TRectangle; const text: PPChar; count: Integer; scrollIndex: PInteger; active, focus: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListViewEx';
+{Message Box control, displays a message}
+function GuiMessageBox(bounds: TRectangle; const title, message, buttons: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiMessageBox';
+{Text Input Box control, ask for text}
+function GuiTextInputBox(bounds: TRectangle; const title, message, buttons, text: PChar; textMaxSize: Integer; secretViewActive: PBoolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextInputBox';
+{Color Picker control (multiple color controls)}
+function GuiColorPicker(bounds: TRectangle; const text: PChar; color: PColorB): Integer ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorPicker';
+{Color Panel control}
+function GuiColorPanel(bounds: TRectangle; const text: PChar; color: PColorB): Integer ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorPanel';
+{Color Bar Alpha control}
+function GuiColorBarAlpha(bounds: TRectangle; const text: PChar; alpha: PSingle): Integer ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorBarAlpha';
+{Color Bar Hue control}
+function GuiColorBarHue(bounds: TRectangle; const text: PChar; value: PSingle): Integer ; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorBarHue';
 
 implementation
 

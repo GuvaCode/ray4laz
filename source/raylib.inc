@@ -2,7 +2,7 @@
 
 // Defines for GNU/Linux
 {$IFDEF LINUX}
-{.$DEFINE RAY_STATIC}
+{$DEFINE RAY_STATIC}
 {$ENDIF}
 
 

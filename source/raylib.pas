@@ -1457,6 +1457,8 @@ function IsImageReady(image: TImage): Boolean; cdecl; external {$IFNDEF RAY_STAT
 procedure UnloadImage(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadImage';
 {Export image data to file, returns true on success}
 function ExportImage(image: TImage; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImage';
+{Export image to memory buffer}
+function ExportImageToMemory(image: TImage; const fileType: PChar; fileSize: PInteger): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageToMemory';
 {Export image as code file defining an array of bytes, returns true on success  }
 function ExportImageAsCode(image: TImage; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageAsCode';
 
