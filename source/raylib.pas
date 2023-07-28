@@ -923,6 +923,8 @@ procedure SetWindowMinSize(width, height: Integer); cdecl; external {$IFNDEF RAY
 procedure SetWindowSize(width, height: Integer);cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowSize';
 {Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)}
 procedure SetWindowOpacity(opacity: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowOpacity';
+{Set window focused (only PLATFORM_DESKTOP)}
+procedure SetWindowFocused; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowFocused';
 {Get native window handle}
 function GetWindowHandle: Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWindowHandle';
 {Get current screen width}
@@ -953,7 +955,7 @@ function GetMonitorRefreshRate(monitor: Integer): Integer; cdecl; external {$IFN
 function GetWindowPosition: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWindowPosition';
 {Get window scale DPI factor}
 function GetWindowScaleDPI: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWindowScaleDPI';
-{Get the human-readable, UTF-8 encoded name of the primary monitor}
+{Get the human-readable, UTF-8 encoded name of the specified monitor}
 function GetMonitorName(monitor: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorName';
 {Set clipboard text content}
 procedure SetClipboardText(const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetClipboardText';
@@ -1724,6 +1726,8 @@ procedure DrawTextCodepoints(font: TFont; const codepoints: PInteger; count: Int
 
 (* Text font info functions *)
 
+{Set vertical line spacing when drawing with line-breaks}
+procedure SetTextLineSpacing(spacing: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTextLineSpacing';
 {Measure string width for default font}
 function MeasureText(const text: PChar; fontSize: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureText';
 {Measure string size for Font}

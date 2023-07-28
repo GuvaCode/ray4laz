@@ -244,11 +244,11 @@ function MatrixRotateZYX(angle : TVector3): TMatrix; cdecl; external {$IFNDEF RA
 { Returns scaling matrix }
 function MatrixScale(x, y, z : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixScale';
 { Returns perspective projection matrix }
-function MatrixFrustum(left, right, bottom, top, near_, far_ : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixFrustum';
+function MatrixFrustum(left, right, bottom, top, near, far : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixFrustum';
 { Returns perspective projection matrix }
-function MatrixPerspective(fovy, aspect, near_, far_ : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixPerspective';
+function MatrixPerspective(fovY, aspect, nearPlane, farPlane : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixPerspective';
 { Returns orthographic projection matrix }
-function MatrixOrtho(left, right, bottom, top, near_, far_ : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixOrtho';
+function MatrixOrtho(left, right, bottom, top, nearPlane, farPlane : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixOrtho';
 { Returns camera look-at matrix (view matrix) }
 function MatrixLookAt(eye, target, up : TVector3): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixLookAt';
 { Returns float array of matrix data }

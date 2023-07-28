@@ -19,6 +19,9 @@
 // Default internal render batch elements limits
 {.$define RL_DEFAULT_BATCH_BUFFER_ELEMENTS}
 
+//
+{.$define RAYGUI_NO_RICONS}
+
 // Other Settings
 {$packrecords c}
 {$ALIGN 8}
