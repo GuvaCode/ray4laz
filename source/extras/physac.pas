@@ -183,31 +183,31 @@ type
 //----------------------------------------------------------------------------------
 
 // Physics system management
-procedure InitPhysics; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Initializes physics system
-procedure UpdatePhysics; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Update physics system
-procedure ResetPhysics; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Reset physics system (global variables)
-procedure ClosePhysics; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Close physics system and unload used memory
-procedure SetPhysicsTimeStep(delta: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Sets physics fixed time step in milliseconds. 1.666666 by default
-procedure SetPhysicsGravity(x,y: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Sets physics global gravity force
+procedure InitPhysics; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'InitPhysics';// Initializes physics system
+procedure UpdatePhysics; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdatePhysics';// Update physics system
+procedure ResetPhysics; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ResetPhysics';// Reset physics system (global variables)
+procedure ClosePhysics; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ClosePhysics';// Close physics system and unload used memory
+procedure SetPhysicsTimeStep(delta: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetPhysicsTimeStep';// Sets physics fixed time step in milliseconds. 1.666666 by default
+procedure SetPhysicsGravity(x,y: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetPhysicsGravity';// Sets physics global gravity force
 
 // Physic body creation/destroy
-function CreatePhysicsBodyCircle(pos: TVector2; radius: single; density: single): TPhysicsBody; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Creates a new circle physics body with generic parameters
-function CreatePhysicsBodyRectangle(pos: TVector2; width: single; height: single; density: single): TPhysicsBody; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Creates a new rectangle physics body with generic parameters
-function CreatePhysicsBodyPolygon(pos: TVector2; radius: single; sides:longint; density: single): TPhysicsBody; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Creates a new polygon physics body with generic parameters
-procedure DestroyPhysicsBody(body: TPhysicsBody); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Destroy a physics body
+function CreatePhysicsBodyCircle(pos: TVector2; radius: single; density: single): TPhysicsBody; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CreatePhysicsBodyCircle';// Creates a new circle physics body with generic parameters
+function CreatePhysicsBodyRectangle(pos: TVector2; width: single; height: single; density: single): TPhysicsBody; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CreatePhysicsBodyRectangle';// Creates a new rectangle physics body with generic parameters
+function CreatePhysicsBodyPolygon(pos: TVector2; radius: single; sides:longint; density: single): TPhysicsBody; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CreatePhysicsBodyPolygon';// Creates a new polygon physics body with generic parameters
+procedure DestroyPhysicsBody(body: TPhysicsBody); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DestroyPhysicsBody';// Destroy a physics body
 
 // Physic body forces
-procedure PhysicsAddForce(body: TPhysicsBody; force: TVector2); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Adds a force to a physics body
-procedure PhysicsAddTorque(body: TPhysicsBody; amount: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Adds an angular force to a physics body
-procedure PhysicsShatter(body: TPhysicsBody; position: TVector2; force: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Shatters a polygon shape physics body to little physics bodies with explosion force
-procedure SetPhysicsBodyRotation(body: TPhysicsBody; radians: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Sets physics body shape transform based on radians parameter
+procedure PhysicsAddForce(body: TPhysicsBody; force: TVector2); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PhysicsAddForce';// Adds a force to a physics body
+procedure PhysicsAddTorque(body: TPhysicsBody; amount: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PhysicsAddTorque';// Adds an angular force to a physics body
+procedure PhysicsShatter(body: TPhysicsBody; position: TVector2; force: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PhysicsShatter';// Shatters a polygon shape physics body to little physics bodies with explosion force
+procedure SetPhysicsBodyRotation(body: TPhysicsBody; radians: single); cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetPhysicsBodyRotation';// Sets physics body shape transform based on radians parameter
 
 // Query physics info
-function GetPhysicsBody(index: longint): TPhysicsBody; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Returns a physics body of the bodies pool at a specific index
-function GetPhysicsBodiesCount: longint; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Returns the current amount of created physics bodies
-function GetPhysicsShapeType(index: longint): longint; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Returns the physics body shape type (PHYSICS_CIRCLE or PHYSICS_POLYGON)
-function GetPhysicsShapeVerticesCount(index: longint): longint; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Returns the amount of vertices of a physics body shape
-function GetPhysicsShapeVertex(body: TPhysicsBody; vertex: longint): TVector2; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF};// Returns transformed position of a body shape (body position + vertex transformed position)
+function GetPhysicsBody(index: longint): TPhysicsBody; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPhysicsBody';// Returns a physics body of the bodies pool at a specific index
+function GetPhysicsBodiesCount: longint; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPhysicsBodiesCount';// Returns the current amount of created physics bodies
+function GetPhysicsShapeType(index: longint): longint; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPhysicsShapeType';// Returns the physics body shape type (PHYSICS_CIRCLE or PHYSICS_POLYGON)
+function GetPhysicsShapeVerticesCount(index: longint): longint; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPhysicsShapeVerticesCount';// Returns the amount of vertices of a physics body shape
+function GetPhysicsShapeVertex(body: TPhysicsBody; vertex: longint): TVector2; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPhysicsShapeVertex';// Returns transformed position of a body shape (body position + vertex transformed position)
 
 implementation
 
