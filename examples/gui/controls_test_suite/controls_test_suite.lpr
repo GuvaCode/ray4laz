@@ -121,7 +121,7 @@ begin
          else
         if ( not dropDown000EditMode and  not dropDown001EditMode) then GuiUnlock();
 
-        forceSquaredChecked := GuiCheckBox(RectangleCreate( 25, 108, 15, 15 ), 'FORCE CHECK!', forceSquaredChecked);
+        forceSquaredChecked := GuiCheckBox(RectangleCreate( 25, 108, 15, 15 ), 'FORCE CHECK!', @forceSquaredChecked);
 
         GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
         if GuiSpinner(RectangleCreate( 25, 135, 125, 30 ), nil,
