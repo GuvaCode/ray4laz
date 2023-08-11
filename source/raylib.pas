@@ -437,6 +437,7 @@ const
          FLAG_WINDOW_TRANSPARENT         =  TConfigFlags($00000010); // Set to allow transparent framebuffer
          FLAG_WINDOW_HIGHDPI             =  TConfigFlags($00002000); // Set to support HighDPI
          FLAG_WINDOW_MOUSE_PASSTHROUGH   =  TConfigFlags($00004000); // Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+         FLAG_BORDERLESS_WINDOWED_MODE   =  TConfigFlags($00008000); // Set to run program in borderless windowed mode
          FLAG_MSAA_4X_HINT               =  TConfigFlags($00000020); // Set to try enabling MSAA 4X
          FLAG_INTERLACED_HINT            =  TConfigFlags($00010000); // Set to try enabling interlaced video format (for V3D)
 
@@ -744,17 +745,20 @@ const
          PIXELFORMAT_UNCOMPRESSED_R32           = TPixelFormat(8);  // 32 bpp (1 channel - float)
          PIXELFORMAT_UNCOMPRESSED_R32G32B32     = TPixelFormat(9);  // 32*3 bpp (3 channels - float)
          PIXELFORMAT_UNCOMPRESSED_R32G32B32A32  = TPixelFormat(10); // 32*4 bpp (4 channels - float)
-         PIXELFORMAT_COMPRESSED_DXT1_RGB        = TPixelFormat(11); // 4 bpp (no alpha)
-         PIXELFORMAT_COMPRESSED_DXT1_RGBA       = TPixelFormat(12); // 4 bpp (1 bit alpha)
-         PIXELFORMAT_COMPRESSED_DXT3_RGBA       = TPixelFormat(13); // 8 bpp
-         PIXELFORMAT_COMPRESSED_DXT5_RGBA       = TPixelFormat(14); // 8 bpp
-         PIXELFORMAT_COMPRESSED_ETC1_RGB        = TPixelFormat(15); // 4 bpp
-         PIXELFORMAT_COMPRESSED_ETC2_RGB        = TPixelFormat(16); // 4 bpp
-         PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA   = TPixelFormat(17); // 8 bpp
-         PIXELFORMAT_COMPRESSED_PVRT_RGB        = TPixelFormat(18); // 4 bpp
-         PIXELFORMAT_COMPRESSED_PVRT_RGBA       = TPixelFormat(19); // 4 bpp
-         PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA   = TPixelFormat(20); // 8 bpp
-         PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA   = TPixelFormat(21); // 2 bpp
+         PIXELFORMAT_UNCOMPRESSED_R16           = TPixelFormat(11); // 16 bpp (1 channel - half float)
+         PIXELFORMAT_UNCOMPRESSED_R16G16B16     = TPixelFormat(12); // 16*3 bpp (3 channels - half float)
+         PIXELFORMAT_UNCOMPRESSED_R16G16B16A16  = TPixelFormat(13); // 16*4 bpp (4 channels - half float)
+         PIXELFORMAT_COMPRESSED_DXT1_RGB        = TPixelFormat(14); // 4 bpp (no alpha)
+         PIXELFORMAT_COMPRESSED_DXT1_RGBA       = TPixelFormat(15); // 4 bpp (1 bit alpha)
+         PIXELFORMAT_COMPRESSED_DXT3_RGBA       = TPixelFormat(16); // 8 bpp
+         PIXELFORMAT_COMPRESSED_DXT5_RGBA       = TPixelFormat(17); // 8 bpp
+         PIXELFORMAT_COMPRESSED_ETC1_RGB        = TPixelFormat(18); // 4 bpp
+         PIXELFORMAT_COMPRESSED_ETC2_RGB        = TPixelFormat(19); // 4 bpp
+         PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA   = TPixelFormat(20); // 8 bpp
+         PIXELFORMAT_COMPRESSED_PVRT_RGB        = TPixelFormat(21); // 4 bpp
+         PIXELFORMAT_COMPRESSED_PVRT_RGBA       = TPixelFormat(22); // 4 bpp
+         PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA   = TPixelFormat(23); // 8 bpp
+         PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA   = TPixelFormat(24); // 2 bpp
 
    (* Texture parameters: filter mode *)
    //NOTE 1: Filtering considers mipmaps if available in the texture
@@ -901,6 +905,8 @@ procedure SetWindowState(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STAT
 procedure ClearWindowState(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ClearWindowState';
 {Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)}
 procedure ToggleFullscreen; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ToggleFullscreen';
+{Toggle window state: borderless windowed (only PLATFORM_DESKTOP)}
+procedure ToggleBorderlessWindowed; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ToggleBorderlessWindowed';
 {Set window state: maximized, if resizable (only PLATFORM_DESKTOP)}
 procedure MaximizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MaximizeWindow';
 {Set window state: minimized, if resizable (only PLATFORM_DESKTOP)}
@@ -911,11 +917,11 @@ procedure RestoreWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} na
 procedure SetWindowIcon(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowIcon';
 {Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)}
 procedure SetWindowIcons(images: PImage; count: integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowIcons';
-{Set title for window (only PLATFORM_DESKTOP)}
+{Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)}
 procedure SetWindowTitle(const title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowTitle';
 {Set window position on screen (only PLATFORM_DESKTOP)}
 procedure SetWindowPosition(x, y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowPosition';
-{Set monitor for the current window (fullscreen mode)}
+{Set monitor for the current window}
 procedure SetWindowMonitor(monitor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowMonitor';
 {Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)}
 procedure SetWindowMinSize(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowMinSize';
@@ -2009,6 +2015,8 @@ function IsWaveReady(wave: TWave): Boolean; cdecl; external {$IFNDEF RAY_STATIC}
 function LoadSound(const fileName: PChar): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSound';
 {Load sound from wave data}
 function LoadSoundFromWave(wave: TWave): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSoundFromWave';
+{Create a new sound that shares the same sample data as the source sound, does not own the sound data}
+function LoadSoundAlias(source: TSound): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSoundAlias';
 {Checks if a sound is ready}
 function IsSoundReady(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsSoundReady';
 {Update sound buffer with new data}
@@ -2017,6 +2025,8 @@ procedure UpdateSound(sound: TSound; const data: Pointer; sampleCount: Integer);
 procedure UnloadWave(wave: TWave); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadWave';
 {Unload sound}
 procedure UnloadSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadSound';
+{Unload a sound alias (does not deallocate sample data)}
+procedure UnloadSoundAlias(alias: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadSoundAlias';
 {Export wave data to file, returns true on success}
 function ExportWave(wave: TWave; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportWave';
 {Export wave sample data to code (.h), returns true on success}
