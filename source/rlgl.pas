@@ -278,17 +278,20 @@ type
     RL_PIXELFORMAT_UNCOMPRESSED_R32          = TrlPixelFormat(8);  // 32 bpp (1 channel - float)
     RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32    = TrlPixelFormat(9);  // 32*3 bpp (3 channels - float)
     RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 = TrlPixelFormat(10); // 32*4 bpp (4 channels - float)
-    RL_PIXELFORMAT_COMPRESSED_DXT1_RGB       = TrlPixelFormat(11); // 4 bpp (no alpha)
-    RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA      = TrlPixelFormat(12); // 4 bpp (1 bit alpha)
-    RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA      = TrlPixelFormat(13); // 8 bpp
-    RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA      = TrlPixelFormat(14); // 8 bpp
-    RL_PIXELFORMAT_COMPRESSED_ETC1_RGB       = TrlPixelFormat(15); // 4 bpp
-    RL_PIXELFORMAT_COMPRESSED_ETC2_RGB       = TrlPixelFormat(16); // 4 bpp
-    RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA  = TrlPixelFormat(17); // 8 bpp
-    RL_PIXELFORMAT_COMPRESSED_PVRT_RGB       = TrlPixelFormat(18); // 4 bpp
-    RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA      = TrlPixelFormat(19); // 4 bpp
-    RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA  = TrlPixelFormat(20); // 8 bpp
-    RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA  = TrlPixelFormat(21); // 2 bpp
+    RL_PIXELFORMAT_UNCOMPRESSED_R16          = TrlPixelFormat(11); // 16 bpp (1 channel - half float)
+    RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16    = TrlPixelFormat(12); // 16*3 bpp (3 channels - half float)
+    RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16 = TrlPixelFormat(13); // 16*4 bpp (4 channels - half float)
+    RL_PIXELFORMAT_COMPRESSED_DXT1_RGB       = TrlPixelFormat(14); // 4 bpp (no alpha)
+    RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA      = TrlPixelFormat(15); // 4 bpp (1 bit alpha)
+    RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA      = TrlPixelFormat(16); // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA      = TrlPixelFormat(17); // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_ETC1_RGB       = TrlPixelFormat(18); // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_ETC2_RGB       = TrlPixelFormat(19); // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA  = TrlPixelFormat(20); // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_PVRT_RGB       = TrlPixelFormat(21); // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA      = TrlPixelFormat(22); // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA  = TrlPixelFormat(23); // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA  = TrlPixelFormat(24); // 2 bpp
 
 type
   (* Texture parameters: filter mode *)
