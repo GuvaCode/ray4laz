@@ -1358,6 +1358,10 @@ procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColo
 procedure DrawLineBezierQuad(startPos, endPos, controlPos: TVector2; thick: Single; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezierQuad';
 {Draw line using cubic bezier curves with 2 control points}
 procedure DrawLineBezierCubic(startPos, endPos, startControlPos, endControlPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezierCubic';
+{Draw a B-Spline line, minimum 4 points}
+procedure DrawLineBSpline(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBSpline';
+{Draw a Catmull Rom spline line, minimum 4 points}
+procedure DrawLineCatmullRom(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineCatmullRom';
 {Draw lines sequence}
 procedure DrawLineStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineStrip';
 {Draw a color-filled circle}
