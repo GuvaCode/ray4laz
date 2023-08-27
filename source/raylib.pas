@@ -1219,6 +1219,8 @@ function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl
 
 {Check if a key has been pressed once}
 function IsKeyPressed(key: TKeyboardKey): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyPressed';
+{Check if a key has been pressed again (Only PLATFORM_DESKTOP)}
+function IsKeyPressedRepeat(key: TKeyboardKey): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyPressedRepeat';);
 {Check if a key is being pressed}
 function IsKeyDown(key: TKeyboardKey): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyDown';
 {Check if a key has been released once}

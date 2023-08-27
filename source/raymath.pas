@@ -173,6 +173,10 @@ function Vector3Negate(aV : TVector3): TVector3; cdecl; external {$IFNDEF RAY_ST
 function Vector3Divide(v1, v2 : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Divide';
 { Normalize provided vector }
 function Vector3Normalize(v : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Normalize';
+{ Calculate the projection of the vector v1 on to v2 }
+function Vector3Project(v1, v2: TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Project';
+{ Calculate the rejection of the vector v1 on to v2 }
+function Vector3Reject(v1, v2: TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Reject';
 { Orthonormalize provided vectors }
 procedure Vector3OrthoNormalize(v1, v2 : PVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3OrthoNormalize';
 { Transforms a Vector3 by a given Matrix }
