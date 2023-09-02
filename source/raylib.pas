@@ -1146,13 +1146,13 @@ procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; exter
 (* Files management functions *)
 
 {Load file data as byte array (read)}
-function LoadFileData(const fileName: PChar; bytesRead: PLongWord): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFileData';
+function LoadFileData(const fileName: PChar; dataSize: PInteger): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFileData';
 {Unload file data allocated by LoadFileData()}
 procedure UnloadFileData(data: PByte); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFileData';
 {Save data to file from byte array (write), returns true on success}
-function SaveFileData(const fileName: PChar; data: Pointer; bytesToWrite: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileData';
+function SaveFileData(const fileName: PChar; data: Pointer; dataSize: integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileData';
 {Export data to code (.h), returns true on success}
-function ExportDataAsCode(const data: PChar; size: LongWord; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportDataAsCode';
+function ExportDataAsCode(const data: PChar; dataSize: integer; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportDataAsCode';
 {Load text data from file (read), returns a '\0' terminated string}
 function LoadFileText(const fileName: Pchar): Pchar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFileText';
 {Unload file text data allocated by LoadFileText()}
@@ -1457,6 +1457,8 @@ function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external {$
 function LoadImage(const fileName: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImage';
 {Load image from RAW file data}
 function LoadImageRaw(const fileName: PChar; width, height, format: TPixelFormat; headerSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageRaw';
+{Load image from SVG file data or string with specified size}
+function LoadImageSvg(const fileNameOrString: PChar; width, height: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageSvg';
 {Load image sequence from file (frames appended to image.data)}
 function LoadImageAnim(const fileName: PChar; frames: PInteger):TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageAnim';
 {Load image from memory buffer, fileType refers to extension: i.e. '.png'}
@@ -1700,20 +1702,21 @@ function GetPixelDataSize(width, height: Integer; format: TPixelFormat): Integer
 function GetFontDefault: TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFontDefault';
 {Load font from file into GPU memory (VRAM)}
 function LoadFont(const fileName: PChar): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFont';
-{Load font from file with extended parameters, use NULL for fontChars and 0 for glyphCount to load the default character set}
-function LoadFontEx(const fileName: Pchar; fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
+
+{Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set}
+function LoadFontEx(const fileName: Pchar; fontSize: Integer; codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
 {Load font from Image (XNA style)}
 function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromImage';
 {Load font from memory buffer, fileType refers to extension: i.e. '.ttf'}
-function LoadFontFromMemory(const fileType: PChar; const fileData: PByte; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromMemory';
+function LoadFontFromMemory(const fileType: PChar; const fileData: PByte; dataSize, fontSize: Integer; codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromMemory';
 {Check if a font is ready}
 function IsFontReady(font: TFont): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFontReady';
 {Load font data for further uses}
-function LoadFontData(const fileData: PByte; dataSize, fontSize: Integer; fontChars: PInteger; glyphCount, _type: Integer): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontData';
+function LoadFontData(const fileData: PByte; dataSize, fontSize: Integer; codepoints: PInteger; codepointCount, _type: Integer): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontData';
 {Generate image font atlas using chars info}
-function GenImageFontAtlas(const chars: PGlyphInfo; recs: PPRectangle; glyphCount, fontSize, padding, packMethod: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageFontAtlas';
+function GenImageFontAtlas(const glyphs: PGlyphInfo; glyphRecs: PPRectangle; glyphCount, fontSize, padding, packMethod: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageFontAtlas';
 {Unload font chars info data (RAM)}
-procedure UnloadFontData(chars: PGlyphInfo; glyphCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFontData';
+procedure UnloadFontData(glyphs: PGlyphInfo; glyphCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFontData';
 {Unload Font from GPU memory (VRAM)}
 procedure UnloadFont(font: TFont); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFont';
 {Export font as code file, returns true on success}
@@ -1733,7 +1736,7 @@ procedure DrawTextPro(font: TFont; const text: PChar; position, origin: TVector2
 {Draw one character (codepoint)}
 procedure DrawTextCodepoint(font: TFont; codepoint: Integer; position: TVector2; fontSize: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextCodepoint';
 {Draw multiple character (codepoint)}
-procedure DrawTextCodepoints(font: TFont; const codepoints: PInteger; count: Integer; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextCodepoints';
+procedure DrawTextCodepoints(font: TFont; const codepoints: PInteger; codepointCount: Integer; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextCodepoints';
 
 
 (* Text font info functions *)
@@ -1960,13 +1963,13 @@ procedure SetModelMeshMaterial(model: PModel; meshId, materialId: Integer); cdec
 (* Model animations loading/unloading functions *)
 
 {Load model animations from file}
-function LoadModelAnimations(fileName: PChar; animCount: PLongWord): PModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModelAnimations';
+function LoadModelAnimations(fileName: PChar; animCount: PInteger): PModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModelAnimations';
 {Update model animation pose}
 procedure UpdateModelAnimation(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimation';
 {Unload animation data}
 procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimation';
 {Unload animation array data}
-procedure UnloadModelAnimations(animations: PModelAnimation; count: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimations';
+procedure UnloadModelAnimations(animations: PModelAnimation; animCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimations';
 {Check model animation skeleton match}
 function IsModelAnimationValid(model: TModel; anim: TModelAnimation): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsModelAnimationValid';
 
