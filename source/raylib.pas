@@ -925,6 +925,8 @@ procedure SetWindowPosition(x, y: Integer); cdecl; external {$IFNDEF RAY_STATIC}
 procedure SetWindowMonitor(monitor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowMonitor';
 {Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)}
 procedure SetWindowMinSize(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowMinSize';
+{Set window maximum dimensions (for FLAG_WINDOW_RESIZABLE)}
+procedure SetWindowMaxSize(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowMaxSize';
 {Set window dimensions}
 procedure SetWindowSize(width, height: Integer);cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowSize';
 {Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)}
@@ -1126,8 +1128,8 @@ procedure OpenURL(const url: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllNam
 // WARNING: This callbacks are intended for advance users
 type
   TTraceLogCallback = procedure(logLevel: TTraceLogLevel; const Text: PChar; Args: Pointer); cdecl varargs;
-  TLoadFileDataCallback = function(const fileName: PChar; out bytesRead: LongWord): PChar; cdecl;
-  TSaveFileDataCallback = function(const fileName: PChar; data: Pointer; bytesToWrite: LongWord): Boolean; cdecl;
+  TLoadFileDataCallback = function(const fileName: PChar; dataSize: PInteger): PChar; cdecl;
+  TSaveFileDataCallback = function(const fileName: PChar; data: Pointer; dataSize: Integer): Boolean; cdecl;
   TLoadFileTextCallback = function(const fileName: PChar): PChar; cdecl;
   TSaveFileTextCallback = function(const fileName, text: PChar): Boolean; cdecl;
 
