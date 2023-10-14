@@ -55,20 +55,20 @@ var
     valueBox002Value: longint = 0;
     valueBoxEditMode: boolean = false;
     listViewScrollIndex: longint = 0;
-    listViewActive: longint = -1;
+    listViewActive: integer = -1;
     listViewExScrollIndex: longint = 0;
     listViewExActive: longint = 2;
     listViewExFocus: longint = -1;
     listViewExList: array [0..7] of PChar = ('This', 'is', 'a', 'list view', 'with', 'disable', 'elements', 'amazing!');
     multiTextBoxText: array [0..254] of Char = 'Multi text box';
     multiTextBoxEditMode: boolean = false;
-    colorPickerValue: TColorB = (r: 230; g: 41; b: 55; a: 255);    // Red// = RED;
+    colorPickerValue: integer;//TColorB = (r: 230; g: 41; b: 55; a: 255);    // Red// = RED;
     sliderValue: longint = 50;
     sliderBarValue: longint = 60;
     progressValue: single = 0.4;
-    forceSquaredChecked: boolean = false;
+    forceSquaredChecked: integer;//boolean = false;
     alphaValue: single = 0.5;
-    comboBoxActive: longint = 1;
+    comboBoxActive: integer = 1;
     toggleGroupActive: longint = 0;
     viewScroll: TVector2;
     exitWindow, showMessageBox, showTextInputBox: boolean;
@@ -125,14 +125,14 @@ begin
 
         GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
         if GuiSpinner(RectangleCreate( 25, 135, 125, 30 ), nil,
-        @spinner001Value, 0, 100, spinnerEditMode) then spinnerEditMode := not spinnerEditMode;
+        @spinner001Value, 0, 100, spinnerEditMode) > 0  then spinnerEditMode := not spinnerEditMode;
 
         if GuiValueBox(RectangleCreate( 25, 175, 125, 30 ), nil,
-        @valueBox002Value, 0, 100, valueBoxEditMode) then valueBoxEditMode := not valueBoxEditMode;
+        @valueBox002Value, 0, 100, valueBoxEditMode) >0 then valueBoxEditMode := not valueBoxEditMode;
         GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
 
 
-        if GuiButton(RectangleCreate( 25, 255, 125, 30 ), GuiIconText(RICON_FILE_SAVE, 'Save File')) then
+        if GuiButton(RectangleCreate( 25, 255, 125, 30 ), GuiIconText(ICON_FILE_SAVE, 'Save File')) >0 then
         showTextInputBox := true;
 
         GuiGroupBox(RectangleCreate( 25, 310, 125, 150 ), 'STATES');
@@ -150,56 +150,56 @@ begin
         GuiButton(RectangleCreate( 30, 425, 115, 30 ), 'DISABLED');
         GuiSetState(STATE_NORMAL);
 
-        comboBoxActive := GuiComboBox(RectangleCreate( 25, 470, 125, 30 ), 'ONE;TWO;THREE;FOUR', comboBoxActive);
+        comboBoxActive := GuiComboBox(RectangleCreate( 25, 470, 125, 30 ), 'ONE;TWO;THREE;FOUR33', @comboBoxActive);
 
         // NOTE: GuiDropdownBox must draw after any other control that can be covered on unfolding
         GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
         if GuiDropdownBox(RectangleCreate( 25, 65, 125, 30 ), '#01#ONE;#02#TWO;#03#THREE;#04#FOUR',
-        @dropdownBox001Active, dropDown001EditMode) then dropDown001EditMode :=  not dropDown001EditMode;
+        @dropdownBox001Active, dropDown001EditMode) > 0 then dropDown001EditMode :=  not dropDown001EditMode;
 
         GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
         if GuiDropdownBox(RectangleCreate( 25, 25, 125, 30 ), 'ONE;TWO;THREE',
-        @dropdownBox000Active, dropDown000EditMode) then dropDown000EditMode := not dropDown000EditMode;
+        @dropdownBox000Active, dropDown000EditMode) > 0 then dropDown000EditMode := not dropDown000EditMode;
 
 
          // Second GUI column
          listViewActive := GuiListView(RectangleCreate( 165, 25, 140, 140 ),
-         'Charmander;Bulbasaur;#18#Squirtel;Pikachu;Eevee;Pidgey', @listViewScrollIndex, listViewActive);
+         'Charmander;Bulbasaur;#18#Squirtel;Pikachu;Eevee;Pidgey', @listViewScrollIndex, @listViewActive);
          listViewExActive := GuiListViewEx(RectangleCreate( 165, 180, 140, 200 ), listViewExList, 8,
-         @listViewExFocus, @listViewExScrollIndex, listViewExActive);
+         @listViewExFocus, @listViewExScrollIndex, @listViewExActive);
 
 
          toggleGroupActive := GuiToggleGroup(RectangleCreate( 165, 400, 140, 25 ),
-         '#1#ONE'+#10+'#3#TWO+'+#10+'#8#THREE'+#13, toggleGroupActive);
+         '#1#ONE'+#10+'#3#TWO+'+#10+'#9#THREE3333'+#13, @toggleGroupActive);
 
 
        // Third GUI column
      //  if GuiTextBoxMulti(RectangleCreate( 320, 25, 225, 140 ), multiTextBoxText, 256,
     //   multiTextBoxEditMode) then multiTextBoxEditMode := not multiTextBoxEditMode;
 
-       colorPickerValue := GuiColorPicker(RectangleCreate( 320, 185, 196, 192 ),'Color picker', colorPickerValue);
+       colorPickerValue := GuiColorPicker(RectangleCreate( 320, 185, 196, 192 ),'Color picker', @colorPickerValue);
 
        sliderValue := round(GuiSlider(RectangleCreate( 355, 400, 165, 20 ), 'TEST',
-       TextFormat('%2.2', sliderValue), sliderValue, -50, 100));
+       TextFormat('%2.2', sliderValue), @sliderValue, -50, 100));
 
 
        sliderBarValue :=round( GuiSliderBar(RectangleCreate( 320, 430, 200, 20 ), nil,
-       TextFormat('%i', sliderBarValue), sliderBarValue, 0, 100));
-       progressValue := GuiProgressBar(RectangleCreate( 320, 460, 200, 20 ), nil, nil, progressValue, 0, 1);
+       TextFormat('%i', sliderBarValue), @sliderBarValue, 0, 100));
+       progressValue := GuiProgressBar(RectangleCreate( 320, 460, 200, 20 ), nil, nil, @progressValue, 0, 1);
 
        // NOTE: View rectangle could be used to perform some scissor test
-       view := GuiScrollPanel(RectangleCreate( 560, 25, 100, 160 ),'Scroll Panel',
-       RectangleCreate( 560, 25, 200, 400 ), @viewScroll);
+      // view := GuiScrollPanel(RectangleCreate( 560, 25, 100, 160 ),'Scroll Panel',
+      // RectangleCreate( 560, 25, 200, 400 ), @viewScroll);
 
        GuiStatusBar(RectangleCreate( 0, GetScreenHeight() - 20, GetScreenWidth(), 20 ), 'This is a status bar');
 
-       alphaValue := GuiColorBarAlpha(RectangleCreate( 320, 490, 200, 30 ),'TEST', alphaValue);
+       alphaValue := GuiColorBarAlpha(RectangleCreate( 320, 490, 200, 30 ),'TEST', @alphaValue);
 
        if showMessageBox then
          begin
            DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, 0.8));
            result := GuiMessageBox(RectangleCreate( GetScreenWidth()/2 - 125, GetScreenHeight()/2 - 50, 250, 100 ),
-           GuiIconText(RICON_EXIT, 'Close Window'), 'Do you really want to exit?', 'Yes;No');
+           GuiIconText(ICON_EXIT, 'Close Window'), 'Do you really want to exit?', 'Yes;No');
 
            if ((result = 0) or (result = 2)) then showMessageBox := false
            else if (result = 1) then exitWindow := true;
@@ -210,7 +210,7 @@ begin
           begin
             DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, 0.8));
             result := GuiTextInputBox(RectangleCreate( GetScreenWidth()/2 - 120, GetScreenHeight()/2 - 60, 240, 140 ),
-            GuiIconText(RICON_FILE_SAVE, 'Save file as...'), 'Introduce a save file name', 'Ok;Cancel', textInput,200,nil);
+            GuiIconText(ICON_FILE_SAVE, 'Save file as...'), 'Introduce a save file name', 'Ok;Cancel', textInput,200,nil);
 
              if result = 1 then
                 begin

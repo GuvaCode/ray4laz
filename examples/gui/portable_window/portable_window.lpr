@@ -26,7 +26,8 @@ const
 
 var
   windowPosition, mousePosition, panOffset : TVector2;
-  dragWindow, exitWindow : boolean;
+  dragWindow : boolean;
+  exitWindow: integer;
 
 begin
   // Initialization
@@ -43,12 +44,12 @@ begin
 
     dragWindow := false;
     SetWindowPosition(Round(windowPosition.x),Round(windowPosition.y));
-    exitWindow := false;
+    exitWindow := 0;
 
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop
-  while ( not exitWindow and not WindowShouldClose) do
+  while  not WindowShouldClose do
     begin
       // Update
     //  mousePosition.x := GetMouseX;

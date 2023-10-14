@@ -938,8 +938,8 @@ extern "C" {            // Prevents name mangling of functions
 
 // Window-related functions
 RLAPI void InitWindow(int width, int height, const char *title);  // Initialize window and OpenGL context
-RLAPI bool WindowShouldClose(void);                               // Check if KEY_ESCAPE pressed or Close icon pressed
 RLAPI void CloseWindow(void);                                     // Close window and unload OpenGL context
+RLAPI bool WindowShouldClose(void);                               // Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)
 RLAPI bool IsWindowReady(void);                                   // Check if window has been initialized successfully
 RLAPI bool IsWindowFullscreen(void);                              // Check if window is currently fullscreen
 RLAPI bool IsWindowHidden(void);                                  // Check if window is currently hidden (only PLATFORM_DESKTOP)
@@ -985,14 +985,6 @@ RLAPI void SetClipboardText(const char *text);                    // Set clipboa
 RLAPI const char *GetClipboardText(void);                         // Get clipboard text content
 RLAPI void EnableEventWaiting(void);                              // Enable waiting for events on EndDrawing(), no automatic event polling
 RLAPI void DisableEventWaiting(void);                             // Disable waiting for events on EndDrawing(), automatic events polling
-
-// Custom frame control functions
-// NOTE: Those functions are intended for advance users that want full control over the frame processing
-// By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timing + PollInputEvents()
-// To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
-RLAPI void SwapScreenBuffer(void);                                // Swap back buffer with front buffer (screen drawing)
-RLAPI void PollInputEvents(void);                                 // Register all input events
-RLAPI void WaitTime(double seconds);                              // Wait for some time (halt program execution)
 
 // Cursor-related functions
 RLAPI void ShowCursor(void);                                      // Shows cursor
@@ -1049,23 +1041,32 @@ RLAPI Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera); // Get the 
 
 // Timing-related functions
 RLAPI void SetTargetFPS(int fps);                                 // Set target FPS (maximum)
-RLAPI int GetFPS(void);                                           // Get current FPS
 RLAPI float GetFrameTime(void);                                   // Get time in seconds for last frame drawn (delta time)
 RLAPI double GetTime(void);                                       // Get elapsed time in seconds since InitWindow()
+RLAPI int GetFPS(void);                                           // Get current FPS
+
+// Custom frame control functions
+// NOTE: Those functions are intended for advance users that want full control over the frame processing
+// By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timing + PollInputEvents()
+// To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
+RLAPI void SwapScreenBuffer(void);                                // Swap back buffer with front buffer (screen drawing)
+RLAPI void PollInputEvents(void);                                 // Register all input events
+RLAPI void WaitTime(double seconds);                              // Wait for some time (halt program execution)
 
 // Misc. functions
 RLAPI int GetRandomValue(int min, int max);                       // Get a random value between min and max (both included)
 RLAPI void SetRandomSeed(unsigned int seed);                      // Set the seed for the random number generator
 RLAPI void TakeScreenshot(const char *fileName);                  // Takes a screenshot of current screen (filename extension defines format)
 RLAPI void SetConfigFlags(unsigned int flags);                    // Setup init configuration flags (view FLAGS)
+RLAPI void OpenURL(const char *url);                              // Open URL with default system browser (if available)
 
+// NOTE: Following functions implemented in module [utils]
+//------------------------------------------------------------------
 RLAPI void TraceLog(int logLevel, const char *text, ...);         // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
 RLAPI void SetTraceLogLevel(int logLevel);                        // Set the current threshold (minimum) log level
 RLAPI void *MemAlloc(unsigned int size);                          // Internal memory allocator
 RLAPI void *MemRealloc(void *ptr, unsigned int size);             // Internal memory reallocator
 RLAPI void MemFree(void *ptr);                                    // Internal memory free
-
-RLAPI void OpenURL(const char *url);                              // Open URL with default system browser (if available)
 
 // Set custom callbacks
 // WARNING: Callbacks setup is intended for advance users
@@ -1083,6 +1084,9 @@ RLAPI bool ExportDataAsCode(const unsigned char *data, int dataSize, const char 
 RLAPI char *LoadFileText(const char *fileName);                   // Load text data from file (read), returns a '\0' terminated string
 RLAPI void UnloadFileText(char *text);                            // Unload file text data allocated by LoadFileText()
 RLAPI bool SaveFileText(const char *fileName, char *text);        // Save text data to file (write), string must be '\0' terminated, returns true on success
+//------------------------------------------------------------------
+
+// File system functions
 RLAPI bool FileExists(const char *fileName);                      // Check if file exists
 RLAPI bool DirectoryExists(const char *dirPath);                  // Check if a directory path exists
 RLAPI bool IsFileExtension(const char *fileName, const char *ext); // Check file extension (including point: .png, .wav)
@@ -1093,7 +1097,7 @@ RLAPI const char *GetFileNameWithoutExt(const char *filePath);    // Get filenam
 RLAPI const char *GetDirectoryPath(const char *filePath);         // Get full path for a given fileName with path (uses static string)
 RLAPI const char *GetPrevDirectoryPath(const char *dirPath);      // Get previous directory path for a given path (uses static string)
 RLAPI const char *GetWorkingDirectory(void);                      // Get current working directory (uses static string)
-RLAPI const char *GetApplicationDirectory(void);                  // Get the directory if the running application (uses static string)
+RLAPI const char *GetApplicationDirectory(void);                  // Get the directory of the running application (uses static string)
 RLAPI bool ChangeDirectory(const char *dir);                      // Change working directory, return true on success
 RLAPI bool IsPathFile(const char *path);                          // Check if a given path is a file or a directory
 RLAPI FilePathList LoadDirectoryFiles(const char *dirPath);       // Load directory filepaths
@@ -1120,9 +1124,9 @@ RLAPI bool IsKeyPressedRepeat(int key);                       // Check if a key 
 RLAPI bool IsKeyDown(int key);                                // Check if a key is being pressed
 RLAPI bool IsKeyReleased(int key);                            // Check if a key has been released once
 RLAPI bool IsKeyUp(int key);                                  // Check if a key is NOT being pressed
-RLAPI void SetExitKey(int key);                               // Set a custom key to exit program (default is ESC)
 RLAPI int GetKeyPressed(void);                                // Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
 RLAPI int GetCharPressed(void);                               // Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
+RLAPI void SetExitKey(int key);                               // Set a custom key to exit program (default is ESC)
 
 // Input-related functions: gamepads
 RLAPI bool IsGamepadAvailable(int gamepad);                   // Check if a gamepad is available
@@ -1163,7 +1167,7 @@ RLAPI int GetTouchPointCount(void);                           // Get number of t
 // Gestures and Touch Handling Functions (Module: rgestures)
 //------------------------------------------------------------------------------------
 RLAPI void SetGesturesEnabled(unsigned int flags);      // Enable a set of gestures using flags
-RLAPI bool IsGestureDetected(int gesture);              // Check if a gesture have been detected
+RLAPI bool IsGestureDetected(unsigned int gesture);     // Check if a gesture have been detected
 RLAPI int GetGestureDetected(void);                     // Get latest detected gesture
 RLAPI float GetGestureHoldDuration(void);               // Get gesture hold time in milliseconds
 RLAPI Vector2 GetGestureDragVector(void);               // Get gesture drag vector
@@ -1331,7 +1335,7 @@ RLAPI TextureCubemap LoadTextureCubemap(Image image, int layout);               
 RLAPI RenderTexture2D LoadRenderTexture(int width, int height);                                          // Load texture for rendering (framebuffer)
 RLAPI bool IsTextureReady(Texture2D texture);                                                            // Check if a texture is ready
 RLAPI void UnloadTexture(Texture2D texture);                                                             // Unload texture from GPU memory (VRAM)
-RLAPI bool IsRenderTextureReady(RenderTexture2D target);                                                       // Check if a render texture is ready
+RLAPI bool IsRenderTextureReady(RenderTexture2D target);                                                 // Check if a render texture is ready
 RLAPI void UnloadRenderTexture(RenderTexture2D target);                                                  // Unload render texture from GPU memory (VRAM)
 RLAPI void UpdateTexture(Texture2D texture, const void *pixels);                                         // Update GPU texture with new data
 RLAPI void UpdateTextureRec(Texture2D texture, Rectangle rec, const void *pixels);                       // Update GPU texture rectangle with new data
@@ -1379,7 +1383,7 @@ RLAPI Font LoadFontFromMemory(const char *fileType, const unsigned char *fileDat
 RLAPI bool IsFontReady(Font font);                                                          // Check if a font is ready
 RLAPI GlyphInfo *LoadFontData(const unsigned char *fileData, int dataSize, int fontSize, int *codepoints, int codepointCount, int type); // Load font data for further use
 RLAPI Image GenImageFontAtlas(const GlyphInfo *glyphs, Rectangle **glyphRecs, int glyphCount, int fontSize, int padding, int packMethod); // Generate image font atlas using chars info
-RLAPI void UnloadFontData(GlyphInfo *glyphs, int glyphCount);                                // Unload font chars info data (RAM)
+RLAPI void UnloadFontData(GlyphInfo *glyphs, int glyphCount);                               // Unload font chars info data (RAM)
 RLAPI void UnloadFont(Font font);                                                           // Unload font from GPU memory (VRAM)
 RLAPI bool ExportFontAsCode(Font font, const char *fileName);                               // Export font as code file, returns true on success
 
@@ -1541,7 +1545,7 @@ RLAPI Wave LoadWaveFromMemory(const char *fileType, const unsigned char *fileDat
 RLAPI bool IsWaveReady(Wave wave);                                    // Checks if wave data is ready
 RLAPI Sound LoadSound(const char *fileName);                          // Load sound from file
 RLAPI Sound LoadSoundFromWave(Wave wave);                             // Load sound from wave data
-RLAPI Sound LoadSoundAlias(Sound source);                            // Create a new sound that shares the same sample data as the source sound, does not own the sound data
+RLAPI Sound LoadSoundAlias(Sound source);                             // Create a new sound that shares the same sample data as the source sound, does not own the sound data
 RLAPI bool IsSoundReady(Sound sound);                                 // Checks if a sound is ready
 RLAPI void UpdateSound(Sound sound, const void *data, int sampleCount); // Update sound buffer with new data
 RLAPI void UnloadWave(Wave wave);                                     // Unload wave data
@@ -1598,7 +1602,7 @@ RLAPI void SetAudioStreamVolume(AudioStream stream, float volume);    // Set vol
 RLAPI void SetAudioStreamPitch(AudioStream stream, float pitch);      // Set pitch for audio stream (1.0 is base level)
 RLAPI void SetAudioStreamPan(AudioStream stream, float pan);          // Set pan for audio stream (0.5 is centered)
 RLAPI void SetAudioStreamBufferSizeDefault(int size);                 // Default size for new audio streams
-RLAPI void SetAudioStreamCallback(AudioStream stream, AudioCallback callback);  // Audio thread callback to request new data
+RLAPI void SetAudioStreamCallback(AudioStream stream, AudioCallback callback); // Audio thread callback to request new data
 
 RLAPI void AttachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Attach audio stream processor to stream, receives the samples as <float>s
 RLAPI void DetachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Detach audio stream processor from stream

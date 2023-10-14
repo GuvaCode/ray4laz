@@ -879,10 +879,10 @@ const
 
 {Initialize window and OpenGL context}
 procedure InitWindow(width, height: Integer; const title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'InitWindow';
-{Check if KEY_ESCAPE pressed or Close icon pressed}
-function WindowShouldClose: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WindowShouldClose';
 {Close window and unload OpenGL context}
 procedure CloseWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CloseWindow';
+{Check if KEY_ESCAPE pressed or Close icon pressed}
+function WindowShouldClose: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WindowShouldClose';
 {Check if window has been initialized successfully}
 function IsWindowReady: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowReady';
 {Check if window is currently fullscreen }
@@ -973,18 +973,6 @@ function GetClipboardText: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$
 procedure EnableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EnableEventWaiting';
 {Disable waiting for events on EndDrawing(), automatic events polling}
 procedure DisableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DisableEventWaiting';
-
-(* Custom frame control functions *)
-// NOTE: Those functions are intended for advance users that want full control over the frame processing
-// By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timming + PollInputEvents()
-// To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
-
-{Swap back buffer with front buffer (screen drawing)}
-procedure SwapScreenBuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SwapScreenBuffer';
-{Register all input events}
-procedure PollInputEvents; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PollInputEvents';
-{Wait for some time (halt program execution) }
-procedure WaitTime(ms: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaitTime';
 
 (* Cursor-related functions *)
 
@@ -1093,12 +1081,25 @@ function GetScreenToWorld2D(position: TVector2; camera: TCamera2D): TVector2; cd
 
 {Set target FPS (maximum)}
 procedure SetTargetFPS(fps: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTargetFPS';
-{Returns current FPS}
-function GetFPS: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFPS';
 {Returns time in seconds for last frame drawn (delta time)}
 function GetFrameTime: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFrameTime';
 {Returns elapsed time in seconds since InitWindow()}
 function GetTime: Double; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTime';
+{Returns current FPS}
+function GetFPS: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFPS';
+
+(* Custom frame control functions *)
+// NOTE: Those functions are intended for advance users that want full control over the frame processing
+// By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timming + PollInputEvents()
+// To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
+
+{Swap back buffer with front buffer (screen drawing)}
+procedure SwapScreenBuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SwapScreenBuffer';
+{Register all input events}
+procedure PollInputEvents; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PollInputEvents';
+{Wait for some time (halt program execution) }
+procedure WaitTime(ms: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaitTime';
+
 
 (* Misc. functions *)
 
