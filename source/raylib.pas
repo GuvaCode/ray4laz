@@ -1,5 +1,5 @@
 {
-raylib v4.6 - dev
+raylib ver 5.0 - dev
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
@@ -412,6 +412,22 @@ const
        capacity  : LongWord; // Filepaths max entries
        count     : LongWord; // Filepaths entries count
        paths     : PPChar;   // Filepaths entries
+     end;
+
+     (* Automation event (opaque struct) *)
+     PAutomationEvent = ^TAutomationEvent;
+     TAutomationEvent = record
+       frame     : LongWord;               // Event frame
+       type_     : LongWord;               // Event type (AutomationEventType)
+       params    : array[0..3] of Integer; // Event parameters (if required)
+     end;
+
+     (* Automation event list *)
+     PAutomationEventList = ^TAutomationEventList;
+     TAutomationEventList = record
+       capacity  : LongWord;          // Events max entries (MAX_AUTOMATION_EVENTS)
+       count     : LongWord;          // Events entries count
+       events    : PAutomationEvent;  // Events entries
      end;
 
 //----------------------------------------------------------------------------------
@@ -1214,6 +1230,26 @@ function EncodeDataBase64(const data: PChar; dataSize: Integer; outputSize: PInt
 {Decode Base64 string data, memory must be MemFree()}
 function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
 
+
+(* Automation events functionality *)
+
+{Load automation events list from file, NULL for empty list, capacity = MAX_AUTOMATION_EVENTS}
+function LoadAutomationEventList(const fileName: PChar): TAutomationEventList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadAutomationEventList';
+{Unload automation events list from file}
+procedure UnloadAutomationEventList(list: PAutomationEventList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadAutomationEventList';
+{Export automation events list as text file}
+function ExportAutomationEventList(list: TAutomationEventList; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportAutomationEventList';
+{Set automation event list to record to}
+procedure SetAutomationEventList(list: PAutomationEventList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAutomationEventList';
+{Set automation event internal base frame to start recording}
+procedure SetAutomationEventBaseFrame(frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAutomationEventBaseFrame';
+{Start recording automation events (AutomationEventList must be set)}
+procedure StartAutomationEventRecording(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'StartAutomationEventRecording';
+{Stop recording automation events}
+procedure StopAutomationEventRecording(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'StopAutomationEventRecording';
+{Play automation event}
+procedure PlayAutomationEvent(event: TAutomationEvent); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PlayAutomationEvent';
+
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
 //------------------------------------------------------------------------------------
@@ -1381,6 +1417,8 @@ procedure DrawCircleGradient(centerX, centerY: Integer; radius: Single; color1, 
 procedure DrawCircleV(center: TVector2; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleV';
 {Draw circle outline}
 procedure DrawCircleLines(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleLines';
+{Draw circle outline (Vector version)}
+procedure DrawCircleLinesV(center: TVector2; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleLinesV';
 {Draw ellipse}
 procedure DrawEllipse(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawEllipse';
 {Draw ellipse outline}
@@ -2013,7 +2051,8 @@ procedure CloseAudioDevice; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF}
 function IsAudioDeviceReady: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsAudioDeviceReady';
 {Set master volume (listener)}
 procedure SetMasterVolume(volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMasterVolume';
-
+{Get master volume (listener)}
+function GetMasterVolume(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMasterVolume';
 
 (* Wave/Sound loading/unloading functions *)
 

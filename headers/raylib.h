@@ -81,10 +81,10 @@
 
 #include <stdarg.h>     // Required for: va_list - Only used by TraceLogCallback
 
-#define RAYLIB_VERSION_MAJOR 4
-#define RAYLIB_VERSION_MINOR 6
+#define RAYLIB_VERSION_MAJOR 5
+#define RAYLIB_VERSION_MINOR 0
 #define RAYLIB_VERSION_PATCH 0
-#define RAYLIB_VERSION  "4.6-dev"
+#define RAYLIB_VERSION  "5.0-dev"
 
 // Function specifiers in case library is build/used as a shared library (Windows)
 // NOTE: Microsoft specifiers to tell compiler that symbols are imported/exported from a .dll
@@ -505,6 +505,20 @@ typedef struct FilePathList {
     unsigned int count;             // Filepaths entries count
     char **paths;                   // Filepaths entries
 } FilePathList;
+
+// Automation event (opaque struct)
+typedef struct AutomationEvent {
+    unsigned int frame;             // Event frame
+    unsigned int type;              // Event type (AutomationEventType)
+    int params[4];                  // Event parameters (if required)
+} AutomationEvent;
+
+// Automation event list
+typedef struct AutomationEventList {
+    unsigned int capacity;          // Events max entries (MAX_AUTOMATION_EVENTS)
+    unsigned int count;             // Events entries count
+    AutomationEvent *events;        // Events entries
+} AutomationEventList;
 
 //----------------------------------------------------------------------------------
 // Enumerators Definition
@@ -1114,6 +1128,16 @@ RLAPI unsigned char *DecompressData(const unsigned char *compData, int compDataS
 RLAPI char *EncodeDataBase64(const unsigned char *data, int dataSize, int *outputSize);               // Encode data to Base64 string, memory must be MemFree()
 RLAPI unsigned char *DecodeDataBase64(const unsigned char *data, int *outputSize);                    // Decode Base64 string data, memory must be MemFree()
 
+// Automation events functionality
+RLAPI AutomationEventList LoadAutomationEventList(const char *fileName);                // Load automation events list from file, NULL for empty list, capacity = MAX_AUTOMATION_EVENTS
+RLAPI void UnloadAutomationEventList(AutomationEventList *list);                        // Unload automation events list from file
+RLAPI bool ExportAutomationEventList(AutomationEventList list, const char *fileName);   // Export automation events list as text file
+RLAPI void SetAutomationEventList(AutomationEventList *list);                           // Set automation event list to record to
+RLAPI void SetAutomationEventBaseFrame(int frame);                                      // Set automation event internal base frame to start recording
+RLAPI void StartAutomationEventRecording(void);                                         // Start recording automation events (AutomationEventList must be set)
+RLAPI void StopAutomationEventRecording(void);                                          // Stop recording automation events
+RLAPI void PlayAutomationEvent(AutomationEvent event);                                  // Play a recorded automation event
+
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
 //------------------------------------------------------------------------------------
@@ -1207,6 +1231,7 @@ RLAPI void DrawCircleSectorLines(Vector2 center, float radius, float startAngle,
 RLAPI void DrawCircleGradient(int centerX, int centerY, float radius, Color color1, Color color2);       // Draw a gradient-filled circle
 RLAPI void DrawCircleV(Vector2 center, float radius, Color color);                                       // Draw a color-filled circle (Vector version)
 RLAPI void DrawCircleLines(int centerX, int centerY, float radius, Color color);                         // Draw circle outline
+RLAPI void DrawCircleLinesV(Vector2 center, float radius, Color color);                                  // Draw circle outline (Vector version)
 RLAPI void DrawEllipse(int centerX, int centerY, float radiusH, float radiusV, Color color);             // Draw ellipse
 RLAPI void DrawEllipseLines(int centerX, int centerY, float radiusH, float radiusV, Color color);        // Draw ellipse outline
 RLAPI void DrawRing(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color); // Draw ring
@@ -1538,6 +1563,7 @@ RLAPI void InitAudioDevice(void);                                     // Initial
 RLAPI void CloseAudioDevice(void);                                    // Close the audio device and context
 RLAPI bool IsAudioDeviceReady(void);                                  // Check if audio device has been initialized successfully
 RLAPI void SetMasterVolume(float volume);                             // Set master volume (listener)
+RLAPI float GetMasterVolume(void);                                    // Get master volume (listener)
 
 // Wave/Sound loading/unloading functions
 RLAPI Wave LoadWave(const char *fileName);                            // Load wave data from file

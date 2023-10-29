@@ -803,7 +803,7 @@ RLAPI void rlLoadDrawQuad(void);     // Load and draw a quad
 #if defined(GRAPHICS_API_OPENGL_ES2)
     // NOTE: OpenGL ES 2.0 can be enabled on PLATFORM_DESKTOP,
     // in that case, functions are loaded from a custom glad for OpenGL ES 2.0
-    #if defined(PLATFORM_DESKTOP)
+    #if defined(PLATFORM_DESKTOP) || defined(PLATFORM_DESKTOP_SDL)
         #define GLAD_GLES2_IMPLEMENTATION
         #include "external/glad_gles2.h"
     #else
@@ -2248,7 +2248,7 @@ void rlLoadExtensions(void *loader)
     //       RLGL.ExtSupported.maxAnisotropyLevel
 #elif defined(GRAPHICS_API_OPENGL_ES2)
 
-    #if defined(PLATFORM_DESKTOP)
+    #if defined(PLATFORM_DESKTOP) || defined(PLATFORM_DESKTOP_SDL)
     // TODO: Support OpenGL ES 3.0
     if (gladLoadGLES2((GLADloadfunc)loader) == 0) TRACELOG(RL_LOG_WARNING, "GLAD: Cannot load OpenGL ES2.0 functions");
     else TRACELOG(RL_LOG_INFO, "GLAD: OpenGL ES 2.0 loaded successfully");
@@ -3000,7 +3000,8 @@ unsigned int rlLoadTexture(const void *data, int width, int height, int format, 
     int mipOffset = 0;          // Mipmap data offset, only used for tracelog
 
     // NOTE: Added pointer math separately from function to avoid UBSAN complaining
-    unsigned char *dataPtr = (unsigned char *)data;
+    unsigned char *dataPtr = NULL;
+    if (data != NULL) dataPtr = (unsigned char *)data;
 
     // Load the different mipmap levels
     for (int i = 0; i < mipmapCount; i++)
@@ -3040,7 +3041,7 @@ unsigned int rlLoadTexture(const void *data, int width, int height, int format, 
         mipWidth /= 2;
         mipHeight /= 2;
         mipOffset += mipSize;       // Increment offset position to next mipmap
-        dataPtr += mipSize;         // Increment data pointer to next mipmap
+        if (data != NULL) dataPtr += mipSize;         // Increment data pointer to next mipmap
 
         // Security check for NPOT textures
         if (mipWidth < 1) mipWidth = 1;
