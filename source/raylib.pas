@@ -414,7 +414,7 @@ const
        paths     : PPChar;   // Filepaths entries
      end;
 
-     (* Automation event (opaque struct) *)
+     (* Automation event *)
      PAutomationEvent = ^TAutomationEvent;
      TAutomationEvent = record
        frame     : LongWord;               // Event frame
@@ -1119,10 +1119,11 @@ procedure WaitTime(ms: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$EN
 
 (* Misc. functions *)
 
-{Get a random value between min and max (both included)}
-function GetRandomValue(min, max: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRandomValue';
 {Set the seed for the random number generator}
 procedure SetRandomSeed(seed: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetRandomSeed';
+{Get a random value between min and max (both included)}
+function GetRandomValue(min, max: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRandomValue';
+
 {Takes a screenshot of current screen (filename extension defines format)}
 procedure TakeScreenshot(const fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TakeScreenshot';
 {Setup init configuration flags (view FLAGS)}
