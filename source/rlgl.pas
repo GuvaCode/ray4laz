@@ -565,6 +565,8 @@ procedure rlDisableScissorTest; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$EN
 procedure rlScissor(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlScissor';
 {Enable wire mode}
 procedure rlEnableWireMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableWireMode';
+{Enable point mode}
+procedure rlEnablePointMode(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableWireMode';
 {Disable wire mode}
 procedure rlDisableWireMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableWireMode';
 {Set the line drawing width}
