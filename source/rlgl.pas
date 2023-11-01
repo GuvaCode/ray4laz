@@ -536,6 +536,9 @@ procedure rlEnableFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC
 procedure rlDisableFramebuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableFramebuffer';
 {Activate multiple draw color buffers}
 procedure rlActiveDrawBuffers(count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlActiveDrawBuffers';
+{Blit active framebuffer to main framebuffer}
+procedure rlBlitFramebuffer(srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight, bufferMask: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlBlitFramebuffer';
+
 
 (* General render state *)
 
