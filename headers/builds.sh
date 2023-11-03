@@ -1,4 +1,8 @@
- #!/bin/bash
+#!/bin/bash
+
+
+read -p "install dependencies (y/n)? " answer
+case ${answer:0:1} in y|Y )
 
 sudo apt-get install mingw-w64-x86-64-dev
 sudo apt-get install mingw-w64-i686-dev
@@ -9,20 +13,26 @@ sudo apt-get install gcc-mingw-w64-i686-posix
 sudo apt-get install gcc-mingw-w64-i686-win32
 sudo apt-get install build-essential libc6-dev-i386
 sudo apt-get install libgl1-mesa-dev:i386
+    ;;
+    * )
+        echo skiping
+    ;;
+esac
+
 
 clear
 echo "build raylib ...."
+echo "build x64 linux ..."
 
-
-echo " build x64 linux ..."
 cd raylib/src
 make clean
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE
 
 echo " copy libs x86_64-linux ..."
+
 cp libraylib.so.5.0.0 /home/vadim/Проекты/Ray4Laz/libs/x86_64-linux
-cp libraylib.so.500 /home/vadim/Проекты/Ray4Laz/libs/x86_64-linux
-cp libraylib.so /home/vadim/Проекты/Ray4Laz/libs/x86_64-linux
+ln -s /home/vadim/Проекты/Ray4Laz/libs/x86_64-linux/libraylib.so.5.0.0 /home/vadim/Проекты/Ray4Laz/libs/x86_64-linux/libraylib.so.500
+ln -s /home/vadim/Проекты/Ray4Laz/libs/x86_64-linux/libraylib.so.500 /home/vadim/Проекты/Ray4Laz/libs/x86_64-linux/libraylib.so
 
 make clean
 
@@ -38,9 +48,8 @@ make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE R
 
 echo " copy libs x86_32-linux ..."
 cp libraylib.so.5.0.0 /home/vadim/Проекты/Ray4Laz/libs/x86_32-linux
-cp libraylib.so.500 /home/vadim/Проекты/Ray4Laz/libs/x86_32-linux
-cp libraylib.so /home/vadim/Проекты/Ray4Laz/libs/x86_32-linux
-
+ln -s /home/vadim/Проекты/Ray4Laz/libs/x86_32-linux/libraylib.so.5.0.0 /home/vadim/Проекты/Ray4Laz/libs/x86_32-linux/libraylib.so.500
+ln -s /home/vadim/Проекты/Ray4Laz/libs/x86_32-linux/libraylib.so.500 /home/vadim/Проекты/Ray4Laz/libs/x86_32-linux/libraylib.so
 make clean
 
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE LDFLAG=-m32
