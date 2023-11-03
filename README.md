@@ -101,3 +101,5 @@ enjoy !!!
 
 ![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/4_enjoy.png)
 
+<img align="center" src="https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/powered_by.png" width="256px">
+
