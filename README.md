@@ -84,20 +84,20 @@ building raylib on multiple platforms
 installation in lazarus ide. 
 --------
 
-Select the package menu, open the network package manager. 
+select the package menu, open the network package manager. 
 
 ![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/1_openpkg.png)
 
 
-Select ray4laz package and install. 
+select ray4laz package and install. 
 
 ![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/3_opm.png)
 
-Create a new project (Ray Simple Project). 
+create a new project (Ray Simple Project). 
 
 ![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/2_newproject.png)
 
-Enjoy !!!
+enjoy !!!
 
 ![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/4_enjoy.png)
 
