@@ -13,6 +13,7 @@ raylib is highly inspired by Borland BGI graphics lib and by XNA framework and i
 
 ---
 
+
 Bindings
 --------
 
@@ -24,7 +25,8 @@ rlgl.h     | :heavy_check_mark: |
 raygui.h   | :heavy_check_mark: |
 physac.h   | :heavy_check_mark: |
 
-**Platforms**
+Platforms
+--------
 
 OS         | Supported          |
 ---------  | ------------------ |
