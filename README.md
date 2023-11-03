@@ -32,13 +32,15 @@ Windows    | :heavy_check_mark: |
 Linux      | :heavy_check_mark: |
 Haiku      | :heavy_check_mark: |
 ReactOS    | :heavy_check_mark: |
----
+--------
 
-**build and installation raylib**
+Build and installation raylib
+--------
 
 raylib binary releases for Windows, Linux and macOS are available at the [Github Releases page](https://github.com/raysan5/raylib/releases).
 
-#### Building raylib on multiple platforms
+Building raylib on multiple platforms
+--------
 
 [raylib Wiki](https://github.com/raysan5/raylib/wiki#development-platforms) contains detailed instructions on building and usage on multiple platforms.
 
@@ -52,9 +54,9 @@ raylib binary releases for Windows, Linux and macOS are available at the [Github
  - [Working anywhere with CMake](https://github.com/raysan5/raylib/wiki/Working-with-CMake)
  - [CMake Build Options](https://github.com/raysan5/raylib/wiki/CMake-Build-Options)
 
----
 
-**Installation in Lazarus.** 
+Installation in Lazarus. 
+--------
 
 Select the package menu, open the network package manager. 
 
