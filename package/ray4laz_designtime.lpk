@@ -12,7 +12,7 @@
       </SearchPaths>
     </CompilerOptions>
     <Description Value="Desing time package for ray4laz "/>
-    <Version Major="4" Minor="5"/>
+    <Version Major="5"/>
     <Files Count="2">
       <Item1>
         <Filename Value="ray4laz_simpleprj.pas"/>
