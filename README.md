@@ -48,7 +48,7 @@ rlgl.h     | :heavy_check_mark: |
 raygui.h   | :heavy_check_mark: |
 physac.h   | :heavy_check_mark: |
 
-bested platforms
+tested platforms
 --------
 
 OS         | Supported          |
