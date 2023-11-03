@@ -16,7 +16,7 @@ raylib is highly inspired by Borland BGI graphics lib and by XNA framework and i
 
 <br>
 
-Features
+features
 --------
   - **NO external dependencies**, all required libraries are [bundled into raylib](https://github.com/raysan5/raylib/tree/master/src/external)
   - Multiple platforms supported: **Windows, Linux, MacOS, RPI, Android, HTML5... and more!**
@@ -37,7 +37,7 @@ Features
   - **Free and open source**.
 
 
-Supported headers
+supported headers
 --------
 
 Header     | Supported          |
@@ -48,7 +48,7 @@ rlgl.h     | :heavy_check_mark: |
 raygui.h   | :heavy_check_mark: |
 physac.h   | :heavy_check_mark: |
 
-Tested platforms
+bested platforms
 --------
 
 OS         | Supported          |
@@ -60,12 +60,12 @@ Haiku      | :heavy_check_mark: |
 ReactOS    | :heavy_check_mark: |
 
 
-Build and installation raylib
+build and installation raylib
 --------
 
 raylib binary releases for Windows, Linux and macOS are available at the [Github Releases page](https://github.com/raysan5/raylib/releases).
 
-Building raylib on multiple platforms
+building raylib on multiple platforms
 --------
 
 [raylib Wiki](https://github.com/raysan5/raylib/wiki#development-platforms) contains detailed instructions on building and usage on multiple platforms.
@@ -81,7 +81,7 @@ Building raylib on multiple platforms
  - [CMake Build Options](https://github.com/raysan5/raylib/wiki/CMake-Build-Options)
 
 
-Installation in Lazarus IDE. 
+installation in lazarus ide. 
 --------
 
 Select the package menu, open the network package manager. 
