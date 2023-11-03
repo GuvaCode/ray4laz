@@ -1,6 +1,8 @@
 **Ray4Laz is a header translation of the [Raylib Game Development Library](https://www.raylib.com/)  
 for the [Lazarus project](https://www.lazarus-ide.org/).**
 
+---
+
 <img align="left" src="binary/resources/raylogo.png" width="256px">
 
 [raylib](https://github.com/raysan5/raylib) is a simple and easy-to-use library to enjoy videogames programming.
@@ -11,7 +13,8 @@ raylib is highly inspired by Borland BGI graphics lib and by XNA framework and i
 
 ---
 
-**Bindings**
+Bindings
+--------
 
 Header     | Supported          |
 ---------  | ------------------ |
