@@ -1049,7 +1049,6 @@ function LoadVrStereoConfig(device: TVrDeviceInfo): TVrStereoConfig; cdecl; exte
 {Unload VR stereo config }
 procedure UnloadVrStereoConfig(config: TVrStereoConfig); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadVrStereoConfig';
 
-
 (* Shader management functions *)
 // NOTE: Shader functionality is not available on OpenGL 1.1
 
@@ -1074,7 +1073,6 @@ procedure SetShaderValueTexture(shader: TShader; locIndex: Integer; texture: TTe
 {Unload shader from GPU memory (VRAM)}
 procedure UnloadShader(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadShader';
 
-
 (* Screen-space-related functions *)
 
 {Get a ray trace from mouse position}
@@ -1091,7 +1089,6 @@ function GetWorldToScreenEx(position: TVector3; camera: TCamera; width, height: 
 function GetWorldToScreen2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorldToScreen2D';
 {Get the world space position for a 2d camera screen space position}
 function GetScreenToWorld2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorld2D';
-
 
 (* Timing-related functions *)
 
@@ -1116,13 +1113,18 @@ procedure PollInputEvents; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} 
 {Wait for some time (halt program execution) }
 procedure WaitTime(ms: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaitTime';
 
+(* Random values generation functions *)
 
-(* Misc. functions *)
-
+{Load random values sequence, no values repeated}
+function LoadRandomSequence(count: LongWord; min, max: Integer): PInteger; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadRandomSequence';
+{Unload random values sequence}
+procedure UnloadRandomSequence(sequence: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadRandomSequence';
 {Set the seed for the random number generator}
 procedure SetRandomSeed(seed: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetRandomSeed';
 {Get a random value between min and max (both included)}
 function GetRandomValue(min, max: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRandomValue';
+
+(* Misc. functions *)
 
 {Takes a screenshot of current screen (filename extension defines format)}
 procedure TakeScreenshot(const fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TakeScreenshot';
@@ -1161,7 +1163,6 @@ procedure SetSaveFileDataCallback(callback: TSaveFileDataCallback); cdecl; exter
 procedure SetLoadFileTextCallback(callback: TLoadFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetLoadFileTextCallback';
 { Set custom file text data saver }
 procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSaveFileTextCallback';
-
 
 (* Files management functions *)
 
@@ -1230,7 +1231,6 @@ function DecompressData(const compData: Pointer; compDataSize: Integer; dataSize
 function EncodeDataBase64(const data: PChar; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EncodeDataBase64';
 {Decode Base64 string data, memory must be MemFree()}
 function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
-
 
 (* Automation events functionality *)
 
@@ -1520,7 +1520,6 @@ function ExportImageToMemory(image: TImage; const fileType: PChar; fileSize: PIn
 {Export image as code file defining an array of bytes, returns true on success  }
 function ExportImageAsCode(image: TImage; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageAsCode';
 
-
 (* Image generation functions *)
 
 {Generate image: plain color}
@@ -1541,7 +1540,6 @@ function GenImagePerlinNoise(width, height, offsetX, offsetY: Integer; scale: In
 function GenImageCellular(width, height, tileSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageCellular';
 {Generate image: grayscale image from text data}
 function GenImageText(width, height: Integer; const text: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageText';
-
 
 (* Image manipulation functions *)
 
@@ -1674,7 +1672,6 @@ procedure UpdateTexture(texture: TTexture2D; const pixels: Pointer); cdecl; exte
 {Update GPU texture rectangle with new data}
 procedure UpdateTextureRec(texture: TTexture2D; rec: TRectangle; const pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateTextureRec';
 
-
 (* Texture configuration functions *)
 
 {Generate GPU mipmaps for a texture}
@@ -1683,7 +1680,6 @@ procedure GenTextureMipmaps(texture: PTexture2D); cdecl; external {$IFNDEF RAY_S
 procedure SetTextureFilter(texture: TTexture2D; filter: TTextureFilter); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTextureFilter';
 {Set texture wrapping mode}
 procedure SetTextureWrap(texture: TTexture2D; wrap: TTextureWrap); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTextureWrap';
-
 
 (* Texture drawing functions *)
 
@@ -1699,7 +1695,6 @@ procedure DrawTextureRec(texture: TTexture2D; source: TRectangle; position: TVec
 procedure DrawTexturePro(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTexturePro';
 {Draws a texture (or part of it) that stretches or shrinks nicely}
 procedure DrawTextureNPatch(texture: TTexture2D; nPatchInfo: TNPatchInfo; dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureNPatch';
-
 
 (* Color/pixel related functions *)
 
@@ -1764,7 +1759,6 @@ procedure UnloadFont(font: TFont); cdecl; external {$IFNDEF RAY_STATIC}cDllName{
 {Export font as code file, returns true on success}
 procedure ExportFontAsCode(font: TFont; const fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportFontAsCode';
 
-
 (* Text drawing functions *)
 
 {Draw current FPS}
@@ -1780,7 +1774,6 @@ procedure DrawTextCodepoint(font: TFont; codepoint: Integer; position: TVector2;
 {Draw multiple character (codepoint)}
 procedure DrawTextCodepoints(font: TFont; const codepoints: PInteger; codepointCount: Integer; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextCodepoints';
 
-
 (* Text font info functions *)
 
 {Set vertical line spacing when drawing with line-breaks}
@@ -1795,7 +1788,6 @@ function GetGlyphIndex(font: TFont; codepoint: Integer): Integer; cdecl; externa
 function GetGlyphInfo(font: TFont; codepoint: Integer): TGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGlyphInfo';
 {Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found}
 function GetGlyphAtlasRec(font: TFont; codepoint: Integer): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGlyphAtlasRec';
-
 
 (* Text codepoints management functions (unicode characters) *)
 
@@ -1818,7 +1810,6 @@ function GetCodepointPrevious(const text: PChar; codepointSize: PInteger): Integ
 {Encode one codepoint into UTF-8 byte array (array length returned as parameter)}
 function CodepointToUTF8(codepoint: Integer; utf8Size: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CodepointToUTF8';
 
-
 (* Text strings management functions (no UTF-8 strings, only byte chars) *)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
 
@@ -1828,7 +1819,6 @@ function TextCopy(dst: PChar; const src: PChar): Integer; cdecl; external {$IFND
 function TextIsEqual(const text1, text2: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextIsEqual';
 {Get text length, checks for '\0' ending}
 function TextLength(const text: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextLength';
-
 {Text formatting with variables (sprintf() style)}
 function TextFormat(const text: PChar): PChar; cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFormat';
 {Get a piece of a text string}
@@ -1920,7 +1910,6 @@ procedure UnloadModel(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllNa
 {Compute model bounding box limits (considers all meshes)}
 function GetModelBoundingBox(model: TModel): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetModelBoundingBox';
 
-
 (* Model drawing functions *)
 
 {Draw a model (with texture if set)}
@@ -1939,7 +1928,6 @@ procedure DrawBillboard(camera: TCamera; texture: TTexture2D; position: TVector3
 procedure DrawBillboardRec(camera: TCamera; texture: TTexture2D; source: TRectangle; position: TVector3; size: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboardRec';
 {Draw a billboard texture defined by source and rotation}
 procedure DrawBillboardPro(camera: TCamera; texture: TTexture2D; source: TRectangle; position, up: TVector3; size, origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboardPro';
-
 
 (* Mesh management functions *)
 
@@ -1985,7 +1973,6 @@ function GenMeshHeightmap(heightmap: TImage; size: TVector3): TMesh; cdecl; exte
 {Generate cubes-based map mesh from image data}
 function GenMeshCubicmap(cubicmap: TImage; cubeSize: TVector3): TMesh; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshCubicmap';
 
-
 (* Material loading/unloading functions *)
 
 {Load materials from model file}
@@ -2001,7 +1988,6 @@ procedure SetMaterialTexture(material: PMaterial; mapType: TMaterialMapIndex; te
 {Set material for a mesh}
 procedure SetModelMeshMaterial(model: PModel; meshId, materialId: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetModelMeshMaterial';
 
-
 (* Model animations loading/unloading functions *)
 
 {Load model animations from file}
@@ -2014,7 +2000,6 @@ procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF 
 procedure UnloadModelAnimations(animations: PModelAnimation; animCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimations';
 {Check model animation skeleton match}
 function IsModelAnimationValid(model: TModel; anim: TModelAnimation): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsModelAnimationValid';
-
 
 (* Collision detection functions *)
 
@@ -2084,7 +2069,6 @@ function ExportWave(wave: TWave; const fileName: PChar): Boolean; cdecl; externa
 {Export wave sample data to code (.h), returns true on success}
 function ExportWaveAsCode(wave: TWave; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportWaveAsCode';
 
-
 (* Wave/Sound management functions *)
 
 {Play a sound}
@@ -2113,7 +2097,6 @@ procedure WaveFormat(wave: PWave; sampleRate, sampleSize, channels: Integer); cd
 function LoadWaveSamples(wave: TWave): PSingle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWaveSamples';
 {Unload samples data loaded with LoadWaveSamples()}
 procedure UnloadWaveSamples(samples: PSingle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadWaveSamples';
-
 
 (* Music management functions *)
 
@@ -2149,7 +2132,6 @@ procedure SetMusicPan(music: TMusic; pan: Single); cdecl; external {$IFNDEF RAY_
 function GetMusicTimeLength(music: TMusic): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMusicTimeLength';
 {Get current music time played (in seconds)}
 function GetMusicTimePlayed(music: TMusic): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMusicTimePlayed';
-
 
 (* AudioStream management functions *)
 
@@ -2192,7 +2174,6 @@ procedure DetachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCall
 procedure AttachAudioMixedProcessor(processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'AttachAudioMixedProcessor';
 {Detach audio stream processor from the entire audio pipeline}
 procedure DetachAudioMixedProcessor(processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DetachAudioMixedProcessor';
-
 
 (* Custom Misc Functions to help simplify a few things *)
 
