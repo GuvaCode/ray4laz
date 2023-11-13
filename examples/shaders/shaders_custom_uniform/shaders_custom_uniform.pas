@@ -28,7 +28,7 @@ const
   GLSL_VERSION = 330;
 
 var
-  cam: TCamera;
+  camera: TCamera;
   model: TModel;
   texture: TTexture2d;
   position: TVector3;
@@ -42,15 +42,17 @@ begin
   SetConfigFlags(FLAG_MSAA_4X_HINT);// Enable Multi Sampling Anti Aliasing 4x (if available)
   InitWindow(screenWidth, screenHeight,'raylib [shaders] example - custom uniform variable');
 
-  cam.position := Vector3Create(3.0, 3.0, 3.0);
-  cam.target := Vector3Create(0.0, 1.5, 0.0);
-  cam.up := Vector3Create(0.0, 1.0, 0.0);
-  cam.fovy := 45.0;
-  cam.projection := CAMERA_PERSPECTIVE;
+  camera.position := Vector3Create(3.0, 3.0, 3.0);
+  camera.target := Vector3Create(0.0, 1.5, 0.0);
+  camera.up := Vector3Create(0.0, 1.0, 0.0);
+  camera.fovy := 45.0;
+  camera.projection := CAMERA_PERSPECTIVE;
 
   model := LoadModel('resources/models/barracks.obj'); // Load OBJ model
   texture := LoadTexture('resources/models/barracks_diffuse.png');// Load model texture (diffuse map)
-  SetMaterialTexture(@model.materials[0], MATERIAL_MAP_DIFFUSE, texture);
+
+  model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture := texture;                     // Set model diffuse texture
+
   position := Vector3Create(0.0, 0.0, 0.0); // Set model position
 
   shader := LoadShader(nil, TextFormat('resources/shaders/glsl%i/swirl.fs', GLSL_VERSION));
@@ -69,7 +71,7 @@ begin
   while not WindowShouldClose do // Detect window close button or ESC key
   begin
     // Update
-    // -----------------------------------------------------------------------
+    UpdateCamera(@camera,CAMERA_ORBITAL); // Update camera
     mousePosition := GetMousePosition;
     swirlCenter[0] := mousePosition.x;
     swirlCenter[1] := screenHeight - mousePosition.y;
@@ -77,33 +79,37 @@ begin
 
     SetShaderValue(shader, swirlCenterLoc, @swirlCenter, SHADER_UNIFORM_VEC2);
 
-    UpdateCamera(@cam,CAMERA_ORBITAL); // Update camera
+
     // -----------------------------------------------------------------------
 
     // Draw
     // -----------------------------------------------------------------------
+    BeginTextureMode(target);       // Enable drawing to texture
+        ClearBackground(RAYWHITE);  // Clear texture background
+
+        BeginMode3D(camera);        // Begin 3d mode drawing
+            DrawModel(model, position, 0.5, WHITE);   // Draw 3d model with texture
+            DrawGrid(10, 1.0);     // Draw a grid
+        EndMode3D();                // End 3d mode drawing, returns to orthographic 2d mode
+
+        DrawText('TEXT DRAWN IN RENDER TEXTURE', 200, 10, 30, RED);
+    EndTextureMode();               // End drawing to texture (now we have a texture available for next passes)
+
     BeginDrawing();
-    ClearBackground(RAYWHITE);
-    BeginTextureMode(target); // Enable drawing to texture
-      BeginMode3d(cam);
-        DrawModel(model, position, 2.0, WHITE); // Draw 3d model with texture
-        DrawGrid(10, 1.0); // Draw a grid
-        EndMode3d();
-      DrawText('TEXT DRAWN IN RENDER TEXTURE', 200, 10, 30, RED);
-    EndTextureMode();
-    // End drawing to texture (now we have a texture available for next passes)
+        ClearBackground(RAYWHITE);  // Clear screen background
 
-    BeginShaderMode(shader);
-      // NOTE: Render texture must be y-flipped due to default OpenGL
-      // coordinates (left-bottom)
-      DrawTextureRec(target.texture, RectangleCreate(0, 0, target.texture.width,
-       -target.texture.height), Vector2Create(0, 0), WHITE);
-    EndShaderMode();
+        // Enable shader using the custom uniform
+        BeginShaderMode(shader);
+            // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+            DrawTextureRec(target.texture, RectangleCreate( 0, 0, target.texture.width, -target.texture.height) ,
+            Vector2Create( 0, 0 ), WHITE);
+        EndShaderMode();
 
-    DrawText('(c) Barracks 3D model by Alberto Cano', screenWidth - 220, screenHeight - 20, 10, GRAY);
-    DrawFPS(10, 10);
-
+        // Draw some 2d text over drawn texture
+        DrawText('(c) Barracks 3D model by Alberto Cano', screenWidth - 220, screenHeight - 20, 10, GRAY);
+        DrawFPS(10, 10);
     EndDrawing();
+
     // ----------------------------------------------------------------------
   end;
 

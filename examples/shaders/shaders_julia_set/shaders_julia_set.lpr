@@ -32,7 +32,7 @@ var
   ShowControls, Pause: Boolean;
   MousePos: TVector2;
   Amount: Single;
-
+  dc: Single;
 begin
   // Initialization
   //--------------------------------------------------------------------------------------
@@ -68,9 +68,9 @@ begin
   SetShaderValue(Shader, ZoomLoc, @Zoom, SHADER_UNIFORM_FLOAT);
   SetShaderValue(Shader, OffsetLoc, @Offset, SHADER_UNIFORM_VEC2);
 
-  IncrementSpeed := 1;             // Multiplier of speed to change c value
+  IncrementSpeed := 0;             // Multiplier of speed to change c value
   ShowControls := True;           // Show controls
-  Pause := False;                 // Pause animation
+ // Pause := False;                 // Pause animation
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -162,44 +162,50 @@ begin
         SetShaderValue(Shader, CLoc, @C[0], SHADER_UNIFORM_VEC2);
       end;
 
+      // Increment c value with time
+      dc := GetFrameTime()*incrementSpeed*0.0005;
+      c[0] += dc;
+      c[1] += dc;
+      SetShaderValue(shader, cLoc, @C, SHADER_UNIFORM_VEC2);
+
+
       //----------------------------------------------------------------------------------
 
 
       // Draw
       //----------------------------------------------------------------------------------
       // Using a render texture to draw Julia set
-      BeginTextureMode(Target);       // Enable drawing to texture
-        ClearBackground(BLACK);     // Clear the render texture
+      BeginTextureMode(target);       // Enable drawing to texture
+          ClearBackground(BLACK);     // Clear the render texture
 
-        // Draw a rectangle in shader mode to be used as shader canvas
-        // NOTE: Rectangle uses font white character texture coordinates,
-        // so shader can not be applied here directly because input vertexTexCoord
-        // do not represent full screen coordinates (space where want to apply shader)
-        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+          // Draw a rectangle in shader mode to be used as shader canvas
+          // NOTE: Rectangle uses font white character texture coordinates,
+          // so shader can not be applied here directly because input vertexTexCoord
+          // do not represent full screen coordinates (space where want to apply shader)
+      DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
       EndTextureMode();
 
       BeginDrawing();
-        ClearBackground(BLACK);     // Clear screen background
+          ClearBackground(BLACK);     // Clear screen background
 
-        // Draw the saved texture and rendered julia set with shader
-        // NOTE: We do not invert texture on Y, already considered inside shader
-        BeginShaderMode(Shader);
-          // WARNING: If FLAG_WINDOW_HIGHDPI is enabled, HighDPI monitor scaling should be considered
-          // when rendering the RenderTexture2D to fit in the HighDPI scaled Window
-          DrawTextureEx(Target.Texture, Vector2Create(0.0, 0.0), 0.0, 1.0, WHITE);
-        EndShaderMode();
+          // Draw the saved texture and rendered julia set with shader
+          // NOTE: We do not invert texture on Y, already considered inside shader
+          BeginShaderMode(shader);
+              // WARNING: If FLAG_WINDOW_HIGHDPI is enabled, HighDPI monitor scaling should be considered
+              // when rendering the RenderTexture2D to fit in the HighDPI scaled Window
+              DrawTextureEx(target.texture, Vector2Create( 0.0, 0.0 ), 0.0, 1.0, WHITE);
+          EndShaderMode();
 
-        if ShowControls then
-        begin
-          DrawText('Press Mouse buttons right/left to zoom in/out and move', 10, 15, 10, RAYWHITE);
-          DrawText('Press KEY_F1 to toggle these controls', 10, 30, 10, RAYWHITE);
-          DrawText('Press KEYS [1 - 6] to change point of interest', 10, 45, 10, RAYWHITE);
-          DrawText('Press KEY_LEFT | KEY_RIGHT to change speed', 10, 60, 10, RAYWHITE);
-          DrawText('Press KEY_SPACE to pause movement animation', 10, 75, 10, RAYWHITE);
-        end;
-
-      EndDrawing();
-    end;
+          if (showControls) then
+          begin
+              DrawText('Press Mouse buttons right/left to zoom in/out and move', 10, 15, 10, RAYWHITE);
+              DrawText('Press KEY_F1 to toggle these controls', 10, 30, 10, RAYWHITE);
+              DrawText('Press KEYS [1 - 6] to change point of interest', 10, 45, 10, RAYWHITE);
+              DrawText('Press KEY_LEFT | KEY_RIGHT to change speed', 10, 60, 10, RAYWHITE);
+              DrawText('Press KEY_SPACE to stop movement animation', 10, 75, 10, RAYWHITE);
+              DrawText('Press KEY_R to recenter the camera', 10, 90, 10, RAYWHITE);
+          end;
+      EndDrawing();    end;
   // De-Initialization
   //--------------------------------------------------------------------------------------
   UnloadShader(Shader);               // Unload shader

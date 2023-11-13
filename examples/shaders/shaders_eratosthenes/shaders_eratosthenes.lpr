@@ -51,6 +51,7 @@ begin
   // Load Eratosthenes shader
   // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
   shader := LoadShader(nil, TextFormat('resources/shaders/glsl%i/eratosthenes.fs', GLSL_VERSION));
+
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop
@@ -63,17 +64,26 @@ begin
 
       // Draw
       //----------------------------------------------------------------------------------
-      BeginDrawing();
-        ClearBackground(BLACK);     // Clear the render texture
-         BeginShaderMode(shader);
-           // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
-           DrawTextureRec(target.texture,
-           RectangleCreate(0,0,target.texture.width,target.texture.height),
-           Vector2Create(0.0,0.0), WHITE);
-         EndShaderMode();
+      BeginTextureMode(target);       // Enable drawing to texture
+          ClearBackground(BLACK);     // Clear the render texture
 
-        DrawText('raylib in lazarus !!!', 20, 20, 10, DARKGRAY);
+          // Draw a rectangle in shader mode to be used as shader canvas
+          // NOTE: Rectangle uses font white character texture coordinates,
+          // so shader can not be applied here directly because input vertexTexCoord
+          // do not represent full screen coordinates (space where want to apply shader)
+          DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+      EndTextureMode();               // End drawing to texture (now we have a blank texture available for the shader)
+
+      BeginDrawing();
+          ClearBackground(RAYWHITE);  // Clear screen background
+
+          BeginShaderMode(shader);
+              // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+              DrawTextureRec(target.texture, RectangleCreate( 0, 0, target.texture.width, -target.texture.height ),
+              Vector2Create( 0.0, 0.0 ), WHITE);
+          EndShaderMode();
       EndDrawing();
+
     end;
   // De-Initialization
   //--------------------------------------------------------------------------------------
