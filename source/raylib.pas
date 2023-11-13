@@ -1390,22 +1390,14 @@ procedure DrawPixel(posX, posY: Integer; color: TColorB); cdecl; external {$IFND
 procedure DrawPixelV(position: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPixelV';
 {Draw a line}
 procedure DrawLine(startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLine';
-{Draw a line (Vector version)}
+{Draw a line (using gl lines)}
 procedure DrawLineV(startPos, endPos: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineV';
-{Draw a line defining thickness}
+{Draw a line (using triangles/quads)}
 procedure DrawLineEx(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineEx';
-{Draw a line using cubic-bezier curves in-out}
-procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezier';
-{Draw line using quadratic bezier curves with a control point}
-procedure DrawLineBezierQuad(startPos, endPos, controlPos: TVector2; thick: Single; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezierQuad';
-{Draw line using cubic bezier curves with 2 control points}
-procedure DrawLineBezierCubic(startPos, endPos, startControlPos, endControlPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezierCubic';
-{Draw a B-Spline line, minimum 4 points}
-procedure DrawLineBSpline(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBSpline';
-{Draw a Catmull Rom spline line, minimum 4 points}
-procedure DrawLineCatmullRom(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineCatmullRom';
-{Draw lines sequence}
+{Draw lines sequence (using gl lines)}
 procedure DrawLineStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineStrip';
+{Draw line segment cubic-bezier in-out interpolation}
+procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezier';
 {Draw a color-filled circle}
 procedure DrawCircle(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircle';
 {Draw a piece of a circle}
@@ -1464,6 +1456,42 @@ procedure DrawPoly(center: TVector2; sides: Integer; radius: Single; rotation: S
 procedure DrawPolyLines(center: TVector2; sides: Integer; radius, rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPolyLines';
 {Draw a polygon outline of n sides with extended parameters }
 procedure DrawPolyLinesEx(center: TVector2; sides: Integer; radius, rotation, lineThick: single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPolyLinesEx';
+
+(* Splines drawing functions *)
+
+{Draw spline: Linear, minimum 2 points}
+procedure DrawSplineLinear(points: PVector3; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineLinear';
+{Draw spline: B-Spline, minimum 4 points}
+procedure DrawSplineBasis(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBasis';
+{Draw spline: Catmull-Rom, minimum 4 points}
+procedure DrawSplineCatmullRom(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineCatmullRom';
+{Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]}
+procedure DrawSplineBezierQuadratic(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBezierQuadratic';
+{Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]}
+procedure DrawSplineBezierCubic(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBezierCubic';
+{Draw spline segment: Linear, 2 points}
+procedure DrawSplineSegmentLinear(p1, p2: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineSegmentLinear';
+{Draw spline segment: B-Spline, 4 points}
+procedure DrawSplineSegmentBasis(p1, p2, p3, p4: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineSegmentBasis';
+{Draw spline segment: Catmull-Rom, 4 points}
+procedure DrawSplineSegmentCatmullRom(p1, p2, p3, p4: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineSegmentCatmullRom';
+{Draw spline segment: Quadratic Bezier, 2 points, 1 control point}
+procedure DrawSplineSegmentBezierQuadratic(p1, c2, p3: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineSegmentBezierQuadratic';
+{Draw spline segment: Cubic Bezier, 2 points, 2 control points}
+procedure DrawSplineSegmentBezierCubic(p1, c2, c3, p4: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineSegmentBezierCubic';
+
+(* Spline segment point evaluation functions, for a given t [0.0f .. 1.0f] *)
+
+{Get (evaluate) spline point: Linear}
+function GetSplinePointLinear(startPos, endPos: TVector2; t: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSplinePointLinear';
+{Get (evaluate) spline point: B-Spline}
+function GetSplinePointBasis(p1, p2, p3, p4: TVector2; t: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSplinePointBasis';
+{Get (evaluate) spline point: Catmull-Rom}
+function GetSplinePointCatmullRom(p1, p2, p3, p4: TVector2; t: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSplinePointCatmullRom';
+{Get (evaluate) spline point: Quadratic Bezier}
+function GetSplinePointBezierQuad(p1, c2, p3: TVector2; t: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSplinePointBezierQuad';
+{Get (evaluate) spline point: Cubic Bezier}
+function GetSplinePointBezierCubic(p1, c2, c3, p4: TVector2; t: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSplinePointBezierCubic';
 
 (* Basic shapes collision detection functions *)
 
