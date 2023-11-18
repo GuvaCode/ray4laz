@@ -8,8 +8,10 @@ temp/
 binary/*
 !binary/resources/
 
-
-
+!libs/x86_64-linux/
+!libs/x86_64-windows/
+!libs/x86_32-windows/
+!libs/x86_32-linux/
 
 # macos
 .DS_Store
