@@ -4,7 +4,7 @@ program models_loading_m3d;
 
 uses 
 cmem, rlgl,
-raylib, sysutils;
+raylib, raymath, sysutils;
 
 const
   screenWidth = 800;
@@ -13,13 +13,15 @@ const
 var
   camera:TCamera;
   Position: TVector3;
-  model:TModel;
+  model,model2:TModel;
   anims: PModelAnimation;
   drawMesh,drawSkeleton,animPlaying : boolean;
   animsCount: longint;
   animFrameCounter: integer;
   animId: integer;
   i: integer;
+
+
 
 begin
   // Initialization
@@ -34,26 +36,26 @@ begin
   position := Vector3Create( 0, 0, 0 );                // Set model position
 
   // Load model
-  model := LoadModel('resources/models/m3d/CesiumMan.m3d'); // Load the animated model mesh and basic data
-
+  model := LoadModel('resources/models/m3d/cesium_man.m3d'); // Load the animated model mesh and basic data
+  model2 := LoadModel('resources/models/m3d/cesium_man.m3d'); // Load the animated model mesh and basic data
   drawMesh := true;
   drawSkeleton := true;
   animPlaying := false;   // Store anim state, what to draw
 
   // Load animation data
- animsCount:= 0;
- animFrameCounter := 0;
- animId := 0;
- anims := LoadModelAnimations('resources/models/m3d/CesiumMan.m3d', @animsCount);
+  animsCount:= 0;
+  animFrameCounter := 0;
+  animId := 0;
+  anims := LoadModelAnimations('resources/models/m3d/cesium_man.m3d', @animsCount);
 
- disableCursor;
- SetTargetFPS(60);// Set our game to run at 60 frames-per-second
+  disableCursor;
+ //SetTargetFPS(60);// Set our game to run at 60 frames-per-second
 
   // Main game loop
   while not WindowShouldClose() do
     begin
       // Update
-      UpdateCamera(@camera,CAMERA_FREE);
+      UpdateCamera(@camera,CAMERA_FIRST_PERSON);
       // Play animation when spacebar is held down
       if animsCount>=1 then
        begin
@@ -125,6 +127,8 @@ begin
 
                if (anims[animId].bones[i].parent >= 0) then
                  begin
+
+
                    DrawLine3D(anims[animId].framePoses[animFrameCounter][i].translation,
                    anims[animId].framePoses[animFrameCounter][anims[animId].bones[i].parent].translation, RED);
                  end;
@@ -135,7 +139,7 @@ begin
         DrawGrid(10, 1.0);// Draw a grid
 
         EndMode3D();
-
+        DrawFPS(10,10);
         DrawText('PRESS SPACE to PLAY MODEL ANIMATION', 10, GetScreenHeight() - 60, 10, MAROON);
         DrawText('PRESS A to CYCLE THROUGH ANIMATIONS', 10, GetScreenHeight() - 40, 10, DARKGRAY);
         DrawText('PRESS M to toggle MESH, S to toggle SKELETON DRAWING', 10, GetScreenHeight() - 20, 10, DARKGRAY);

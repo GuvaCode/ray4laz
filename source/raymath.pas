@@ -129,7 +129,7 @@ function Vector2Clamp(v, min, max: TVector2): TVector2; cdecl; external {$IFNDEF
 { Clamp the magnitude of the vector between two min and max values }
 function Vector2ClampValue(v, min, max: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2ClampValue';
 { Check whether two given vectors are almost equal }
-function Vector2Equals(p, q: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Equals';
+function Vector2Equals(p, q: TVector2): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Equals';
 
 
 //----------------------------------------------------------------------------------
