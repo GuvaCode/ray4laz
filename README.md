@@ -105,6 +105,6 @@ enjoy !!!
 <img align="center" src="https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/powered_by.png" width="64px">
 
 
-**manual installation**
+**manual installation and use without lazarus ide**
 
 clone this repository, then use 'fpc-wrapper.sh' as your compiler. this script automatically feeds fpc with the necessary arguments.
