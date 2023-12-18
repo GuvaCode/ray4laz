@@ -1,20 +1,25 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # a wrapper for fpc to automatically add enough flags
 
-get_lib_name()
-{
-	# return 64 if 64
-	if [ `uname -m` -eq "x86_64" ]
-	then
-		return "x86_64-linux"
-	else
-		return "x86_32-linux"
-	fi
-}
-PLATFORM=get_lib_name;
+set -e
+
+if [[ `command -v fpc` == "" ]]
+then
+	echo "Could not find fpc on your system."
+	exit 1
+fi
+
+HERE=$(readlink -f $(dirname $0))
+
+PLATFORM="x86_32-linux";
+
+if [[ `uname -m` -eq "x86_64" ]]
+then
+	PLATFORM="x86_64-linux"
+fi
 
 BASE_FLAGS="-MObjFPC -Scghi -Cg -l -vewnhibq"
-INCLUDE_FLAGS="-Fl./libs/$PLATFORM -Fu./source -Fu./headers"
+INCLUDE_FLAGS="-Fl$HERE/libs/$PLATFORM -Fu$HERE/source -Fu$HERE/headers"
 
 fpc $BASE_FLAGS $INCLUDE_FLAGS $*
