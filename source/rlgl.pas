@@ -1,6 +1,6 @@
 {**********************************************************************************************
 *
-*   rlgl v4.5 - A multi-OpenGL abstraction layer with an immediate-mode style API
+*   rlgl v5.0 - A multi-OpenGL abstraction layer with an immediate-mode style API
 *
 *   An abstraction layer for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0)
 *   that provides a pseudo-OpenGL 1.1 immediate-mode style API (rlVertex, rlTranslate, rlRotate...)
@@ -191,6 +191,10 @@ const
   RL_BLEND_DST_ALPHA = $80CA;                       // GL_BLEND_DST_ALPHA
   RL_BLEND_SRC_ALPHA = $80CB;                       // GL_BLEND_SRC_ALPHA
   RL_BLEND_COLOR = $8005;                           // GL_BLEND_COLOR
+
+  RL_READ_FRAMEBUFFER = $8CA8;                       // GL_READ_FRAMEBUFFER
+  RL_DRAW_FRAMEBUFFER = $8CA9;                       // GL_DRAW_FRAMEBUFFER
+
 
 
 type
@@ -538,7 +542,8 @@ procedure rlDisableFramebuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$EN
 procedure rlActiveDrawBuffers(count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlActiveDrawBuffers';
 {Blit active framebuffer to main framebuffer}
 procedure rlBlitFramebuffer(srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight, bufferMask: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlBlitFramebuffer';
-
+{Bind framebuffer (FBO)}
+procedure rlBindFramebuffer(target, framebuffer: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlBindFramebuffer';
 
 (* General render state *)
 
@@ -558,6 +563,8 @@ procedure rlDisableDepthMask; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDI
 procedure rlEnableBackfaceCulling; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableBackfaceCulling';
 {Disable backface culling}
 procedure rlDisableBackfaceCulling; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableBackfaceCulling';
+{Color mask control}
+procedure rlColorMask(r, g, b, a: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlColorMask';
 {Set face culling mode}
 procedure rlSetCullFace(mode: TrlCullMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetCullFace';
 {Enable scissor test}
@@ -661,15 +668,23 @@ function rlLoadVertexBufferElement(const buffer: Pointer; size: Integer; dynamic
 procedure rlUpdateVertexBuffer(bufferId: LongWord; const data: Pointer; dataSize, offset: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateVertexBuffer';
 {Update vertex buffer elements with new data}
 procedure rlUpdateVertexBufferElements(id: LongWord; const data: Pointer; dataSize, offset: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateVertexBufferElements';
+{Unload vertex array (vao)}
 procedure rlUnloadVertexArray(vaoId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadVertexArray';
+{Unload vertex buffer object}
 procedure rlUnloadVertexBuffer(vboId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadVertexBuffer';
+{Set vertex attribute data configuration}
 procedure rlSetVertexAttribute(index: LongWord; compSize, type_: Integer; normalized: Boolean; stride: Integer; const pointer_:pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttribute';
+{Set vertex attribute data divisor}
 procedure rlSetVertexAttributeDivisor(index: LongWord; divisor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttributeDivisor';
-{Set vertex attribute default value }
+{Set vertex attribute default value, when attribute to provided}
 procedure rlSetVertexAttributeDefault(locIndex: Integer; value:pointer; attribType, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttributeDefault';
+{Draw vertex array (currently active vao)}
 procedure rlDrawVertexArray(offset, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArray';
+{Draw vertex array elements}
 procedure rlDrawVertexArrayElements(offset, count: Integer; const buffer: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArrayElements';
+{Draw vertex array (currently active vao) with instancing}
 procedure rlDrawVertexArrayInstanced(offset, count, instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArrayInstanced';
+{Draw vertex array (currently active vao) with instancing}
 procedure rlDrawVertexArrayElementsInstanced(offset, count: Integer; const buffer: Pointer; instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArrayElementsInstanced';
 
 (* Textures management *)

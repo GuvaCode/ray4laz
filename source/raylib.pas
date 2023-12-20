@@ -1,5 +1,5 @@
 {
-raylib ver 5.0
+raylib ver 5.1-dev
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
@@ -385,7 +385,6 @@ const
           vResolution            : Integer;               // Vertical resolution in pixels
           hScreenSize            : Single;                // Horizontal size in meters
           vScreenSize            : Single;                // Vertical size in meters
-          vScreenCenter          : Single;                // Screen center in meters
           eyeToScreenDistance    : Single;                // Distance between eye and display in meters
           lensSeparationDistance : Single;                // Lens separation distance in meters
           interpupillaryDistance : Single;                // IPD (distance between pupils) in meters
@@ -1595,6 +1594,8 @@ procedure ImageAlphaMask(image: PImage; alphaMask: TImage); cdecl; external {$IF
 procedure ImageAlphaPremultiply(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageAlphaPremultiply';
 {Apply Gaussian blur using a box blur approximation}
 procedure ImageBlurGaussian(image: PImage; blurSize: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageBlurGaussian';
+{Apply Custom Square image convolution kernel}
+procedure ImageKernelConvolution(image: PImage; kernel: PSingle; kernelSize: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageKernelConvolution';
 {Resize image (Bicubic scaling algorithm)}
 procedure ImageResize(image: PImage; newWidth, newHeight: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageResize';
 {Resize image (Nearest-Neighbor scaling algorithm)}
@@ -1871,6 +1872,8 @@ function TextToLower(const text: PChar):PChar; cdecl; external {$IFNDEF RAY_STAT
 function TextToPascal(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToPascal';
 {Get integer value from text (negative values not supported)}
 function TextToInteger(const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToInteger';
+{Get float value from text (negative values not supported)}
+function TextToFloat(const text: PChar): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToFloat';
 
 //------------------------------------------------------------------------------------
 // Basic 3d Shapes Drawing Functions (Module: models)
@@ -1969,12 +1972,14 @@ procedure UnloadMesh(mesh: TMesh); cdecl; external {$IFNDEF RAY_STATIC}cDllName{
 procedure DrawMesh(mesh: TMesh; material: TMaterial; transform: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawMesh';
 {Draw multiple mesh instances with material and different transforms}
 procedure DrawMeshInstanced(mesh: TMesh; material: TMaterial; const transforms: PMatrix; instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawMeshInstanced';
-{Export mesh data to file, returns true on success}
-function ExportMesh(mesh: TMesh; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportMesh';
 {Compute mesh bounding box limits}
 function GetMeshBoundingBox(mesh: TMesh): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMeshBoundingBox';
 {Compute mesh tangents}
 procedure GenMeshTangents(mesh: PMesh); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshTangents';
+{Export mesh data to file, returns true on success}
+function ExportMesh(mesh: TMesh; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportMesh';
+{Export mesh as code file (.h) defining multiple arrays of vertex attributes}
+function ExportMeshAsCode(mesh: TMesh; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportMeshAsCode';
 
 (* Mesh generation functions *)
 
