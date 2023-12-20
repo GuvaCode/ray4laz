@@ -30,7 +30,7 @@ begin
 
  InitAudioDevice();              // Initialize audio device
 
- music := LoadMusicStream('resources/country.mp3');
+ music := LoadMusicStream(PChar(GetApplicationDirectory + 'resources/country.mp3'));
 
  PlayMusicStream(music);
 

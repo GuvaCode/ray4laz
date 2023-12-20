@@ -36,8 +36,8 @@ begin
   position := Vector3Create( 0, 0, 0 );                // Set model position
 
   // Load model
-  model := LoadModel('resources/models/m3d/cesium_man.m3d'); // Load the animated model mesh and basic data
-  model2 := LoadModel('resources/models/m3d/cesium_man.m3d'); // Load the animated model mesh and basic data
+  model := LoadModel(GetAppDir('resources/models/m3d/cesium_man.m3d')); // Load the animated model mesh and basic data
+  model2 := LoadModel(GetAppDir('resources/models/m3d/cesium_man.m3d')); // Load the animated model mesh and basic data
   drawMesh := true;
   drawSkeleton := true;
   animPlaying := false;   // Store anim state, what to draw
@@ -46,7 +46,7 @@ begin
   animsCount:= 0;
   animFrameCounter := 0;
   animId := 0;
-  anims := LoadModelAnimations('resources/models/m3d/cesium_man.m3d', @animsCount);
+  anims := LoadModelAnimations(GetAppDir('resources/models/m3d/cesium_man.m3d'), @animsCount);
 
   disableCursor;
  //SetTargetFPS(60);// Set our game to run at 60 frames-per-second
@@ -71,7 +71,7 @@ begin
            end;
 
     // Select animation by pressing A
-            if (IsKeyPressed(KEY_A)) then
+            if (IsKeyPressed(KEY_Z)) then
             begin
                 animFrameCounter := 0;
                 Inc(animId);//++;
@@ -83,7 +83,7 @@ begin
         end;
 
        // Toggle skeleton drawing
-        if (IsKeyPressed(KEY_S)) then drawSkeleton:= not drawSkeleton;
+        if (IsKeyPressed(KEY_X)) then drawSkeleton:= not drawSkeleton;
 
         // Toggle mesh drawing
         if (IsKeyPressed(KEY_M)) then drawMesh:= not drawMesh;
@@ -141,8 +141,8 @@ begin
         EndMode3D();
         DrawFPS(10,10);
         DrawText('PRESS SPACE to PLAY MODEL ANIMATION', 10, GetScreenHeight() - 60, 10, MAROON);
-        DrawText('PRESS A to CYCLE THROUGH ANIMATIONS', 10, GetScreenHeight() - 40, 10, DARKGRAY);
-        DrawText('PRESS M to toggle MESH, S to toggle SKELETON DRAWING', 10, GetScreenHeight() - 20, 10, DARKGRAY);
+        DrawText('PRESS Z to CYCLE THROUGH ANIMATIONS', 10, GetScreenHeight() - 40, 10, DARKGRAY);
+        DrawText('PRESS M to toggle MESH, X to toggle SKELETON DRAWING', 10, GetScreenHeight() - 20, 10, DARKGRAY);
         DrawText('(c) SpaceSuit model by Quaternius', GetScreenWidth() - 210, GetScreenHeight() - 20, 10, GRAY);
 
       EndDrawing();

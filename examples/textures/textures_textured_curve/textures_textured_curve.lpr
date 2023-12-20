@@ -27,7 +27,7 @@ var
 procedure DrawCurve;
 var mouse: TVector2;
 begin
-	if (showCurve) then DrawLineBezierCubic(curveStartPosition, curveEndPosition, curveStartPositionTangent, curveEndPositionTangent, 2, BLUE);
+//	if (showCurve) then DrawLineBezierCubic(curveStartPosition, curveEndPosition, curveStartPositionTangent, curveEndPositionTangent, 2, BLUE);
 
 	// Draw the various control points and highlight where the mouse is
 	DrawLineV(curveStartPosition, curveStartPositionTangent, SKYBLUE);
@@ -182,7 +182,7 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib [textures] examples - textured curve');
 
   // Load the road texture
-  texRoad := LoadTexture('resources/road.png');
+  texRoad := LoadTexture(GetAppDir('resources/road.png'));
   SetTextureFilter(texRoad, TEXTURE_FILTER_BILINEAR);
 
   // Setup the curve

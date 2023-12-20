@@ -19,8 +19,8 @@ begin
   // Initialization
   //--------------------------------------------------------------------------------------
   InitWindow(screenWidth, screenHeight, 'raylib [textures] example - procedural images generation');
-  VerticalGradient := GenImageGradientV(ScreenWidth, ScreenHeight, RED, BLUE);
-  HorizontalGradient := GenImageGradientH(ScreenWidth, ScreenHeight, RED, BLUE);
+  VerticalGradient := GenImageGradientLinear(ScreenWidth, ScreenHeight,0, RED, BLUE);
+  HorizontalGradient := GenImageGradientLinear(ScreenWidth, ScreenHeight,90, RED, BLUE);
   RadialGradient := GenImageGradientRadial(ScreenWidth, ScreenHeight, 0.0, WHITE, BLACK);
   Checked := GenImageChecked(ScreenWidth, ScreenHeight, 32, 32, RED, BLUE);
   WhiteNoise := GenImageWhiteNoise(ScreenWidth, ScreenHeight, 0.5);

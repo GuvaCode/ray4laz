@@ -71,8 +71,8 @@ begin
 
   AttachAudioMixedProcessor(@ProcessAudio);
 
-  music := LoadMusicStream('resources/country.mp3');
-  sound := LoadSound('resources/coin.wav');
+  music := LoadMusicStream(PChar(GetApplicationDirectory + 'resources/country.mp3'));
+  sound := LoadSound(PChar(GetApplicationDirectory + 'resources/coin.wav'));
 
   PlayMusicStream(music);
 

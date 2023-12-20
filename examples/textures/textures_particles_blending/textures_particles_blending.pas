@@ -43,7 +43,7 @@ begin
   end;
 
   gravity := 3.0;
-  smoke := LoadTexture('resources/spark_flame.png');
+  smoke := LoadTexture(GetAppDir('resources/spark_flame.png'));
   blending := BLEND_ALPHA;
   SetTargetFPS(60);
 

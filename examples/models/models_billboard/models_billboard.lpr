@@ -42,7 +42,7 @@ begin
                           Vector3Create(0.0,1.0,0.0), //up
                           45.0, CAMERA_PERSPECTIVE);
 
-  bill := LoadTexture('resources/billboard.png');     // Our billboard texture
+  bill := LoadTexture(GetAppDir('resources/billboard.png'));     // Our billboard texture
   billPositionStatic := Vector3Create(0, 2, 0); // Position of billboard
   billPositionRotating := Vector3Create(1, 2, 1);
 

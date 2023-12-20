@@ -26,10 +26,10 @@ const
   screenHeight = 450;
 
 var
-   textureGrid : TTexture2D;
+
    cameraPlayer1 :TCamera;
    cameraPlayer2 :TCamera;
-   img: TImage;
+
    screenPlayer1: TRenderTexture;
    screenPlayer2: TRenderTexture;
    splitScreenRect: TRectangle;
@@ -50,8 +50,8 @@ var
        begin
          for z :=-count to count do
           begin
-               DrawCubeTexture(textureGrid,Vector3Create(x*spacing, 1.5, z*spacing), 1, 1, 1, GREEN);
-               DrawCubeTexture(textureGrid,Vector3Create(x*spacing, 0.5, z*spacing), 0.25, 1, 0.25, BROWN);
+               DrawCube(Vector3Create(x*spacing, 1.5, z*spacing), 1, 1, 1, GREEN);
+               DrawCube(Vector3Create(x*spacing, 0.5, z*spacing), 0.25, 1, 0.25, BROWN);
            end;
        end;
 
@@ -66,12 +66,6 @@ begin
   //--------------------------------------------------------------------------------------
   InitWindow(screenWidth, screenHeight, 'raylib [core] example - split screen');
 
-  // Generate a simple texture to use for trees
-    img := GenImageChecked(256, 256, 32, 32, DARKGRAY, WHITE);
-    textureGrid := LoadTextureFromImage(img);
-    UnloadImage(img);
-    SetTextureFilter(textureGrid, TEXTURE_FILTER_ANISOTROPIC_16X);
-    SetTextureWrap(textureGrid, TEXTURE_WRAP_CLAMP);
 
     // Setup player 1 camera and screen
     cameraPlayer1.fovy := 45.0;
@@ -164,7 +158,7 @@ begin
   //--------------------------------------------------------------------------------------
   UnloadRenderTexture(screenPlayer1); // Unload render texture
   UnloadRenderTexture(screenPlayer2); // Unload render texture
-  UnloadTexture(textureGrid);         // Unload texture
+
   CloseWindow();        // Close window and OpenGL context
 
   //--------------------------------------------------------------------------------------

@@ -20,12 +20,12 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib [textures] examples - texture source and destination rectangles');
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
 
-  Cat := LoadImage('resources/cat.png'); // Load image in CPU memory (RAM)
+  Cat := LoadImage(GetAppDir('resources/cat.png')); // Load image in CPU memory (RAM)
   ImageCrop(@Cat, RectangleCreate(100, 10, 280, 380));      // Crop an image piece
   ImageFlipHorizontal(@Cat);                                  // Flip cropped image horizontally
   ImageResize(@Cat, 150, 200);                                // Resize flipped-cropped image
 
-  Parrots := LoadImage('resources/parrots.png'); // Load image in CPU memory (RAM)
+  Parrots := LoadImage(GetAppDir('resources/parrots.png')); // Load image in CPU memory (RAM)
 
   // Draw one image over the other with a scaling of 1.5f
   ImageDraw(@Parrots, Cat, RectangleCreate(0, 0, Cat.Width, Cat.Height), RectangleCreate(30, 40, Cat.Width * 1.5, Cat.Height * 1.5), WHITE);
@@ -39,7 +39,7 @@ begin
   UnloadImage(cat); // Unload image from RAM
 
   // Load custom font for frawing on image
-  Font := LoadFont('resources/custom_jupiter_crash.png');
+  Font := LoadFont(GetAppDir('resources/custom_jupiter_crash.png'));
 
   // Draw over image using custom font
   ImageDrawTextEx(@Parrots, Font, 'PARROTS & CAT', Vector2Create(300, 230), Font.BaseSize, -2, WHITE);

@@ -14,7 +14,7 @@
 ********************************************************************************************)
 unit audio_raw_stream;
 
-{$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
+
 
 interface
 

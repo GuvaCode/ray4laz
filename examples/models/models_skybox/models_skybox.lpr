@@ -139,7 +139,7 @@ begin
   cube := GenMeshCube(1.0, 1.0, 1.0);
   skybox := LoadModelFromMesh(cube);
 
-  useHDR := true;
+  useHDR := false;
 
   // Load skybox shader and set required locations
   // NOTE: Some locations are automatically set at shader loading
@@ -159,14 +159,27 @@ begin
 
   if useHDR then
    begin
-       // Load HDR panorama (sphere) texture
-       skyboxFileName:='resources/dresden_square_2k.hdr';
-       panorama := LoadTexture(PChar(skyboxFileName));
-       // Generate cubemap (texture with 6 quads-cube-mapping) from panorama HDR texture
-       // NOTE 1: New texture is generated rendering to texture, shader calculates the sphere->cube coordinates mapping
-       // NOTE 2: It seems on some Android devices WebGL, fbo does not properly support a FLOAT-based attachment,
-       // despite texture can be successfully created.. so using PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 instead of PIXELFORMAT_UNCOMPRESSED_R32G32B32A32
-       skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture := GenTextureCubemap(shdrCubemap, panorama, 1024, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+       //TextCopy(PChar(skyboxFileName), 'resources/dresden_square_2k.hdr');
+
+            // Load HDR panorama (sphere) texture
+        panorama := LoadTexture(GetAppDir('resources/dresden_square_2k.hdr'));
+       // panorama := LoadTexture(PChar(skyboxFileName));
+            // Generate cubemap (texture with 6 quads-cube-mapping) from panorama HDR texture
+            // NOTE 1: New texture is generated rendering to texture, shader calculates the sphere->cube coordinates mapping
+            // NOTE 2: It seems on some Android devices WebGL, fbo does not properly support a FLOAT-based attachment,
+            // despite texture can be successfully created.. so using PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 instead of PIXELFORMAT_UNCOMPRESSED_R32G32B32A32
+            skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture := GenTextureCubemap(shdrCubemap, panorama, 1024, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+
+            UnloadTexture(panorama);        // Texture not required anymore, cubemap already generated
+
+
+
+
+
+
+
+
+
    end
    else
    begin
@@ -208,7 +221,7 @@ begin
 
       //DrawTextureEx(panorama, Vector2Create( 0, 0 ), 0.0, 0.5, WHITE);
 
-      if (useHDR) then DrawText(TextFormat('Panorama image from hdrihaven.com: %s', GetFileName(PChar(skyboxFileName))), 10, GetScreenHeight() - 20, 10, BLACK)
+      if (useHDR) then DrawText(TextFormat('Panorama image from hdrihaven.com: %s', GetFileName(GetAppDir(skyboxFileName))), 10, GetScreenHeight() - 20, 10, BLUE)
       else
         DrawText(TextFormat(': %s', GetFileName(PChar(skyboxFileName))), 10, GetScreenHeight() - 20, 10, BLACK);
 

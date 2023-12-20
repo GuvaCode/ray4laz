@@ -22,7 +22,7 @@ begin
   //--------------------------------------------------------------------------------------
   InitWindow(screenWidth, screenHeight, 'raylib [text] example - font filters');
   // TTF Font loading with custom generation parameters
-  Font := LoadFontEx('resources/KAISG.ttf', 96, nil, 0);
+  Font := LoadFontEx(GetAppDir('resources/KAISG.ttf'), 96, nil, 0);
 
   // Generate mipmap levels to use trilinear filtering
   // NOTE: On 2D drawing it won't be noticeable, it looks like FILTER_BILINEAR

@@ -2221,6 +2221,9 @@ procedure BoundingBoxSet(aBoundingBox: PBoundingBox; aMin, aMax: TVector3);
 function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer): TCamera3D;
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer);
 
+function GetAppDir(aResourceDir: String): PChar;
+
+
 implementation
 uses
   Math;
@@ -2322,6 +2325,11 @@ begin
   aCam^.up := aUp;
   aCam^.fovy := aFOVY;
   aCam^.projection := aType;
+end;
+
+function GetAppDir(aResourceDir: String): PChar;
+begin
+  result :=PChar(GetApplicationDirectory + aResourceDir);
 end;
 
 initialization

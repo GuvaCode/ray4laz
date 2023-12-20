@@ -43,7 +43,7 @@ begin
 
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
 
-  ImOrigin := LoadImage('resources/parrots.png'); // Loaded in CPU memory (RAM)
+  ImOrigin := LoadImage(GetAppDir('resources/parrots.png')); // Loaded in CPU memory (RAM)
   ImageFormat(@ImOrigin, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8); // Format image to RGBA 32bit (required for texture update) <-- ISSUE
   Texture := LoadTextureFromImage(ImOrigin); // Image converted to texture, GPU memory (VRAM)
 

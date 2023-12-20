@@ -1,13 +1,14 @@
 {*******************************************************************************************
 *
-*   raylib [audio] example - Multichannel sound playing
+*   raylib [audio] example - Playing sound multiple times
 *
-*   This example has been created using raylib 2.6 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example originally created with raylib 4.6
 *
-*   Example contributed by Chris Camacho (@chriscamacho) and reviewed by Ramon Santamaria (@raysan5)
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2019 Chris Camacho (@chriscamacho) and Ramon Santamaria (@raysan5)
+*   Copyright (c) 2023 Jeffery Myers (@JeffM2501)
+*
 *   Pascal conversion (c) 2021 Gunko Vadim (@guvacode)
 ********************************************************************************************}
 
@@ -20,48 +21,55 @@ uses cmem,raylib;
 const
  screenWidth = 800;
  screenHeight = 450;
+ MAX_SOUNDS = 10;
 
 var
-  fxWav,fxOgg: TSound;
-
+  soundArray: array[0..MAX_SOUNDS] of TSound;
+  currentSound, i: Integer;
+  dir: string;
 begin
 
- InitWindow(screenWidth, screenHeight, 'raylib [audio] example - Multichannel sound playing');
+ InitWindow(screenWidth, screenHeight, 'raylib [audio] example - playing sound multiple times');
 
  InitAudioDevice();      // Initialize audio device
 
- fxWav := LoadSound('resources/sound.wav');         // Load WAV audio file
- fxOgg := LoadSound('resources/target.ogg');        // Load OGG audio file
+ // load the sound list
+ soundArray[0] := LoadSound(PChar(GetApplicationDirectory + 'resources/sound.wav')); // Load WAV audio file into the first slot as the 'source' sound
+                                                                                     // this sound owns the sample data
+ for i := 1 to MAX_SOUNDS do
+ soundArray[i] := LoadSoundAlias(soundArray[0]); // Load an alias of the sound into slots 1-9. These do not own the sound data, but can be played
+ currentSound := 0;  // set the sound list to the start
 
- SetSoundVolume(fxWav, 0.2);
-
- SetTargetFPS(60);  // Set our game to run at 60 frames-per-second
+ SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
 
  // Main game loop
  while not WindowShouldClose() do // Detect window close button or ESC key
  begin
    // Update
-   if IsKeyPressed(KEY_ENTER) then PlaySoundMulti(fxWav);     // Play a new wav sound instance
-   if IsKeyPressed(KEY_SPACE) then PlaySoundMulti(fxOgg);     // Play a new ogg sound instance
+
+   if IsKeyPressed(KEY_SPACE) then
+   begin
+     PlaySound(soundArray[currentSound]);            // play the next open sound slot
+     Inc(currentSound);                                 // increment the sound slot
+     if (currentSound >= MAX_SOUNDS) then                 // if the sound slot is out of bounds, go back to 0
+     currentSound := 0;
+   end;
+
+
    // Draw
    BeginDrawing();
 
    ClearBackground(RAYWHITE);
 
-   DrawText('MULTICHANNEL SOUND PLAYING', 20, 20, 20, GRAY);
-   DrawText('Press SPACE to play new ogg instance!', 200, 120, 20, LIGHTGRAY);
-   DrawText('Press ENTER to play new wav instance!', 200, 180, 20, LIGHTGRAY);
-
-   DrawText(TextFormat('CONCURRENT SOUNDS PLAYING: %02i', GetSoundsPlaying), 220, 280, 20, RED);
+   DrawText('Press SPACE to PLAY a WAV sound!', 200, 180, 20, LIGHTGRAY);
 
    EndDrawing();
  end;
  // De-Initialization
- StopSoundMulti();       // We must stop the buffer pool before unloading
- UnloadSound(fxWav);     // Unload sound data
- UnloadSound(fxOgg);     // Unload sound data
+ for i := 1 to MAX_SOUNDS do
+ UnloadSoundAlias(soundArray[i]);     // Unload sound aliases
+ UnloadSound(soundArray[0]);          // Unload source sound data
  CloseAudioDevice();     // Close audio device
- CloseWindow();          // Close window and OpenGL context
-
+ CloseWindow();          // Close window and OpenGL contex
 end.
 

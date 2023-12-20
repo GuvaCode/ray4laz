@@ -3,9 +3,6 @@ program shapes_draw_circle_sector;
 {$mode objfpc}{$H+}
 
 uses
-{uncomment if necessary}
-//raymath,
-//rlgl,
 raylib, raygui, math;
 
 const
@@ -18,7 +15,7 @@ var
 
   startAngle,endAngle: single;
 
-  segments: longint;
+  segments: single;
   minsegments: longint;
 
 begin
@@ -54,19 +51,18 @@ begin
      if startAngle = endAngle then endAngle:=endAngle-0.1;
 
      try
-      DrawCircleSector(center, outerRadius, startAngle, endAngle, segments, Fade(MAROON, 0.3));
-      DrawCircleSectorLines(center, outerRadius, startAngle, endAngle, segments, Fade(MAROON, 0.6));
+      DrawCircleSector(center, outerRadius, startAngle, endAngle, Round(segments), Fade(MAROON, 0.3));
+      DrawCircleSectorLines(center, outerRadius, startAngle, endAngle, Round(segments), Fade(MAROON, 0.6));
      except
        writeln('except Draw');
      end;
 
       // Draw GUI controls
       //------------------------------------------------------------------------------
-      startAngle :=GuiSliderBar(RectangleCreate( 600, 40, 120, 20), 'StartAngle',nil, startAngle, 0, 720);
-      endAngle := GuiSliderBar(RectangleCreate( 600, 70, 120, 20), 'EndAngle', nil, endAngle, 0, 720);
-
-      outerRadius := GuiSliderBar(RectangleCreate( 600, 140, 120, 20), 'Radius', nil, outerRadius, 0, 200);
-      segments := Round(GuiSliderBar(RectangleCreate( 600, 170, 120, 20), 'Segments', nil, segments, 0, 100));
+      GuiSliderBar(RectangleCreate( 600, 40, 120, 20), 'StartAngle',nil, @startAngle, 0, 720);
+      GuiSliderBar(RectangleCreate( 600, 70, 120, 20), 'EndAngle', nil, @endAngle, 0, 720);
+      GuiSliderBar(RectangleCreate( 600, 140, 120, 20), 'Radius', nil, @outerRadius, 0, 200);
+      GuiSliderBar(RectangleCreate( 600, 170, 120, 20), 'Segments', nil, @segments, 0, 100);
       //------------------------------------------------------------------------------
 
       minSegments:= ceil((endAngle - startAngle) / 90);

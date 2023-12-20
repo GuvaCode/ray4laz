@@ -20,10 +20,10 @@ begin
     InitAudioDevice();
     // NOTE: Be careful, background width must be equal or bigger than screen width
     // if not, texture should be draw more than two times for scrolling effect
-    background := LoadTexture('resources/cyberpunk_street_background.png');
-    midground := LoadTexture('resources/cyberpunk_street_midground.png');
-    foreground := LoadTexture('resources/cyberpunk_street_foreground.png');
-    music := LoadMusicStream('resources/mini1111.xm');
+    background := LoadTexture(GetAppDir('resources/cyberpunk_street_background.png'));
+    midground := LoadTexture(GetAppDir('resources/cyberpunk_street_midground.png'));
+    foreground := LoadTexture(GetAppDir('resources/cyberpunk_street_foreground.png'));
+    music := LoadMusicStream(GetAppDir('resources/mini1111.xm'));
     music.looping:=true;
     PlayMusicStream(music);
 

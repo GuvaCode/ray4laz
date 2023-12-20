@@ -45,7 +45,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-          UpdateCamera(@Camera,CAMERA_FREE);
+          UpdateCamera(@Camera,CAMERA_FIRST_PERSON);
 
     if IsMouseButtonPressed(MOUSE_BUTTON_LEFT) then
     begin

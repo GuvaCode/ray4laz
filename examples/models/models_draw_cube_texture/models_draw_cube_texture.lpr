@@ -165,7 +165,7 @@ begin
   camera.projection := CAMERA_PERSPECTIVE;
 
   // Load texture to be applied to the cubes sides
-  texture := LoadTexture('resources/cubicmap_atlas.png');
+  texture := LoadTexture(GetAppDir('resources/cubicmap_atlas.png'));
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop

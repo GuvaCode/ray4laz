@@ -49,13 +49,13 @@ begin
   camera.projection := CAMERA_PERSPECTIVE;             // Camera mode type
 
   // Load gltf model
-  model := LoadModel('resources/models/gltf/robot.glb');
+  model := LoadModel(GetAppDir('resources/models/gltf/robot.glb'));
 
   // Load gltf model animations
   animsCount := 0;
   animIndex := 0;
   animCurrentFrame := 0;
-  modelAnimations := LoadModelAnimations('resources/models/gltf/robot.glb', @animsCount);
+  modelAnimations := LoadModelAnimations(GetAppDir('resources/models/gltf/robot.glb'), @animsCount);
 
   position := Vector3Create( 0.0, 0.0, 0.0 );    // Set model position
 
@@ -71,9 +71,9 @@ begin
       // Update
       //----------------------------------------------------------------------------------
       // Select current animation
-      if (IsKeyPressed(KEY_UP)) then animIndex := (animIndex + 1) mod animsCount
+      if (IsKeyPressed(KEY_z)) then animIndex := (animIndex + 1) mod animsCount
       else
-        if (IsKeyPressed(KEY_DOWN)) then animIndex := (animIndex + animsCount - 1) mod animsCount;
+        if (IsKeyPressed(KEY_x)) then animIndex := (animIndex + animsCount - 1) mod animsCount;
 
       // Update model animation
       anim := modelAnimations[animIndex];
@@ -81,7 +81,7 @@ begin
       UpdateModelAnimation(model, anim, animCurrentFrame);
 
       // Update camera
-      UpdateCamera(@camera,CAMERA_FREE);
+      UpdateCamera(@camera,CAMERA_THIRD_PERSON);
 
       //----------------------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ begin
           DrawGrid(10, 1.0);
       EndMode3D();
 
-      DrawText('Use the UP/DOWN arrow keys to switch animation', 10, 10, 20, GRAY);
+      DrawText('Use the ''Z'' or ''X'' keys to switch animation', 10, 10, 20, GRAY);
       DrawText(TextFormat('Animation: %s', anim.name), 10, GetScreenHeight() - 20, 10, DARKGRAY);
       EndDrawing();
     end;

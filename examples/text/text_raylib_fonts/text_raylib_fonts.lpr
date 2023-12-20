@@ -33,14 +33,14 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib [text] example - raylib fonts');
 
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
-  Fonts[0] := LoadFont('resources/fonts/alagard.png');
-  Fonts[1] := LoadFont('resources/fonts/pixelplay.png');
-  Fonts[2] := LoadFont('resources/fonts/mecha.png');
-  Fonts[3] := LoadFont('resources/fonts/setback.png');
-  Fonts[4] := LoadFont('resources/fonts/romulus.png');
-  Fonts[5] := LoadFont('resources/fonts/pixantiqua.png');
-  Fonts[6] := LoadFont('resources/fonts/alpha_beta.png');
-  Fonts[7] := LoadFont('resources/fonts/jupiter_crash.png');
+  Fonts[0] := LoadFont(GetAppDir('resources/fonts/alagard.png'));
+  Fonts[1] := LoadFont(GetAppDir('resources/fonts/pixelplay.png'));
+  Fonts[2] := LoadFont(GetAppDir('resources/fonts/mecha.png'));
+  Fonts[3] := LoadFont(GetAppDir('resources/fonts/setback.png'));
+  Fonts[4] := LoadFont(GetAppDir('resources/fonts/romulus.png'));
+  Fonts[5] := LoadFont(GetAppDir('resources/fonts/pixantiqua.png'));
+  Fonts[6] := LoadFont(GetAppDir('resources/fonts/alpha_beta.png'));
+  Fonts[7] := LoadFont(GetAppDir('resources/fonts/jupiter_crash.png'));
 
   for I := 0 to MAX_FONTS - 1 do
   begin

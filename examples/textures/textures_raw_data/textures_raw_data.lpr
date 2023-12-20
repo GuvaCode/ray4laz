@@ -29,7 +29,7 @@ begin
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
 
   // Load RAW image data (512x512, 32bit RGBA, no file header)
-  FudesumiRaw := LoadImageRaw('resources/fudesumi.raw', 384, 512, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, 0);
+  FudesumiRaw := LoadImageRaw(GetAppDir('resources/fudesumi.raw'), 384, 512, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, 0);
   Fudesumi := LoadTextureFromImage(FudesumiRaw); // Upload CPU (RAM) image to GPU (VRAM)
   UnloadImage(FudesumiRaw); // Unload CPU (RAM) image data
 

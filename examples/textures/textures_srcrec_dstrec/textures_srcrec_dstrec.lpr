@@ -25,7 +25,7 @@ begin
   //--------------------------------------------------------------------------------------
   InitWindow(ScreenWidth, ScreenHeight, UTF8String('raylib [textures] examples - texture source and destination rectangles'));
 
-  Scarfy := LoadTexture('resources/scarfy.png'); // Texture loading
+  Scarfy := LoadTexture(GetAppDir('resources/scarfy.png')); // Texture loading
 
   FrameWidth := Scarfy.Width div 6;
   FrameHeight := Scarfy.Height;

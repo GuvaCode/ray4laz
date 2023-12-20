@@ -137,7 +137,7 @@ begin
   //--------------------------------------------------------------------------------------
   InitWindow(screenWidth, screenHeight, 'raylib [textures] example - Draw part of a texture tiled');
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
-  TexPattern := LoadTexture('resources/patterns.png');
+  TexPattern := LoadTexture(GetAppDir('resources/patterns.png'));
   SetTextureFilter(TexPattern, TEXTURE_FILTER_TRILINEAR); // Makes the texture smoother when upscaled
 
   // Coordinates for all patterns inside the texture

@@ -41,7 +41,7 @@ begin
   cubePosition := Vector3Create( 0.0, 0.0, 0.0 );
   cubeScreenPosition := Vector2Create( 0.0, 0.0 );
 
-  SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
+
 
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@camera);
+      UpdateCamera(@camera, CAMERA_FREE);
 
       // Calculate cube screen space position (with a little offset to be in top)
       cubeScreenPosition := GetWorldToScreen(Vector3Create(cubePosition.x, cubePosition.y + 2.5, cubePosition.z), camera);

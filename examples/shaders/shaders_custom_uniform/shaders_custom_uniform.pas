@@ -48,14 +48,14 @@ begin
   camera.fovy := 45.0;
   camera.projection := CAMERA_PERSPECTIVE;
 
-  model := LoadModel('resources/models/barracks.obj'); // Load OBJ model
-  texture := LoadTexture('resources/models/barracks_diffuse.png');// Load model texture (diffuse map)
+  model := LoadModel(GetAppDir('resources/models/barracks.obj')); // Load OBJ model
+  texture := LoadTexture(GetAppDir('resources/models/barracks_diffuse.png'));// Load model texture (diffuse map)
 
   model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture := texture;                     // Set model diffuse texture
 
   position := Vector3Create(0.0, 0.0, 0.0); // Set model position
 
-  shader := LoadShader(nil, TextFormat('resources/shaders/glsl%i/swirl.fs', GLSL_VERSION));
+  shader := LoadShader(nil, TextFormat(GetAppDir('resources/shaders/glsl%i/swirl.fs'), GLSL_VERSION));
 
   swirlCenterLoc := GetShaderLocation(shader, 'center');
   swirlCenter[0] := screenWidth / 2;

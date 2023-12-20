@@ -24,7 +24,7 @@ begin
   InitWindow(ScreenWidth, ScreenHeight, 'raylib [textures] example - background scrolling');
 
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
-  Scarfy := LoadTexture('resources/scarfy.png');        // Texture loading
+  Scarfy := LoadTexture(GetAppDir('resources/scarfy.png'));        // Texture loading
 
   Position := Vector2Create(350.0, 280.0);
   FrameRec := RectangleCreate(0.0, 0.0, Scarfy.Width / 6, Scarfy.Height);

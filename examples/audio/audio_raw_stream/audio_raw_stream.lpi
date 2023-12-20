@@ -38,7 +38,7 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="../../../binary/audio_raw_stream"/>
+      <Filename Value="../../../binary/audio_raw_streams"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

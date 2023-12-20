@@ -64,7 +64,7 @@ begin
   config := LoadVrStereoConfig(device);
 
   // Distortion shader (uses device lens distortion and chroma)
-  distortion := LoadShader(nil, TextFormat('resources/distortion%i.fs', GLSL_VERSION));
+  distortion := LoadShader(nil, TextFormat(GetAppDir('resources/distortion%i.fs'), GLSL_VERSION));
   // Update distortion shader with lens and distortion-scale parameters
   SetShaderValue(distortion, GetShaderLocation(distortion, 'leftLensCenter'),
                   @config.leftLensCenter, SHADER_UNIFORM_VEC2);
@@ -107,7 +107,7 @@ begin
   camera.projection := CAMERA_PERSPECTIVE;              // Camera type
 
   cubePosition := Vector3Create( 0.0, 0.0, 0.0 );
-  SetCameraMode(camera, CAMERA_FIRST_PERSON);           // Set first person camera mode
+
 
   SetTargetFPS(90); // Set our game to run at 90 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@camera);
+      UpdateCamera(@camera,CAMERA_FIRST_PERSON);
       //----------------------------------------------------------------------------------
 
       // Draw

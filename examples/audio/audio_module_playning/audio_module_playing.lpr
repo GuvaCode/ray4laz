@@ -65,7 +65,7 @@ begin
         circles[i].color := colors[GetRandomValue(0, 13)];
     end;
 
-  music := LoadMusicStream('resources/mini1111.xm');
+  music := LoadMusicStream(PChar(GetApplicationDirectory + 'resources/mini1111.xm'));
   music.looping := false;
 
   pitch := 1.0;
