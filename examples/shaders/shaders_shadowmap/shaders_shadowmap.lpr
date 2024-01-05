@@ -141,7 +141,7 @@ begin
    lightCam.up := Vector3Create( 0.0, 1.0, 0.0 );
    lightCam.fovy := 20.0;
 
-   SetTargetFPS(60);
+  // SetTargetFPS(60);
    fc := 0;
 
   // Main game loop
@@ -155,6 +155,7 @@ begin
 
       Inc(fc);
       fc := fc mod(robotAnimations[0].frameCount);
+
       UpdateModelAnimation(robot, robotAnimations[0], fc);
 
       if (IsKeyDown(KEY_LEFT)) then

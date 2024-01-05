@@ -1236,7 +1236,7 @@ function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl
 {Load automation events list from file, NULL for empty list, capacity = MAX_AUTOMATION_EVENTS}
 function LoadAutomationEventList(const fileName: PChar): TAutomationEventList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadAutomationEventList';
 {Unload automation events list from file}
-procedure UnloadAutomationEventList(list: PAutomationEventList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadAutomationEventList';
+procedure UnloadAutomationEventList(list: TAutomationEventList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadAutomationEventList';
 {Export automation events list as text file}
 function ExportAutomationEventList(list: TAutomationEventList; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportAutomationEventList';
 {Set automation event list to record to}
@@ -1380,6 +1380,11 @@ procedure UpdateCameraPro(camera: PCamera; movement, rotation: TVector3; zoom: s
 
 {Set texture and rectangle to be used on shapes drawing}
 procedure SetShapesTexture(texture: TTexture2D; source: TRectangle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShapesTexture';
+{Get texture that is used for shapes drawing}
+function GetShapesTexture: TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShapesTexture';
+{Get texture source rectangle that is used for shapes drawing}
+function GetShapesTextureRectangle: TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShapesTextureRectangle';
+
 
 (* Basic shapes drawing functions *)
 
@@ -1530,6 +1535,8 @@ function LoadImageRaw(const fileName: PChar; width, height, format: TPixelFormat
 function LoadImageSvg(const fileNameOrString: PChar; width, height: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageSvg';
 {Load image sequence from file (frames appended to image.data)}
 function LoadImageAnim(const fileName: PChar; frames: PInteger):TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageAnim';
+{Load image sequence from memory buffer}
+function LoadImageAnimFromMemory(const fileType: PChar; fileData: PChar; dataSize: Integer; frames: PInteger): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageAnimFromMemory';
 {Load image from memory buffer, fileType refers to extension: i.e. '.png'}
 function LoadImageFromMemory(const fileType: PChar; const fileData: PByte; dataSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageFromMemory';
 {Load image from GPU texture data}
@@ -1853,7 +1860,7 @@ function TextFormat(const text: PChar): PChar; cdecl; varargs; external {$IFNDEF
 {Get a piece of a text string}
 function TextSubtext(const text: PChar; position, length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSubtext';
 {Replace text string (WARNING: memory must be freed!)}
-function TextReplace(text: PChar; const replace, by: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplace';
+function TextReplace(const text: PChar; const replace, by: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplace';
 {Insert text in a position (WARNING: memory must be freed!)}
 function TextInsert(const text, insert: PChar; position: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextInsert';
 {Join text strings with delimiter}

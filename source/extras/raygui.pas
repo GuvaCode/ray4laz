@@ -1,13 +1,13 @@
 {********************************************************************************************
 *                                                                                           *
-*   raygui v4.0-dev - A simple and easy-to-use immediate-mode gui library                   *
+*   raygui v4.1-dev - A simple and easy-to-use immediate-mode gui library                   *
 *                                                                                           *
 *   DESCRIPTION:                                                                            *
 *                                                                                           *
 *   raygui is a tools-dev-focused immediate-mode-gui library based on raylib but also       *
 *   available as a standalone library, as long as input and drawing functions are provided. *
 *                                                                                           *
-*   pascal header 2021 - 2023 by Gunko Vadim                                                *
+*   pascal header 2021 - 2024 by Gunko Vadim                                                *
 *                                                                                           *
 *********************************************************************************************}
 
@@ -29,7 +29,7 @@ const
   RAYGUI_VERSION_MAJOR = 4;
   RAYGUI_VERSION_MINOR = 0;
   RAYGUI_VERSION_PATCH = 0;
-  RAYGUI_VERSION = '4.0-dev';
+  RAYGUI_VERSION = '4.0';
   SCROLLBAR_LEFT_SIDE = 0;
   SCROLLBAR_RIGHT_SIDE = 1;
 
