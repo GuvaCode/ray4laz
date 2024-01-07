@@ -86,6 +86,15 @@ begin
     LineEnding +
     '{ TRayApplication }' + LineEnding +
     LineEnding +
+    'constructor TRayApplication.Create(TheOwner: TComponent);' + LineEnding +
+    'begin' + LineEnding +
+    '  inherited Create(TheOwner);' + LineEnding +
+    LineEnding +
+    '  InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags' + LineEnding +
+    LineEnding +
+    '  SetTargetFPS(60); // Set our game to run at 60 frames-per-second' + LineEnding +
+    'end;' + LineEnding +
+    LineEnding +
     'procedure TRayApplication.DoRun;' + LineEnding +
     'begin' + LineEnding +
     LineEnding +
@@ -102,15 +111,6 @@ begin
     LineEnding +
     '  // Stop program loop' + LineEnding +
     '  Terminate;' + LineEnding +
-    'end;' + LineEnding +
-    LineEnding +
-    'constructor TRayApplication.Create(TheOwner: TComponent);' + LineEnding +
-    'begin' + LineEnding +
-    '  inherited Create(TheOwner);' + LineEnding +
-    LineEnding +
-    '  InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags' + LineEnding +
-    LineEnding +
-    '  SetTargetFPS(60); // Set our game to run at 60 frames-per-second' + LineEnding +
     'end;' + LineEnding +
     LineEnding +
     'destructor TRayApplication.Destroy;' + LineEnding +
