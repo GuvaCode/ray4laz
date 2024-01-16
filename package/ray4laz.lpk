@@ -13,7 +13,7 @@
     <Description Value="A complete header translation (binding) of the raylib 5.0 to Pascal. Without any funky helper functions for memory alignment issues. Inspired and partially based on the drezgames/raylib-pascal binding, however a little cleaner and more recent, with FPC 3.2.0 support. "/>
     <License Value="zlib License"/>
     <Version Major="5"/>
-    <Files Count="7">
+    <Files Count="6">
       <Item1>
         <Filename Value="../source/raylib.pas"/>
         <UnitName Value="raylib"/>
@@ -38,10 +38,6 @@
         <Filename Value="../source/extras/reasings.pas"/>
         <UnitName Value="reasings"/>
       </Item6>
-      <Item7>
-        <Filename Value="../source/extras/raysprite.pas"/>
-        <UnitName Value="RaySprite"/>
-      </Item7>
     </Files>
     <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="1">
