@@ -589,7 +589,7 @@ const
          KEY_KP_EQUAL          = TKeyboardKey(336); // Key: Keypad =
          // Android key buttons
          KEY_BACK              = TKeyboardKey(4);  // Key: Android back button
-         KEY_MENU              = TKeyboardKey(82); // Key: Android menu button
+         KEY_MENU              = TKeyboardKey(5); // Key: Android menu button
          KEY_VOLUME_UP         = TKeyboardKey(24); // Key: Android volume up button
          KEY_VOLUME_DOWN       = TKeyboardKey(25); // Key: Android volume down button
 
