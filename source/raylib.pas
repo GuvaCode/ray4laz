@@ -1076,10 +1076,8 @@ procedure UnloadShader(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDl
 
 {Get a ray trace from mouse position}
 function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMouseRay';
-{Get camera transform matrix (view matrix)}
-function GetCameraMatrix(camera: TCamera): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCameraMatrix';
-{Get camera 2d transform matrix}
-function GetCameraMatrix2D(camera: TCamera2D): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCameraMatrix2D';
+{Get a ray trace from mouse position in a viewport}
+function GetViewRay(mousePosition: TVector2; camera: TCamera; width, height: Single): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetViewRay';
 {Get the screen space position for a 3d world space position}
 function GetWorldToScreen(position: TVector3; camera: TCamera): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorldToScreen';
 {Get size position for a 3d world space position}
@@ -1088,6 +1086,10 @@ function GetWorldToScreenEx(position: TVector3; camera: TCamera; width, height: 
 function GetWorldToScreen2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorldToScreen2D';
 {Get the world space position for a 2d camera screen space position}
 function GetScreenToWorld2D(position: TVector2; camera: TCamera2D): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorld2D';
+{Get camera transform matrix (view matrix)}
+function GetCameraMatrix(camera: TCamera): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCameraMatrix';
+{Get camera 2d transform matrix}
+function GetCameraMatrix2D(camera: TCamera2D): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCameraMatrix2D';
 
 (* Timing-related functions *)
 

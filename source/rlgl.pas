@@ -538,6 +538,8 @@ procedure rlDisableShader; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} 
 procedure rlEnableFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableFramebuffer';
 {Disable render texture (fbo), return to default framebuffer}
 procedure rlDisableFramebuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableFramebuffer';
+{Get the currently active render texture (fbo), 0 for default framebuffer}
+function rlGetActiveFramebuffer(): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetActiveFramebuffer';
 {Activate multiple draw color buffers}
 procedure rlActiveDrawBuffers(count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlActiveDrawBuffers';
 {Blit active framebuffer to main framebuffer}
@@ -714,7 +716,7 @@ function rlReadScreenPixels(width, height: Integer): PByte; cdecl; external {$IF
 (* Framebuffer management (fbo) *)
 
 {Load an empty framebuffer}
-function rlLoadFramebuffer(width, height: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadFramebuffer';
+function rlLoadFramebuffer(): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadFramebuffer';
 {Attach texture/renderbuffer to a framebuffer}
 procedure rlFramebufferAttach(fboId, texId: LongWord; attachType: TrlFramebufferAttachType; texType: TrlFramebufferAttachTextureType; mipLevel: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlFramebufferAttach';
 {Verify framebuffer is complete}

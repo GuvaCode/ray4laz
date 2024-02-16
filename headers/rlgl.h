@@ -72,7 +72,7 @@
 *       #define RL_DEFAULT_SHADER_UNIFORM_NAME_VIEW        "matView"           // view matrix
 *       #define RL_DEFAULT_SHADER_UNIFORM_NAME_PROJECTION  "matProjection"     // projection matrix
 *       #define RL_DEFAULT_SHADER_UNIFORM_NAME_MODEL       "matModel"          // model matrix
-*       #define RL_DEFAULT_SHADER_UNIFORM_NAME_NORMAL      "matNormal"         // normal matrix (transpose(inverse(matModelView))
+*       #define RL_DEFAULT_SHADER_UNIFORM_NAME_NORMAL      "matNormal"         // normal matrix (transpose(inverse(matModelView)))
 *       #define RL_DEFAULT_SHADER_UNIFORM_NAME_COLOR       "colDiffuse"        // color diffuse (base tint color, multiplied by texture color)
 *       #define RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE0  "texture0"          // texture0 (texture slot active 0)
 *       #define RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE1  "texture1"          // texture1 (texture slot active 1)
@@ -621,6 +621,7 @@ RLAPI void rlDisableShader(void);                       // Disable shader progra
 // Framebuffer state
 RLAPI void rlEnableFramebuffer(unsigned int id);        // Enable render texture (fbo)
 RLAPI void rlDisableFramebuffer(void);                  // Disable render texture (fbo), return to default framebuffer
+RLAPI unsigned int rlGetActiveFramebuffer(void);        // Get the currently active render texture (fbo), 0 for default framebuffer
 RLAPI void rlActiveDrawBuffers(int count);              // Activate multiple draw color buffers
 RLAPI void rlBlitFramebuffer(int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth, int dstHeight, int bufferMask); // Blit active framebuffer to main framebuffer
 RLAPI void rlBindFramebuffer(unsigned int target, unsigned int framebuffer); // Bind framebuffer (FBO) 
@@ -717,7 +718,7 @@ RLAPI void *rlReadTexturePixels(unsigned int id, int width, int height, int form
 RLAPI unsigned char *rlReadScreenPixels(int width, int height);           // Read screen pixel data (color buffer)
 
 // Framebuffer management (fbo)
-RLAPI unsigned int rlLoadFramebuffer(int width, int height);              // Load an empty framebuffer
+RLAPI unsigned int rlLoadFramebuffer(void);                               // Load an empty framebuffer
 RLAPI void rlFramebufferAttach(unsigned int fboId, unsigned int texId, int attachType, int texType, int mipLevel); // Attach texture/renderbuffer to a framebuffer
 RLAPI bool rlFramebufferComplete(unsigned int id);                        // Verify framebuffer is complete
 RLAPI void rlUnloadFramebuffer(unsigned int id);                          // Delete framebuffer from GPU
@@ -1723,6 +1724,16 @@ void rlEnableFramebuffer(unsigned int id)
 #if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)) && defined(RLGL_RENDER_TEXTURES_HINT)
     glBindFramebuffer(GL_FRAMEBUFFER, id);
 #endif
+}
+
+// return the active render texture (fbo)
+unsigned int rlGetActiveFramebuffer(void)
+{
+    GLint fboId = 0;
+#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES3)) && defined(RLGL_RENDER_TEXTURES_HINT)
+    glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &fboId);
+#endif
+    return fboId;
 }
 
 // Disable rendering to texture
@@ -3445,7 +3456,7 @@ void *rlReadTexturePixels(unsigned int id, int width, int height, int format)
     // 2 - Create an fbo, activate it, render quad with texture, glReadPixels()
     // We are using Option 1, just need to care for texture format on retrieval
     // NOTE: This behaviour could be conditioned by graphic driver...
-    unsigned int fboId = rlLoadFramebuffer(width, height);
+    unsigned int fboId = rlLoadFramebuffer();
 
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -3499,7 +3510,7 @@ unsigned char *rlReadScreenPixels(int width, int height)
 //-----------------------------------------------------------------------------------------
 // Load a framebuffer to be used for rendering
 // NOTE: No textures attached
-unsigned int rlLoadFramebuffer(int width, int height)
+unsigned int rlLoadFramebuffer(void)
 {
     unsigned int fboId = 0;
 
@@ -4135,7 +4146,14 @@ void rlSetUniformSampler(int locIndex, unsigned int textureId)
 {
 #if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // Check if texture is already active
-    for (int i = 0; i < RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS; i++) if (RLGL.State.activeTextureId[i] == textureId) return;
+    for (int i = 0; i < RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS; i++)
+    {
+        if (RLGL.State.activeTextureId[i] == textureId)
+        {
+            glUniform1i(locIndex, 1 + i);
+            return;
+        }
+    }
 
     // Register a new active texture for the internal batch system
     // NOTE: Default texture is always activated as GL_TEXTURE0
