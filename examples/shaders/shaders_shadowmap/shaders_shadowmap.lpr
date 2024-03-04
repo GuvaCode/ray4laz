@@ -32,7 +32,7 @@ const
 function LoadShadowmapRenderTexture(width, height: Integer): TRenderTexture2D;
 var target: TRenderTexture2D;
 begin
-  target.id := rlLoadFramebuffer(width, height);   // Load an empty framebuffer
+  target.id := rlLoadFramebuffer();   // Load an empty framebuffer
   target.texture.width := width;
   target.texture.height := height;
   if (target.id > 0) then

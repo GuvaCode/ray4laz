@@ -2237,6 +2237,7 @@ procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY:
 
 function GetAppDir(aResourceDir: String): PChar;
 
+function ModelClone(Model: PModel): TModel;
 
 implementation
 uses
@@ -2344,6 +2345,32 @@ end;
 function GetAppDir(aResourceDir: String): PChar;
 begin
   result :=PChar(GetApplicationDirectory + aResourceDir);
+end;
+
+function ModelClone(Model: PModel): TModel;   // todo clone animation
+var outModel: PModel;
+    meshIndex, matIndex: Integer;
+begin
+  outModel := new(PModel);
+  outModel^.meshCount := Model^.meshCount;
+  outModel^.meshes := MemAlloc(sizeof(TMesh) * outModel^.meshCount);
+
+  outModel^.materialCount := Model^.materialCount;
+  outModel^.materials := MemAlloc(sizeof(TMaterial) * outModel^.materialCount);
+  outModel^.meshMaterial := MemAlloc(sizeof(Integer) * outModel^.meshCount);
+
+  for meshIndex := 0 to outModel^.meshCount -1 do
+  begin
+    outModel^.meshes[meshIndex] := model^.meshes[meshIndex];
+    outModel^.meshMaterial[meshIndex] := model^.meshMaterial[meshIndex];
+  end;
+
+  for matIndex := 0 to outModel^.materialCount - 1 do
+  begin
+    outModel^.materials[matIndex] := model^.materials[matIndex];
+  end;
+
+  result := outModel^;
 end;
 
 initialization

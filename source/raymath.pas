@@ -121,7 +121,7 @@ function Vector2Reflect(v, normal : TVector2): TVector2; cdecl; external {$IFNDE
 { Rotate vector by angle }
 function Vector2Rotate(v: TVector2; angle:Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Rotate';
 { Move Vector towards target }
-function Vector2MoveTowards(v, target:Tvector2; maxDistance: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2MoveTowards';
+function Vector2MoveTowards(v, target: TVector2; maxDistance: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2MoveTowards';
 { Invert the given vector }
 function Vector2Invert(v: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Invert';
 { Clamp the components of the vector between min and max values specified by the given vectors }
