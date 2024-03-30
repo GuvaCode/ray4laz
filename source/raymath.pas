@@ -118,6 +118,10 @@ function Vector2Normalize(v : TVector2): TVector2; cdecl; external {$IFNDEF RAY_
 function Vector2Lerp(v1, v2 : TVector2; amount : Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Lerp';
 { Calculate reflected vector to normal }
 function Vector2Reflect(v, normal : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Reflect';
+{Get min value for each pair of components}
+function Vector2Min(v1, v2: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Min';
+{Get max value for each pair of components}
+function Vector2Max(v1, v2: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Max';
 { Rotate vector by angle }
 function Vector2Rotate(v: TVector2; angle:Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Rotate';
 { Move Vector towards target }
@@ -130,7 +134,12 @@ function Vector2Clamp(v, min, max: TVector2): TVector2; cdecl; external {$IFNDEF
 function Vector2ClampValue(v, min, max: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2ClampValue';
 { Check whether two given vectors are almost equal }
 function Vector2Equals(p, q: TVector2): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Equals';
-
+{ Compute the direction of a refracted ray }
+// v: normalized direction of the incoming ray
+// n: normalized normal vector of the interface of two optical media
+// r: ratio of the refractive index of the medium from where the ray comes
+// to the refractive index of the medium on the other side of the surface
+function Vector2Refract(v, n: TVector2; r: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Refract';
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector3 math
@@ -185,6 +194,8 @@ function Vector3Transform(v : TVector3; mat : TMatrix): TVector3; cdecl; externa
 function Vector3RotateByQuaternion(v : TVector3; q : TQuaternion): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3RotateByQuaternion';
 { Rotates a vector around an axis }
 function Vector3RotateByAxisAngle(v : TVector3; axis: TVector3; angle: single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3RotateByAxisAngle';
+{ Move Vector towards target }
+function Vector3MoveTowards(v, target: TVector3; maxDistance: Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3MoveTowards';
 { Calculate linear interpolation between two vectors }
 function Vector3Lerp(v1, v2 : TVector3; amount : Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Lerp';
 { Calculate reflected vector to normal }
@@ -213,9 +224,47 @@ function Vector3Equals(p, q: TVector3): longint; cdecl; external {$IFNDEF RAY_ST
 function Vector3Refract(v, n: TVector3; r: Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Refract';
 
 //----------------------------------------------------------------------------------
+// Module Functions Definition - Vector4 math
+//----------------------------------------------------------------------------------
+function Vector4Zero(): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Zero';
+function Vector4One(): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4One';
+function Vector4Add(v1, v2: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Add';
+function Vector4AddValue(v: TVector4; add: Single): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4AddValue';
+function Vector4Subtract(v1, v2: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Subtract';
+function Vector4SubtractValue(v: TVector4; add: Single): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4SubtractValue';
+function Vector4Length(v: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Length';
+function Vector4LengthSqr(v: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4LengthSqr';
+function Vector4DotProduct(v1, v2: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4DotProduct';
+{ Calculate distance between two vectors }
+function Vector4Distance(v1, v2: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Distance';
+{ Calculate square distance between two vectors }
+function Vector4DistanceSqr(v1, v2: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4DistanceSqr';
+function Vector4Scale(v: TVector4; scale: Single): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Scale';
+{ Multiply vector by vector }
+function Vector4Multiply(v1, v2: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Multiply';
+{ Negate vector }
+function Vector4Negate(v: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Negate';
+{ Divide vector by vector }
+function Vector4Divide(v1, v2: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Divide';
+{ Normalize provided vector }
+function Vector4Normalize(v: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Normalize';
+{ Get min value for each pair of components }
+function Vector4Min(v1, v2: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Min';
+{ Get max value for each pair of components }
+function Vector4Max(v1, v2: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Max';
+{ Calculate linear interpolation between two vectors }
+function Vector4Lerp(v1, v2: TVector4; amount: Single): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Lerp';
+{ Move Vector towards target }
+function Vector4MoveTowards(v, target: TVector4; maxDistance: Single): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4MoveTowards';
+{ Invert the given vector }
+function Vector4Invert(v: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Invert';
+{ Check whether two given vectors are almost equal }
+function Vector4Equals(p, q: TVector4): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Equals';
+
+//----------------------------------------------------------------------------------
 // Module Functions Definition - Matrix math
 //----------------------------------------------------------------------------------
-{Compute matrix determinant }
+{ Compute matrix determinant }
 function MatrixDeterminant(mat : TMatrix) : Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixDeterminant';
 { Returns the trace of the matrix (sum of the values along the diagonal) }
 function MatrixTrace(mat : TMatrix): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixTrace';

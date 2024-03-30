@@ -639,9 +639,9 @@ const
         GAMEPAD_BUTTON_LEFT_FACE_DOWN    = TGamepadButton(3);  // Gamepad left DPAD down button
         GAMEPAD_BUTTON_LEFT_FACE_LEFT    = TGamepadButton(4);  // Gamepad left DPAD left button
         GAMEPAD_BUTTON_RIGHT_FACE_UP     = TGamepadButton(5);  // Gamepad right button up (i.e. PS3: Triangle, Xbox: Y)
-        GAMEPAD_BUTTON_RIGHT_FACE_RIGHT  = TGamepadButton(6);  // Gamepad right button right (i.e. PS3: Square, Xbox: X)
+        GAMEPAD_BUTTON_RIGHT_FACE_RIGHT  = TGamepadButton(6);  // Gamepad right button right (i.e. PS3: Circle, Xbox: B)
         GAMEPAD_BUTTON_RIGHT_FACE_DOWN   = TGamepadButton(7);  // Gamepad right button down (i.e. PS3: Cross, Xbox: A)
-        GAMEPAD_BUTTON_RIGHT_FACE_LEFT   = TGamepadButton(8);  // Gamepad right button left (i.e. PS3: Circle, Xbox: B)
+        GAMEPAD_BUTTON_RIGHT_FACE_LEFT   = TGamepadButton(8);  // Gamepad right button left (i.e. PS3: Square, Xbox: X)
         GAMEPAD_BUTTON_LEFT_TRIGGER_1    = TGamepadButton(9);  // Gamepad top/back trigger left (first), it could be a trailing button
         GAMEPAD_BUTTON_LEFT_TRIGGER_2    = TGamepadButton(10); // Gamepad top/back trigger left (second), it could be a trailing button
         GAMEPAD_BUTTON_RIGHT_TRIGGER_1   = TGamepadButton(11); // Gamepad top/back trigger right (one), it could be a trailing button
@@ -1075,7 +1075,11 @@ procedure UnloadShader(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDl
 (* Screen-space-related functions *)
 
 {Get a ray trace from mouse position}
-function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMouseRay';
+function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; // Compatibility hack for previous raylib versions
+{Get a ray trace from screen position (i.e mouse)}
+function GetScreenToWorldRay(position: TVector2; camera: TCamera): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorldRay';
+{Get a ray trace from screen position (i.e mouse) in a viewport}
+function GetScreenToWorldRayEx(position: TVector2; camera: TCamera; width, height: Single): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorldRayEx';
 {Get a ray trace from mouse position in a viewport}
 function GetViewRay(mousePosition: TVector2; camera: TCamera; width, height: Single): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetViewRay';
 {Get the screen space position for a 3d world space position}
@@ -1297,6 +1301,8 @@ function GetGamepadAxisCount(gamepad: Integer): Integer; cdecl; external {$IFNDE
 function GetGamepadAxisMovement(gamepad: Integer; axis: TGamepadAxis): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadAxisMovement';
 {Set internal gamepad mappings (SDL_GameControllerDB)}
 function SetGamepadMappings(const mappings: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadMappings';
+{Set gamepad vibration for both motors}
+procedure SetGamepadVibration(gamepad: Integer; leftMotor, rightMotor: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadVibration';
 
 (* Input-related functions: mouse *)
 
@@ -1736,6 +1742,8 @@ procedure DrawTextureNPatch(texture: TTexture2D; nPatchInfo: TNPatchInfo; dest: 
 
 (* Color/pixel related functions *)
 
+{Check if two colors are equal}
+function ColorIsEqual(col1, col2: TColor): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorIsEqual';
 {Get color with alpha applied, alpha goes from 0.0f to 1.0f}
 function Fade(color: TColorB; alpha: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Fade';
 {Get hexadecimal value for a Color}
@@ -2253,6 +2261,10 @@ uses
   {$endif}
 {$endif}
 
+function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay;
+begin
+  Result := GetScreenToWorldRay(mousePosition,camera);
+end;
 
 function Vector2Create(aX: single; aY: single): TVector2;
 begin
@@ -2369,6 +2381,10 @@ begin
   begin
     outModel^.materials[matIndex] := model^.materials[matIndex];
   end;
+
+  outModel^.boneCount := 0;//        : Integer;    // Number of bones
+  outModel^.bones := new(PBoneInfo);//           : PBoneInfo;  // Bones information (skeleton)
+  outModel^.bindPose := nil;//        : PTransform; // Bones base transformation (pose)
 
   result := outModel^;
 end;

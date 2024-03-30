@@ -120,7 +120,6 @@
     #define RLAPI __declspec(dllimport)     // We are using the library as a Win32 shared library (.dll)
 #endif
 
-
 // Function specifiers definition
 #ifndef RLAPI
     #define RLAPI       // Functions defined as 'extern' by default (implicit specifiers)
@@ -902,6 +901,14 @@ RLAPI void rlLoadDrawQuad(void);     // Load and draw a quad
 #endif
 #ifndef GL_TEXTURE_MAX_ANISOTROPY_EXT
     #define GL_TEXTURE_MAX_ANISOTROPY_EXT       0x84FE
+#endif
+
+#ifndef GL_PROGRAM_POINT_SIZE
+    #define GL_PROGRAM_POINT_SIZE               0x8642
+#endif
+
+#ifndef GL_LINE_WIDTH
+    #define GL_LINE_WIDTH                       0x0B21
 #endif
 
 #if defined(GRAPHICS_API_OPENGL_11)
@@ -3411,7 +3418,6 @@ void rlGenTextureMipmaps(unsigned int id, int width, int height, int format, int
     TRACELOG(RL_LOG_WARNING, "TEXTURE: [ID %i] GPU mipmap generation not supported", id);
 #endif
 }
-
 
 // Read texture pixel data
 void *rlReadTexturePixels(unsigned int id, int width, int height, int format)
