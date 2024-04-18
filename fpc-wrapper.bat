@@ -15,8 +15,7 @@ REM Remove trailing backslash
 SET "HERE=%HERE:~0,-1%"
 
 REM Set base flags and include flags
-SET BASE_FLAGS=-MObjFPC -Scghi -Cg -l -vewnhibq
-SET INCLUDE_FLAGS=-Fl"%HERE%\libs\%PLATFORM%" -Fu"%HERE%\source" -Fu"%HERE%\headers"
+SET BASE_FLAGS=-MObjFPC -Scghi -l -vew
 
 REM Set platform default
 SET PLATFORM=x86_32-windows
@@ -24,8 +23,18 @@ SET PLATFORM=x86_32-windows
 REM Check the architecture
 if "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
 	SET PLATFORM=x86_64-windows
-	SET BASE_FLAGS=%BASE_FLAGS% -Twin64 -Px86_64
+    SET BASE_FLAGS=%BASE_FLAGS% -Twin64 -Px86_64
 )
+
+SET INCLUDE_FLAGS=-Fl"%HERE%\libs\%PLATFORM%" -Fu"%HERE%\source" -Fu"%HERE%\headers"
 
 REM Run the fpc command
 fpc %BASE_FLAGS% %INCLUDE_FLAGS% %*
+
+REM Copy raylib.dll to source directory
+copy "%HERE%\libs\%PLATFORM%\raylib.dll%" .
+
+REM Clean up object files
+del *.o
+
+echo Compilation successful
