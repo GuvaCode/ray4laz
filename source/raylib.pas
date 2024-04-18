@@ -2231,6 +2231,7 @@ function Vector2Create(aX: Single; aY: Single): TVector2;
 procedure Vector2Set(aVec: PVector2; aX: Single; aY: Single);
 function Vector3Create(aX: Single; aY: Single; aZ: Single): TVector3;
 procedure Vector3Set(aVec: PVector3; aX: Single; aY: Single; aZ: Single);
+
 function ColorCreate(aR: Byte; aG: Byte; aB: Byte; aA: Byte): TColorB;
 procedure ColorSet(aColor: PColorB; aR: Byte; aG: Byte; aB: Byte; aA: Byte);
 
