@@ -1079,7 +1079,7 @@ function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; // Compati
 {Get a ray trace from screen position (i.e mouse)}
 function GetScreenToWorldRay(position: TVector2; camera: TCamera): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorldRay';
 {Get a ray trace from screen position (i.e mouse) in a viewport}
-function GetScreenToWorldRayEx(position: TVector2; camera: TCamera; width, height: Single): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorldRayEx';
+function GetScreenToWorldRayEx(position: TVector2; camera: TCamera; width, height: Integer): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorldRayEx';
 {Get a ray trace from mouse position in a viewport}
 function GetViewRay(mousePosition: TVector2; camera: TCamera; width, height: Single): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetViewRay';
 {Get the screen space position for a 3d world space position}
@@ -2216,11 +2216,11 @@ procedure SetAudioStreamBufferSizeDefault(size: Integer); cdecl; external {$IFND
 {Audio thread callback to request new data}
 procedure SetAudioStreamCallback(stream: TAudioStream; callback: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamCallback';
 
-{Attach audio stream processor to stream}
+{Attach audio stream processor to stream, receives the samples as 'float'}
 procedure AttachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'AttachAudioStreamProcessor';
-{Detach audio stream processor from stream}
+{Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'}
 procedure DetachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DetachAudioStreamProcessor';
-{Attach audio stream processor to the entire audio pipeline}
+{Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'}
 procedure AttachAudioMixedProcessor(processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'AttachAudioMixedProcessor';
 {Detach audio stream processor from the entire audio pipeline}
 procedure DetachAudioMixedProcessor(processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DetachAudioMixedProcessor';

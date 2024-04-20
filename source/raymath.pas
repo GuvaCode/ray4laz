@@ -198,6 +198,9 @@ function Vector3RotateByAxisAngle(v : TVector3; axis: TVector3; angle: single): 
 function Vector3MoveTowards(v, target: TVector3; maxDistance: Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3MoveTowards';
 { Calculate linear interpolation between two vectors }
 function Vector3Lerp(v1, v2 : TVector3; amount : Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Lerp';
+{Calculate cubic hermite interpolation between two vectors and their tangents
+ as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic}
+function Vector3CubicHermite(v1, tangent1, v2, tangent2: TVector3; amount: Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3CubicHermite';
 { Calculate reflected vector to normal }
 function Vector3Reflect(v, normal : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Reflect';
 { Return min value for each pair of components }
@@ -331,13 +334,16 @@ function QuaternionMultiply(q1, q2 : TQuaternion): TQuaternion; cdecl; external 
 { Scale quaternion by float value }
 function QuaternionScale(q:TQuaternion;mul:single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionScale';
 { Divide two quaternions }
-function QuaternionDivide( q1, q2: TQuaternion): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionDivide';
+function QuaternionDivide(q1, q2: TQuaternion): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionDivide';
 { Calculate linear interpolation between two quaternions }
 function QuaternionLerp(q1, q2 : TQuaternion; amount : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionLerp';
 { Calculate slerp-optimized interpolation between two quaternions }
 function QuaternionNlerp(q1, q2 : TQuaternion; amount : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionNlerp';
 { Calculates spherical linear interpolation between two quaternions }
 function QuaternionSlerp(q1, q2 : TQuaternion; amount : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionSlerp';
+{ Calculate quaternion cubic spline interpolation using Cubic Hermite Spline algorithm
+ as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic}
+function QuaternionCubicHermiteSpline(q1, outTangent1, q2, inTangent2: TQuaternion; t: Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionCubicHermiteSpline';
 { Calculate quaternion based on the rotation from one vector to another }
 function QuaternionFromVector3ToVector3(from, to_ : TVector3): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionFromVector3ToVector3';
 { Returns a quaternion for a given rotation matrix }

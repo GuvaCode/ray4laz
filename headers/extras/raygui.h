@@ -26,7 +26,7 @@
 *   NOTES:
 *       - WARNING: GuiLoadStyle() and GuiLoadStyle{Custom}() functions, allocate memory for
 *         font atlas recs and glyphs, freeing that memory is (usually) up to the user,
-*         no unload function is explicitly provided... but note that GuiLoadStyleDefaulf() unloads
+*         no unload function is explicitly provided... but note that GuiLoadStyleDefault() unloads
 *         by default any previously loaded font (texture, recs, glyphs).
 *       - Global UI alpha (guiAlpha) is applied inside GuiDrawRectangle() and GuiDrawText() functions
 *
@@ -317,9 +317,9 @@
 #define RAYGUI_H
 
 #define RAYGUI_VERSION_MAJOR 4
-#define RAYGUI_VERSION_MINOR 0
+#define RAYGUI_VERSION_MINOR 1
 #define RAYGUI_VERSION_PATCH 0
-#define RAYGUI_VERSION  "4.0"
+#define RAYGUI_VERSION  "4.1-dev"
 
 #if !defined(RAYGUI_STANDALONE)
     #include "raylib.h"
@@ -1327,7 +1327,7 @@ static unsigned int guiIcons[RAYGUI_ICON_MAX_ICONS*RAYGUI_ICON_DATA_ELEMENTS] = 
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,      // ICON_255
 };
 
-// NOTE: We keep a pointer to the icons array, useful to point to other sets if required
+// NOTE: A pointer to current icons array should be defined
 static unsigned int *guiIconsPtr = guiIcons;
 
 #endif      // !RAYGUI_NO_ICONS && !RAYGUI_CUSTOM_ICONS
@@ -1743,6 +1743,9 @@ int GuiTabBar(Rectangle bounds, const char **text, int count, int *active)
                 if (toggle) *active = i;
             }
 
+            // Close tab with middle mouse button pressed
+            if (CheckCollisionPointRec(GetMousePosition(), tabBounds) && IsMouseButtonPressed(MOUSE_MIDDLE_BUTTON)) result = i;
+
             GuiSetStyle(TOGGLE, TEXT_PADDING, textPadding);
             GuiSetStyle(TOGGLE, TEXT_ALIGNMENT, textAlignment);
 
@@ -1774,10 +1777,10 @@ int GuiScrollPanel(Rectangle bounds, const char *text, Rectangle content, Vector
 {
     #define RAYGUI_MIN_SCROLLBAR_WIDTH     40
     #define RAYGUI_MIN_SCROLLBAR_HEIGHT    40
+    #define RAYGUI_MIN_MOUSE_WHEEL_SPEED   20
 
     int result = 0;
     GuiState state = guiState;
-    float mouseWheelSpeed = 20.0f;      // Default movement speed with mouse wheel
 
     Rectangle temp = { 0 };
     if (view == NULL) view = &temp;
@@ -1819,17 +1822,8 @@ int GuiScrollPanel(Rectangle bounds, const char *text, Rectangle content, Vector
     };
 
     // Make sure scroll bars have a minimum width/height
-    // NOTE: If content >>> bounds, size could be very small or even 0
-    if (horizontalScrollBar.width < RAYGUI_MIN_SCROLLBAR_WIDTH)
-    {
-        horizontalScrollBar.width = RAYGUI_MIN_SCROLLBAR_WIDTH;
-        mouseWheelSpeed = 30.0f;    // TODO: Calculate speed increment based on content.height vs bounds.height
-    }
-    if (verticalScrollBar.height < RAYGUI_MIN_SCROLLBAR_HEIGHT)
-    {
-        verticalScrollBar.height = RAYGUI_MIN_SCROLLBAR_HEIGHT;
-        mouseWheelSpeed = 30.0f;    // TODO: Calculate speed increment based on content.width vs bounds.width
-    }
+    if (horizontalScrollBar.width < RAYGUI_MIN_SCROLLBAR_WIDTH) horizontalScrollBar.width = RAYGUI_MIN_SCROLLBAR_WIDTH;
+    if (verticalScrollBar.height < RAYGUI_MIN_SCROLLBAR_HEIGHT) verticalScrollBar.height = RAYGUI_MIN_SCROLLBAR_HEIGHT;
 
     // Calculate view area (area without the scrollbars)
     *view = (GuiGetStyle(LISTVIEW, SCROLLBAR_SIDE) == SCROLLBAR_LEFT_SIDE)?
@@ -1872,9 +1866,14 @@ int GuiScrollPanel(Rectangle bounds, const char *text, Rectangle content, Vector
 #endif
             float wheelMove = GetMouseWheelMove();
 
+            // Set scrolling speed with mouse wheel based on ratio between bounds and content
+            Vector2 mouseWheelSpeed = { content.width / bounds.width, content.height / bounds.height };
+            if (mouseWheelSpeed.x < RAYGUI_MIN_MOUSE_WHEEL_SPEED) mouseWheelSpeed.x = RAYGUI_MIN_MOUSE_WHEEL_SPEED;
+            if (mouseWheelSpeed.y < RAYGUI_MIN_MOUSE_WHEEL_SPEED) mouseWheelSpeed.y = RAYGUI_MIN_MOUSE_WHEEL_SPEED;
+
             // Horizontal and vertical scrolling with mouse wheel
-            if (hasHorizontalScrollBar && (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_LEFT_SHIFT))) scrollPos.x += wheelMove*mouseWheelSpeed;
-            else scrollPos.y += wheelMove*mouseWheelSpeed; // Vertical scroll
+            if (hasHorizontalScrollBar && (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_LEFT_SHIFT))) scrollPos.x += wheelMove*mouseWheelSpeed.x;
+            else scrollPos.y += wheelMove*mouseWheelSpeed.y; // Vertical scroll
         }
     }
 
@@ -2940,11 +2939,11 @@ int GuiValueBox(Rectangle bounds, const char *text, int *value, int minValue, in
 int GuiSliderPro(Rectangle bounds, const char *textLeft, const char *textRight, float *value, float minValue, float maxValue, int sliderWidth)
 {
     int result = 0;
-    float oldValue = *value;
     GuiState state = guiState;
 
     float temp = (maxValue - minValue)/2.0f;
     if (value == NULL) value = &temp;
+    float oldValue = *value;
 
     Rectangle slider = { bounds.x, bounds.y + GuiGetStyle(SLIDER, BORDER_WIDTH) + GuiGetStyle(SLIDER, SLIDER_PADDING),
                          0, bounds.height - 2*GuiGetStyle(SLIDER, BORDER_WIDTH) - 2*GuiGetStyle(SLIDER, SLIDER_PADDING) };
@@ -3735,9 +3734,9 @@ int GuiMessageBox(Rectangle bounds, const char *title, const char *message, cons
     int textWidth = GetTextWidth(message) + 2;
 
     Rectangle textBounds = { 0 };
-    textBounds.x = bounds.x + bounds.width/2 - textWidth/2;
+    textBounds.x = bounds.x + RAYGUI_MESSAGEBOX_BUTTON_PADDING;
     textBounds.y = bounds.y + RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT + RAYGUI_MESSAGEBOX_BUTTON_PADDING;
-    textBounds.width = (float)textWidth;
+    textBounds.width = bounds.width - RAYGUI_MESSAGEBOX_BUTTON_PADDING*2;
     textBounds.height = bounds.height - RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT - 3*RAYGUI_MESSAGEBOX_BUTTON_PADDING - RAYGUI_MESSAGEBOX_BUTTON_HEIGHT;
 
     // Draw control
@@ -3941,6 +3940,7 @@ void GuiLoadStyle(const char *fileName)
     #define MAX_LINE_BUFFER_SIZE    256
 
     bool tryBinary = false;
+    if (!guiStyleLoaded) GuiLoadStyleDefault();
 
     // Try reading the files as text file first
     FILE *rgsFile = fopen(fileName, "rt");
@@ -5016,7 +5016,7 @@ static const char **GuiTextSplit(const char *text, char delimiter, int *count, i
             buffer[i] = '\0';   // Set an end of string at this point
 
             counter++;
-            if (counter == RAYGUI_TEXTSPLIT_MAX_ITEMS) break;
+            if (counter > RAYGUI_TEXTSPLIT_MAX_ITEMS) break;
         }
     }
 
@@ -5176,8 +5176,11 @@ static int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue)
     if (value > maxValue) value = maxValue;
     if (value < minValue) value = minValue;
 
-    const int valueRange = maxValue - minValue;
+    int valueRange = maxValue - minValue;
+    if (valueRange <= 0) valueRange = 1;
+
     int sliderSize = GuiGetStyle(SCROLLBAR, SCROLL_SLIDER_SIZE);
+    if (sliderSize < 1) sliderSize = 1;  // TODO: Consider a minimum slider size
 
     // Calculate rectangles for all of the components
     arrowUpLeft = RAYGUI_CLITERAL(Rectangle){
