@@ -201,17 +201,18 @@ type
   // Dynamic vertex buffers (position + texcoords + colors + indices arrays)
   PrlVertexBuffer = ^TrlVertexBuffer;
   TrlVertexBuffer = record
-      elementCount : Integer;   // Number of elements in the buffer (QUADS)
-      vertices : PSingle;       // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
-      texcoords : PSingle;      // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
-      colors : PByte;           // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+      elementCount : Integer;          // Number of elements in the buffer (QUADS)
+      vertices : PSingle;              // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+      texcoords : PSingle;             // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+      normals : PSingle;               // Vertex normal (XYZ - 3 components per vertex) (shader-location = 2)
+      colors : PByte;                  // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
       {$if defined(GRAPHICS_API_OPENGL_ES2)}
-      indices : PDword;         // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+      indices : PDword;                // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
       {$else}
-      indices : PLongWord;      // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+      indices : PLongWord;             // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
       {$endif}
-      vaoId : LongWord;         // OpenGL Vertex Array Object id
-      vboId : array[0..3] of LongWord;// OpenGL Vertex Buffer Objects id (4 types of vertex data)
+      vaoId : LongWord;                // OpenGL Vertex Array Object id
+      vboId : array[0..4] of LongWord; // OpenGL Vertex Buffer Objects id (5 types of vertex data)
   end;
 
 type
@@ -451,6 +452,12 @@ procedure rlFrustum(left, right, bottom, top, znear, zfar: Double); cdecl; exter
 procedure rlOrtho(left, right, bottom, top, znear, zfar: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlOrtho';
 {Set the viewport area}
 procedure rlViewport(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlViewport';
+{Set clip planes distances}
+procedure rlSetClipPlanes(near, far: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetClipPlanes';
+{Get cull plane distance near}
+function rlGetCullDistanceNear(): Double; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetCullDistanceNear';
+{Get cull plane distance far}
+function rlGetCullDistanceFar(): Double; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetCullDistanceFar';
 
 //------------------------------------------------------------------------------------
 // Functions Declaration - Vertex level operations
@@ -675,7 +682,7 @@ procedure rlUnloadVertexArray(vaoId: LongWord); cdecl; external {$IFNDEF RAY_STA
 {Unload vertex buffer object}
 procedure rlUnloadVertexBuffer(vboId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadVertexBuffer';
 {Set vertex attribute data configuration}
-procedure rlSetVertexAttribute(index: LongWord; compSize, type_: Integer; normalized: Boolean; stride: Integer; const pointer_:pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttribute';
+procedure rlSetVertexAttribute(index: LongWord; compSize, type_: Integer; normalized: Boolean; stride, offset: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttribute';
 {Set vertex attribute data divisor}
 procedure rlSetVertexAttributeDivisor(index: LongWord; divisor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttributeDivisor';
 {Set vertex attribute default value, when attribute to provided}

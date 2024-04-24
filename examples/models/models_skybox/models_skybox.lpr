@@ -52,7 +52,7 @@ begin
       rbo := rlLoadTextureDepth(size, size, true);
       cubemap.id := rlLoadTextureCubemap(nil, size, format);
 
-      fbo := rlLoadFramebuffer(size, size);
+      fbo := rlLoadFramebuffer();
       rlFramebufferAttach(fbo, rbo, RL_ATTACHMENT_DEPTH, RL_ATTACHMENT_RENDERBUFFER, 0);
       rlFramebufferAttach(fbo, cubemap.id, RL_ATTACHMENT_COLOR_CHANNEL0, RL_ATTACHMENT_CUBEMAP_POSITIVE_X, 0);
 
@@ -66,7 +66,7 @@ begin
       rlEnableShader(shader.id);
 
       // Define projection matrix and send it to shader
-      matFboProjection := MatrixPerspective(90.0*DEG2RAD, 1.0, RL_CULL_DISTANCE_NEAR, RL_CULL_DISTANCE_FAR);
+      matFboProjection := MatrixPerspective(90.0*DEG2RAD, 1.0, rlGetCullDistanceNear, rlGetCullDistanceFar);
       rlSetUniformMatrix(shader.locs[SHADER_LOC_MATRIX_PROJECTION], matFboProjection);
 
       // Define view matrix for every side of the cubemap
@@ -172,14 +172,6 @@ begin
 
             UnloadTexture(panorama);        // Texture not required anymore, cubemap already generated
 
-
-
-
-
-
-
-
-
    end
    else
    begin
@@ -221,7 +213,8 @@ begin
 
       //DrawTextureEx(panorama, Vector2Create( 0, 0 ), 0.0, 0.5, WHITE);
 
-      if (useHDR) then DrawText(TextFormat('Panorama image from hdrihaven.com: %s', GetFileName(GetAppDir(skyboxFileName))), 10, GetScreenHeight() - 20, 10, BLUE)
+      if (useHDR) then DrawText(TextFormat('Panorama image from hdrihaven.com: %s',
+      GetFileName(GetAppDir(skyboxFileName{%H-}))), 10, GetScreenHeight() - 20, 10, BLUE)
       else
         DrawText(TextFormat(': %s', GetFileName(PChar(skyboxFileName))), 10, GetScreenHeight() - 20, 10, BLACK);
 
