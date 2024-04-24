@@ -102,9 +102,13 @@ enjoy !!!
 ![](https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/4_enjoy.png)
 
 
-<img align="center" src="https://raw.githubusercontent.com/GuvaCode/GuvaCode/main/ray4laz_img/powered_by.png" width="64px">
-
 
 **manual installation and use without lazarus ide**
 
-clone this repository, then use 'fpc-wrapper.sh' as your compiler. this script automatically feeds fpc with the necessary arguments.
+clone this repository, then use 'fpc-wrapper.sh' or 'fpc-wrapper.bat' as your compiler. this script automatically feeds fpc with the necessary arguments.
+
+**contributors**
+<a href="https://github.com/GuvaCode/Ray4Laz/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=GuvaCode/Ray4Laz" />
+</a>
+
