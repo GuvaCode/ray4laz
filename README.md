@@ -103,11 +103,14 @@ enjoy !!!
 
 
 
-**manual installation and use without lazarus ide**
+manual installation and use without lazarus ide
+--------
 
 clone this repository, then use 'fpc-wrapper.sh' or 'fpc-wrapper.bat' as your compiler. this script automatically feeds fpc with the necessary arguments.
 
-**contributors**
+
+contributors
+--------
 
 <a href="https://github.com/GuvaCode/Ray4Laz/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=GuvaCode/Ray4Laz" />
