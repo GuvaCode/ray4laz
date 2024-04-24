@@ -41,7 +41,7 @@ begin
   // if model is scaled on drawing, bounds must be also scaled
 
   Selected := False;          // Selected object flag
-  DisableCursor;
+ // DisableCursor;
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop
