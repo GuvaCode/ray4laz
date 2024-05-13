@@ -7,7 +7,7 @@ cmem, raylib, raymath;
 
 const
   screenWidth = 800;
-  screenHeight = 450;
+  screenHeight = 600;
   GLSL_VERSION = 330;
 
 var
@@ -26,33 +26,34 @@ begin
   Texture := LoadTexture('resources/space.png');
 
   // Load shader and setup location points and values
-  Shader := LoadShader(nil, TextFormat('resources/shaders/glsl%i/wave.fs', Integer(GLSL_VERSION)));
+  Shader := LoadShader(nil, TextFormat(GetAppDir('resources/shaders/glsl%i/wave.fs'), Integer(GLSL_VERSION)));
 
-  SecondsLoc := GetShaderLocation(Shader, 'secondes');
-  FreqXLoc := GetShaderLocation(Shader, 'freqX');
-  FreqYLoc := GetShaderLocation(Shader, 'freqY');
-  AmpXLoc := GetShaderLocation(Shader, 'ampX');
-  AmpYLoc := GetShaderLocation(Shader, 'ampY');
-  SpeedXLoc := GetShaderLocation(Shader, 'speedX');
-  SpeedYLoc := GetShaderLocation(Shader, 'speedY');
+  secondsLoc := GetShaderLocation(shader, 'seconds');
+  freqXLoc := GetShaderLocation(shader, 'freqX');
+  freqYLoc := GetShaderLocation(shader, 'freqY');
+  ampXLoc := GetShaderLocation(shader, 'ampX');
+  ampYLoc := GetShaderLocation(shader, 'ampY');
+  speedXLoc := GetShaderLocation(shader, 'speedX');
+  speedYLoc := GetShaderLocation(shader, 'speedY');
 
   // Shader uniform values that can be updated at any time
-  FreqX := 25.0;
-  FreqY := 25.0;
-  AmpX := 5.0;
-  AmpY := 5.0;
-  SpeedX := 8.0;
-  SpeedY := 8.0;
+  freqX := 25.0;
+  freqY := 25.0;
+  ampX := 5.0;
+  ampY := 5.0;
+  speedX := 8.0;
+  speedY := 8.0;
 
-  ScreenSize[0] := GetScreenWidth(); ScreenSize[1] := GetScreenHeight();
-  SetShaderValue(Shader, GetShaderLocation(Shader, 'size'), @ScreenSize, SHADER_UNIFORM_VEC2);
-  SetShaderValue(Shader, FreqXLoc, @FreqX, SHADER_UNIFORM_FLOAT);
-  SetShaderValue(Shader, FreqYLoc, @FreqY, SHADER_UNIFORM_FLOAT);
-  SetShaderValue(Shader, AmpXLoc, @AmpX, SHADER_UNIFORM_FLOAT);
-  SetShaderValue(Shader, AmpYLoc, @AmpY, SHADER_UNIFORM_FLOAT);
-  SetShaderValue(Shader, SpeedXLoc, @SpeedX, SHADER_UNIFORM_FLOAT);
-  SetShaderValue(Shader, SpeedYLoc, @SpeedY, SHADER_UNIFORM_FLOAT);
 
+  ScreenSize[0] := GetScreenWidth();
+  ScreenSize[1] := GetScreenHeight();
+  SetShaderValue(shader, GetShaderLocation(shader, 'size'), @screenSize, SHADER_UNIFORM_VEC2);
+  SetShaderValue(shader, freqXLoc, @freqX, SHADER_UNIFORM_FLOAT);
+  SetShaderValue(shader, freqYLoc, @freqY, SHADER_UNIFORM_FLOAT);
+  SetShaderValue(shader, ampXLoc, @ampX, SHADER_UNIFORM_FLOAT);
+  SetShaderValue(shader, ampYLoc, @ampY, SHADER_UNIFORM_FLOAT);
+  SetShaderValue(shader, speedXLoc, @speedX, SHADER_UNIFORM_FLOAT);
+  SetShaderValue(shader, speedYLoc, @speedY, SHADER_UNIFORM_FLOAT);
   Seconds := 0.0;
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -76,7 +77,7 @@ begin
 
           DrawTexture(Texture, 0, 0, WHITE);
           DrawTexture(Texture, Texture.Width, 0, WHITE);
-
+          DrawTexture(Texture, 0, Texture.height, WHITE);
         EndShaderMode();
 
       EndDrawing();

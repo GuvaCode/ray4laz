@@ -598,6 +598,8 @@ function GuiDropdownBox(bounds: TRectangle; const text: PChar; active: PInteger;
 function GuiSpinner(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSpinner';
 {Value Box control, updates input text with numbers}
 function GuiValueBox(bounds: TRectangle; const text: PChar; value: PInteger; minValue, maxValue: Integer; editMode: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiValueBox';
+{Value box control for float values}
+function GuiValueBoxFloat( bounds: TRectangle; const text, textValue: PChar; value: PSingle; editMode: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiValueBoxFloat';
 {Text Box control, updates input text}
 function GuiTextBox(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextBox';
 {Slider control}
