@@ -2139,8 +2139,8 @@ procedure SetSoundPitch(sound: TSound; pitch: Single); cdecl; external {$IFNDEF 
 procedure SetSoundPan(sound: TSound; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSoundPan';
 {Copy a wave to a new wave}
 function WaveCopy(wave: TWave): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaveCopy';
-{Crop a wave to defined samples range}
-procedure WaveCrop(wave: PWave; initSample, finalSample: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaveCrop';
+{Crop a wave to defined frames range}
+procedure WaveCrop(wave: PWave; initFrame, finalFrame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaveCrop';
 {Convert wave data to desired format}
 procedure WaveFormat(wave: PWave; sampleRate, sampleSize, channels: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaveFormat';
 {Load samples data from wave as a floats array}
@@ -2371,6 +2371,7 @@ begin
   outModel^.materialCount := Model^.materialCount;
   outModel^.materials := MemAlloc(sizeof(TMaterial) * outModel^.materialCount);
   outModel^.meshMaterial := MemAlloc(sizeof(Integer) * outModel^.meshCount);
+  outModel^.transform := Model^.transform;
 
   for meshIndex := 0 to outModel^.meshCount -1 do
   begin
