@@ -1107,7 +1107,7 @@ function GetTime: Double; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} n
 function GetFPS: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFPS';
 
 (* Custom frame control functions *)
-// NOTE: Those functions are intended for advance users that want full control over the frame processing
+// NOTE: Those functions are intended for advanced users that want full control over the frame processing
 // By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timming + PollInputEvents()
 // To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
 
@@ -1150,7 +1150,7 @@ procedure OpenURL(const url: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllNam
 
 (* Set custom callbacks *)
 (* Callbacks to hook some internal functions *)
-// WARNING: This callbacks are intended for advance users
+// WARNING: Callbacks setup is intended for advanced users
 type
   TTraceLogCallback = procedure(logLevel: TTraceLogLevel; const Text: PChar; Args: Pointer); cdecl varargs;
   TLoadFileDataCallback = function(const fileName: PChar; dataSize: PInteger): PChar; cdecl;
@@ -1211,6 +1211,8 @@ function GetApplicationDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDl
 function ChangeDirectory(const dir: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ChangeDirectory';
 {Check if a given path is a file or a directory}
 function IsPathFile(const path: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsPathFile';
+{Check if fileName is valid for the platform/OS}
+function IsFileNameValid(const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileNameValid';
 {Load directory filepaths}
 function LoadDirectoryFiles(const dirPath: PChar): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFiles';
 {Load directory filepaths with extension filtering and recursive directory scan}
@@ -1525,6 +1527,8 @@ function CheckCollisionPointPoly(point: TVector2; points: PVector2; pointCount: 
 function CheckCollisionLines(startPos1, endPos1, startPos2, endPos2: TVector2; collisionPoint: PVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionLines';
 {Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]}
 function CheckCollisionPointLine(point, p1, p2: TVector2; threshold: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointLine';
+{Check if circle collides with a line created betweeen two points [p1] and [p2]}
+function CheckCollisionCircleLine(center: TVector2; radius: Single; p1, p2: TVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionCircleLine';
 {Get collision rectangle for two rectangles collision}
 function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCollisionRec';
 
@@ -1887,6 +1891,10 @@ function TextToUpper(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STA
 function TextToLower(const text: PChar):PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToLower';
 {Get Pascal case notation version of provided string}
 function TextToPascal(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToPascal';
+{Get Snake case notation version of provided string}
+function TextToSnake(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToSnake';
+{Get Camel case notation version of provided string}
+function TextToCamel(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToCamel';
 {Get integer value from text (negative values not supported)}
 function TextToInteger(const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToInteger';
 {Get float value from text (negative values not supported)}

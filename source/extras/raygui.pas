@@ -456,6 +456,7 @@ type
 const
   ARROW_PADDING = 16;
   DROPDOWN_ITEMS_SPACING = 17;
+  DROPDOWN_ARROW_HIDDEN = 18;      // DropdownBox arrow hidden
 
 // TextBox/TextBoxMulti/ValueBox/Spinner
 type
@@ -484,7 +485,7 @@ const
   LIST_ITEMS_SPACING = 17;
   SCROLLBAR_WIDTH = 18;
   SCROLLBAR_SIDE = 19;
-
+  LIST_ITEMS_BORDER_WIDTH = 20;    // ListView items border width
 // ColorPicker
 type
   PGuiColorPickerProperty = ^TGuiColorPickerProperty;
