@@ -458,7 +458,7 @@ procedure rlOrtho(left, right, bottom, top, znear, zfar: Double); cdecl; externa
 {Set the viewport area}
 procedure rlViewport(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlViewport';
 {Set clip planes distances}
-procedure rlSetClipPlanes(near, far: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetClipPlanes';
+procedure rlSetClipPlanes(nearPlane, farPlane: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetClipPlanes';
 {Get cull plane distance near}
 function rlGetCullDistanceNear(): Double; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetCullDistanceNear';
 {Get cull plane distance far}
