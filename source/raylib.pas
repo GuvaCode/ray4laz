@@ -1409,7 +1409,7 @@ procedure DrawLineV(startPos, endPos: TVector2; color: TColorB); cdecl; external
 {Draw a line (using triangles/quads)}
 procedure DrawLineEx(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineEx';
 {Draw lines sequence (using gl lines)}
-procedure DrawLineStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineStrip';
+procedure DrawLineStrip(const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineStrip';
 {Draw line segment cubic-bezier in-out interpolation}
 procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezier';
 {Draw a color-filled circle}
@@ -1461,9 +1461,9 @@ procedure DrawTriangle(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$
 {Draw triangle outline (vertex in counter-clockwise order!)}
 procedure DrawTriangleLines(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleLines';
 {Draw a triangle fan defined by points (first vertex is the center)}
-procedure DrawTriangleFan(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleFan';
+procedure DrawTriangleFan(const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleFan';
 {Draw a triangle strip defined by points}
-procedure DrawTriangleStrip(points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleStrip';
+procedure DrawTriangleStrip(const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleStrip';
 {Draw a regular polygon (Vector version)}
 procedure DrawPoly(center: TVector2; sides: Integer; radius: Single; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPoly';
 {Draw a polygon outline of n sides}
@@ -1474,15 +1474,15 @@ procedure DrawPolyLinesEx(center: TVector2; sides: Integer; radius, rotation, li
 (* Splines drawing functions *)
 
 {Draw spline: Linear, minimum 2 points}
-procedure DrawSplineLinear(points: PVector3; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineLinear';
+procedure DrawSplineLinear(const points: PVector3; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineLinear';
 {Draw spline: B-Spline, minimum 4 points}
-procedure DrawSplineBasis(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBasis';
+procedure DrawSplineBasis(const points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBasis';
 {Draw spline: Catmull-Rom, minimum 4 points}
-procedure DrawSplineCatmullRom(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineCatmullRom';
+procedure DrawSplineCatmullRom(const points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineCatmullRom';
 {Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]}
-procedure DrawSplineBezierQuadratic(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBezierQuadratic';
+procedure DrawSplineBezierQuadratic(const points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBezierQuadratic';
 {Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]}
-procedure DrawSplineBezierCubic(points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBezierCubic';
+procedure DrawSplineBezierCubic(const points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBezierCubic';
 {Draw spline segment: Linear, 2 points}
 procedure DrawSplineSegmentLinear(p1, p2: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineSegmentLinear';
 {Draw spline segment: B-Spline, 4 points}
@@ -1522,7 +1522,7 @@ function CheckCollisionPointCircle(point, center: TVector2; radius: Single): Boo
 {Check if point is inside a triangle}
 function CheckCollisionPointTriangle(point, p1, p2, p3: TVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointTriangle';
 {Check if point is within a polygon described by array of vertices}
-function CheckCollisionPointPoly(point: TVector2; points: PVector2; pointCount: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointPoly';
+function CheckCollisionPointPoly(point: TVector2; const points: PVector2; pointCount: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointPoly';
 {Check the collision between two lines defined by two points each, returns collision point by reference}
 function CheckCollisionLines(startPos1, endPos1, startPos2, endPos2: TVector2; collisionPoint: PVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionLines';
 {Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]}
@@ -1915,7 +1915,7 @@ procedure DrawCircle3D(center: TVector3; radius: Single; rotationAxis: TVector3;
 {Draw a color-filled triangle (vertex in counter-clockwise order!)}
 procedure DrawTriangle3D(v1, v2, v3: TVector3; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangle3D';
 {Draw a triangle strip defined by points}
-procedure DrawTriangleStrip3D(points: PVector3; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleStrip3D';
+procedure DrawTriangleStrip3D(const points: PVector3; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleStrip3D';
 {Draw cube}
 procedure DrawCube(position: TVector3; width, height, length: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCube';
 {Draw cube (Vector version)}

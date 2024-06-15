@@ -300,7 +300,7 @@ function MatrixRotateZYX(angle : TVector3): TMatrix; cdecl; external {$IFNDEF RA
 { Returns scaling matrix }
 function MatrixScale(x, y, z : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixScale';
 { Returns perspective projection matrix }
-function MatrixFrustum(left, right, bottom, top, near, far : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixFrustum';
+function MatrixFrustum(left, right, bottom, top, nearPlane, farPlane : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixFrustum';
 { Returns perspective projection matrix }
 function MatrixPerspective(fovY, aspect, nearPlane, farPlane : double): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixPerspective';
 { Returns orthographic projection matrix }
