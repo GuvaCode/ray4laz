@@ -84,7 +84,7 @@ begin
     '      // Draw'+ LineEnding +
     '      BeginDrawing();'+ LineEnding +
     '        ClearBackground(RAYWHITE);'+ LineEnding +
-    '        DrawText(''raylib in lazarus !!!'', 20, 20, 10, DARKGRAY);'+ LineEnding +
+    '        DrawText(''Congrats! You created your first window!'', 190, 200, 20, LIGHTGRAY);'+ LineEnding +
     '      EndDrawing();'+ LineEnding +
     '    end;'+ LineEnding + LineEnding +
 

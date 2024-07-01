@@ -1,5 +1,5 @@
 {
-raylib ver 5.1-dev
+raylib ver 5.5
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
@@ -1593,6 +1593,8 @@ function GenImageText(width, height: Integer; const text: PChar): TImage; cdecl;
 function ImageCopy(image: TImage): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageCopy';
 {Create an image from another image piece}
 function ImageFromImage(image: TImage; rec: TRectangle): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFromImage';
+{Create an image from a selected channel of another image (GRAYSCALE)}
+function ImageFromChannel(image: TImage; selectedChannel: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFromChannel';
 {Create an image from text (default font)}
 function ImageText(const text: PChar; fontSize: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageText';
 {Create an image from text (custom sprite font)}
@@ -1613,8 +1615,8 @@ procedure ImageAlphaMask(image: PImage; alphaMask: TImage); cdecl; external {$IF
 procedure ImageAlphaPremultiply(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageAlphaPremultiply';
 {Apply Gaussian blur using a box blur approximation}
 procedure ImageBlurGaussian(image: PImage; blurSize: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageBlurGaussian';
-{Apply Custom Square image convolution kernel}
-procedure ImageKernelConvolution(image: PImage; kernel: PSingle; kernelSize: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageKernelConvolution';
+{Apply custom square convolution kernel to image}
+procedure ImageKernelConvolution(image: PImage; const kernel: PSingle; kernelSize: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageKernelConvolution';
 {Resize image (Bicubic scaling algorithm)}
 procedure ImageResize(image: PImage; newWidth, newHeight: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageResize';
 {Resize image (Nearest-Neighbor scaling algorithm)}
@@ -1673,6 +1675,8 @@ procedure ImageDrawPixelV(dst: PImage; position: TVector2; color: TColorB); cdec
 procedure ImageDrawLine(dst: PImage; startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawLine';
 {Draw line within an image (Vector version)}
 procedure ImageDrawLineV(dst: PImage; start, _end: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawLineV';
+{Draw a line defining thickness within an image}
+procedure ImageDrawLineEx(dst: PImage; start, _end: TVector2; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawLineEx';
 {Draw a filled circle within an image}
 procedure ImageDrawCircle(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircle';
 {Draw a filled circle within an image (Vector version)}
@@ -1680,7 +1684,7 @@ procedure ImageDrawCircleV(dst: PImage; center: TVector2; radius: Integer; color
 {Draw circle outline within an image}
 procedure ImageDrawCircleLines(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircleLines';
 {Draw circle outline within an image (Vector version)}
-procedure ImageDrawCircleLinesV(dst: PImage; center: TVector2; radius: Integer; color: TColor); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircleLinesV';
+procedure ImageDrawCircleLinesV(dst: PImage; center: TVector2; radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircleLinesV';
 {Draw rectangle within an image}
 procedure ImageDrawRectangle(dst: PImage; posX, posY, width, height: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangle';
 {Draw rectangle within an image (Vector version)}
@@ -1689,6 +1693,16 @@ procedure ImageDrawRectangleV(dst: PImage; position, size: TVector2; color: TCol
 procedure ImageDrawRectangleRec(dst: PImage; rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleRec';
 {Draw rectangle lines within an image}
 procedure ImageDrawRectangleLines(dst: PImage; rec: TRectangle; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleLines';
+{Draw triangle within an image}
+procedure ImageDrawTriangle(dst: PImage; v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangle';
+{Draw triangle with interpolated colors within an image}
+procedure ImageDrawTriangleEx(dst: PImage; v1, v2, v3: TVector2; c1, c2, c3: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleEx';
+{Draw triangle outline within an image}
+procedure ImageDrawTriangleLines(dst: PImage; v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleLines';
+{Draw a triangle fan defined by points within an image (first vertex is the center)}
+procedure ImageDrawTriangleFan(dst: PImage; points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleFan';
+{Draw a triangle strip defined by points within an image}
+procedure ImageDrawTriangleStrip(dst: PImage; points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleStrip';
 {Draw a source image within a destination image (tint applied to source)}
 procedure ImageDraw(dst: PImage; src: TImage; srcRec, dstRec: TRectangle; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDraw';
 {Draw text (using default font) within an image (destination)}
