@@ -3,11 +3,9 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 
 #: ray4laz_customappprj.rsaboutcustappprj
 msgid "A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)"
-msgstr "A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)"
+msgstr "Проста та зручна бібліотека для програмування відеоігор (www.raylib.com)"
 
 #: ray4laz_customappprj.rsnamecustappprj
-#, fuzzy
-#| msgid "raylib project using TCustomApplication."
 msgid "raylib project using TCustomApplication."
-msgstr "raylib project using TCustomApplication class."
+msgstr "проект raylib з використанням класу TCustomApplication."
 

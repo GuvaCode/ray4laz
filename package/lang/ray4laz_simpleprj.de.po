@@ -3,11 +3,9 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 
 #: ray4laz_simpleprj.rsaboutsimpleprj
 msgid "A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)"
-msgstr "Простая и легкая в использовании библиотека для программирования видеоигр (www.raylib.com) "
+msgstr "Eine einfache und benutzerfreundliche Bibliothek für die Programmierung von Videospielen (www.raylib.com)"
 
 #: ray4laz_simpleprj.rsnamesimpleprj
-#, fuzzy
-#| msgid "raylib Simple Project"
 msgid "raylib simple project"
-msgstr "Простой проект raylib"
+msgstr "raylib einfaches projekt"
 

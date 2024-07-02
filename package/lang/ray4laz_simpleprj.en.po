@@ -1,0 +1,11 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: ray4laz_simpleprj.rsaboutsimpleprj
+msgid "A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)"
+msgstr "A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)"
+
+#: ray4laz_simpleprj.rsnamesimpleprj
+msgid "raylib simple project"
+msgstr "raylib simple project"
+

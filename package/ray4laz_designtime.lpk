@@ -12,7 +12,7 @@
       </SearchPaths>
     </CompilerOptions>
     <Description Value="Desing time package for ray4laz "/>
-    <Version Major="5"/>
+    <Version Major="5" Minor="5"/>
     <Files Count="3">
       <Item1>
         <Filename Value="ray4laz_simpleprj.pas"/>
@@ -27,13 +27,14 @@
       <Item3>
         <Filename Value="ray4laz_customappprj.pas"/>
         <HasRegisterProc Value="True"/>
-        <UnitName Value="ray4laz_customappprj"/>
+        <UnitName Value="ray4laz_customAppPrj"/>
       </Item3>
     </Files>
     <CompatibilityMode Value="True"/>
     <i18n>
       <EnableI18N Value="True"/>
-      <OutDir Value="languages"/>
+      <OutDir Value="lang"/>
+      <EnableI18NForLFM Value="True"/>
     </i18n>
     <RequiredPkgs Count="3">
       <Item1>

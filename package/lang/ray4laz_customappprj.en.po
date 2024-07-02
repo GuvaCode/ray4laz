@@ -1,13 +1,11 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: ray4laz_simpleprj.rsaboutsimpleprj
+#: ray4laz_customappprj.rsaboutcustappprj
 msgid "A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)"
 msgstr "A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)"
 
-#: ray4laz_simpleprj.rsnamesimpleprj
-#, fuzzy
-#| msgid "raylib Simple Project"
-msgid "raylib simple project"
-msgstr "raylib Simple Project"
+#: ray4laz_customappprj.rsnamecustappprj
+msgid "raylib project using TCustomApplication."
+msgstr "raylib project using TCustomApplication."
 
