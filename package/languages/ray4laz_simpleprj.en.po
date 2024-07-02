@@ -6,6 +6,8 @@ msgid "A simple and easy-to-use library to enjoy videogames programming (www.ray
 msgstr "A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)"
 
 #: ray4laz_simpleprj.rsnamesimpleprj
-msgid "Raylib Simple Project"
-msgstr "Raylib Simple Project"
+#, fuzzy
+#| msgid "raylib Simple Project"
+msgid "raylib simple project"
+msgstr "raylib Simple Project"
 

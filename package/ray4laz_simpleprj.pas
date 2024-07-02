@@ -20,7 +20,7 @@ type
 
   resourcestring
   rsAboutSimplePrj = 'A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)';
-  rsNameSimplePrj  = 'Raylib Simple Project';
+  rsNameSimplePrj  = 'raylib simple project';
 
 implementation
 

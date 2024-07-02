@@ -6,6 +6,6 @@ msgid "A simple and easy-to-use library to enjoy videogames programming (www.ray
 msgstr ""
 
 #: ray4laz_customappprj.rsnamecustappprj
-msgid "Raylib project using TCustomApplication."
+msgid "raylib project using TCustomApplication."
 msgstr ""
 

@@ -22,7 +22,7 @@ type
 
   resourcestring
   rsAboutCustAppPrj = 'A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)';
-  rsNameCustAppPrj  = 'Raylib project using TCustomApplication.';
+  rsNameCustAppPrj  = 'raylib project using TCustomApplication.';
 
 implementation
 
@@ -70,7 +70,7 @@ begin
     '  {$IFDEF UNIX}'  + LineEnding +
     '  cthreads,'  + LineEnding +
     '  {$ENDIF}'  + LineEnding +
-    '  Classes, SysUtils, CustApp, RayLib;'  + LineEnding +
+    '  Classes, SysUtils, CustApp, raylib;'  + LineEnding +
     LineEnding +
     'type' + LineEnding +
     '  { TRayApplication }' + LineEnding +

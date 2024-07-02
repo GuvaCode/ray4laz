@@ -23,10 +23,10 @@ procedure Register;
      SectionRayMenu: TIDEMenuSection;
 
  resourcestring
-   rsMnuMisc        = 'Raylib Misc ...';
+   rsMnuMisc        = 'raylib Misc ...';
    rsHelpCheat      = 'Cheatsheet ...';
    rsInsertClr      = 'ColorCreate from dialog';
-   rsRayWiki        = 'Raylib Wiki';
+   rsRayWiki        = 'raylib Wiki';
 
 implementation
 

@@ -10,10 +10,10 @@ msgid "ColorCreate from dialog"
 msgstr ""
 
 #: ray4laz_misc.rsmnumisc
-msgid "Raylib Misc ..."
+msgid "raylib Misc ..."
 msgstr ""
 
 #: ray4laz_misc.rsraywiki
-msgid "Raylib Wiki"
+msgid "raylib Wiki"
 msgstr ""
 
