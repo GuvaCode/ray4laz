@@ -27,10 +27,10 @@ features
   - Multiple texture formats supported, including **compressed formats** (DXT, ETC, ASTC)
   - **Full 3D support**, including 3D Shapes, Models, Billboards, Heightmaps and more! 
   - Flexible Materials system, supporting classic maps and **PBR maps**
-  - **Animated 3D models** supported (skeletal bones animation) (IQM)
+  - **Animated 3D models** supported (skeletal bones animation) (IQM, M3D, glTF)
   - Shaders support, including model and **postprocessing** shaders.
   - **Powerful math module** for Vector, Matrix and Quaternion operations: [raymath](https://github.com/GuvaCode/Ray4Laz/blob/main/source/raymath.pas)
-  - Audio loading and playing with streaming support (WAV, OGG, MP3, FLAC, XM, MOD)
+  - Audio loading and playing with streaming support (WAV, QOA, OGG, MP3, FLAC, XM, MOD)
   - **VR stereo rendering** support with configurable HMD device parameters
   - Huge examples collection with [+120 code examples](https://github.com/GuvaCode/Ray4Laz/tree/main/examples)!
   - Bindings to [+60 programming languages](https://github.com/raysan5/raylib/blob/master/BINDINGS.md)!
