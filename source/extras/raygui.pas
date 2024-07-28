@@ -264,11 +264,11 @@ const
   ICON_WARNING = 220;
   ICON_HELP_BOX = 221;
   ICON_INFO_BOX = 222;
-  ICON_223 = 223;
-  ICON_224 = 224;
-  ICON_225 = 225;
-  ICON_226 = 226;
-  ICON_227 = 227;
+  ICON_PRIORITY = 223;
+  ICON_LAYERS_ISO = 224;
+  ICON_LAYERS2 = 225;
+  ICON_MLAYERS = 226;
+  ICON_MAPS = 227;
   ICON_228 = 228;
   ICON_229 = 229;
   ICON_230 = 230;
@@ -457,7 +457,7 @@ const
   ARROW_PADDING = 16;
   DROPDOWN_ITEMS_SPACING = 17;
   DROPDOWN_ARROW_HIDDEN = 18;      // DropdownBox arrow hidden
-
+  DROPDOWN_ROLL_UP = 19;           // DropdownBox roll up flag (default rolls down)
 // TextBox/TextBoxMulti/ValueBox/Spinner
 type
   PGuiTextBoxProperty = ^TGuiTextBoxProperty;

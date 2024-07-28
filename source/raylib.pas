@@ -29,10 +29,11 @@ const
  (* Color, 4 components, R8G8B8A8 (32bit) *)
  type
    { TColorB }
+   PColorB = ^TColorB;
    TColorB = record
        r,g,b,a : byte; // Color value
      end;
-  PColorB = ^TColorB;
+
   TColor = TColorB;
   PColor = PColorB;
 
@@ -314,7 +315,7 @@ const
       PRay = ^TRay;
       TRay = record
          position  : TVector3; // Ray position (origin)
-         direction : TVector3; // Ray direction
+         direction : TVector3; // Ray direction (normalized)
        end;
 
       (* RayCollision, ray hit information *)
@@ -1993,7 +1994,7 @@ procedure DrawModelWiresEx(model: TModel; position, rotationAxis: TVector3; rota
 {Draw bounding box (wires)}
 procedure DrawBoundingBox(box: TBoundingBox; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBoundingBox';
 {Draw a billboard texture}
-procedure DrawBillboard(camera: TCamera; texture: TTexture2D; position: TVector3; size: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboard';
+procedure DrawBillboard(camera: TCamera; texture: TTexture2D; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboard';
 {Draw a billboard texture defined by source}
 procedure DrawBillboardRec(camera: TCamera; texture: TTexture2D; source: TRectangle; position: TVector3; size: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboardRec';
 {Draw a billboard texture defined by source and rotation}
@@ -2268,11 +2269,13 @@ procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY:
 
 function GetAppDir(aResourceDir: String): PChar;
 
-function ModelClone(Model: PModel): TModel;
+
+
+//function GetHexString(AString: String): PChar;
 
 implementation
 uses
-  Math;
+  Math;//, UTF8Utily;
 
 {$IFDEF linux}
   {$IFDEF RAY_STATIC}
@@ -2382,36 +2385,15 @@ begin
   result :=PChar(GetApplicationDirectory + aResourceDir);
 end;
 
-function ModelClone(Model: PModel): TModel;   // todo clone animation
-var outModel: PModel;
-    meshIndex, matIndex: Integer;
+{
+function GetHexString(AString: String): PChar;
+var Splitter: TS8;
 begin
-  outModel := new(PModel);
-  outModel^.meshCount := Model^.meshCount;
-  outModel^.meshes := MemAlloc(sizeof(TMesh) * outModel^.meshCount);
-
-  outModel^.materialCount := Model^.materialCount;
-  outModel^.materials := MemAlloc(sizeof(TMaterial) * outModel^.materialCount);
-  outModel^.meshMaterial := MemAlloc(sizeof(Integer) * outModel^.meshCount);
-  outModel^.transform := Model^.transform;
-
-  for meshIndex := 0 to outModel^.meshCount -1 do
-  begin
-    outModel^.meshes[meshIndex] := model^.meshes[meshIndex];
-    outModel^.meshMaterial[meshIndex] := model^.meshMaterial[meshIndex];
-  end;
-
-  for matIndex := 0 to outModel^.materialCount - 1 do
-  begin
-    outModel^.materials[matIndex] := model^.materials[matIndex];
-  end;
-
-  outModel^.boneCount := 0;//        : Integer;    // Number of bones
-  outModel^.bones := new(PBoneInfo);//           : PBoneInfo;  // Bones information (skeleton)
-  outModel^.bindPose := nil;//        : PTransform; // Bones base transformation (pose)
-
-  result := outModel^;
+  Splitter := TS8.Create(AString);
+  result:= PChar(Splitter.HexString);
 end;
+
+}
 
 initialization
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);

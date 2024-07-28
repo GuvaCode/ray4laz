@@ -23,7 +23,7 @@
 {.$define RAYGUI_NO_RICONS}
 
 // Other Settings
-{$packrecords c}
+//{$packrecords c}
 {$ALIGN 8}
 {$MINENUMSIZE 4}
 
