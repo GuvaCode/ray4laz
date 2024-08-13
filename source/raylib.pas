@@ -1582,7 +1582,7 @@ function GenImageChecked(width, height, checksX, checksY: Integer; col1, col2: T
 {Generate image: white noise}
 function GenImageWhiteNoise(width, height: Integer; factor: Single): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageWhiteNoise';
 {Generate image: perlin noise}
-function GenImagePerlinNoise(width, height, offsetX, offsetY: Integer; scale: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImagePerlinNoise';
+function GenImagePerlinNoise(width, height, offsetX, offsetY: Integer; scale: Single): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImagePerlinNoise';
 {Generate image: cellular algorithm, bigger tileSize means bigger cells}
 function GenImageCellular(width, height, tileSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageCellular';
 {Generate image: grayscale image from text data}
