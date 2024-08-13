@@ -6,15 +6,16 @@ echo -e "\e[92m \e[1m"
 read -p "Install dependencies (y/n)?" answer
 case ${answer:0:1} in y|Y )
 echo -e "\e[0"
-sudo apt-get install mingw-w64-x86-64-dev
-sudo apt-get install mingw-w64-i686-dev
-sudo apt-get install unzip
-sudo apt-get install gcc-mingw-w64-x86-64     
-sudo apt-get install gcc-mingw-w64-i686
-sudo apt-get install gcc-mingw-w64-i686-posix
-sudo apt-get install gcc-mingw-w64-i686-win32
-sudo apt-get install build-essential libc6-dev-i386
-sudo apt-get install libgl1-mesa-dev:i386
+sudo apt install -y libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev
+sudo apt-get install -y mingw-w64-x86-64-dev
+sudo apt-get install -y mingw-w64-i686-dev
+sudo apt-get install -y unzip
+sudo apt-get install -y gcc-mingw-w64-x86-64     
+sudo apt-get install -y gcc-mingw-w64-i686
+sudo apt-get install -y gcc-mingw-w64-i686-posix
+sudo apt-get install -y gcc-mingw-w64-i686-win32
+sudo apt-get install -y build-essential libc6-dev-i386
+sudo apt-get install -y libgl1-mesa-dev:i386
     ;;
     * )
         echo skiping
