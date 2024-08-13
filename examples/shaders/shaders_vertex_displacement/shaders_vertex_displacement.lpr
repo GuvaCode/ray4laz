@@ -99,6 +99,10 @@ begin
     end;
 
   // De-Initialization
+  UnloadShader(shader);
+  UnloadModel(planeModel);
+  UnloadTexture(perlinNoiseMap);
+
   CloseWindow();        // Close window and OpenGL context
 end.
 
