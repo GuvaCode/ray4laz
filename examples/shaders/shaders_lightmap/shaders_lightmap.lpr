@@ -70,7 +70,7 @@ begin
   rlEnableVertexArray(mesh.vaoId);
 
   // Index 5 is for texcoords2
-  rlSetVertexAttribute(5, 2, RL_FLOAT, false, 0, nil);
+  rlSetVertexAttribute(5, 2, RL_FLOAT, false, 0, 0);
   rlEnableVertexAttribute(5);
   rlDisableVertexArray();
 

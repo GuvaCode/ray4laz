@@ -75,7 +75,7 @@ begin
 
   // Initialize the G-buffer
   gBuffer := Default(TGBuffer);
-  gBuffer.framebuffer := rlLoadFramebuffer(screenWidth, screenHeight);
+  gBuffer.framebuffer := rlLoadFramebuffer();
 
   if gBuffer.framebuffer <= 0 then
   begin

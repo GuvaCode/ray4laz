@@ -264,7 +264,7 @@ begin
           SetShaderValue(shader, textureTilingLoc, @modelTiling, SHADER_UNIFORM_VEC2);
           modelEmission := ColorNormalize(model.materials[0].maps[MATERIAL_MAP_EMISSION].color);
           SetShaderValue(shader, emissiveColorLoc, @modelEmission, SHADER_UNIFORM_VEC4);
-          DrawModel(model, Vector3Create(0, 0.0, 0), 0.005, WHITE);
+          DrawModel(model, Vector3Create(0, 0.0, 0), 0.25, WHITE);
 
           // Draw spheres to show where the lights are
           for i := 0 to MAX_LIGHTS -1 do
