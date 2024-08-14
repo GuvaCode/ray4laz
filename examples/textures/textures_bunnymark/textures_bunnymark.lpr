@@ -14,7 +14,7 @@ type
 const
  screenWidth = 800;
  screenHeight = 450;
- MAX_BUNNIES = 100000;    // 50K bunnies limit
+ MAX_BUNNIES = 50000;    // 50K bunnies limit
  MAX_BATCH_ELEMENTS=8192;
 var
   bunnies: array [0 .. (MAX_BUNNIES) ] of TBunny; // Bunnies array
