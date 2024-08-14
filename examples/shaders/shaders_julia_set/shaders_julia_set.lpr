@@ -3,7 +3,7 @@ program shaders_julia_set;
 {$mode objfpc}{$H+}
 
 uses 
-cmem, raylib, raymath;
+cmem, raylib, raymath, math;
 
 const
   screenWidth = 800;
@@ -11,6 +11,9 @@ const
 
 const
   GLSL_VERSION = 330;
+  startingZoom = 0.75;
+  zoomSpeed = 1.01;
+  offsetSpeedMul = 2.0;
 
   // A few good julia sets
   PointsOfInterest: array [0..5,0..1] of Single = (
@@ -27,11 +30,10 @@ var
   Target: TRenderTexture2D;
   C, Offset, ScreenDims: array [0..1] of Single;
   Zoom: Single;
-  OffsetSpeed: TVector2;
   CLoc, ZoomLoc, OffsetLoc, IncrementSpeed: Integer;
-  ShowControls, Pause: Boolean;
-  MousePos: TVector2;
-  Amount: Single;
+  ShowControls: Boolean;
+  MousePos, offsetVelocity: TVector2;
+
   dc: Single;
 begin
   // Initialization
@@ -49,10 +51,9 @@ begin
   C[0] := PointsOfInterest[0][0]; C[1] := PointsOfInterest[0][1];
 
   // Offset and zoom to draw the julia set at. (centered on screen and default size)
-  Offset[0] := -GetScreenWidth() / 2; Offset[1] := -GetScreenHeight() / 2;
+  Offset[0] := 0.0;
+  Offset[1] := 0.0;
   Zoom := 1.0;
-
-  OffsetSpeed := Vector2Create(0.0, 0.0);
 
   // Get variable (uniform) locations on the shader to connect with the program
   // NOTE: If uniform variable could not be found in the shader, function returns -1
@@ -68,108 +69,110 @@ begin
   SetShaderValue(Shader, ZoomLoc, @Zoom, SHADER_UNIFORM_FLOAT);
   SetShaderValue(Shader, OffsetLoc, @Offset, SHADER_UNIFORM_VEC2);
 
-  IncrementSpeed := 0;             // Multiplier of speed to change c value
+  IncrementSpeed := 3;             // Multiplier of speed to change c value
   ShowControls := True;           // Show controls
- // Pause := False;                 // Pause animation
+
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
   // Main game loop
   while not WindowShouldClose() do
     begin
-      // Update
-      //----------------------------------------------------------------------------------
-      // Press [1 - 6] to reset c to a point of interest
-      if IsKeyPressed(KEY_ONE) or
-         IsKeyPressed(KEY_TWO) or
-         IsKeyPressed(KEY_THREE) or
-         IsKeyPressed(KEY_FOUR) or
-         IsKeyPressed(KEY_FIVE) or
-         IsKeyPressed(KEY_SIX) then
+    // Update
+    // Press [1 - 6] to reset c to a point of interest
+    if (IsKeyPressed(KEY_ONE) or
+        IsKeyPressed(KEY_TWO) or
+        IsKeyPressed(KEY_THREE) or
+        IsKeyPressed(KEY_FOUR) or
+        IsKeyPressed(KEY_FIVE) or
+        IsKeyPressed(KEY_SIX)) then
+    begin
+      if (IsKeyPressed(KEY_ONE)) then
       begin
-          if IsKeyPressed(KEY_ONE) then
-          begin
-            C[0] := PointsOfInterest[0][0];
-            C[1] := PointsOfInterest[0][1];
-          end
-          else if IsKeyPressed(KEY_TWO) then
-          begin
-             C[0] := PointsOfInterest[1][0];
-             C[1] := PointsOfInterest[1][1];
-          end
-          else if IsKeyPressed(KEY_THREE) then
-          begin
-            C[0] := PointsOfInterest[2][0];
-            C[1] := PointsOfInterest[2][1];
-          end
-          else if IsKeyPressed(KEY_FOUR) then
-          begin
-            C[0] := PointsOfInterest[3][0];
-            C[1] := pointsOfInterest[3][1];
-          end
-          else if IsKeyPressed(KEY_FIVE) then
-          begin
-            C[0] := PointsOfInterest[4][0];
-            C[1] := PointsOfInterest[4][1];
-          end
-          else if IsKeyPressed(KEY_SIX) then
-          begin
-            C[0] := pointsOfInterest[5][0];
-            C[1] := pointsOfInterest[5][1];
-          end;
-
-          SetShaderValue(Shader, CLoc, @C, SHADER_UNIFORM_VEC2);
-      end;
-
-      if IsKeyPressed(KEY_SPACE) then
-        Pause := not Pause;                 // Pause animation (c change)
-      if IsKeyPressed(KEY_F1) then
-        ShowControls := not ShowControls;  // Toggle whether or not to show controls
-
-      if not Pause then
+      c[0] := pointsOfInterest[0][0];
+      c[1] := pointsOfInterest[0][1];
+      end else
+      if (IsKeyPressed(KEY_TWO)) then
       begin
-        if IsKeyPressed(KEY_RIGHT) then
-          Inc(IncrementSpeed)
-        else if IsKeyPressed(KEY_LEFT) then
-          Dec(IncrementSpeed);
+      c[0] := pointsOfInterest[1][0];
+      c[1] := pointsOfInterest[1][1];
+      end else
+      if (IsKeyPressed(KEY_THREE)) then
+      begin
+      c[0] := pointsOfInterest[2][0];
+      c[1] := pointsOfInterest[2][1];
+      end else
+      if (IsKeyPressed(KEY_FOUR)) then
+      begin
+      c[0] := pointsOfInterest[3][0];
+      c[1] := pointsOfInterest[3][1];
+      end else
+      if (IsKeyPressed(KEY_FIVE)) then
+      begin
+      c[0] := pointsOfInterest[4][0];
+      c[1] := pointsOfInterest[4][1];
 
-        // TODO: The idea is to zoom and move around with mouse
-        // Probably offset movement should be proportional to zoom level
-        if IsMouseButtonDown(MOUSE_BUTTON_LEFT) or IsMouseButtonDown(MOUSE_BUTTON_RIGHT) then
-        begin
-          if IsMouseButtonDown(MOUSE_BUTTON_LEFT) then Zoom := Zoom + Zoom * 0.003;
-          if IsMouseButtonDown(MOUSE_BUTTON_RIGHT) then Zoom := Zoom - Zoom * 0.003;
-
-          MousePos := GetMousePosition();
-
-          OffsetSpeed.X := MousePos.X - ScreenWidth / 2;
-          OffsetSpeed.Y := MousePos.Y - ScreenHeight / 2;
-
-          // Slowly move camera to targetOffset
-          Offset[0] := Offset[0] + GetFrameTime() * OffsetSpeed.X * 0.8;
-          Offset[1] := Offset[1] + GetFrameTime() * OffsetSpeed.Y * 0.8;
-        end else
-          OffsetSpeed := Vector2Create(0.0, 0.0);
-
-        SetShaderValue(Shader, ZoomLoc, @Zoom, SHADER_UNIFORM_FLOAT);
-        SetShaderValue(Shader, OffsetLoc, @Offset, SHADER_UNIFORM_VEC2);
-
-        // Increment c value with time
-        Amount := GetFrameTime() * IncrementSpeed * 0.0005;
-        C[0] := C[0] + Amount;
-        C[1] := C[1] + Amount;
-
-        SetShaderValue(Shader, CLoc, @C[0], SHADER_UNIFORM_VEC2);
+      end else
+      if (IsKeyPressed(KEY_SIX)) then
+      begin
+      c[0] := pointsOfInterest[5][0];
+      c[1] := pointsOfInterest[5][1];
       end;
+      SetShaderValue(shader, cLoc, @c, SHADER_UNIFORM_VEC2);
+    end;
 
-      // Increment c value with time
-      dc := GetFrameTime()*incrementSpeed*0.0005;
-      c[0] += dc;
-      c[1] += dc;
-      SetShaderValue(shader, cLoc, @C, SHADER_UNIFORM_VEC2);
+    // If "R" is pressed, reset zoom and offset.
+    if (IsKeyPressed(KEY_R)) then
+    begin
+      zoom := startingZoom;
+      offset[0] := 0.0;
+      offset[1] := 0.0;
+      SetShaderValue(shader, zoomLoc, @zoom, SHADER_UNIFORM_FLOAT);
+      SetShaderValue(shader, offsetLoc, @offset, SHADER_UNIFORM_VEC2);
+    end;
+
+    if (IsKeyPressed(KEY_SPACE)) then incrementSpeed := 0;         // Pause animation (c change)
+    if (IsKeyPressed(KEY_F1)) then showControls := not showControls;  // Toggle whether or not to show controls
+
+    if (IsKeyPressed(KEY_RIGHT)) then Inc(incrementSpeed)
+    else if (IsKeyPressed(KEY_LEFT)) then Dec(incrementSpeed);        // If either left or right button is pressed, zoom in/out.
+
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) or IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) then
+    begin
+      // Change zoom. If Mouse left -> zoom in. Mouse right -> zoom out.
+    zoom:= zoom * ifthen(IsMouseButtonDown(MOUSE_BUTTON_LEFT), zoomSpeed, 1.0/zoomSpeed);
+    mousePos := GetMousePosition();
+
+    // Find the velocity at which to change the camera. Take the distance of the mouse
+    // from the center of the screen as the direction, and adjust magnitude based on
+    // the current zoom.
+    offsetVelocity.x := (mousePos.x/screenWidth - 0.5)*offsetSpeedMul/zoom;
+    offsetVelocity.y := (mousePos.y/screenHeight - 0.5)*offsetSpeedMul/zoom;
+
+    // Apply move velocity to camera
+    offset[0] += GetFrameTime()*offsetVelocity.x;
+    offset[1] += GetFrameTime()*offsetVelocity.y;
+
+    // Update the shader uniform values!
+    SetShaderValue(shader, zoomLoc, @zoom, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(shader, offsetLoc, @offset, SHADER_UNIFORM_VEC2);
+    end;
 
 
-      //----------------------------------------------------------------------------------
+    // Increment c value with time
+    dc := GetFrameTime()*incrementSpeed*0.0005;
+    c[0] += dc;
+    c[1] += dc;
+    SetShaderValue(shader, cLoc, @c, SHADER_UNIFORM_VEC2);
+
+
+
+
+
+    //----------------------------------------------------------------------------------
+
+
+
 
 
       // Draw
