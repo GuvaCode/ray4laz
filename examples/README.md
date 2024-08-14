@@ -3,7 +3,7 @@
 
  example  | image  | difficulty<br>level |
 |---------|--------|:-------------------:|
-[textures_logo_raylib](textures/textures_logo_raylib.c) | <img src="textures/textures_logo_raylib.png" alt="textures_logo_raylib" width="80"> | ⭐️☆☆☆ |
+[textures_background_scrolling](textures/textures_background_scrolling) | <img src="textures/textures_background_scrolling/textures_background_scrolling.png" alt="textures_logo_raylib" width="80"> | ⭐️☆☆☆ |
 
 
 
