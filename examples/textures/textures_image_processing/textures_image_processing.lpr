@@ -78,7 +78,7 @@ begin
         end;
         break;
       end else
-        MouseHoverRec := TImageProcess(-1);
+        MouseHoverRec := TImageProcess(none);
     end;
 
     // Keyboard toggle group logic

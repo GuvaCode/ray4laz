@@ -1647,7 +1647,7 @@ procedure ImageColorGrayscale(image: PImage); cdecl; external {$IFNDEF RAY_STATI
 {Modify image color: contrast (-100 to 100)}
 procedure ImageColorContrast(image: PImage; contrast: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorContrast';
 {Modify image color: brightness (-255 to 255)}
-procedure ImageColorBrightness(image: PImage; brightness: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorBrightness';
+procedure ImageColorBrightness(image: PImage; brightness: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorBrightness';
 {Modify image color: replace color}
 procedure ImageColorReplace(image: PImage; color, replace: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorReplace';
 {Load color data from image as a Color array (RGBA - 32bit)}
