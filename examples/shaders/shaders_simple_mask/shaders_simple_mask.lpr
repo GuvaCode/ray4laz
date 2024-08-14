@@ -81,7 +81,7 @@ begin
     begin
       // Update
       //----------------------------------------------------------------------------------
-      UpdateCamera(@Camera);
+      UpdateCamera(@Camera, CAMERA_FIRST_PERSON);
 
       Inc(FramesCounter);
       Rotation.X := Rotation.X + 0.01;

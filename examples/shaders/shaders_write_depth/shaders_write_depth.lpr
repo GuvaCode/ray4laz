@@ -18,7 +18,7 @@ function LoadRenderTextureDepthTex(width, height: Integer): TRenderTexture2D;
 var target: TRenderTexture2D;
 begin
       target := Default(TRenderTexture2D);
-      target.id := rlLoadFramebuffer(width, height);   // Load an empty framebuffer
+      target.id := rlLoadFramebuffer();   // Load an empty framebuffer
 
       if (target.id > 0) then
       begin

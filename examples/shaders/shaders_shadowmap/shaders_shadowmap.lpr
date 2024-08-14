@@ -141,7 +141,7 @@ begin
    lightCam.up := Vector3Create( 0.0, 1.0, 0.0 );
    lightCam.fovy := 20.0;
 
-  // SetTargetFPS(60);
+   SetTargetFPS(60);
    fc := 0;
 
   // Main game loop

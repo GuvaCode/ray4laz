@@ -7,7 +7,7 @@ cmem, raylib, raymath;
 
 const
   screenWidth = 800;
-  screenHeight = 600;
+  screenHeight = 450;
   GLSL_VERSION = 330;
 
 var
