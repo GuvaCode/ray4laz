@@ -49,13 +49,13 @@ begin
   camera.projection := CAMERA_PERSPECTIVE;             // Camera mode type
 
   // Load gltf model
-  model := LoadModel(GetAppDir('resources/models/gltf/star.glb'));
+  model := LoadModel(GetAppDir('resources/models/gltf/robot.glb'));
 
   // Load gltf model animations
   animsCount := 0;
   animIndex := 0;
   animCurrentFrame := 0;
-  modelAnimations := LoadModelAnimations(GetAppDir('resources/models/gltf/star.glb'), @animsCount);
+  modelAnimations := LoadModelAnimations(GetAppDir('resources/models/gltf/robot.glb'), @animsCount);
 
   position := Vector3Create( 0.0, 0.0, 0.0 );    // Set model position
 

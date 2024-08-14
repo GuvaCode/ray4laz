@@ -11,7 +11,7 @@ raylib;
 const
   screenWidth = 800;
   screenHeight = 450;
-  MAX_VOX_FILES = 2;
+  MAX_VOX_FILES = 3;
 
 var
   voxFileNames: array [0..MAX_VOX_FILES] of PChar;
