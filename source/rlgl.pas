@@ -201,6 +201,9 @@ const
   RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR = 3;
   RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT = 4;
   RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2 = 5;
+  RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS = 6;
+  RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS = 7;
+  RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES = 8;
 
 type
   // Dynamic vertex buffers (position + texcoords + colors + indices arrays)
@@ -372,15 +375,19 @@ type
   PrlShaderUniformDataType = ^TrlShaderUniformDataType;
   TrlShaderUniformDataType =  Integer;
   const
-    RL_SHADER_UNIFORM_FLOAT     = TrlShaderUniformDataType(0); // Shader uniform type: float
-    RL_SHADER_UNIFORM_VEC2      = TrlShaderUniformDataType(1); // Shader uniform type: vec2 (2 float)
-    RL_SHADER_UNIFORM_VEC3      = TrlShaderUniformDataType(2); // Shader uniform type: vec3 (3 float)
-    RL_SHADER_UNIFORM_VEC4      = TrlShaderUniformDataType(3); // Shader uniform type: vec4 (4 float)
-    RL_SHADER_UNIFORM_INT       = TrlShaderUniformDataType(4); // Shader uniform type: int
-    RL_SHADER_UNIFORM_IVEC2     = TrlShaderUniformDataType(5); // Shader uniform type: ivec2 (2 int)
-    RL_SHADER_UNIFORM_IVEC3     = TrlShaderUniformDataType(6); // Shader uniform type: ivec3 (3 int)
-    RL_SHADER_UNIFORM_IVEC4     = TrlShaderUniformDataType(7); // Shader uniform type: ivec4 (4 int)
-    RL_SHADER_UNIFORM_SAMPLER2D = TrlShaderUniformDataType(8); // Shader uniform type: sampler2d
+    RL_SHADER_UNIFORM_FLOAT     = TrlShaderUniformDataType(0);  // Shader uniform type: float
+    RL_SHADER_UNIFORM_VEC2      = TrlShaderUniformDataType(1);  // Shader uniform type: vec2 (2 float)
+    RL_SHADER_UNIFORM_VEC3      = TrlShaderUniformDataType(2);  // Shader uniform type: vec3 (3 float)
+    RL_SHADER_UNIFORM_VEC4      = TrlShaderUniformDataType(3);  // Shader uniform type: vec4 (4 float)
+    RL_SHADER_UNIFORM_INT       = TrlShaderUniformDataType(4);  // Shader uniform type: int
+    RL_SHADER_UNIFORM_IVEC2     = TrlShaderUniformDataType(5);  // Shader uniform type: ivec2 (2 int)
+    RL_SHADER_UNIFORM_IVEC3     = TrlShaderUniformDataType(6);  // Shader uniform type: ivec3 (3 int)
+    RL_SHADER_UNIFORM_IVEC4     = TrlShaderUniformDataType(7);  // Shader uniform type: ivec4 (4 int)
+    RL_SHADER_UNIFORM_UINT      = TrlShaderUniformDataType(8);  // Shader uniform type: unsigned int
+    RL_SHADER_UNIFORM_UIVEC2    = TrlShaderUniformDataType(9);  // Shader uniform type: uivec2 (2 unsigned int)
+    RL_SHADER_UNIFORM_UIVEC3    = TrlShaderUniformDataType(10); // Shader uniform type: uivec3 (3 unsigned int)
+    RL_SHADER_UNIFORM_UIVEC4    = TrlShaderUniformDataType(11); // Shader uniform type: uivec4 (4 unsigned int)
+    RL_SHADER_UNIFORM_SAMPLER2D = TrlShaderUniformDataType(12); // Shader uniform type: sampler2d
 
 
 type
@@ -591,7 +598,7 @@ procedure rlScissor(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_
 procedure rlEnableWireMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableWireMode';
 {Enable point mode}
 procedure rlEnablePointMode(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableWireMode';
-{Disable wire mode}
+{Disable wire (and point) mode}
 procedure rlDisableWireMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableWireMode';
 {Set the line drawing width}
 procedure rlSetLineWidth(width: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetLineWidth';
@@ -754,6 +761,8 @@ function rlGetLocationAttrib(shaderId: LongWord; attribName: PChar): LongWord; c
 procedure rlSetUniform(locIndex: Integer; value: Pointer; uniformType: TrlShaderUniformDataType; count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniform';
 {Set shader value matrix}
 procedure rlSetUniformMatrix(locIndex: Integer; mat: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniformMatrix';
+{Set shader value matrices}
+procedure rlSetUniformMatrices(locIndex: Integer; const mat: PMatrix; count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniformMatrices';
 {Set shader value sampler}
 procedure rlSetUniformSampler(locIndex: Integer; textureId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniformSampler';
 {Set shader currently active (id and locations)}

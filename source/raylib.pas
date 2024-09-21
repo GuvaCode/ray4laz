@@ -242,6 +242,8 @@ const
          animNormals   : PSingle;   // Animated normals (after bones transformations)
          boneIds       : PByte;     // Vertex bone ids, up to 4 bones influence by vertex (skinning)
          boneWeights   : PSingle;   // Vertex bone weight, up to 4 bones influence by vertex (skinning)
+         boneMatrices  : PMatrix;   // Bones animated transformation matrices
+         boneCount     : Integer;          // Number of bones
          // OpenGL identifiers
          vaoId         : LongWord;  // OpenGL Vertex Array Object id
          vboId         : PLongWord; // OpenGL Vertex Buffer Objects id (default vertex data)
@@ -716,6 +718,9 @@ const
          SHADER_LOC_MAP_IRRADIANCE      = TShaderLocationIndex(23); // Shader location: samplerCube texture: irradiance
          SHADER_LOC_MAP_PREFILTER       = TShaderLocationIndex(24); // Shader location: samplerCube texture: prefilter
          SHADER_LOC_MAP_BRDF            = TShaderLocationIndex(25); // Shader location: sampler2d texture: brdf
+         SHADER_LOC_VERTEX_BONEIDS      = TShaderLocationIndex(26); // Shader location: vertex attribute: boneIds
+         SHADER_LOC_VERTEX_BONEWEIGHTS  = TShaderLocationIndex(27); // Shader location: vertex attribute: boneWeights
+         SHADER_LOC_BONE_MATRICES       = TShaderLocationIndex(28); // Shader location: array of matrices uniform: boneMatrices
 
          SHADER_LOC_MAP_DIFFUSE = SHADER_LOC_MAP_ALBEDO;
          SHADER_LOC_MAP_SPECULAR = SHADER_LOC_MAP_METALNESS;
@@ -919,9 +924,9 @@ function IsWindowState(flag: TConfigFlags): Boolean; cdecl; external {$IFNDEF RA
 procedure SetWindowState(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowState';
 {Clear window configuration state flags}
 procedure ClearWindowState(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ClearWindowState';
-{Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)}
+{Toggle window state: fullscreen/windowed [resizes monitor to match window resolution] (only PLATFORM_DESKTOP)}
 procedure ToggleFullscreen; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ToggleFullscreen';
-{Toggle window state: borderless windowed (only PLATFORM_DESKTOP)}
+{Toggle window state: borderless windowed [resizes window to match monitor resolution] (only PLATFORM_DESKTOP)}
 procedure ToggleBorderlessWindowed; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ToggleBorderlessWindowed';
 {Set window state: maximized, if resizable (only PLATFORM_DESKTOP)}
 procedure MaximizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MaximizeWindow';
@@ -1216,7 +1221,7 @@ function IsPathFile(const path: PChar): Boolean; cdecl; external {$IFNDEF RAY_ST
 function IsFileNameValid(const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileNameValid';
 {Load directory filepaths}
 function LoadDirectoryFiles(const dirPath: PChar): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFiles';
-{Load directory filepaths with extension filtering and recursive directory scan}
+{Load directory filepaths with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result}
 function LoadDirectoryFilesEx(const basePath, filter: PChar; scanSubdirs: Boolean): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFilesEx';
 {Unload filepaths}
 procedure UnloadDirectoryFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadDirectoryFiles';
@@ -1444,11 +1449,11 @@ procedure DrawRectangleRec(rec: TRectangle; color: TColorB); cdecl; external {$I
 {Draw a color-filled rectangle with pro parameters}
 procedure DrawRectanglePro(rec: TRectangle; origin: TVector2; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectanglePro';
 {Draw a vertical-gradient-filled rectangle}
-procedure DrawRectangleGradientV(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientV';
+procedure DrawRectangleGradientV(posX, posY, width, height: Integer; top, bottom: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientV';
 {Draw a horizontal-gradient-filled rectangle}
-procedure DrawRectangleGradientH(posX, posY, width, height: Integer; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientH';
+procedure DrawRectangleGradientH(posX, posY, width, height: Integer; left, right: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientH';
 {Draw a gradient-filled rectangle with custom vertex colors}
-procedure DrawRectangleGradientEx(rec: TRectangle; col1, col2, col3, col4: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientEx';
+procedure DrawRectangleGradientEx(rec: TRectangle; topLeft, bottomLeft, topRight, bottomRight: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientEx';
 {Draw rectangle outline}
 procedure DrawRectangleLines(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleLines';
 {Draw rectangle outline with extended parameters}
@@ -1785,6 +1790,8 @@ function ColorContrast(color: TColorB; contrast: Single): TColorB; cdecl; extern
 function ColorAlpha(color: TColorB; alpha: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorAlpha';
 {Get src alpha-blended into dst color with tint}
 function ColorAlphaBlend(dst, src, tint: TColorB): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorAlphaBlend';
+{Get color lerp interpolation between two colors, factor [0.0..1.0]}
+function ColorLerp(color1, color2: TColorB; factor: Single): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ColorLerp';
 {Get Color structure from hexadecimal value}
 function GetColor(hexValue: LongWord): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetColor';
 {Get Color from a source pixel pointer of certain format}
@@ -1804,8 +1811,7 @@ function GetPixelDataSize(width, height: Integer; format: TPixelFormat): Integer
 function GetFontDefault: TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFontDefault';
 {Load font from file into GPU memory (VRAM)}
 function LoadFont(const fileName: PChar): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFont';
-
-{Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set}
+{Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set, font size is provided in pixels height}
 function LoadFontEx(const fileName: Pchar; fontSize: Integer; codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
 {Load font from Image (XNA style)}
 function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromImage';
@@ -1991,6 +1997,10 @@ procedure DrawModelEx(model: TModel; position, rotationAxis: TVector3; rotationA
 procedure DrawModelWires(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelWires';
 {Draw a model wires (with texture if set) with extended parameters}
 procedure DrawModelWiresEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelWiresEx';
+{Draw a model as points}
+procedure DrawModelPoints(model: TModel; position: TVector3; scale: Single; tint: TColorB) cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelPoints';
+{Draw a model as points with extended parameters}
+procedure DrawModelPointsEx(model: TModel; position: TVector3; rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB) cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelPointsEx';
 {Draw bounding box (wires)}
 procedure DrawBoundingBox(box: TBoundingBox; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBoundingBox';
 {Draw a billboard texture}
@@ -2073,6 +2083,8 @@ procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF 
 procedure UnloadModelAnimations(animations: PModelAnimation; animCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimations';
 {Check model animation skeleton match}
 function IsModelAnimationValid(model: TModel; anim: TModelAnimation): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsModelAnimationValid';
+{Update model animation mesh bone matrices}
+procedure UpdateModelAnimationBoneMatrices(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimationBoneMatrices';
 
 (* Collision detection functions *)
 
@@ -2267,15 +2279,10 @@ procedure BoundingBoxSet(aBoundingBox: PBoundingBox; aMin, aMax: TVector3);
 function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer): TCamera3D;
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer);
 
-function GetAppDir(aResourceDir: String): PChar;
-
-
-
-//function GetHexString(AString: String): PChar;
 
 implementation
 uses
-  Math;//, UTF8Utily;
+  Math;
 
 {$IFDEF linux}
   {$IFDEF RAY_STATIC}
@@ -2380,20 +2387,6 @@ begin
   aCam^.projection := aType;
 end;
 
-function GetAppDir(aResourceDir: String): PChar;
-begin
-  result :=PChar(GetApplicationDirectory + aResourceDir);
-end;
-
-{
-function GetHexString(AString: String): PChar;
-var Splitter: TS8;
-begin
-  Splitter := TS8.Create(AString);
-  result:= PChar(Splitter.HexString);
-end;
-
-}
 
 initialization
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);

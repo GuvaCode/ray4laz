@@ -352,8 +352,10 @@ typedef struct Mesh {
     // Animation vertex data
     float *animVertices;    // Animated vertex positions (after bones transformations)
     float *animNormals;     // Animated normals (after bones transformations)
-    unsigned char *boneIds; // Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning)
-    float *boneWeights;     // Vertex bone weight, up to 4 bones influence by vertex (skinning)
+    unsigned char *boneIds; // Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning) (shader-location = 6)
+    float *boneWeights;     // Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
+    Matrix *boneMatrices;   // Bones animated transformation matrices
+    int boneCount;          // Number of bones
 
     // OpenGL identifiers
     unsigned int vaoId;     // OpenGL Vertex Array Object id
@@ -790,7 +792,10 @@ typedef enum {
     SHADER_LOC_MAP_CUBEMAP,         // Shader location: samplerCube texture: cubemap
     SHADER_LOC_MAP_IRRADIANCE,      // Shader location: samplerCube texture: irradiance
     SHADER_LOC_MAP_PREFILTER,       // Shader location: samplerCube texture: prefilter
-    SHADER_LOC_MAP_BRDF             // Shader location: sampler2d texture: brdf
+    SHADER_LOC_MAP_BRDF,            // Shader location: sampler2d texture: brdf
+    SHADER_LOC_VERTEX_BONEIDS,      // Shader location: vertex attribute: boneIds
+    SHADER_LOC_VERTEX_BONEWEIGHTS,  // Shader location: vertex attribute: boneWeights
+    SHADER_LOC_BONE_MATRICES        // Shader location: array of matrices uniform: boneMatrices
 } ShaderLocationIndex;
 
 #define SHADER_LOC_MAP_DIFFUSE      SHADER_LOC_MAP_ALBEDO
@@ -968,8 +973,8 @@ RLAPI bool IsWindowResized(void);                                 // Check if wi
 RLAPI bool IsWindowState(unsigned int flag);                      // Check if one specific window flag is enabled
 RLAPI void SetWindowState(unsigned int flags);                    // Set window configuration state using flags (only PLATFORM_DESKTOP)
 RLAPI void ClearWindowState(unsigned int flags);                  // Clear window configuration state flags
-RLAPI void ToggleFullscreen(void);                                // Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
-RLAPI void ToggleBorderlessWindowed(void);                        // Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
+RLAPI void ToggleFullscreen(void);                                // Toggle window state: fullscreen/windowed [resizes monitor to match window resolution] (only PLATFORM_DESKTOP)
+RLAPI void ToggleBorderlessWindowed(void);                        // Toggle window state: borderless windowed [resizes window to match monitor resolution] (only PLATFORM_DESKTOP)
 RLAPI void MaximizeWindow(void);                                  // Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
 RLAPI void MinimizeWindow(void);                                  // Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
 RLAPI void RestoreWindow(void);                                   // Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
@@ -1126,7 +1131,7 @@ RLAPI bool ChangeDirectory(const char *dir);                      // Change work
 RLAPI bool IsPathFile(const char *path);                          // Check if a given path is a file or a directory
 RLAPI bool IsFileNameValid(const char *fileName);                 // Check if fileName is valid for the platform/OS
 RLAPI FilePathList LoadDirectoryFiles(const char *dirPath);       // Load directory filepaths
-RLAPI FilePathList LoadDirectoryFilesEx(const char *basePath, const char *filter, bool scanSubdirs); // Load directory filepaths with extension filtering and recursive directory scan
+RLAPI FilePathList LoadDirectoryFilesEx(const char *basePath, const char *filter, bool scanSubdirs); // Load directory filepaths with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result
 RLAPI void UnloadDirectoryFiles(FilePathList files);              // Unload filepaths
 RLAPI bool IsFileDropped(void);                                   // Check if a file has been dropped into window
 RLAPI FilePathList LoadDroppedFiles(void);                        // Load dropped filepaths
@@ -1238,7 +1243,7 @@ RLAPI void DrawLineBezier(Vector2 startPos, Vector2 endPos, float thick, Color c
 RLAPI void DrawCircle(int centerX, int centerY, float radius, Color color);                              // Draw a color-filled circle
 RLAPI void DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color);      // Draw a piece of a circle
 RLAPI void DrawCircleSectorLines(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color); // Draw circle sector outline
-RLAPI void DrawCircleGradient(int centerX, int centerY, float radius, Color color1, Color color2);       // Draw a gradient-filled circle
+RLAPI void DrawCircleGradient(int centerX, int centerY, float radius, Color inner, Color outer);         // Draw a gradient-filled circle
 RLAPI void DrawCircleV(Vector2 center, float radius, Color color);                                       // Draw a color-filled circle (Vector version)
 RLAPI void DrawCircleLines(int centerX, int centerY, float radius, Color color);                         // Draw circle outline
 RLAPI void DrawCircleLinesV(Vector2 center, float radius, Color color);                                  // Draw circle outline (Vector version)
@@ -1250,9 +1255,9 @@ RLAPI void DrawRectangle(int posX, int posY, int width, int height, Color color)
 RLAPI void DrawRectangleV(Vector2 position, Vector2 size, Color color);                                  // Draw a color-filled rectangle (Vector version)
 RLAPI void DrawRectangleRec(Rectangle rec, Color color);                                                 // Draw a color-filled rectangle
 RLAPI void DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color);                 // Draw a color-filled rectangle with pro parameters
-RLAPI void DrawRectangleGradientV(int posX, int posY, int width, int height, Color color1, Color color2);// Draw a vertical-gradient-filled rectangle
-RLAPI void DrawRectangleGradientH(int posX, int posY, int width, int height, Color color1, Color color2);// Draw a horizontal-gradient-filled rectangle
-RLAPI void DrawRectangleGradientEx(Rectangle rec, Color col1, Color col2, Color col3, Color col4);       // Draw a gradient-filled rectangle with custom vertex colors
+RLAPI void DrawRectangleGradientV(int posX, int posY, int width, int height, Color top, Color bottom);   // Draw a vertical-gradient-filled rectangle
+RLAPI void DrawRectangleGradientH(int posX, int posY, int width, int height, Color left, Color right);   // Draw a horizontal-gradient-filled rectangle
+RLAPI void DrawRectangleGradientEx(Rectangle rec, Color topLeft, Color bottomLeft, Color topRight, Color bottomRight); // Draw a gradient-filled rectangle with custom vertex colors
 RLAPI void DrawRectangleLines(int posX, int posY, int width, int height, Color color);                   // Draw rectangle outline
 RLAPI void DrawRectangleLinesEx(Rectangle rec, float lineThick, Color color);                            // Draw rectangle outline with extended parameters
 RLAPI void DrawRectangleRounded(Rectangle rec, float roundness, int segments, Color color);              // Draw rectangle with rounded edges
@@ -1431,6 +1436,7 @@ RLAPI Color ColorBrightness(Color color, float factor);                     // G
 RLAPI Color ColorContrast(Color color, float contrast);                     // Get color with contrast correction, contrast values between -1.0f and 1.0f
 RLAPI Color ColorAlpha(Color color, float alpha);                           // Get color with alpha applied, alpha goes from 0.0f to 1.0f
 RLAPI Color ColorAlphaBlend(Color dst, Color src, Color tint);              // Get src alpha-blended into dst color with tint
+RLAPI Color ColorLerp(Color color1, Color color2, float factor);            // Get color lerp interpolation between two colors, factor [0.0f..1.0f]
 RLAPI Color GetColor(unsigned int hexValue);                                // Get Color structure from hexadecimal value
 RLAPI Color GetPixelColor(void *srcPtr, int format);                        // Get Color from a source pixel pointer of certain format
 RLAPI void SetPixelColor(void *dstPtr, Color color, int format);            // Set color formatted into destination pixel pointer
@@ -1443,7 +1449,7 @@ RLAPI int GetPixelDataSize(int width, int height, int format);              // G
 // Font loading/unloading functions
 RLAPI Font GetFontDefault(void);                                                            // Get the default Font
 RLAPI Font LoadFont(const char *fileName);                                                  // Load font from file into GPU memory (VRAM)
-RLAPI Font LoadFontEx(const char *fileName, int fontSize, int *codepoints, int codepointCount); // Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set
+RLAPI Font LoadFontEx(const char *fileName, int fontSize, int *codepoints, int codepointCount); // Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set, font size is provided in pixels height
 RLAPI Font LoadFontFromImage(Image image, Color key, int firstChar);                        // Load font from Image (XNA style)
 RLAPI Font LoadFontFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *codepoints, int codepointCount); // Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
 RLAPI bool IsFontReady(Font font);                                                          // Check if a font is ready
@@ -1545,6 +1551,8 @@ RLAPI void DrawModel(Model model, Vector3 position, float scale, Color tint);   
 RLAPI void DrawModelEx(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint); // Draw a model with extended parameters
 RLAPI void DrawModelWires(Model model, Vector3 position, float scale, Color tint);          // Draw a model wires (with texture if set)
 RLAPI void DrawModelWiresEx(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint); // Draw a model wires (with texture if set) with extended parameters
+RLAPI void DrawModelPoints(Model model, Vector3 position, float scale, Color tint); // Draw a model as points
+RLAPI void DrawModelPointsEx(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint); // Draw a model as points with extended parameters
 RLAPI void DrawBoundingBox(BoundingBox box, Color color);                                   // Draw bounding box (wires)
 RLAPI void DrawBillboard(Camera camera, Texture2D texture, Vector3 position, float scale, Color tint);   // Draw a billboard texture
 RLAPI void DrawBillboardRec(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint); // Draw a billboard texture defined by source
@@ -1588,6 +1596,7 @@ RLAPI void UpdateModelAnimation(Model model, ModelAnimation anim, int frame);   
 RLAPI void UnloadModelAnimation(ModelAnimation anim);                                       // Unload animation data
 RLAPI void UnloadModelAnimations(ModelAnimation *animations, int animCount);                // Unload animation array data
 RLAPI bool IsModelAnimationValid(Model model, ModelAnimation anim);                         // Check model animation skeleton match
+RLAPI void UpdateModelAnimationBoneMatrices(Model model, ModelAnimation anim, int frame);   // Update model animation mesh bone matrices
 
 // Collision detection functions
 RLAPI bool CheckCollisionSpheres(Vector3 center1, float radius1, Vector3 center2, float radius2);   // Check collision between two spheres
