@@ -100,8 +100,8 @@ begin
   cam.up := Vector3Create( 0.0, 1.0, 0.0 );
   cam.fovy := 45.0;
 
-  shadowShader := LoadShader(TextFormat(GetAppDir('resources/shaders/glsl%i/shadowmap.vs'), GLSL_VERSION),
-                             TextFormat(GetAppDir('resources/shaders/glsl%i/shadowmap.fs'), GLSL_VERSION));
+  shadowShader := LoadShader(TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/shadowmap.vs'), GLSL_VERSION),
+                             TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/shadowmap.fs'), GLSL_VERSION));
    shadowShader.locs[SHADER_LOC_VECTOR_VIEW] := GetShaderLocation(shadowShader, 'viewPos');
 
    lightDir := Vector3Normalize(Vector3Create( 0.35, -1.0, -0.35 ));
@@ -124,12 +124,12 @@ begin
 
    cube := LoadModelFromMesh(GenMeshCube(1.0, 1.0, 1.0));
    cube.materials[0].shader := shadowShader;
-   robot := LoadModel(GetAppDir('resources/models/robot.glb'));
+   robot := LoadModel(PChar(GetApplicationDirectory + 'resources/models/robot.glb'));
    for i := 0 to robot.materialCount-1 do
    robot.materials[i].shader := shadowShader;
 
    animCount := 0;
-   robotAnimations := LoadModelAnimations(GetAppDir('resources/models/robot.glb'), @animCount);
+   robotAnimations := LoadModelAnimations(PChar(GetApplicationDirectory + 'resources/models/robot.glb'), @animCount);
 
    shadowMap := LoadShadowmapRenderTexture(SHADOWMAP_RESOLUTION, SHADOWMAP_RESOLUTION);
    // For the shadowmapping algorithm, we will be rendering everything from the light's point of view

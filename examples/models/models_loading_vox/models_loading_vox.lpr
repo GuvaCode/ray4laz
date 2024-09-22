@@ -45,7 +45,7 @@ begin
 	begin
         // Load VOX file and measure time
 	        t0 := GetTime()*1000.0;
-		models[i] := LoadModel(GetAppDir(voxFileNames[i]));
+		models[i] := LoadModel(PChar(GetApplicationDirectory + voxFileNames[i]));
 		t1 := GetTime()*1000.0;
 
                 TraceLog(LOG_WARNING, TextFormat('[%s] File loaded in %.3f ms', voxFileNames[i], t1 - t0));

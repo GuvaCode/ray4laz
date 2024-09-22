@@ -88,7 +88,7 @@ begin
     Positions[I] := Points[i];
 
   // Load texture to be mapped to poly
-  Texture := LoadTexture(GetAppDir('resources/cat.png'));
+  Texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/cat.png'));
 
   Angle := 0.0;             // Rotation angle (in degrees)
 

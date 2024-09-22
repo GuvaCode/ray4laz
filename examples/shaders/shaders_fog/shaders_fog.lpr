@@ -35,7 +35,7 @@ begin
   modelA := LoadModelFromMesh(GenMeshTorus(0.4, 1.0, 16, 32));
   modelB := LoadModelFromMesh(GenMeshCube(1.0, 1.0, 1.0));
   modelC := LoadModelFromMesh(GenMeshSphere(0.5, 32, 32));
-  texture := LoadTexture(GetAppDir('resources/texel_checker.png'));
+  texture := LoadTexture(PChar(GetApplicationDirectory +'resources/texel_checker.png'));
 
   // Assign texture to default model material
   modelA.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture := texture;
@@ -44,8 +44,8 @@ begin
 
 
   // Load shader and set up some uniforms
-  shader := LoadShader(TextFormat(GetAppDir('resources/shaders/glsl%i/lighting.vs'), GLSL_VERSION),
-                                 TextFormat(GetAppDir('resources/shaders/glsl%i/fog.fs'), GLSL_VERSION));
+  shader := LoadShader(TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/lighting.vs'), GLSL_VERSION),
+                                 TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/fog.fs'), GLSL_VERSION));
 
   shader.locs[SHADER_LOC_MATRIX_MODEL] := GetShaderLocation(shader, 'matModel');
   shader.locs[SHADER_LOC_VECTOR_VIEW] := GetShaderLocation(shader, 'viewPos');

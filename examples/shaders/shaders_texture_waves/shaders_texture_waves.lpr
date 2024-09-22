@@ -26,7 +26,7 @@ begin
   Texture := LoadTexture('resources/space.png');
 
   // Load shader and setup location points and values
-  Shader := LoadShader(nil, TextFormat(GetAppDir('resources/shaders/glsl%i/wave.fs'), Integer(GLSL_VERSION)));
+  Shader := LoadShader(nil, TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/wave.fs'), Integer(GLSL_VERSION)));
 
   secondsLoc := GetShaderLocation(shader, 'seconds');
   freqXLoc := GetShaderLocation(shader, 'freqX');

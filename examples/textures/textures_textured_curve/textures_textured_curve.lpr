@@ -182,7 +182,7 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib [textures] examples - textured curve');
 
   // Load the road texture
-  texRoad := LoadTexture(GetAppDir('resources/road.png'));
+  texRoad := LoadTexture(PChar(GetApplicationDirectory + 'resources/road.png'));
   SetTextureFilter(texRoad, TEXTURE_FILTER_BILINEAR);
 
   // Setup the curve

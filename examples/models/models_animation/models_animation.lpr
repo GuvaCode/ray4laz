@@ -35,15 +35,15 @@ begin
   Camera.Fovy := 45.0;                                  // Camera field-of-view Y
   Camera.Projection := CAMERA_PERSPECTIVE;              // Camera mode type
 
-  Model := LoadModel(GetAppDir('resources/models/iqm/guy.iqm'));        // Load the animated model mesh and basic data
-  Texture := LoadTexture(GetAppDir('resources/models/iqm/guytex.png')); // Load model texture and set material
+  Model := LoadModel(PChar(GetApplicationDirectory + 'resources/models/iqm/guy.iqm'));        // Load the animated model mesh and basic data
+  Texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/models/iqm/guytex.png')); // Load model texture and set material
   SetMaterialTexture(@Model.Materials[0], MATERIAL_MAP_DIFFUSE, Texture);       // Set model material map texture
 
   Position := Vector3Create(0.0, 0.0, 0.0); // Set model position
 
   // Load animation data
   AnimsCount := 0;
-  Anims := LoadModelAnimations(GetAppDir('resources/models/iqm/guyanim.iqm'), @AnimsCount);
+  Anims := LoadModelAnimations(PChar(GetApplicationDirectory + 'resources/models/iqm/guyanim.iqm'), @AnimsCount);
   AnimFrameCounter := 0;
   DisableCursor;
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second

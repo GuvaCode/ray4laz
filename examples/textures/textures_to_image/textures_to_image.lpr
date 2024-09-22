@@ -20,7 +20,7 @@ begin
 
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
 
-  Image := LoadImage(GetAppDir('resources/raylib_logo.png')); // Loaded in CPU memory (RAM)
+  Image := LoadImage(PChar(GetApplicationDirectory + 'resources/raylib_logo.png')); // Loaded in CPU memory (RAM)
   Texture :=  LoadTextureFromImage(Image); // Image converted to texture, GPU memory (RAM -> VRAM)
   UnloadImage(Image); // Unload image data from CPU memory (RAM)
 

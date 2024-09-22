@@ -30,7 +30,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
  InitWindow(screenWidth, screenHeight, 'raylib [textures] example - bunnymark');
 // SetTargetFPS(144);
  // Load bunny texture
- texBunny := LoadTexture(GetAppDir('resources/wabbit_alpha.png'));
+ texBunny := LoadTexture(PChar(GetApplicationDirectory + 'resources/wabbit_alpha.png'));
 
 
  while not WindowShouldClose() do 

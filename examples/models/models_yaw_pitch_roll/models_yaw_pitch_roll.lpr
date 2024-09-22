@@ -40,8 +40,8 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
     camera.projection := CAMERA_PERSPECTIVE;             // Camera type
     // Model loading
     // NOTE: Diffuse map loaded automatically
-    model := LoadModel(GetAppDir('resources/models/obj/plane.obj'));
-    texture := LoadTexture(GetAppDir('resources/models/obj/plane_diffuse.png'));
+    model := LoadModel(PChar(GetApplicationDirectory + 'resources/models/obj/plane.obj'));
+    texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/models/obj/plane_diffuse.png'));
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture:= texture;            // Set map diffuse texture
     SetTargetFPS(60);
 

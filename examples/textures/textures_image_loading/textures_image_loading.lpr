@@ -18,7 +18,7 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib [textures] example - image loading');
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
 
-  Image := LoadImage(GetAppDir('resources/raylib_logo.png')); // Loaded in CPU memory (RAM)
+  Image := LoadImage(PChar(GetApplicationDirectory + 'resources/raylib_logo.png')); // Loaded in CPU memory (RAM)
   Texture :=  LoadTextureFromImage(Image); // Image converted to texture, GPU memory (VRAM)
   UnloadImage(Image); // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second

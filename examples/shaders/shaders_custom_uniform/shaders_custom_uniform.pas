@@ -55,7 +55,7 @@ begin
 
   position := Vector3Create(0.0, 0.0, 0.0); // Set model position
 
-  shader := LoadShader(nil, TextFormat(GetAppDir('resources/shaders/glsl%i/swirl.fs'), GLSL_VERSION));
+  shader := LoadShader(nil, TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/swirl.fs'), GLSL_VERSION));
 
   swirlCenterLoc := GetShaderLocation(shader, 'center');
   swirlCenter[0] := screenWidth / 2;

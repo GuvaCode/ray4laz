@@ -24,10 +24,10 @@ begin
   // Initialization
   InitWindow(ScreenWidth, ScreenHeight, 'raylib [texture] example - image text drawing');
 
-  Parrots := LoadImage(GetAppDir('resources/parrots.png')); // Load image in CPU memory (RAM)
+  Parrots := LoadImage(PChar(GetApplicationDirectory + 'resources/parrots.png')); // Load image in CPU memory (RAM)
 
   // TTF Font loading with custom generation parameters
-  Font := LoadFontEx(GetAppDir('resources/KAISG.ttf'), 64, nil, 0);
+  Font := LoadFontEx(PChar(GetApplicationDirectory + 'resources/KAISG.ttf'), 64, nil, 0);
 
   // Draw over image using custom font
   ImageDrawTextEx(@Parrots, font, '[Parrots font drawing]', Vector2Create(20.0, 20.0), Font.BaseSize, 0.0, RED);

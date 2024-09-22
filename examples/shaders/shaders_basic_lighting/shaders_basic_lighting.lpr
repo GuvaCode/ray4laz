@@ -53,8 +53,8 @@ begin
   model := LoadModelFromMesh(GenMeshPlane(10.0, 10.0, 3, 3));
   cube := LoadModelFromMesh(GenMeshCube(2.0, 4.0, 2.0));
 
-  shader := LoadShader(TextFormat(GetAppDir('resources/shaders/glsl%i/lighting.vs'), GLSL_VERSION),
-  TextFormat(GetAppDir('resources/shaders/glsl%i/lighting.fs'), GLSL_VERSION));
+  shader := LoadShader(TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/lighting.vs'), GLSL_VERSION),
+  TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/lighting.fs'), GLSL_VERSION));
 
   // Get some required shader loactions
   shader.locs[SHADER_LOC_VECTOR_VIEW] := GetShaderLocation(shader, 'viewPos');

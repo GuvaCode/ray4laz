@@ -22,7 +22,7 @@ begin
   InitWindow(ScreenWidth, ScreenHeight, 'raylib [textures] example - N-patch drawing');
 
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
-  NPatchTexture := LoadTexture(GetAppDir('resources/ninepatch_button.png'));
+  NPatchTexture := LoadTexture(PChar(GetApplicationDirectory + 'resources/ninepatch_button.png'));
 
   MousePosition := Default(TVector2);
   Origin := Vector2Create(0, 0);

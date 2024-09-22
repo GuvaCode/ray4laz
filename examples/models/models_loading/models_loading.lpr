@@ -30,8 +30,8 @@ begin
   Camera.Fovy := 45.0;                                  // Camera field-of-view Y
   Camera.Projection := CAMERA_PERSPECTIVE;              // Camera mode type
 
-  Model := LoadModel(GetAppDir('resources/models/obj/castle.obj'));   // Load model
-  Texture := LoadTexture(GetAppDir('resources/models/obj/castle_diffuse.png')); // Load model texture
+  Model := LoadModel(PChar(GetApplicationDirectory + 'resources/models/obj/castle.obj'));   // Load model
+  Texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/models/obj/castle_diffuse.png')); // Load model texture
   Model.Materials[0].Maps[MATERIAL_MAP_DIFFUSE].Texture := Texture;            // Set map diffuse texture
 
   Position := Vector3Create(0.0, 0.0, 0.0);                    // Set model position

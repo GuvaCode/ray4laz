@@ -143,8 +143,8 @@ begin
   camera.fovy := 45.0;                                // Camera field-of-view Y
   camera.projection := CAMERA_PERSPECTIVE;             // Camera projection type
 
-  shader := LoadShader(TextFormat(GetAppDir('resources/shaders/glsl%i/pbr.vs'),GLSL_VERSION),
-                       TextFormat(GetAppDir('resources/shaders/glsl%i/pbr.fs'),GLSL_VERSION));
+  shader := LoadShader(TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/pbr.vs'),GLSL_VERSION),
+                       TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/pbr.fs'),GLSL_VERSION));
   shader.locs[SHADER_LOC_MAP_ALBEDO] := GetShaderLocation(shader, 'albedoMap');
   // In reality, metalness, roughness, and ambient occlusion are all packed into the MRA texture
   // We'll pass it in as the metalness map
@@ -174,7 +174,7 @@ begin
   emissiveColorLoc := GetShaderLocation(shader, 'emissiveColor');
   textureTilingLoc := GetShaderLocation(shader, 'tiling');
 
-  model := LoadModel(GetAppDir('resources/models/old_car_new.glb'));
+  model := LoadModel(PChar(GetApplicationDirectory + 'resources/models/old_car_new.glb'));
   // If the OBJ file format is used, we will have to generate tangents manually:
   // GenMeshTangents(&model.meshes[0]);
 
@@ -186,14 +186,14 @@ begin
   model.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1.0;
   model.materials[0].maps[MATERIAL_MAP_EMISSION].color := ColorCreate( 255, 162, 0, 255 );
 
-  model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture := LoadTexture(GetAppDir('resources/old_car_d.png'));
-  model.materials[0].maps[MATERIAL_MAP_METALNESS].texture := LoadTexture(GetAppDir('resources/old_car_mra.png'));
-  model.materials[0].maps[MATERIAL_MAP_NORMAL].texture := LoadTexture(GetAppDir('resources/old_car_n.png'));
-  model.materials[0].maps[MATERIAL_MAP_EMISSION].texture := LoadTexture(GetAppDir('resources/old_car_e.png'));
+  model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/old_car_d.png'));
+  model.materials[0].maps[MATERIAL_MAP_METALNESS].texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/old_car_mra.png'));
+  model.materials[0].maps[MATERIAL_MAP_NORMAL].texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/old_car_n.png'));
+  model.materials[0].maps[MATERIAL_MAP_EMISSION].texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/old_car_e.png'));
   // We store tiling parameters in the generic parameter slots in the Material class
   modelTiling := Vector2Create( 0.5, 0.5 );
 
-  floor := LoadModel(GetAppDir('resources/models/plane.glb'));
+  floor := LoadModel(PChar(GetApplicationDirectory + 'resources/models/plane.glb'));
 
   floor.materials[0].shader := shader;
 
@@ -203,9 +203,9 @@ begin
   floor.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1.0;
   floor.materials[0].maps[MATERIAL_MAP_EMISSION].color := BLACK;
 
-  floor.materials[0].maps[MATERIAL_MAP_ALBEDO].texture := LoadTexture(GetAppDir('resources/road_a.png'));
-  floor.materials[0].maps[MATERIAL_MAP_METALNESS].texture := LoadTexture(GetAppDir('resources/road_mra.png'));
-  floor.materials[0].maps[MATERIAL_MAP_NORMAL].texture := LoadTexture(GetAppDir('resources/road_n.png'));
+  floor.materials[0].maps[MATERIAL_MAP_ALBEDO].texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/road_a.png'));
+  floor.materials[0].maps[MATERIAL_MAP_METALNESS].texture := LoadTexture(PChar(GetApplicationDirectory +'resources/road_mra.png'));
+  floor.materials[0].maps[MATERIAL_MAP_NORMAL].texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/road_n.png'));
 
   floorTiling := Vector2Create( 0.5, 0.5 );
 

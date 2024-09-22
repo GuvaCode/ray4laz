@@ -64,7 +64,7 @@ begin
   config := LoadVrStereoConfig(device);
 
   // Distortion shader (uses device lens distortion and chroma)
-  distortion := LoadShader(nil, TextFormat(GetAppDir('resources/distortion%i.fs'), GLSL_VERSION));
+  distortion := LoadShader(nil, TextFormat(PChar(GetApplicationDirectory + 'resources/distortion%i.fs'), GLSL_VERSION));
   // Update distortion shader with lens and distortion-scale parameters
   SetShaderValue(distortion, GetShaderLocation(distortion, 'leftLensCenter'),
                   @config.leftLensCenter, SHADER_UNIFORM_VEC2);

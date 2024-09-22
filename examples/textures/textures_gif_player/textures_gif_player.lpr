@@ -34,7 +34,7 @@ begin
   // Load all GIF animation frames into a single Image
   // NOTE: GIF data is always loaded as RGBA (32bit) by default
   // NOTE: Frames are just appended one after another in image.data memory
-  ImScarfyAnim := LoadImageAnim(GetAppDir('resources/scarfy_run.gif'), @AnimFrames);
+  ImScarfyAnim := LoadImageAnim(PChar(GetApplicationDirectory + 'resources/scarfy_run.gif'), @AnimFrames);
 
   // Load texture from image
   // NOTE: We will update this texture when required with next frame data

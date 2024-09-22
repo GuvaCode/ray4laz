@@ -39,8 +39,8 @@ begin
 
    Ray := Default(TRay);
 
-   Tower := LoadModel(GetAppDir('resources/models/obj/turret.obj'));             // Load OBJ model
-   Texture := LoadTexture(GetAppDir('resources/models/obj/turret_diffuse.png')); // Load model texture
+   Tower := LoadModel(PChar(GetApplicationDirectory + 'resources/models/obj/turret.obj'));             // Load OBJ model
+   Texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/models/obj/turret_diffuse.png')); // Load model texture
    Tower.Materials[0].Maps[MATERIAL_MAP_DIFFUSE].Texture := Texture;                     // Set model diffuse texture
 
    TowerPos := Vector3Create(0.0, 0.0, 0.0);                        // Set model position

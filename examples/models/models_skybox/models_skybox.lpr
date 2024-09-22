@@ -162,7 +162,7 @@ begin
        //TextCopy(PChar(skyboxFileName), 'resources/dresden_square_2k.hdr');
 
             // Load HDR panorama (sphere) texture
-        panorama := LoadTexture(GetAppDir('resources/dresden_square_2k.hdr'));
+        panorama := LoadTexture(PChar(GetApplicationDirectory + 'resources/dresden_square_2k.hdr'));
        // panorama := LoadTexture(PChar(skyboxFileName));
             // Generate cubemap (texture with 6 quads-cube-mapping) from panorama HDR texture
             // NOTE 1: New texture is generated rendering to texture, shader calculates the sphere->cube coordinates mapping
@@ -214,7 +214,7 @@ begin
       //DrawTextureEx(panorama, Vector2Create( 0, 0 ), 0.0, 0.5, WHITE);
 
       if (useHDR) then DrawText(TextFormat('Panorama image from hdrihaven.com: %s',
-      GetFileName(GetAppDir(skyboxFileName{%H-}))), 10, GetScreenHeight() - 20, 10, BLUE)
+      GetFileName(PChar(GetApplicationDirectory  + skyboxFileName{%H-}))), 10, GetScreenHeight() - 20, 10, BLUE)
       else
         DrawText(TextFormat(': %s', GetFileName(PChar(skyboxFileName))), 10, GetScreenHeight() - 20, 10, BLACK);
 

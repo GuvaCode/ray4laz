@@ -149,12 +149,12 @@ begin
       begin
         case visualStyleActive of
           0: GuiLoadStyleDefault;      // Default style
-          1: GuiLoadStyle(GetAppDir('resources/gui_styles/style_jungle.rgs'));
-          2: GuiLoadStyle(GetAppDir('resources/gui_styles/style_lavanda.rgs'));
-          3: GuiLoadStyle(GetAppDir('resources/gui_styles/style_dark.rgs'));
-          4: GuiLoadStyle(GetAppDir('resources/gui_styles/style_bluish.rgs'));
-          5: GuiLoadStyle(GetAppDir('resources/gui_styles/style_cyber.rgs'));
-          6: GuiLoadStyle(GetAppDir('resources/gui_styles/style_terminal.rgs'));
+          1: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_jungle.rgs'));
+          2: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_lavanda.rgs'));
+          3: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_dark.rgs'));
+          4: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_bluish.rgs'));
+          5: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_cyber.rgs'));
+          6: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_terminal.rgs'));
         end;
           GuiSetStyle(LABELS, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
           prevVisualStyleActive := visualStyleActive;

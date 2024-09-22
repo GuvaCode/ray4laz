@@ -30,8 +30,8 @@ begin
 
   InitAudioDevice(); // Initialize audio device
 
-  FxButton := LoadSound(GetAppDir('resources/buttonfx.wav')); // Load button sound
-  Button := LoadTexture(GetAppDir('resources/button.png')); // Load button texture
+  FxButton := LoadSound(PChar(GetApplicationDirectory + 'resources/buttonfx.wav')); // Load button sound
+  Button := LoadTexture(PChar(GetApplicationDirectory + 'resources/button.png')); // Load button texture
 
   // Define frame rectangle for drawing
   FrameHeight := Button.Height / NUM_FRAMES;

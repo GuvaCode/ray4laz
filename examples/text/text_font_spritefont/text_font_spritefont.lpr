@@ -22,9 +22,9 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib [text] example - sprite font loading');
 
   // NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
-  Font1 := LoadFont(GetAppDir('resources/custom_mecha.png'));          // Font loading
-  Font2 := LoadFont(GetAppDir('resources/custom_alagard.png'));        // Font loading
-  Font3 := LoadFont(GetAppDir('resources/custom_jupiter_crash.png'));  // Font loading
+  Font1 := LoadFont(PChar(GetApplicationDirectory + 'resources/custom_mecha.png'));          // Font loading
+  Font2 := LoadFont(PChar(GetApplicationDirectory + 'resources/custom_alagard.png'));        // Font loading
+  Font3 := LoadFont(PChar(GetApplicationDirectory + 'resources/custom_jupiter_crash.png'));  // Font loading
 
   FontPosition1 := Vector2Create(ScreenWidth / 2.0 - MeasureTextEx(Font1, PChar(Msg1), Font1.BaseSize, -3).X / 2,
                                  ScreenHeight / 2.0 - Font1.BaseSize / 2.0 - 80.0);

@@ -17,8 +17,8 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib [audio] example - sound loading and playing');
   InitAudioDevice();      // Initialize audio device
 
-  fxWav := LoadSound(GetAppDir('resources/sound.wav'));         // Load WAV audio file
-  fxOgg := LoadSound(GetAppDir('resources/target.ogg'));        // Load OGG audio file
+  fxWav := LoadSound(PChar(GetApplicationDirectory + 'resources/sound.wav'));         // Load WAV audio file
+  fxOgg := LoadSound(PChar(GetApplicationDirectory + 'resources/target.ogg'));        // Load OGG audio file
 
   SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
  //--------------------------------------------------------------------------------------

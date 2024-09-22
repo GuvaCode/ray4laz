@@ -27,10 +27,10 @@ begin
   InitWindow(screenWidth, screenHeight, 'raylib [textures] example - blend modess');
 
   // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
-  BgImage := LoadImage(GetAppDir('resources/cyberpunk_street_background.png')); // Loaded in CPU memory (RAM)
+  BgImage := LoadImage(PChar(GetApplicationDirectory + 'resources/cyberpunk_street_background.png')); // Loaded in CPU memory (RAM)
   BgTexture := LoadTextureFromImage(BgImage); // Image converted to texture, GPU memory (VRAM)
 
-  FgImage := LoadImage(GetAppDir('resources/cyberpunk_street_foreground.png')); // Loaded in CPU memory (RAM)
+  FgImage := LoadImage(PChar(GetApplicationDirectory + 'resources/cyberpunk_street_foreground.png')); // Loaded in CPU memory (RAM)
   FgTexture := LoadTextureFromImage(FgImage); // Image converted to texture, GPU memory (VRAM)
 
   // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM

@@ -24,11 +24,11 @@ begin
 
   // NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
   // BMFont (AngelCode) : Font data and image atlas have been generated using external program
-  FontBm := LoadFont(GetAppDir('resources/pixantiqua.fnt'));
+  FontBm := LoadFont(PChar(GetApplicationDirectory + 'resources/pixantiqua.fnt'));
 
   // TTF font : Font data and atlas are generated directly from TTF
   // NOTE: We define a font base size of 32 pixels tall and up-to 250 characters
-  FontTtf := LoadFontEx(GetAppDir('resources/pixantiqua.ttf'), 32, nil, 250);
+  FontTtf := LoadFontEx(PChar(GetApplicationDirectory + 'resources/pixantiqua.ttf'), 32, nil, 250);
 
   // Set line spacing for multiline text (when line breaks are included '\n')
   SetTextLineSpacing(48);

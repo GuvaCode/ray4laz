@@ -33,7 +33,7 @@ begin
 
   // Loading file to memory
   FileSize := 0;
-  FileData := LoadFileData(GetAppDir('resources/anonymous_pro_bold.ttf'), @FileSize);
+  FileData := LoadFileData(PChar(GetApplicationDirectory + 'resources/anonymous_pro_bold.ttf'), @FileSize);
 
   // Default font generation from TTF font
   FontDefault := Default(TFont);
@@ -62,7 +62,7 @@ begin
   UnloadFileData(FileData);      // Free memory from loaded file
 
   // Load SDF required shader (we use default vertex shader)
-  Shader := LoadShader(nil, TextFormat(GetAppDir('resources/shaders/glsl%i/sdf.fs'), GLSL_VERSION));
+  Shader := LoadShader(nil, TextFormat(PChar(GetApplicationDirectory + 'resources/shaders/glsl%i/sdf.fs'), GLSL_VERSION));
   SetTextureFilter(FontSDF.Texture, TEXTURE_FILTER_BILINEAR);    // Required for SDF font
 
   FontPosition := Vector2Create(40, ScreenHeight / 2.0 - 50);

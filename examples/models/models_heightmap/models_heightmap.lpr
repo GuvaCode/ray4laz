@@ -27,7 +27,7 @@ SetExceptionMask([exDenormalized,exInvalidOp,exOverflow,exPrecision,exUnderflow,
                          Vector3Create(0.0,0.0,0.0),
                          Vector3Create(0.0,1.0,0.0),45.0,0);
 
- image := LoadImage(GetAppDir('resources/heightmap.png'));           // Load heightmap image (RAM)
+ image := LoadImage(PChar(GetApplicationDirectory + 'resources/heightmap.png'));           // Load heightmap image (RAM)
  texture := LoadTextureFromImage(image);                  // Convert image to texture (VRAM)
  mesh := GenMeshHeightmap(image, Vector3Create(16,8,16)); // Generate heightmap mesh (RAM and VRAM)
  model := LoadModelFromMesh(mesh);                        // Load model from generated mesh

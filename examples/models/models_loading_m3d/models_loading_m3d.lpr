@@ -36,8 +36,8 @@ begin
   position := Vector3Create( 0, 0, 0 );                // Set model position
 
   // Load model
-  model := LoadModel(GetAppDir('resources/models/m3d/cesium_man.m3d')); // Load the animated model mesh and basic data
-  model2 := LoadModel(GetAppDir('resources/models/m3d/cesium_man.m3d')); // Load the animated model mesh and basic data
+  model := LoadModel(PChar(GetApplicationDirectory + 'resources/models/m3d/cesium_man.m3d')); // Load the animated model mesh and basic data
+  model2 := LoadModel(PChar(GetApplicationDirectory + 'resources/models/m3d/cesium_man.m3d')); // Load the animated model mesh and basic data
   drawMesh := true;
   drawSkeleton := true;
   animPlaying := false;   // Store anim state, what to draw
@@ -46,7 +46,7 @@ begin
   animsCount:= 0;
   animFrameCounter := 0;
   animId := 0;
-  anims := LoadModelAnimations(GetAppDir('resources/models/m3d/cesium_man.m3d'), @animsCount);
+  anims := LoadModelAnimations(PChar(GetApplicationDirectory + 'resources/models/m3d/cesium_man.m3d'), @animsCount);
 
   disableCursor;
   SetTargetFPS(60);// Set our game to run at 60 frames-per-second
