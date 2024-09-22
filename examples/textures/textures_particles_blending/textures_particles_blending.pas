@@ -1,6 +1,6 @@
 program textures_particles_blending;
 
-{$MODE objfpc}
+{$MODE objfpc}{$H+}
 
 uses cmem, raylib, math;
 
@@ -43,7 +43,7 @@ begin
   end;
 
   gravity := 3.0;
-  smoke := LoadTexture(GetAppDir('resources/spark_flame.png'));
+  smoke := LoadTexture(PChar(GetApplicationDirectory + 'resources/spark_flame.png'));
   blending := BLEND_ALPHA;
   SetTargetFPS(60);
 

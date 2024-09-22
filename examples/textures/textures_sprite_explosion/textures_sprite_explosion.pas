@@ -1,6 +1,6 @@
 program textures_sprite_explosion;
 
-{$mode objfpc}
+{$mode objfpc}{$H+}
 
 uses cmem, raylib, math;
 
@@ -23,8 +23,8 @@ var
 begin
  InitWindow(screenWidth, screenHeight, 'raylib [textures] example - Sprite explosion');
  InitAudioDevice();
- fxBoom := LoadSound(GetAppDir('resources/boom.wav'));
- explosion := LoadTexture(GetAppDir('resources/explosion.png'));
+ fxBoom := LoadSound(PChar(GetApplicationDirectory + 'resources/boom.wav'));
+ explosion := LoadTexture(PChar(GetApplicationDirectory + 'resources/explosion.png'));
  frameWidth := explosion.width div NUM_FRAMES_PER_LINE; // Sprite one frame rectangle width
  frameHeight := explosion.height div NUM_LINES; // Sprite one frame rectangle height
  currentFrame := 0;

@@ -1,6 +1,6 @@
 program models_first_person_maze;
 
-{$MODE objfpc}
+{$MODE objfpc}{$H+}
 
 uses cmem, raylib, raymath, math;
 
@@ -29,13 +29,13 @@ begin
                   Vector3Create(0.0,1.0,0.0),45.0,0);
 
 
-      imMap := LoadImage(GetAppDir('resources/cubicmap.png'));      // Load cubicmap image (RAM)
+      imMap := LoadImage(PChar(GetApplicationDirectory + 'resources/cubicmap.png'));      // Load cubicmap image (RAM)
       cubicmap := LoadTextureFromImage(imMap);       // Convert image to texture to display (VRAM)
       mesh := GenMeshCubicmap(imMap,Vector3Create(1.0,1.0,1.0));
       model := LoadModelFromMesh(mesh);
 
       // NOTE: By default each cube is mapped to one part of texture atlas
-      texture := LoadTexture(GetAppDir('resources/cubicmap_atlas.png'));    // Load map texture
+      texture := LoadTexture(PChar(GetApplicationDirectory +'resources/cubicmap_atlas.png'));    // Load map texture
       model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture := texture;             // Set map diffuse texture
 
       // Get map image data to be used for collision detection

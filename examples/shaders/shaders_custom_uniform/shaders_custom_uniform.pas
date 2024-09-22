@@ -18,7 +18,7 @@
 ********************************************************************************************}
 program shaders_custom_uniform;
 
-{$MODE objfpc}
+{$MODE objfpc}{$H+}
 
 uses cmem, raylib, math;
 
@@ -48,8 +48,8 @@ begin
   camera.fovy := 45.0;
   camera.projection := CAMERA_PERSPECTIVE;
 
-  model := LoadModel(GetAppDir('resources/models/barracks.obj')); // Load OBJ model
-  texture := LoadTexture(GetAppDir('resources/models/barracks_diffuse.png'));// Load model texture (diffuse map)
+  model := LoadModel(PChar(GetApplicationDirectory + 'resources/models/barracks.obj')); // Load OBJ model
+  texture := LoadTexture(PChar(GetApplicationDirectory + 'resources/models/barracks_diffuse.png'));// Load model texture (diffuse map)
 
   model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture := texture;                     // Set model diffuse texture
 
