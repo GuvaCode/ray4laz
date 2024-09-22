@@ -29,6 +29,7 @@ begin
  RegisterProjectDescriptor(TRay4LazSimpleProjectDescriptor.Create);
 end;
 
+
 { TRay4LazSimpleProjectDescriptor }
 constructor TRay4LazSimpleProjectDescriptor.Create;
 begin
@@ -51,7 +52,6 @@ function TRay4LazSimpleProjectDescriptor.InitProject(AProject: TLazProject): TMo
 var
   Source: string;
   MainFile: TLazProjectFile;
-
 begin
   Result := inherited InitProject(AProject);
   MainFile := AProject.CreateProjectFile('game.lpr');
