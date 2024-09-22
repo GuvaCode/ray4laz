@@ -1,4 +1,4 @@
-**Ray4Laz is a header translation of the [raylib game development Library](https://www.raylib.com/) for the [Lazarus project](https://www.lazarus-ide.org/).**
+**ray4laz is a header translation of the [raylib game development Library](https://www.raylib.com/) for the [Lazarus project](https://www.lazarus-ide.org/).**
 
 ---
 
