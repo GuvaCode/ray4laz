@@ -1213,6 +1213,8 @@ function GetPrevDirectoryPath(const dirPath: PChar): PChar; cdecl; external {$IF
 function GetWorkingDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorkingDirectory';
 {Get the directory if the running application (uses static string)}
 function GetApplicationDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetApplicationDirectory';
+{Create directories (including full path requested), returns 0 on success}
+function MakeDirectory(const dirPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MakeDirectory';
 {Change working directory, return true on success}
 function ChangeDirectory(const dir: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ChangeDirectory';
 {Check if a given path is a file or a directory}
