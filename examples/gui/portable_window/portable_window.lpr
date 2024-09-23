@@ -21,7 +21,7 @@ cmem,
 {uncomment if necessary}
 //raymath, 
 //rlgl, 
-raylib, raygui;
+raylib, raygui, mouse;
 
 const
   screenWidth = 800;
@@ -40,7 +40,7 @@ begin
   // General variables
   mousePosition := Vector2Create(0,0);
   windowPosition := Vector2Create( 500, 200 );
-  panOffset := mousePosition;
+  panOffset := Vector2Create(0,0);   ;
   dragWindow := false;
 
   SetWindowPosition(Round(windowPosition.x), Trunc(windowPosition.y));
@@ -53,16 +53,15 @@ begin
   while ((not exitWindow) and (not WindowShouldClose)) do    // Detect window close button or ESC key
     begin
       // Update
-      mousePosition.x := Round(GetMousePosition.x);
+      mousePosition.x :=  Round(GetMousePosition.x);
       mousePosition.y := Round(GetMousePosition.y);
 
       if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) and not dragWindow) then
       begin
           if (CheckCollisionPointRec(mousePosition, RectangleCreate( 0, 0, screenWidth, 20 ))) then
           begin
-              dragWindow := true;
-              panOffset.x := mousePosition.x;
-              panOffset.y := mousePosition.y;
+            dragWindow := true;
+
           end;
       end;
 
@@ -70,13 +69,11 @@ begin
       begin
           windowPosition.x := windowPosition.x + (mousePosition.x - panOffset.x);
           windowPosition.y := windowPosition.y + (mousePosition.y - panOffset.y);
-          SetWindowPosition(Round(windowPosition.x), Trunc(windowPosition.y));
-
+          SetWindowPosition(Round(windowPosition.x), Round(windowPosition.y));
           if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) then
           begin
             dragWindow := false;
-            panOffset.x := Round(mousePosition.x);
-            panOffset.y := Round(mousePosition.y);
+            panOffset:=  GetMousePosition;
           end;
       end;
 
@@ -84,7 +81,7 @@ begin
       // Draw
       BeginDrawing();
         ClearBackground(RAYWHITE);
-        //exitWindow :=
+
         if GuiWindowBox(RectangleCreate( 0, 0, screenWidth, screenHeight ), '#198# PORTABLE WINDOW') = 0 then
         exitWindow := False else exitWindow := True;
 
