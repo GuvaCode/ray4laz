@@ -1406,9 +1406,9 @@ function GetShapesTextureRectangle: TRectangle; cdecl; external {$IFNDEF RAY_STA
 
 (* Basic shapes drawing functions *)
 
-{Draw a pixel}
+{Draw a pixel using geometry [Can be slow, use with care]}
 procedure DrawPixel(posX, posY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPixel';
-{Draw a pixel (Vector version)}
+{Draw a pixel using geometry (Vector version) [Can be slow, use with care]}
 procedure DrawPixelV(position: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPixelV';
 {Draw a line}
 procedure DrawLine(startPosX, startPosY, endPosX, endPosY: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLine';
@@ -1553,8 +1553,6 @@ function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external {$
 function LoadImage(const fileName: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImage';
 {Load image from RAW file data}
 function LoadImageRaw(const fileName: PChar; width, height, format: TPixelFormat; headerSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageRaw';
-{Load image from SVG file data or string with specified size}
-function LoadImageSvg(const fileNameOrString: PChar; width, height: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageSvg';
 {Load image sequence from file (frames appended to image.data)}
 function LoadImageAnim(const fileName: PChar; frames: PInteger):TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageAnim';
 {Load image sequence from memory buffer}
@@ -2087,7 +2085,7 @@ procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF 
 procedure UnloadModelAnimations(animations: PModelAnimation; animCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimations';
 {Check model animation skeleton match}
 function IsModelAnimationValid(model: TModel; anim: TModelAnimation): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsModelAnimationValid';
-{Update model animation mesh bone matrices}
+{Update model animation mesh bone matrices (Note GPU skinning does not work on Mac)}
 procedure UpdateModelAnimationBoneMatrices(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimationBoneMatrices';
 
 (* Collision detection functions *)
