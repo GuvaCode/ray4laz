@@ -57,7 +57,7 @@ var
   valueBox002Value: integer = 0;
   valueBoxEditMode: boolean = false;
 
-  textBoxText: PChar = 'Text box';
+  textBoxText: Char;// = 'Text box';
   textBoxEditMode: boolean = false;
 
   textBoxMultiText:  PChar;
@@ -91,7 +91,7 @@ var
   exitWindow: boolean = false;
   showMessageBox: boolean = false;
 
-  textInput: PChar;
+  textInput: Char;
   {%H-}textInputFileName: PChar;
   showTextInputBox: boolean = false;
 
@@ -178,7 +178,7 @@ begin
         then valueBoxEditMode := not valueBoxEditMode;
         GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
 
-        if GuiTextBox(RectangleCreate( 25, 215, 125, 30 ), textBoxText, 64, textBoxEditMode) <> 0
+        if GuiTextBox(RectangleCreate( 25, 215, 125, 30 ), @textBoxText, 64, textBoxEditMode) <> 0
         then textBoxEditMode :=  not textBoxEditMode;
         GuiSetStyle(BUTTON, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
 
@@ -275,22 +275,20 @@ begin
          begin
            DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, 0.8));
            BoxResult := GuiTextInputBox(RectangleCreate( GetScreenWidth()/2 - 120, GetScreenHeight()/2 - 60, 240, 140 ),
-           GuiIconText(ICON_FILE_SAVE, 'Save file as...'), 'Introduce output file name:', 'Ok;Cancel', textInput{%H-}, 255, nil);
+           GuiIconText(ICON_FILE_SAVE, 'Save file as...'), 'Introduce output file name:', 'Ok;Cancel', @textInput, 64, nil);
 
              if (BoxResult = 1) then
              begin
                  // TODO: Validate textInput value and save
-                 TextCopy(textInput, textInput);
+                 TextCopy(@textInput, '@textInput');
              end;
 
              if (BoxResult = 0) or (BoxResult = 1) or (BoxResult = 2) then
              begin
                  showTextInputBox := false;
-                 TextCopy(textInput, '\0');
+                 TextCopy(@textInput, 'text.txt');
              end;
          end;
-
-
 
       EndDrawing();
 
