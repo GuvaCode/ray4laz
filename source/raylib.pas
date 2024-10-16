@@ -1246,6 +1246,10 @@ function DecompressData(const compData: Pointer; compDataSize: Integer; dataSize
 function EncodeDataBase64(const data: PChar; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EncodeDataBase64';
 {Decode Base64 string data, memory must be MemFree()}
 function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
+{Compute CRC32 hash code}
+function ComputeCRC32(data: PChar; dataSize: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeCRC32';
+{Compute MD5 hash code, returns static int[4] (16 bytes)}
+function ComputeMD5(data: PChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeMD5';
 
 (* Automation events functionality *)
 
