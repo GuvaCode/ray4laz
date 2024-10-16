@@ -73,7 +73,7 @@ make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE R
 echo -e "\e[92m \e[1m"
 echo " copy libs x86_64-linux ..."
 rm -f ../../libs/x86_64-linux/*
-cp libraylib.so.5.0.0 ../../libs/x86_64-linux/libraylib.so
+cp libraylib.so.5.5.0 ../../libs/x86_64-linux/libraylib.so
 echo -e "\e[0m"
 
 echo -e "\e[34m \e[1m"  
@@ -85,6 +85,7 @@ echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE
 cp libraylib.a ../../libs/x86_64-linux/libraylib.a
 
+
 echo -e "\e[34m \e[1m"  
 echo "build x86_32 linux"
 echo -e "\e[0m"
@@ -93,7 +94,8 @@ echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui
 echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE LDFLAG=-m32
 rm -f ../../libs/x86_32-linux/*
-cp libraylib.so.5.0.0 ../../libs/x86_32-linux/libraylib.so
+cp libraylib.so.5.5.0 ../../libs/x86_32-linux/libraylib.so
+
 echo -e "\e[34m \e[1m"  
 echo "Build x86_32_LINUX Statics" 
 echo -e "\e[0m"
