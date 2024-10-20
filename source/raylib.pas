@@ -12,9 +12,9 @@ interface
 
 {$IFNDEF RAY_STATIC}
 const
-  cDllName = {$IFDEF WINDOWS} 'raylib.dll' {$IFEND}
-             {$IFDEF DARWIN} 'libraylib.dylib' {$IFEND}
-             {$IFDEF LINUX} 'libraylib.so' {$IFEND};
+  cDllName = {$IFDEF WINDOWS} 'raylib.dll'; {$IFEND}
+             {$IFDEF DARWIN} 'libraylib.dylib'; {$IFEND}
+             {$IFDEF LINUX} 'libraylib.so'; {$IFEND}
 {$ENDIF}
 
 
@@ -1061,8 +1061,8 @@ procedure UnloadVrStereoConfig(config: TVrStereoConfig); cdecl; external {$IFNDE
 function LoadShader(const vsFileName, fsFileName: PChar): TShader; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadShader';
 {Load shader from code strings and bind default locations}
 function LoadShaderFromMemory(const vsCode, fsCode: PChar): TShader; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadShaderFromMemory';
-{Check if a shader is ready}
-function IsShaderReady(shader: TShader): Boolean; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsShaderReady';
+{Check if a shader is valid (loaded on GPU)}
+function IsShaderValid(shader: TShader): Boolean; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsShaderValid';
 {Get shader uniform location}
 function GetShaderLocation(shader: TShader; const uniformName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShaderLocation';
 {Get shader attribute location}
@@ -2299,6 +2299,7 @@ uses
   {$linklib libraylib.a}
   {$endif}
 {$endif}
+
 
 function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay;
 begin

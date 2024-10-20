@@ -16,6 +16,7 @@ sudo apt-get install -y gcc-mingw-w64-i686-posix
 sudo apt-get install -y gcc-mingw-w64-i686-win32
 sudo apt-get install -y build-essential libc6-dev-i386
 sudo apt-get install -y libgl1-mesa-dev:i386
+sudo apt install -y emscripten
     ;;
     * )
         echo skiping
@@ -33,6 +34,7 @@ mkdir libs/x86_64-linux
 mkdir libs/x86_32-linux
 mkdir libs/x86_64-windows
 mkdir libs/x86_32-windows
+mkdir libs/wasm32-wasi
 
 echo -e "\e[92m \e[1m"
 echo "Download raylib master branch"
@@ -106,6 +108,18 @@ make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TR
 cp libraylib.a ../../libs/x86_32-linux
 #--------------------------------------------------------------------------------------------------------
 
+echo -e "\e[34m \e[1m"  
+echo "Build WebAssembly Statics" 
+echo -e "\e[0m"
+make clean
+#echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
+#echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
+make PLATFORM=PLATFORM_WEB
+cp libraylib.a ../../libs/wasm32-wasi
+
+#--------------------------------------------------------------------------------------------------------
+
+
 make clean 
 echo -e "\e[34m \e[1m"  
 echo " build x64 windows"
@@ -116,11 +130,14 @@ x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 
+
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
 
 rm -f ../../libs/x86_64-windows/*
-cp libraylibdll.a ../../libs/x86_64-windows
-cp raylib.dll ../../libs/x86_64-windows
+cp libraylibdll.a ../../libs/x86_64-win64
+cp raylib.dll ../../libs/x86_64-win64
+
+#---------------------------------------------------------------------------------------------------------
 
 make clean
 echo -e "\e[34m \e[1m"  
@@ -135,8 +152,8 @@ echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
 
 rm -f ../../libs/x86_32-windows/*
-cp libraylibdll.a ../../libs/x86_32-windows
-cp raylib.dll ../../libs/x86_32-windows
+cp libraylibdll.a ../../libs/i386-win32
+cp raylib.dll ../../libs/i386-win32
 
 cd ../../
 rm -rvf raylib_tmp
