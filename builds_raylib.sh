@@ -32,8 +32,8 @@ rm -f master
 mkdir libs
 mkdir libs/x86_64-linux
 mkdir libs/x86_32-linux
-mkdir libs/x86_64-windows
-mkdir libs/x86_32-windows
+mkdir libs/x86_64-win64
+mkdir libs/i386-win32
 mkdir libs/wasm32-wasi
 
 echo -e "\e[92m \e[1m"
@@ -133,7 +133,7 @@ echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac
 
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
 
-rm -f ../../libs/x86_64-windows/*
+rm -f ../../libs/x86_64-win64/*
 cp libraylibdll.a ../../libs/x86_64-win64
 cp raylib.dll ../../libs/x86_64-win64
 
@@ -151,7 +151,7 @@ echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac
 
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
 
-rm -f ../../libs/x86_32-windows/*
+rm -f ../../libs/i386-win32/*
 cp libraylibdll.a ../../libs/i386-win32
 cp raylib.dll ../../libs/i386-win32
 

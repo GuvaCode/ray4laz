@@ -1250,6 +1250,8 @@ function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl
 function ComputeCRC32(data: PChar; dataSize: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeCRC32';
 {Compute MD5 hash code, returns static int[4] (16 bytes)}
 function ComputeMD5(data: PChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeMD5';
+{Compute SHA1 hash code, returns static int[5] (20 bytes)}
+function ComputeSHA1(data: PChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA1';
 
 (* Automation events functionality *)
 
@@ -1567,8 +1569,8 @@ function LoadImageFromMemory(const fileType: PChar; const fileData: PByte; dataS
 function LoadImageFromTexture(texture: TTexture2D): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageFromTexture';
 {Load image from screen buffer and (screenshot)}
 function LoadImageFromScreen: TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageFromScreen';
-{Check if an image is ready}
-function IsImageReady(image: TImage): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsImageReady';
+{Check if an image is valid (data and parameters)}
+function IsImageValid(image: TImage): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsImageValid';
 {Unload image from CPU memory (RAM)}
 procedure UnloadImage(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadImage';
 {Export image data to file, returns true on success}
@@ -1733,12 +1735,12 @@ function LoadTextureFromImage(image: TImage): TTexture2D; cdecl; external {$IFND
 function LoadTextureCubemap(image: TImage; layout: TCubemapLayout): TTextureCubemap; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTextureCubemap';
 {Load texture for rendering (framebuffer)}
 function LoadRenderTexture(width, height: Integer): TRenderTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadRenderTexture';
-{Check if a texture is ready}
-function IsTextureReady(texture: TTexture2D): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsTextureReady';
+{Check if a texture is valid (loaded in GPU)}
+function IsTextureValid(texture: TTexture2D): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsTextureValid';
 {Unload texture from GPU memory (VRAM)}
 procedure UnloadTexture(texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadTexture';
-{Check if a render texture is ready}
-function IsRenderTextureReady(target: TRenderTexture2D): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsRenderTextureReady';
+{Check if a render texture is valid (loaded in GPU)}
+function IsRenderTextureValid(target: TRenderTexture2D): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsRenderTextureValid';
 {Unload render texture from GPU memory (VRAM)}
 procedure UnloadRenderTexture(target: TRenderTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadRenderTexture';
 {Update GPU texture with new data}
@@ -1823,8 +1825,8 @@ function LoadFontEx(const fileName: Pchar; fontSize: Integer; codepoints: PInteg
 function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromImage';
 {Load font from memory buffer, fileType refers to extension: i.e. '.ttf'}
 function LoadFontFromMemory(const fileType: PChar; const fileData: PByte; dataSize, fontSize: Integer; codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromMemory';
-{Check if a font is ready}
-function IsFontReady(font: TFont): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFontReady';
+{Check if a font is valid (font data loaded, WARNING: GPU texture not checked)}
+function IsFontValid(font: TFont): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFontValid';
 {Load font data for further uses}
 function LoadFontData(const fileData: PByte; dataSize, fontSize: Integer; codepoints: PInteger; codepointCount, _type: Integer): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontData';
 {Generate image font atlas using chars info}
@@ -1986,8 +1988,8 @@ procedure DrawGrid(slices: Integer; spacing: Single); cdecl; external {$IFNDEF R
 function LoadModel(const fileName: PChar): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModel';
 {Load model from generated mesh (default material)}
 function LoadModelFromMesh(mesh: TMesh): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModelFromMesh';
-{Check if a model is ready}
-function IsModelReady(model: TModel): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsModelReady';
+{Check if a model is valid (loaded in GPU, VAO/VBOs)}
+function IsModelValid(model: TModel): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsModelValid';
 {Unload model (including meshes) from memory (RAM and/or VRAM)}
 procedure UnloadModel(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModel';
 {Compute model bounding box limits (considers all meshes)}
@@ -2068,8 +2070,8 @@ function GenMeshCubicmap(cubicmap: TImage; cubeSize: TVector3): TMesh; cdecl; ex
 function LoadMaterials(const fileName: PChar; materialCount: PInteger): PMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMaterials';
 {Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)}
 function LoadMaterialDefault: TMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMaterialDefault';
-{Check if a material is ready}
-function IsMaterialReady(material: TMaterial): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMaterialReady';
+{Check if a material is valid (shader assigned, map textures loaded in GPU)}
+function IsMaterialValid(material: TMaterial): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMaterialValid';
 {Unload material from GPU memory (VRAM)}
 procedure UnloadMaterial(material: TMaterial); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMaterial';
 {Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)}
@@ -2137,16 +2139,16 @@ function GetMasterVolume(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName
 function LoadWave(const fileName: PChar): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWave';
 {Load wave from memory buffer, fileType refers to extension: i.e. '.wav' }
 function LoadWaveFromMemory(const fileType: PChar; const fileData: PByte; dataSize: Integer): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWaveFromMemory';
-{Checks if wave data is ready}
-function IsWaveReady(wave: TWave): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWaveReady';
+{Checks if wave data is valid (data loaded and parameters)}
+function IsWaveValid(wave: TWave): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWaveValid';
 {Load sound from file}
 function LoadSound(const fileName: PChar): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSound';
 {Load sound from wave data}
 function LoadSoundFromWave(wave: TWave): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSoundFromWave';
 {Create a new sound that shares the same sample data as the source sound, does not own the sound data}
 function LoadSoundAlias(source: TSound): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSoundAlias';
-{Checks if a sound is ready}
-function IsSoundReady(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsSoundReady';
+{Checks if a sound is valid (data loaded and buffers initialized)}
+function IsSoundValid(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsSoundValid';
 {Update sound buffer with new data}
 procedure UpdateSound(sound: TSound; const data: Pointer; sampleCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateSound';
 {Unload wave data}
@@ -2195,8 +2197,8 @@ procedure UnloadWaveSamples(samples: PSingle); cdecl; external {$IFNDEF RAY_STAT
 function LoadMusicStream(const fileName: PChar): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMusicStream';
 {Load music stream from data}
 function LoadMusicStreamFromMemory(const fileType: PChar; const data: PByte; dataSize: Integer): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMusicStreamFromMemory';
-{Checks if a music stream is ready}
-function IsMusicReady(music: TMusic): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMusicReady';
+{Checks if a music stream is valid (context and buffers initialized)}
+function IsMusicValid(music: TMusic): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMusicValid';
 {Unload music stream}
 procedure UnloadMusicStream(music: TMusic); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMusicStream';
 {Start music playing}
@@ -2228,8 +2230,8 @@ function GetMusicTimePlayed(music: TMusic): Single; cdecl; external {$IFNDEF RAY
 
 {Load audio stream (to stream raw audio pcm data)}
 function LoadAudioStream(sampleRate, sampleSize, channels: LongWord): TAudioStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadAudioStream';
-{Checks if an audio stream is ready}
-function IsAudioStreamReady(stream: TAudioStream): boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsAudioStreamReady';
+{Checks if an audio stream is valid (buffers initialized)}
+function IsAudioStreamValid(stream: TAudioStream): boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsAudioStreamValid';
 {Unload audio stream and free memory}
 procedure UnloadAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadAudioStream';
 {Update audio stream buffers with data}
