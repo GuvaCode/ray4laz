@@ -109,6 +109,12 @@ manual installation and use without lazarus ide
 clone this repository, then use 'fpc-wrapper.sh' or 'fpc-wrapper.bat' as your compiler. this script automatically feeds fpc with the necessary arguments.
 
 
+Usage examples for getting started quickly
+--------
+
+[Raylib Platformer Game Created with Lazarus and Raster Master](https://www.youtube.com/watch?v=DhdHi7fPkhk)
+
+
 contributors
 --------
 
