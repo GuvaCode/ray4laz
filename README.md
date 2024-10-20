@@ -112,8 +112,8 @@ clone this repository, then use 'fpc-wrapper.sh' or 'fpc-wrapper.bat' as your co
 usage examples from other developers
 --------
 
-[Raylib Platformer Game Created with Lazarus and Raster Master](https://www.youtube.com/watch?v=DhdHi7fPkhk)
-[Sonic The Hedgehog physics in Object Pascal (Raylib, Ray4laz)](https://www.youtube.com/watch?v=3PAmUILrFGw&t=101s)
+- [Raylib Platformer Game Created with Lazarus and Raster Master](https://www.youtube.com/watch?v=DhdHi7fPkhk)
+- [Sonic The Hedgehog physics in Object Pascal (Raylib, Ray4laz)](https://www.youtube.com/watch?v=3PAmUILrFGw&t=101s)
 
 contributors
 --------
