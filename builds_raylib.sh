@@ -16,7 +16,7 @@ sudo apt-get install -y gcc-mingw-w64-i686-posix
 sudo apt-get install -y gcc-mingw-w64-i686-win32
 sudo apt-get install -y build-essential libc6-dev-i386
 sudo apt-get install -y libgl1-mesa-dev:i386
-sudo apt install -y emscripten
+#sudo apt install -y emscripten
     ;;
     * )
         echo skiping
@@ -34,7 +34,7 @@ mkdir libs/x86_64-linux
 mkdir libs/x86_32-linux
 mkdir libs/x86_64-win64
 mkdir libs/i386-win32
-mkdir libs/wasm32-wasi
+#mkdir libs/wasm32-wasi
 
 echo -e "\e[92m \e[1m"
 echo "Download raylib master branch"
@@ -108,14 +108,13 @@ make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TR
 cp libraylib.a ../../libs/x86_32-linux
 #--------------------------------------------------------------------------------------------------------
 
-echo -e "\e[34m \e[1m"  
-echo "Build WebAssembly Statics" 
-echo -e "\e[0m"
-make clean
-#echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
-#echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
-make PLATFORM=PLATFORM_WEB
-cp libraylib.a ../../libs/wasm32-wasi
+#echo -e "\e[34m \e[1m"  
+#echo "Build WebAssembly Statics" 
+#echo -e "\e[0m"
+#make clean
+
+#make PLATFORM=PLATFORM_WEB
+#cp libraylib.a ../../libs/wasm32-wasi
 
 #--------------------------------------------------------------------------------------------------------
 

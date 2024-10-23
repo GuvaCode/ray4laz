@@ -1317,8 +1317,8 @@ function GetGamepadAxisCount(gamepad: Integer): Integer; cdecl; external {$IFNDE
 function GetGamepadAxisMovement(gamepad: Integer; axis: TGamepadAxis): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadAxisMovement';
 {Set internal gamepad mappings (SDL_GameControllerDB)}
 function SetGamepadMappings(const mappings: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadMappings';
-{Set gamepad vibration for both motors}
-procedure SetGamepadVibration(gamepad: Integer; leftMotor, rightMotor: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadVibration';
+{Set gamepad vibration for both motors (duration in seconds)}
+procedure SetGamepadVibration(gamepad: Integer; leftMotor, rightMotor, duration: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadVibration';
 
 (* Input-related functions: mouse *)
 
@@ -1376,7 +1376,7 @@ procedure SetGesturesEnabled(flags: TGesture); cdecl; external {$IFNDEF RAY_STAT
 function IsGestureDetected(gesture: TGesture): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGestureDetected';
 {Get latest detected gesture}
 function GetGestureDetected: TGesture; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGestureDetected';
-{Get gesture hold time in milliseconds}
+{Get gesture hold time in seconds}
 function GetGestureHoldDuration: Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGestureHoldDuration';
 {Get gesture drag vector}
 function GetGestureDragVector: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGestureDragVector';
@@ -1531,20 +1531,20 @@ function CheckCollisionRecs(rec1, rec2: TRectangle): Boolean; cdecl; external {$
 function CheckCollisionCircles(center1: TVector2; radius1: Single; center2: TVector2; radius2: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionCircles';
 {Check collision between circle and rectangle}
 function CheckCollisionCircleRec(center: TVector2; radius: Single; rec: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionCircleRec';
+{Check if circle collides with a line created betweeen two points [p1] and [p2]}
+function CheckCollisionCircleLine(center: TVector2; radius: Single; p1, p2: TVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionCircleLine';
 {Check if point is inside rectangle}
 function CheckCollisionPointRec(point: TVector2; rec: TRectangle): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointRec';
 {Check if point is inside circle}
 function CheckCollisionPointCircle(point, center: TVector2; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointCircle';
 {Check if point is inside a triangle}
 function CheckCollisionPointTriangle(point, p1, p2, p3: TVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointTriangle';
+{Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]}
+function CheckCollisionPointLine(point, p1, p2: TVector2; threshold: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointLine';
 {Check if point is within a polygon described by array of vertices}
 function CheckCollisionPointPoly(point: TVector2; const points: PVector2; pointCount: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointPoly';
 {Check the collision between two lines defined by two points each, returns collision point by reference}
 function CheckCollisionLines(startPos1, endPos1, startPos2, endPos2: TVector2; collisionPoint: PVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionLines';
-{Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]}
-function CheckCollisionPointLine(point, p1, p2: TVector2; threshold: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionPointLine';
-{Check if circle collides with a line created betweeen two points [p1] and [p2]}
-function CheckCollisionCircleLine(center: TVector2; radius: Single; p1, p2: TVector2): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CheckCollisionCircleLine';
 {Get collision rectangle for two rectangles collision}
 function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCollisionRec';
 
