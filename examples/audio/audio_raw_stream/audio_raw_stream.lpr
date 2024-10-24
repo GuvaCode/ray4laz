@@ -1,80 +1,53 @@
-(*******************************************************************************************
-*
-*   raylib [audio] example - Raw audio streaming
-*
-*   Example originally created with raylib 1.6, last time updated with raylib 4.2
-*
-*   Example created by Ramon Santamaria (@raysan5) and reviewed by James Hofmann (@triplefox)
-*
-*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
-*   BSD-like license that allows static linking with closed source software
-*
-*   Copyright (c) 2015-2022 Ramon Santamaria (@raysan5) and James Hofmann (@triplefox)
-*
-********************************************************************************************)
-unit audio_raw_stream;
+program Game;
 
+{$mode objfpc}{$H+}
 
-
-interface
-
-procedure Main();
-
-implementation
-
-uses
-  SysUtils,
-  raylib;
+uses 
+cmem, 
+{uncomment if necessary}
+//raymath, 
+//rlgl, 
+raylib; 
 
 const
+  screenWidth = 800;
+  screenHeight = 450;
+
   MAX_SAMPLES = 512;
   MAX_SAMPLES_PER_UPDATE = 4096;
 
 var
   // Cycles per second (hz)
   Frequency: Single = 440.0;
-
   // Audio frequency, for smoothing
   AudioFrequency: Single = 440.0;
-
   // Previous value, used to test if sine needs to be rewritten, and to smoothly modulate frequency
   OldFrequency: Single = 1.0;
-
   // Index for audio rendering
   SineIdx: Single = 0.0;
 
-{$POINTERMATH ON}
 
-{$RANGECHECKS OFF}
-
-// Audio input processing callback
+  // Audio input processing callback
 procedure AudioInputCallback(Buffer: Pointer; Frames: Cardinal); cdecl;
-var
-  Incr: Single;
-  I: Integer;
-begin
-  AudioFrequency := Frequency + (AudioFrequency - Frequency) * 0.95;
-  AudioFrequency := AudioFrequency + 1.0;
-  AudioFrequency := AudioFrequency - 1.0;// WTF????
-  Incr := AudioFrequency / 44100.0;
-  //short *d = (short *)buffer;
-
-  for I := 0 to Integer(Frames) - 1 do
+  var
+    Incr: Single;
+    I: Integer;
   begin
-    PSmallInt(Buffer)[I] := Trunc(32000.0 * Sin(2 * PI * SineIdx));
-    SineIdx := SineIdx + Incr;
-    if SineIdx > 1.0 then
-      SineIdx := SineIdx - 1.0;
-  end;
-end;
+    AudioFrequency := Frequency + (AudioFrequency - Frequency) * 0.95;
+    AudioFrequency := AudioFrequency + 1.0;
+    AudioFrequency := AudioFrequency - 1.0;// WTF????
+    Incr := AudioFrequency / 44100.0;
+    //short *d = (short *)buffer;
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
-procedure Main();
-const
-  ScreenWidth = 800;
-  ScreenHeight = 450;
+    for I := 0 to Integer(Frames) - 1 do
+    begin
+      PSmallInt(Buffer)[I] := Trunc(32000.0 * Sin(2 * PI * SineIdx));
+      SineIdx := SineIdx + Incr;
+      if SineIdx > 1.0 then
+        SineIdx := SineIdx - 1.0;
+    end;
+  end;
+
 var
   Stream: TAudioStream;
   Data: array of SmallInt;
@@ -82,12 +55,10 @@ var
   MousePosition, Position: TVector2;
   WaveLength, I: Integer;
   Pan, Fp: Single;
+
 begin
   // Initialization
-  //---------------------------------------------------------------------------------------------
-  SetConfigFlags(FLAG_MSAA_4X_HINT or FLAG_WINDOW_HIGHDPI);
-  InitWindow(ScreenWidth, ScreenHeight, UTF8String('raylib [audio] example - music playing (streaming)'));
-
+  InitWindow(screenWidth, screenHeight, 'raylib [audio] example - music playing (streaming)');
   InitAudioDevice();              // Initialize audio device
 
   SetAudioStreamBufferSizeDefault(MAX_SAMPLES_PER_UPDATE);
@@ -111,14 +82,13 @@ begin
   Position := Vector2Create(0, 0);
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
-  //---------------------------------------------------------------------------------------------
 
   // Main game loop
-  while not WindowShouldClose() do // Detect window close button or ESC key
-  begin
-    // Update
-    //-------------------------------------------------------------------------------------------
-    // Sample mouse input.
+  while not WindowShouldClose() do
+    begin
+      // Update
+      // TODO: Update your variables here
+ // Sample mouse input.
     MousePosition := GetMousePosition();
 
     if IsMouseButtonDown(MOUSE_BUTTON_LEFT) then
@@ -157,38 +127,29 @@ begin
       //readCursor = (int)(readCursor * ((float)waveLength / (float)oldWavelength));
       OldFrequency := Frequency;
     end;
-    //-------------------------------------------------------------------------------------------
 
-    // Draw
-    //-------------------------------------------------------------------------------------------
-    BeginDrawing();
+      // Draw
+      BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-      ClearBackground(RAYWHITE);
+         DrawText(TextFormat('sine frequency: %i', Integer(Trunc(Frequency))), GetScreenWidth() - 220, 10, 20, RED);
+         DrawText('click mouse button to change frequency or pan', 10, 10, 20, DARKGRAY);
 
-      DrawText(TextFormat(UTF8String('sine frequency: %i'), Integer(Trunc(Frequency))), GetScreenWidth() - 220, 10, 20, RED);
-      DrawText(UTF8String('click mouse button to change frequency or pan'), 10, 10, 20, DARKGRAY);
+         // Draw the current buffer state proportionate to the screen
+         for I := 0 to ScreenWidth - 1 do
+         begin
+           Position.X := I;
+           Position.Y := 250 + 50 * Data[I * MAX_SAMPLES div ScreenWidth] / 32000.0;
 
-      // Draw the current buffer state proportionate to the screen
-      for I := 0 to ScreenWidth - 1 do
-      begin
-        Position.X := I;
-        Position.Y := 250 + 50 * Data[I * MAX_SAMPLES div ScreenWidth] / 32000.0;
+           DrawPixelV(Position, RED);
+         end;
 
-        DrawPixelV(Position, RED);
-      end;
 
-    EndDrawing();
-    //-------------------------------------------------------------------------------------------
-  end;
+        DrawText('Congrats! You created yaasaour first window!', 190, 200, 20, LIGHTGRAY);
+      EndDrawing();
+    end;
 
   // De-Initialization
-  //---------------------------------------------------------------------------------------------
-  UnloadAudioStream(Stream);   // Close raw audio stream and delete buffers from RAM
-  CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
-
-  CloseWindow(); // Close window and OpenGL context
-  //---------------------------------------------------------------------------------------------
-end;
-
+  CloseWindow();        // Close window and OpenGL context
 end.
 
