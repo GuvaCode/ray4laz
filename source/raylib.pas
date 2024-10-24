@@ -815,7 +815,6 @@ const
        CUBEMAP_LAYOUT_LINE_HORIZONTAL     = TCubemapLayout(2); // Layout is defined by an horizontal line with faces
        CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR = TCubemapLayout(3); // Layout is defined by a 3x4 cross with cubemap faces
        CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = TCubemapLayout(4); // Layout is defined by a 4x3 cross with cubemap faces
-       CUBEMAP_LAYOUT_PANORAMA            = TCubemapLayout(5); // Layout is defined by a panorama image (equirectangular map)
 
    (* Font type, defines generation method *)
    type
@@ -908,39 +907,39 @@ function WindowShouldClose: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllNam
 function IsWindowReady: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowReady';
 {Check if window is currently fullscreen }
 function IsWindowFullscreen: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowFullscreen';
-{Check if window is currently hidden (only PLATFORM_DESKTOP)}
+{Check if window is currently hidden}
 function IsWindowHidden: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowHidden';
-{Check if window is currently minimized (only PLATFORM_DESKTOP)}
+{Check if window is currently minimized}
 function IsWindowMinimized: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowMinimized';
-{Check if window is currently maximized (only PLATFORM_DESKTOP)}
+{Check if window is currently maximized}
 function IsWindowMaximized: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowMaximized';
-{Check if window is currently focused (only PLATFORM_DESKTOP)}
+{Check if window is currently focused}
 function IsWindowFocused: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowFocused';
 {Check if window has been resized last frame}
 function IsWindowResized: Boolean;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowResized';
 {Check if one specific window flag is enabled}
 function IsWindowState(flag: TConfigFlags): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWindowState';
-{Set window configuration state using flags (only PLATFORM_DESKTOP)}
+{Set window configuration state using flags}
 procedure SetWindowState(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowState';
 {Clear window configuration state flags}
 procedure ClearWindowState(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ClearWindowState';
-{Toggle window state: fullscreen/windowed [resizes monitor to match window resolution] (only PLATFORM_DESKTOP)}
+{Toggle window state: fullscreen/windowed, resizes monitor to match window resolution}
 procedure ToggleFullscreen; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ToggleFullscreen';
-{Toggle window state: borderless windowed [resizes window to match monitor resolution] (only PLATFORM_DESKTOP)}
+{Toggle window state: borderless windowed, resizes window to match monitor resolution}
 procedure ToggleBorderlessWindowed; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ToggleBorderlessWindowed';
-{Set window state: maximized, if resizable (only PLATFORM_DESKTOP)}
+{Set window state: maximized, if resizable}
 procedure MaximizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MaximizeWindow';
-{Set window state: minimized, if resizable (only PLATFORM_DESKTOP)}
+{Set window state: minimized, if resizable}
 procedure MinimizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MinimizeWindow';
-{Set window state: not minimized/maximized (only PLATFORM_DESKTOP)}
+{Set window state: not minimized/maximized}
 procedure RestoreWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'RestoreWindow';
-{Set icon for window (only PLATFORM_DESKTOP)}
+{Set icon for window}
 procedure SetWindowIcon(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowIcon';
 {Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)}
 procedure SetWindowIcons(images: PImage; count: integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowIcons';
-{Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)}
+{Set title for window}
 procedure SetWindowTitle(const title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowTitle';
-{Set window position on screen (only PLATFORM_DESKTOP)}
+{Set window position on screen}
 procedure SetWindowPosition(x, y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowPosition';
 {Set monitor for the current window}
 procedure SetWindowMonitor(monitor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowMonitor';
@@ -950,9 +949,9 @@ procedure SetWindowMinSize(width, height: Integer); cdecl; external {$IFNDEF RAY
 procedure SetWindowMaxSize(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowMaxSize';
 {Set window dimensions}
 procedure SetWindowSize(width, height: Integer);cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowSize';
-{Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)}
+{Set window opacity [0.0f..1.0f]}
 procedure SetWindowOpacity(opacity: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowOpacity';
-{Set window focused (only PLATFORM_DESKTOP)}
+{Set window focused}
 procedure SetWindowFocused; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowFocused';
 {Get native window handle}
 function GetWindowHandle: Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWindowHandle';
@@ -966,7 +965,7 @@ function GetRenderWidth: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$
 function GetRenderHeight: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetRenderHeight';
 {Get number of connected monitors}
 function GetMonitorCount: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorCount';
-{Get current connected monitor}
+{Get current monitor where window is placed}
 function GetCurrentMonitor: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCurrentMonitor';
 {Get specified monitor position}
 function GetMonitorPosition(monitor: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorPosition';
@@ -1280,7 +1279,7 @@ procedure PlayAutomationEvent(event: TAutomationEvent); cdecl; external {$IFNDEF
 
 {Check if a key has been pressed once}
 function IsKeyPressed(key: TKeyboardKey): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyPressed';
-{Check if a key has been pressed again (Only PLATFORM_DESKTOP)}
+{Check if a key has been pressed again}
 function IsKeyPressedRepeat(key: TKeyboardKey): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyPressedRepeat';
 {Check if a key is being pressed}
 function IsKeyDown(key: TKeyboardKey): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyDown';
@@ -2083,16 +2082,16 @@ procedure SetModelMeshMaterial(model: PModel; meshId, materialId: Integer); cdec
 
 {Load model animations from file}
 function LoadModelAnimations(fileName: PChar; animCount: PInteger): PModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModelAnimations';
-{Update model animation pose}
+{Update model animation pose (CPU)}
 procedure UpdateModelAnimation(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimation';
+{Update model animation mesh bone matrices (GPU skinning)}
+procedure UpdateModelAnimationBoneMatrices(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimationBoneMatrices';
 {Unload animation data}
 procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimation';
 {Unload animation array data}
 procedure UnloadModelAnimations(animations: PModelAnimation; animCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimations';
 {Check model animation skeleton match}
 function IsModelAnimationValid(model: TModel; anim: TModelAnimation): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsModelAnimationValid';
-{Update model animation mesh bone matrices (Note GPU skinning does not work on Mac)}
-procedure UpdateModelAnimationBoneMatrices(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimationBoneMatrices';
 
 (* Collision detection functions *)
 
