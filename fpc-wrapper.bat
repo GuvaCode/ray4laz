@@ -18,11 +18,11 @@ REM Set base flags and include flags
 SET BASE_FLAGS=-MObjFPC -Scghi -l -vew
 
 REM Set platform default
-SET PLATFORM=x86_32-windows
+SET PLATFORM=i386-win32
 
 REM Check the architecture
 if "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-	SET PLATFORM=x86_64-windows
+	SET PLATFORM=x86_64-win64
     SET BASE_FLAGS=%BASE_FLAGS% -Twin64 -Px86_64
 )
 
