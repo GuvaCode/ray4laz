@@ -6,19 +6,20 @@
 *   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
 *
 *   Copyright (c) 2016 Ramon Santamaria (@raysan5)
-*   Pascal conversion (c) 2021 Gunko Vadim (@guvacode)
+*   Pascal conversion (c) 2021-2024 Gunko Vadim (@guvacode)
 ********************************************************************************************}
 
 program audio_module_playing;
 
 {$mode objfpc}{$H+}
 
-uses raylib;
+uses raylib, math;
 
 const
-  MAX_CIRCLES = 64;
-  screenWidth = 800;
+  MAX_CIRCLES = 16;
+  screenWidth = 635;
   screenHeight = 450;
+
   colors:  array [0..13] of TColorB =(
   (r: 255; g: 161; b: 0; a: 255),(r: 230; g: 41; b: 55; a: 255),
   (r: 255; g: 203; b: 0; a: 255),(r: 0; g: 158; b: 47; a: 255),
@@ -29,6 +30,9 @@ const
   (r: 200; g: 122; b: 255; a: 255), (r: 211; g: 176; b: 131; a: 255));
 
   type
+    TFFTData  = array [0..800] of Single;
+
+
     CircleWave = record
       position: TVector2;
       radius:   single;
@@ -44,6 +48,60 @@ var
     timePlayed:single;
     pause:boolean;
     pitch:single;
+    exponent: single = 1.0;                  // Audio exponentiation value
+
+    FFTPeacks  : array [0..600] of Integer;
+    FFTFallOff : array [0..600] of Integer;
+    FDATA: TFFTData;
+
+
+procedure SpectrumDraw(FFTData : TFFTData; X, Y : Integer);
+var i, YPos : LongInt; YVal : Single;
+begin
+
+
+
+
+  for i := 0 to 600 do
+  begin
+  YVal := Abs(FFTData[(i * {DrawRes} 1) + 5]);
+  YPos := Trunc((YVal) * 100);
+  if YPos > ScreenHeight then YPos := {SpecHeight} 300;
+
+  if YPos >= FFTFallOff[i] then FFTFallOff[i] := YPos
+  else FFTFallOff[i] := FFTFallOff[i] - 4 {LineFall};
+
+  if (ScreenHeight - FFTPeacks[i]) > ScreenHeight then FFTPeacks[i] := 0;
+  if (ScreenHeight - FFTFallOff[i]) > ScreenHeight then FFTFallOff[i] := 0;
+
+  DrawLine(X + i, Y + Round(ScreenHeight), X + i, Y + Round(ScreenHeight) - FFTFallOff[i] , ColorCreate(166,202,240,200));
+
+  end;
+end;
+
+
+
+procedure ProcessAudio(buffer: pointer; frames:LongWord); cdecl;
+var samples, left, right: psingle;
+    centr: single;
+    frame: integer;
+
+begin
+  samples:= buffer; // Samples internally stored as <float>s
+ for frame :=0 to 600 do
+  begin
+    left := @samples[frame * 2];
+    right := @samples[frame * 2 + 1];
+
+    centr := left^ + right^;
+
+    if centr< 0.0 then centr :=power(abs(centr),exponent) * -1.0
+    else
+    centr :=power(abs(centr),exponent) * 1.0;
+    FDATA[frame] := centr ;
+  end;
+end;
+
 
 begin
  // Add to colors
@@ -69,6 +127,8 @@ begin
   music.looping := false;
 
   pitch := 1.0;
+
+  AttachAudioMixedProcessor(@ProcessAudio);
 
   PlayMusicStream(music);
 
@@ -129,8 +189,11 @@ begin
   BeginDrawing();
 
     ClearBackground(RAYWHITE);
-    for i := MAX_CIRCLES downto 0 do
+     for i := MAX_CIRCLES downto 0 do
       DrawCircleV(circles[i].position, circles[i].radius, Fade(circles[i].color, circles[i].alpha));
+
+    SpectrumDraw(FDATA,20,-30);
+
 
   // Draw time bar
   DrawRectangle(20, screenHeight - 20 - 12, screenWidth - 40, 12, LIGHTGRAY);
