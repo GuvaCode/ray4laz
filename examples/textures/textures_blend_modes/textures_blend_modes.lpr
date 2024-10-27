@@ -12,7 +12,7 @@ raylib;
 const
   screenWidth = 800;
   screenHeight = 450;
-  blendCountMax = 4;
+  blendCountMax = 6;
 
 var
   BgImage: TImage;
@@ -78,6 +78,8 @@ begin
         BLEND_ADDITIVE: DrawText('Current: BLEND_ADDITIVE', (ScreenWidth div 2) - 60, 370, 10, GRAY);
         BLEND_MULTIPLIED: DrawText('Current: BLEND_MULTIPLIED', (ScreenWidth div 2) - 60, 370, 10, GRAY);
         BLEND_ADD_COLORS: DrawText('Current: BLEND_ADD_COLORS', (ScreenWidth div 2) - 60, 370, 10, GRAY);
+        BLEND_SUBTRACT_COLORS: DrawText('Current: BLEND_SUBTRACT_COLORS', (ScreenWidth div 2) - 60, 370, 10, GRAY);
+        BLEND_ALPHA_PREMULTIPLY: DrawText('Current: BLEND_ALPHA_PREMULTIPLY', (ScreenWidth div 2) - 60, 370, 10, GRAY);
       end;
 
       DrawText('(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)', ScreenWidth - 330, ScreenHeight - 20, 10, GRAY);

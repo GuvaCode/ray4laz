@@ -716,7 +716,7 @@ function rlLoadTexture(const data: Pointer; width, height: Integer; format: TrlP
 {Load depth texture/renderbuffer (to be attached to fbo)}
 function rlLoadTextureDepth(width, height: Integer; useRenderBuffer: boolean): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadTextureDepth';
 {Load texture cubemap}
-function rlLoadTextureCubemap(const data: Pointer; size: Integer; format: TrlPixelFormat): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadTextureCubemap';
+function rlLoadTextureCubemap(const data: Pointer; size: Integer; format: TrlPixelFormat; mipmapCount: integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadTextureCubemap';
 {Update GPU texture with new data}
 procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height: Integer; format: TrlPixelFormat; data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateTexture';
 {Get OpenGL internal formats}

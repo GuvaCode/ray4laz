@@ -14,7 +14,7 @@ const
   MAX_VOX_FILES = 3;
 
 var
-  voxFileNames: array [0..MAX_VOX_FILES] of PChar;
+  voxFileNames: array [0..MAX_VOX_FILES] of String;
   models: array[0..MAX_VOX_FILES] of TModel;
   bb: TBoundingBox;
   camera: TCamera;
@@ -43,12 +43,12 @@ begin
 
   for i:= 0 to MAX_VOX_FILES do
 	begin
-        // Load VOX file and measure time
-	        t0 := GetTime()*1000.0;
-		models[i] := LoadModel(PChar(GetApplicationDirectory + voxFileNames[i]));
-		t1 := GetTime()*1000.0;
+      // Load VOX file and measure time
+	  t0 := GetTime()*1000.0;
+	  models[i] := LoadModel(PChar(voxFileNames[i]));
+	  t1 := GetTime()*1000.0;
 
-                TraceLog(LOG_WARNING, TextFormat('[%s] File loaded in %.3f ms', voxFileNames[i], t1 - t0));
+                TraceLog(LOG_WARNING, TextFormat('[%s] File loaded in %.3f ms', PChar(voxFileNames[i]), t1 - t0));
 
 	        // Compute model translation matrix to center model on draw position (0, 0 , 0)
 		bb := GetModelBoundingBox(models[i]);
@@ -103,7 +103,7 @@ begin
                 DrawRectangle(10, 400, 310, 30, Fade(SKYBLUE, 0.5));
                 DrawRectangleLines(10, 400, 310, 30, Fade(DARKBLUE, 0.5));
                 DrawText('MOUSE LEFT BUTTON to CYCLE VOX MODELS', 40, 410, 10, BLUE);
-                DrawText(TextFormat('File: %s', GetFileName(voxFileNames[currentModel])), 10, 10, 20, GRAY);
+                DrawText(TextFormat('File: %s', GetFileName(PChar(voxFileNames[currentModel]))), 10, 10, 20, GRAY);
 
       EndDrawing();
     end;

@@ -50,7 +50,7 @@ begin
       // STEP 1: Setup framebuffer
       //------------------------------------------------------------------------------------------
       rbo := rlLoadTextureDepth(size, size, true);
-      cubemap.id := rlLoadTextureCubemap(nil, size, format);
+      cubemap.id := rlLoadTextureCubemap(nil, size, format, 1);
 
       fbo := rlLoadFramebuffer();
       rlFramebufferAttach(fbo, rbo, RL_ATTACHMENT_DEPTH, RL_ATTACHMENT_RENDERBUFFER, 0);
