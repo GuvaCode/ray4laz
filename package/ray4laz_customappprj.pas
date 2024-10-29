@@ -143,6 +143,7 @@ begin
   AProject.MainFile.SetSourceText(Source);
   AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)';
   {$IFDEF DARWIN}
+  Aproject.LazCompilerOptions.PassLinkerOptions := True;
   AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
   {$ENDIF}
   AProject.LazCompilerOptions.TargetFilename:= 'Project' + IntToStr(AProject.FileCount);

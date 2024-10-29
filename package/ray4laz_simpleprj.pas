@@ -103,6 +103,7 @@ begin
   AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)';// + PathDelim+ 'ray4laz_dsgn';
   AProject.LazCompilerOptions.TargetFilename:= 'game';
   {$IFDEF DARWIN}
+  Aproject.LazCompilerOptions.PassLinkerOptions := True;
   AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
   {$ENDIF}
   AProject.AddPackageDependency('ray4laz');

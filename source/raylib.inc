@@ -2,11 +2,11 @@
 
 // Defines for GNU/Linux
 {$IFDEF LINUX}
-{$DEFINE RAY_STATIC}
+  {$DEFINE RAY_STATIC}
 {$ENDIF}
 
 {$IFDEF DARWIN}
-{.$DEFINE RAY_STATIC}
+  {$DEFINE RAY_STATIC}
 {$IFEND}
 
 //Use selected OpenGL graphics backend, should be supported by platform
