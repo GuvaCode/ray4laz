@@ -57,7 +57,6 @@ Mac        | ❓ no tested|
 Windows    | :heavy_check_mark: |
 Linux      | :heavy_check_mark: |
 Haiku      | :heavy_check_mark: |
-ReactOS    | :heavy_check_mark: |
 
 
 build and installation raylib
