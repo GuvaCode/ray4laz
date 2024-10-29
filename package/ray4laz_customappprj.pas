@@ -72,10 +72,12 @@ begin
     '{$mode objfpc}{$H+}' + LineEnding +
     LineEnding +
     'uses'  + LineEnding +
-    '  {$IFDEF UNIX}'  + LineEnding +
-    '  cthreads,'  + LineEnding +
-    '  {$ENDIF}'  + LineEnding +
-    '  Classes, SysUtils, CustApp, raylib;'  + LineEnding +
+    {$IFDEF UNIX}
+    ' cthreads,'  + LineEnding +
+    {$ENDIF}
+    {$IFDEF DARWIN}
+    ' CocoaAll,' + LineEnding +{$ENDIF}
+    ' Classes, SysUtils, CustApp, raylib;'  + LineEnding +
     LineEnding +
     'type' + LineEnding +
     '  { TRayApplication }' + LineEnding +
@@ -140,6 +142,9 @@ begin
 
   AProject.MainFile.SetSourceText(Source);
   AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)';
+  {$IFDEF DARWIN}
+  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
+  {$ENDIF}
   AProject.LazCompilerOptions.TargetFilename:= 'Project' + IntToStr(AProject.FileCount);
   AProject.AddPackageDependency('ray4laz');
 end;

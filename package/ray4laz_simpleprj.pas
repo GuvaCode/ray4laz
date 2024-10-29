@@ -69,6 +69,7 @@ begin
     LineEnding +
     'uses ' + LineEnding +
     'cmem, ' + LineEnding +
+    {$IFDEF DARWIN} 'CocoaAll,' + LineEnding +{$ENDIF}
     '{uncomment if necessary}' + LineEnding +
     '//raymath, ' + LineEnding +
     '//rlgl, ' + LineEnding +
@@ -101,6 +102,9 @@ begin
   AProject.MainFile.SetSourceText(Source);
   AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)';// + PathDelim+ 'ray4laz_dsgn';
   AProject.LazCompilerOptions.TargetFilename:= 'game';
+  {$IFDEF DARWIN}
+  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
+  {$ENDIF}
   AProject.AddPackageDependency('ray4laz');
 end;
 

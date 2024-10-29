@@ -2301,6 +2301,11 @@ uses
   {$endif}
 {$endif}
 
+{$IFDEF Darwin}
+  {$IFDEF RAY_STATIC}
+  {$linklib libraylib.a}
+  {$endif}
+{$endif}
 
 function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay;
 begin
