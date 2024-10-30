@@ -9,6 +9,11 @@
   {$DEFINE RAY_STATIC}
 {$IFEND}
 
+{$IFDEF HAIKU} 
+  {$DEFINE RAY_STATIC}
+{$IFEND}
+
+
 //Use selected OpenGL graphics backend, should be supported by platform
 //Those preprocessor defines are only used on rlgl module, if OpenGL version is
 //required by any other module, use rlGetVersion() to check it

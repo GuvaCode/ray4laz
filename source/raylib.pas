@@ -15,6 +15,7 @@ const
   cDllName = {$IFDEF WINDOWS} 'raylib.dll'; {$IFEND}
              {$IFDEF DARWIN} 'libraylib.dylib'; {$IFEND}
              {$IFDEF LINUX} 'libraylib.so'; {$IFEND}
+             {$IFDEF HAIKU} 'libraylib.so'; {$IFEND}
 {$ENDIF}
 
 
@@ -2297,6 +2298,12 @@ uses
   {$linklib m}
   {$linklib dl}
   {$linklib pthread}
+  {$linklib libraylib.a}
+  {$endif}
+{$endif}
+
+{$IFDEF Haiku}
+  {$IFDEF RAY_STATIC}
   {$linklib libraylib.a}
   {$endif}
 {$endif}
