@@ -107,9 +107,8 @@ begin
   Aproject.LazCompilerOptions.PassLinkerOptions := True;
   {$IFDEF CPUAARCH64}
   AProject.LazCompilerOptions.CustomOptions:='''-WM11''';
-  {$ELSE}
-  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
   {$ENDIF}
+  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
   {$ENDIF}
   AProject.AddPackageDependency('ray4laz');
 end;
