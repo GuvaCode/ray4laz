@@ -104,7 +104,10 @@ begin
   AProject.LazCompilerOptions.TargetFilename:= 'game';
   {$IFDEF DARWIN}
   Aproject.LazCompilerOptions.PassLinkerOptions := True;
-  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
+  {$IFDEF CPUAARCH64}
+  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit'' ''-WM11''';
+  {$ELSE}
+  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''  ';
   {$ENDIF}
   AProject.AddPackageDependency('ray4laz');
 end;
