@@ -109,6 +109,7 @@ begin
   {$ELSE}
   AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''  ';
   {$ENDIF}
+  {$ENDIF}
   AProject.AddPackageDependency('ray4laz');
 end;
 
