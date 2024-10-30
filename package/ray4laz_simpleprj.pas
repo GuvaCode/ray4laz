@@ -102,12 +102,13 @@ begin
   AProject.MainFile.SetSourceText(Source);
   AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)';// + PathDelim+ 'ray4laz_dsgn';
   AProject.LazCompilerOptions.TargetFilename:= 'game';
+
   {$IFDEF DARWIN}
   Aproject.LazCompilerOptions.PassLinkerOptions := True;
   {$IFDEF CPUAARCH64}
-  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit'' ''-WM11''';
+  AProject.LazCompilerOptions.CustomOptions:='''-WM11''';
   {$ELSE}
-  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''  ';
+  AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
   {$ENDIF}
   {$ENDIF}
   AProject.AddPackageDependency('ray4laz');
