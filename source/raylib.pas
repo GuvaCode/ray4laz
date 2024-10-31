@@ -2302,12 +2302,6 @@ uses
   {$endif}
 {$endif}
 
-{$IFDEF Haiku}
-  {$IFDEF RAY_STATIC}
-  {$linklib libraylib.a}
-  {$endif}
-{$endif}
-
 {$IFDEF Darwin}
   {$IFDEF RAY_STATIC}
   {$linklib libraylib.a}
