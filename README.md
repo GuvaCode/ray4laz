@@ -53,7 +53,7 @@ tested platforms
 
 OS         | Supported          |
 ---------  | ------------------ |
-Mac        | ❓ no tested|
+MacOS      | :heavy_check_mark: |
 Windows    | :heavy_check_mark: |
 Linux      | :heavy_check_mark: |
 Haiku      | :heavy_check_mark: |
