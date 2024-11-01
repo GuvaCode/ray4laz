@@ -106,7 +106,7 @@ begin
   {$IFDEF DARWIN}
   Aproject.LazCompilerOptions.PassLinkerOptions := True;
   {$IFDEF CPUAARCH64}
-  AProject.LazCompilerOptions.CustomOptions:='''-WM11''';
+  AProject.LazCompilerOptions.CustomOptions:='''-WM11.0''';
   {$ENDIF}
   AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
   {$ENDIF}

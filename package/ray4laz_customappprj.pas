@@ -144,6 +144,9 @@ begin
   AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)';
   {$IFDEF DARWIN}
   Aproject.LazCompilerOptions.PassLinkerOptions := True;
+  {$IFDEF CPUAARCH64}
+  AProject.LazCompilerOptions.CustomOptions:='''-WM11.0''';
+  {$ENDIF}
   AProject.LazCompilerOptions.LinkerOptions := '''-framework IOKit''';
   {$ENDIF}
   AProject.LazCompilerOptions.TargetFilename:= 'Project' + IntToStr(AProject.FileCount);
