@@ -46,7 +46,6 @@ raylib.h   | :heavy_check_mark: |
 raymath.h  | :heavy_check_mark: |
 rlgl.h     | :heavy_check_mark: |
 raygui.h   | :heavy_check_mark: |
-physac.h   | :heavy_check_mark: |
 
 tested platforms
 --------
