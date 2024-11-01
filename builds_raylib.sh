@@ -58,19 +58,19 @@ mkdir raylib_tmp/src/extras
 
 echo "Download raygui"
 wget https://raw.githubusercontent.com/raysan5/raygui/master/src/raygui.h -q --show-progress
-echo "Download raymath "
-wget https://raw.githubusercontent.com/raysan5/physac/master/src/physac.h -q --show-progress
+#echo "Download physac "
+#wget https://raw.githubusercontent.com/raysan5/physac/master/src/physac.h -q --show-progress
 
-mv physac.h raylib_tmp/src/extras/physac.h
+#mv physac.h raylib_tmp/src/extras/physac.h
 mv raygui.h raylib_tmp/src/extras/raygui.h
 cd raylib_tmp/src
 echo -e "\e[0m"  
 echo -e "\e[34m \e[1m"
 echo "Build x86_64_LINUX dynlib" 
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
-echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
+#echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 echo -e "\e[0m"  
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE 
 
 echo -e "\e[92m \e[1m"
 echo " copy libs x86_64-linux ..."
@@ -83,8 +83,8 @@ echo "Build x86_64_LINUX Statics ---------------------------------------------"
 echo -e "\e[0m"
 make clean
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
-echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE
+#echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE 
 cp libraylib.a ../../libs/x86_64-linux/libraylib.a
 
 
@@ -93,8 +93,8 @@ echo "build x86_32 linux"
 echo -e "\e[0m"
 make clean
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
-echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE LDFLAG=-m32
+#echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE LDFLAG=-m32
 rm -f ../../libs/x86_32-linux/*
 cp libraylib.so.5.5.0 ../../libs/x86_32-linux/libraylib.so
 
@@ -103,8 +103,8 @@ echo "Build x86_32_LINUX Statics"
 echo -e "\e[0m"
 make clean
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
-echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE LDFLAG=-m32
+#echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE LDFLAG=-m32
 cp libraylib.a ../../libs/x86_32-linux
 #--------------------------------------------------------------------------------------------------------
 
@@ -127,10 +127,10 @@ x86_64-w64-mingw32-windres raylib.rc -o raylib.rc.data
 x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
-echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
+#echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 
 
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
 
 rm -f ../../libs/x86_64-win64/*
 cp libraylibdll.a ../../libs/x86_64-win64
@@ -146,9 +146,9 @@ i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
 i686-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
-echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
+#echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_PHYSAC=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
 
 rm -f ../../libs/i386-win32/*
 cp libraylibdll.a ../../libs/i386-win32
