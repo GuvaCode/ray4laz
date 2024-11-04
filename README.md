@@ -52,10 +52,12 @@ tested platforms
 
 OS         | Supported          |
 ---------  | ------------------ |
-MacOS      | :heavy_check_mark: |
+MacOS*     | :heavy_check_mark: |
 Windows    | :heavy_check_mark: |
 Linux      | :heavy_check_mark: |
 Haiku      | :heavy_check_mark: |
+
+*to compile examples for the Apple m-series, watch this [video](https://www.youtube.com/watch?v=h2-GrChtwMY&t=106s).
 
 
 build and installation raylib
