@@ -2086,7 +2086,7 @@ function LoadModelAnimations(fileName: PChar; animCount: PInteger): PModelAnimat
 {Update model animation pose (CPU)}
 procedure UpdateModelAnimation(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimation';
 {Update model animation mesh bone matrices (GPU skinning)}
-procedure UpdateModelAnimationBoneMatrices(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimationBoneMatrices';
+procedure UpdateModelAnimationBones(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimationBones';
 {Unload animation data}
 procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimation';
 {Unload animation array data}
