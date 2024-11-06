@@ -73,13 +73,15 @@ begin
 
         FrameCounter := 0;
         // Control frames delay
-        if IsKeyPressed(KEY_RIGHT) then Inc(FrameDelay)
-        else if IsKeyPressed(KEY_LEFT) then Dec(FrameDelay);
+
 
         if FrameDelay > MAX_FRAME_DELAY then FrameDelay := MAX_FRAME_DELAY
         else if FrameDelay < MIN_FRAME_DELAY then FrameDelay := MIN_FRAME_DELAY;
       //----------------------------------------------------------------------------------
       end;
+
+       if IsKeyPressed(KEY_RIGHT) then Inc(FrameDelay)
+       else if IsKeyPressed(KEY_LEFT) then Dec(FrameDelay);
 
       // Draw
       //----------------------------------------------------------------------------------
