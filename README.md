@@ -57,7 +57,7 @@ Windows    | :heavy_check_mark: |
 Linux      | :heavy_check_mark: |
 Haiku      | :heavy_check_mark: |
 
-*to compile examples for the Apple m-series, watch this [video](https://www.youtube.com/watch?v=h2-GrChtwMY).
+\* to compile examples for the Apple m-series, see the [m-series readme](README_mac_mseries.md) or watch this [video](https://www.youtube.com/watch?v=h2-GrChtwMY)
 
 
 build and installation raylib
