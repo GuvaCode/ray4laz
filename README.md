@@ -63,7 +63,7 @@ Haiku      | :heavy_check_mark: |
 build and installation raylib
 --------
 
-raylib binary releases for Windows, Linux and macOS are available at the [Github Releases page](https://github.com/raysan5/raylib/releases).
+raylib binary releases for Windows, Linux and macOS are available at the [Github Releases page](https://github.com/raysan5/raylib/releases),and also in the ray4laz/libs folder.
 
 building raylib on multiple platforms
 --------

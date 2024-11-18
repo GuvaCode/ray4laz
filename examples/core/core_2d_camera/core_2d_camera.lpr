@@ -95,8 +95,8 @@ begin
         DrawRectangle(-6000, 320, 13000, 8000, DARKGRAY);
         for i := 0 to MAX_BUILDINGS-1 do DrawRectangleRec(buildings[i], buildColors[i]);
         DrawRectangleRec(player, RED);
-        DrawRectangle(Trunc(camera.target.x), -500, 1, screenHeight*4, GREEN);
-        DrawRectangle(-500, Trunc(camera.target.y), screenWidth*4, 1, GREEN);
+        //DrawRectangle(Trunc(camera.target.x), -500, 1, screenHeight*4, GREEN);
+       // DrawRectangle(-500, Trunc(camera.target.y), screenWidth*4, 1, GREEN);
       EndMode2D;
 
       DrawText('SCREEN AREA', 640, 10, 20, RED);

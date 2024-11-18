@@ -990,6 +990,8 @@ function GetMonitorName(monitor: Integer): PChar; cdecl; external {$IFNDEF RAY_S
 procedure SetClipboardText(const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetClipboardText';
 {Get clipboard text content}
 function GetClipboardText: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetClipboardText';
+{Get clipboard image content}
+function GetClipboardImage: TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetClipboardImage';
 {Enable waiting for events on EndDrawing(), no automatic event polling}
 procedure EnableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EnableEventWaiting';
 {Disable waiting for events on EndDrawing(), automatic events polling}
