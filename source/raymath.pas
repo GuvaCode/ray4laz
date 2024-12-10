@@ -96,6 +96,8 @@ function Vector2Length(v : TVector2): Single; cdecl; external {$IFNDEF RAY_STATI
 function Vector2LengthSqr(v : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2LengthSqr';
 { Calculate two vectors dot product }
 function Vector2DotProduct(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2DotProduct';
+{ Calculate two vectors cross product }
+function Vector2CrossProduct(v1, v2: TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2CrossProduct';
 { Calculate distance between two vectors }
 function Vector2Distance(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Distance';
 { Calculate square distance between two vectors }

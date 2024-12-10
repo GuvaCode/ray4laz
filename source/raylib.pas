@@ -1,5 +1,5 @@
 {
-raylib ver 5.5
+raylib ver 5.6-dev
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
@@ -722,6 +722,7 @@ const
          SHADER_LOC_VERTEX_BONEIDS      = TShaderLocationIndex(26); // Shader location: vertex attribute: boneIds
          SHADER_LOC_VERTEX_BONEWEIGHTS  = TShaderLocationIndex(27); // Shader location: vertex attribute: boneWeights
          SHADER_LOC_BONE_MATRICES       = TShaderLocationIndex(28); // Shader location: array of matrices uniform: boneMatrices
+         SHADER_LOC_VERTEX_INSTANCE_TX  = TShaderLocationIndex(29); // Shader location: vertex attribute: instanceTransform
 
          SHADER_LOC_MAP_DIFFUSE = SHADER_LOC_MAP_ALBEDO;
          SHADER_LOC_MAP_SPECULAR = SHADER_LOC_MAP_METALNESS;
@@ -731,15 +732,19 @@ const
        PShaderUniformDataType = ^TShaderUniformDataType;
        TShaderUniformDataType =  Integer;
        Const
-         SHADER_UNIFORM_FLOAT      = TShaderUniformDataType(0); // Shader uniform type: float
-         SHADER_UNIFORM_VEC2       = TShaderUniformDataType(1); // Shader uniform type: vec2 (2 float)
-         SHADER_UNIFORM_VEC3       = TShaderUniformDataType(2); // Shader uniform type: vec3 (3 float)
-         SHADER_UNIFORM_VEC4       = TShaderUniformDataType(3); // Shader uniform type: vec4 (4 float)
-         SHADER_UNIFORM_INT        = TShaderUniformDataType(4); // Shader uniform type: int
-         SHADER_UNIFORM_IVEC2      = TShaderUniformDataType(5); // Shader uniform type: ivec2 (2 int)
-         SHADER_UNIFORM_IVEC3      = TShaderUniformDataType(6); // Shader uniform type: ivec3 (3 int)
-         SHADER_UNIFORM_IVEC4      = TShaderUniformDataType(7); // Shader uniform type: ivec4 (4 int)
-         SHADER_UNIFORM_SAMPLER2D  = TShaderUniformDataType(8); // Shader uniform type: sampler2d
+         SHADER_UNIFORM_FLOAT      = TShaderUniformDataType(0);  // Shader uniform type: float
+         SHADER_UNIFORM_VEC2       = TShaderUniformDataType(1);  // Shader uniform type: vec2 (2 float)
+         SHADER_UNIFORM_VEC3       = TShaderUniformDataType(2);  // Shader uniform type: vec3 (3 float)
+         SHADER_UNIFORM_VEC4       = TShaderUniformDataType(3);  // Shader uniform type: vec4 (4 float)
+         SHADER_UNIFORM_INT        = TShaderUniformDataType(4);  // Shader uniform type: int
+         SHADER_UNIFORM_IVEC2      = TShaderUniformDataType(5);  // Shader uniform type: ivec2 (2 int)
+         SHADER_UNIFORM_IVEC3      = TShaderUniformDataType(6);  // Shader uniform type: ivec3 (3 int)
+         SHADER_UNIFORM_IVEC4      = TShaderUniformDataType(7);  // Shader uniform type: ivec4 (4 int)
+         SHADER_UNIFORM_UINT       = TShaderUniformDataType(8);  // Shader uniform type: unsigned int
+         SHADER_UNIFORM_UIVEC2     = TShaderUniformDataType(9);  // Shader uniform type: uivec2 (2 unsigned int)
+         SHADER_UNIFORM_UIVEC3     = TShaderUniformDataType(10); // Shader uniform type: uivec3 (3 unsigned int)
+         SHADER_UNIFORM_UIVEC4     = TShaderUniformDataType(11); // Shader uniform type: uivec4 (4 unsigned int)
+         SHADER_UNIFORM_SAMPLER2D  = TShaderUniformDataType(12); // Shader uniform type: sampler2d
 
     (* Shader attribute data types *)
     type
@@ -1290,12 +1295,14 @@ function IsKeyDown(key: TKeyboardKey): Boolean;cdecl;external {$IFNDEF RAY_STATI
 function IsKeyReleased(key: TKeyboardKey): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyReleased';
 {Check if a key is NOT being pressed}
 function IsKeyUp(key: TKeyboardKey): Boolean;cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsKeyUp';
-{Set a custom key to exit program (default is ESC)}
-procedure SetExitKey(key: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetExitKey';
 {Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty}
 function GetKeyPressed: TKeyboardKey; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetKeyPressed';
 {Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty}
 function GetCharPressed: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCharPressed';
+{Get name of a QWERTY key on the current keyboard layout (eg returns string 'q' for KEY_A on an AZERTY keyboard)}
+function GetKeyName(key: Integer): PChar;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetKeyName';
+{Set a custom key to exit program (default is ESC)}
+procedure SetExitKey(key: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetExitKey';
 
 (* Input-related functions: gamepads *)
 

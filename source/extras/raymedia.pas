@@ -5,7 +5,7 @@ unit raymedia;
 {$ALIGN 8}
 {$MINENUMSIZE 4}
 // Include configuration file
-{$I raylib.inc}
+{$I ../raylib.inc}
 
 
 interface
