@@ -2281,8 +2281,15 @@ procedure DetachAudioMixedProcessor(processor: TAudioCallback); cdecl; external 
 
 function Vector2Create(aX: Single; aY: Single): TVector2;
 procedure Vector2Set(aVec: PVector2; aX: Single; aY: Single);
+
 function Vector3Create(aX: Single; aY: Single; aZ: Single): TVector3;
 procedure Vector3Set(aVec: PVector3; aX: Single; aY: Single; aZ: Single);
+
+function Vector4Create(aX: Single; aY: Single; aZ: Single; aW: Single): TVector4;
+procedure Vector4Set(aVec: PVector4; aX: Single; aY: Single; aZ: Single; aW: Single);
+
+function QuaternionCreate(aX: Single; aY: Single; aZ: Single; aW: Single): TQuaternion;
+procedure QuaternionSet(aQuat: PQuaternion; aX: Single; aY: Single; aZ: Single; aW: Single);
 
 function ColorCreate(aR: Byte; aG: Byte; aB: Byte; aA: Byte): TColorB;
 procedure ColorSet(aColor: PColorB; aR: Byte; aG: Byte; aB: Byte; aA: Byte);
@@ -2347,6 +2354,43 @@ begin
   aVec^.y := aY;
   aVec^.z := aZ;
 end;
+
+function Vector4Create(aX: Single; aY: Single; aZ: Single; aW: Single
+  ): TVector4;
+begin
+  Result.x := aX;
+  Result.y := aY;
+  Result.z := aZ;
+  Result.w := aW;
+end;
+
+procedure Vector4Set(aVec: PVector4; aX: Single; aY: Single; aZ: Single;
+  aW: Single);
+begin
+  aVec^.x := aX;
+  aVec^.y := aY;
+  aVec^.z := aZ;
+  aVec^.w := aW;
+end;
+
+function QuaternionCreate(aX: Single; aY: Single; aZ: Single; aW: Single
+  ): TQuaternion;
+begin
+  Result.x := aX;
+  Result.y := aY;
+  Result.z := aZ;
+  Result.w := aW;
+end;
+
+procedure QuaternionSet(aQuat: PQuaternion; aX: Single; aY: Single; aZ: Single;
+  aW: Single);
+begin
+  aQuat^.x := aX;
+  aQuat^.y := aY;
+  aQuat^.z := aZ;
+  aQuat^.w := aW;
+end;
+
 
 function ColorCreate(aR: byte; aG: byte; aB: byte; aA: byte): TColorB;
 begin

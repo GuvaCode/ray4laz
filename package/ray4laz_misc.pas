@@ -68,6 +68,10 @@ var  Editor: TSourceEditorInterface;
   'Vector2Set'          : insertXY('Vector2Set()');
   'Vector3Create'       : insertXY('Vector3Create()');
   'Vector3Set'          : insertXY('Vector3Set()');
+  'Vector4Create'       : insertXY('Vector4Create()');
+  'Vector4Set'          : insertXY('Vector4Set()');
+  'QuaternionCreate'    : insertXY('QuaternionCreate()');
+  'QuaternionSet'       : insertXY('QuaternionSet()');
   'ColorCreate'         : insertXY('ColorCreate()');
   'ColorSet'            : insertXY('ColorSet()');
   'RectangleCreate'     : insertXY('RectangleCreate()');
@@ -108,6 +112,8 @@ begin
 
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector2Create', 'Vector2Create', nil, @RayFunction,nil, 'cc_function');
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector3Create', 'Vector3Create', nil, @RayFunction,nil, 'cc_function');
+ RegisterIDEMenuCommand(SectionRayMenu, 'Vector4Create', 'Vector4Create', nil, @RayFunction,nil, 'cc_function');
+ RegisterIDEMenuCommand(SectionRayMenu, 'QuaternionCreate', 'QuaternionCreate', nil, @RayFunction,nil, 'cc_function');
  RegisterIDEMenuCommand(SectionRayMenu, 'ColorCreate', 'ColorCreate', nil, @RayFunction,nil, 'cc_function');
  RegisterIDEMenuCommand(SectionRayMenu, 'RectangleCreate', 'RectangleCreate', nil, @RayFunction,nil, 'cc_function');
  RegisterIDEMenuCommand(SectionRayMenu, 'BoundingBoxCreate', 'BoundingBoxCreate', nil, @RayFunction,nil, 'cc_function');
@@ -115,6 +121,8 @@ begin
 
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector2Set', 'Vector2Set', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector3Set', 'Vector3Set', nil, @RayFunction,nil, 'cc_procedure');
+ RegisterIDEMenuCommand(SectionRayMenu, 'Vector4Set', 'Vector4Set', nil, @RayFunction,nil, 'cc_procedure');
+ RegisterIDEMenuCommand(SectionRayMenu, 'QuaternionSet', 'QuaternionSet', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'ColorSet', 'ColorSet', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'RectangleSet', 'RectangleSet', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'BoundingBoxSet', 'BoundingBoxSet', nil, @RayFunction,nil, 'cc_procedure');
