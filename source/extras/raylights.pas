@@ -5,7 +5,9 @@ unit raylights;
 interface
 
 {$IFDEF LINUX}
-{$DEFINE RAY_STATIC}
+  {$IFNDEF RAY_DYNAMIC}
+    {$DEFINE RAY_STATIC}
+  {$ENDIF}
 {$ENDIF}
 
 {$IFNDEF RAY_STATIC}
