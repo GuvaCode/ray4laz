@@ -15,7 +15,7 @@ uses
 
 type
   PMediaContext = ^TMediaContext;
-  TMediaContext = record end;
+  TMediaContext = pointer; //record end;
 
   PMediaStream = ^TMediaStream;
   TMediaStream = record
@@ -78,9 +78,10 @@ type
     AUDIO_FMT_DBL = TMediaAudioFormat(4);  // Double
 
 
-function LoadMedia(const fileName: PChar): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMedia';
-function LoadMediaEx(const fileName: PChar; flags: Integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaEx';
-function IsMediaReady(media: TMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMediaReady';
+function LoadMedia(const fileName: PChar): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}'libraylib.so'{$ENDIF} name 'LoadMedia';
+//function LoadMediaEx(const fileName: PChar; flags: Integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaEx';
+//function LoadMediaFromStream(streamReader: TMediaStreamReader; flags: integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaFromStream';
+{function IsMediaValid(media: TMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMediaValid';
 function GetMediaProperties(media: TMediaStream): TMediaProperties; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaProperties';
 function UpdateMedia(media: PMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateMedia';
 function UpdateMediaEx(media: PMediaStream; deltaTime: Double): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateMediaEx';
@@ -91,7 +92,7 @@ function SetMediaLooping(media: TMediaStream; loopPlay: Boolean): Boolean; cdecl
 function SetMediaFlag(flag: Integer; value: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMediaFlag';
 function GetMediaFlag(flag: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaFlag';
 procedure UnloadMedia(media: PMediaStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMedia';
-
+ }
 
 implementation
 
