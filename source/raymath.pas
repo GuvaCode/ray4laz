@@ -369,6 +369,8 @@ function QuaternionEquals(p, q: TQuaternion): longint; cdecl; external {$IFNDEF 
 function fMinf(a, b: Single):single;
 function fMaxf(a, b: Single):single;
 
+function Vector2AngleDeg(v1, v2: TVector2): single;
+
 implementation
 uses Math;
 
@@ -386,6 +388,11 @@ begin
     Result := a
   else
     Result := b;
+end;
+
+function Vector2AngleDeg(v1, v2: TVector2): single;
+begin
+  result := arctan2(v2.y - v1.y, v2.x - v1.x) / DEG2RAD;
 end;
 
 initialization
