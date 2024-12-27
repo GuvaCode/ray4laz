@@ -2,7 +2,7 @@
 //                                                                              //
 // StyleAsCode exporter v2.0 - Style data exported as a values array            //
 //                                                                              //
-// USAGE: On init call: GuiLoadStyleAmber();                                   //
+// USAGE: On init call: GuiLoadStyleRtech();                                   //
 //                                                                              //
 // more info and bugs-report:  github.com/raysan5/raygui                        //
 // feedback and support:       ray[at]raylibtech.com                            //
@@ -11,36 +11,34 @@
 //                                                                              //
 //////////////////////////////////////////////////////////////////////////////////
 
-#define AMBER_STYLE_PROPS_COUNT  18
+#define RTECH_STYLE_PROPS_COUNT  16
 
-// Custom style name: Amber
-static const GuiStyleProp amberStyleProps[AMBER_STYLE_PROPS_COUNT] = {
-    { 0, 0, (int)0x898988ff },    // DEFAULT_BORDER_COLOR_NORMAL 
-    { 0, 1, (int)0x292929ff },    // DEFAULT_BASE_COLOR_NORMAL 
-    { 0, 2, (int)0xd4d4d4ff },    // DEFAULT_TEXT_COLOR_NORMAL 
-    { 0, 3, (int)0xeb891dff },    // DEFAULT_BORDER_COLOR_FOCUSED 
-    { 0, 4, (int)0x292929ff },    // DEFAULT_BASE_COLOR_FOCUSED 
-    { 0, 5, (int)0xffffffff },    // DEFAULT_TEXT_COLOR_FOCUSED 
-    { 0, 6, (int)0xf1cf9dff },    // DEFAULT_BORDER_COLOR_PRESSED 
-    { 0, 7, (int)0xf39333ff },    // DEFAULT_BASE_COLOR_PRESSED 
-    { 0, 8, (int)0x282020ff },    // DEFAULT_TEXT_COLOR_PRESSED 
-    { 0, 9, (int)0x6a6a6aff },    // DEFAULT_BORDER_COLOR_DISABLED 
-    { 0, 10, (int)0x818181ff },    // DEFAULT_BASE_COLOR_DISABLED 
-    { 0, 11, (int)0x606060ff },    // DEFAULT_TEXT_COLOR_DISABLED 
+// Custom style name: rtech
+static const GuiStyleProp rtechStyleProps[RTECH_STYLE_PROPS_COUNT] = {
+    { 0, 0, (int)0x000000ff },    // DEFAULT_BORDER_COLOR_NORMAL 
+    { 0, 1, (int)0xf5f5f5ff },    // DEFAULT_BASE_COLOR_NORMAL 
+    { 0, 2, (int)0x000000ff },    // DEFAULT_TEXT_COLOR_NORMAL 
+    { 0, 3, (int)0xe10000ff },    // DEFAULT_BORDER_COLOR_FOCUSED 
+    { 0, 4, (int)0xffffffff },    // DEFAULT_BASE_COLOR_FOCUSED 
+    { 0, 5, (int)0x5b5b5bff },    // DEFAULT_TEXT_COLOR_FOCUSED 
+    { 0, 6, (int)0xed0000ff },    // DEFAULT_BORDER_COLOR_PRESSED 
+    { 0, 7, (int)0x000000ff },    // DEFAULT_BASE_COLOR_PRESSED 
+    { 0, 8, (int)0xff2323ff },    // DEFAULT_TEXT_COLOR_PRESSED 
+    { 0, 9, (int)0xff2323ff },    // DEFAULT_BORDER_COLOR_DISABLED 
+    { 0, 10, (int)0xe3e3e3ff },    // DEFAULT_BASE_COLOR_DISABLED 
+    { 0, 11, (int)0xb3b3b3ff },    // DEFAULT_TEXT_COLOR_DISABLED 
     { 0, 16, (int)0x00000010 },    // DEFAULT_TEXT_SIZE 
-    { 0, 18, (int)0xef922aff },    // DEFAULT_LINE_COLOR 
-    { 0, 19, (int)0x333333ff },    // DEFAULT_BACKGROUND_COLOR 
+    { 0, 18, (int)0xc90000ff },    // DEFAULT_LINE_COLOR 
+    { 0, 19, (int)0xffffffff },    // DEFAULT_BACKGROUND_COLOR 
     { 0, 20, (int)0x00000018 },    // DEFAULT_TEXT_LINE_SPACING 
-    { 4, 8, (int)0xd4d4d4ff },    // SLIDER_TEXT_COLOR_PRESSED 
-    { 5, 8, (int)0xd4d4d4ff },    // PROGRESSBAR_TEXT_COLOR_PRESSED 
 };
 
 // WARNING: This style uses a custom font: "hello-world.ttf" (size: 16, spacing: 1)
 
-#define AMBER_STYLE_FONT_ATLAS_COMP_SIZE 2605
+#define RTECH_STYLE_FONT_ATLAS_COMP_SIZE 2605
 
 // Font atlas image pixels data: DEFLATE compressed
-static unsigned char amberFontData[AMBER_STYLE_FONT_ATLAS_COMP_SIZE] = { 0xed,
+static unsigned char rtechFontData[RTECH_STYLE_FONT_ATLAS_COMP_SIZE] = { 0xed,
     0xdd, 0x8b, 0x8e, 0x9c, 0xb8, 0x12, 0x00, 0x50, 0xf8, 0xff, 0x7f, 0x76, 0x5d, 0xe9, 0x66, 0xb3, 0xd2, 0xee, 0x8e, 0x6d,
     0xaa, 0x30, 0x8f, 0xee, 0x9c, 0x1c, 0x45, 0x91, 0x9a, 0x34, 0x18, 0xdb, 0x85, 0x0d, 0x33, 0x94, 0x63, 0x03, 0x00, 0x00,
     0x00, 0x88, 0x2d, 0x5a, 0xe7, 0xb3, 0xcc, 0xe7, 0x5b, 0xf7, 0xf3, 0xf6, 0xd7, 0xe7, 0x6d, 0xb0, 0xed, 0xe8, 0xbe, 0xfa,
@@ -174,7 +172,7 @@ static unsigned char amberFontData[AMBER_STYLE_FONT_ATLAS_COMP_SIZE] = { 0xed,
     0xc5, 0xff, 0xff, 0x00 };
 
 // Font glyphs rectangles data (on atlas)
-static const Rectangle amberFontRecs[189] = {
+static const Rectangle rtechFontRecs[189] = {
     { 4, 4, 5 , 16 },
     { 17, 4, 2 , 10 },
     { 27, 4, 4 , 4 },
@@ -368,7 +366,7 @@ static const Rectangle amberFontRecs[189] = {
 
 // Font glyphs info data
 // NOTE: No glyphs.image data provided
-static const GlyphInfo amberFontGlyphs[189] = {
+static const GlyphInfo rtechFontGlyphs[189] = {
     { 32, 0, 0, 5, { 0 }},
     { 33, 1, 3, 5, { 0 }},
     { 34, 0, 3, 5, { 0 }},
@@ -561,19 +559,19 @@ static const GlyphInfo amberFontGlyphs[189] = {
 };
 
 // Style loading function: Amber
-static void GuiLoadStyleAmber(void)
+static void GuiLoadStyleRtech(void)
 {
     // Load style properties provided
     // NOTE: Default properties are propagated
-    for (int i = 0; i < AMBER_STYLE_PROPS_COUNT; i++)
+    for (int i = 0; i < RTECH_STYLE_PROPS_COUNT; i++)
     {
-        GuiSetStyle(amberStyleProps[i].controlId, amberStyleProps[i].propertyId, amberStyleProps[i].propertyValue);
+        GuiSetStyle(rtechStyleProps[i].controlId, rtechStyleProps[i].propertyId, rtechStyleProps[i].propertyValue);
     }
 
     // Custom font loading
     // NOTE: Compressed font image data (DEFLATE), it requires DecompressData() function
-    int amberFontDataSize = 0;
-    unsigned char *data = DecompressData(amberFontData, AMBER_STYLE_FONT_ATLAS_COMP_SIZE, &amberFontDataSize);
+    int rtechFontDataSize = 0;
+    unsigned char *data = DecompressData(rtechFontData, RTECH_STYLE_FONT_ATLAS_COMP_SIZE, &rtechFontDataSize);
     Image imFont = { data, 512, 256, 1, 2 };
 
     Font font = { 0 };
@@ -587,12 +585,12 @@ static void GuiLoadStyleAmber(void)
     // Copy char recs data from global fontRecs
     // NOTE: Required to avoid issues if trying to free font
     font.recs = (Rectangle *)RAYGUI_MALLOC(font.glyphCount*sizeof(Rectangle));
-    memcpy(font.recs, amberFontRecs, font.glyphCount*sizeof(Rectangle));
+    memcpy(font.recs, rtechFontRecs, font.glyphCount*sizeof(Rectangle));
 
     // Copy font char info data from global fontChars
     // NOTE: Required to avoid issues if trying to free font
     font.glyphs = (GlyphInfo *)RAYGUI_MALLOC(font.glyphCount*sizeof(GlyphInfo));
-    memcpy(font.glyphs, amberFontGlyphs, font.glyphCount*sizeof(GlyphInfo));
+    memcpy(font.glyphs, rtechFontGlyphs, font.glyphCount*sizeof(GlyphInfo));
 
     GuiSetFont(font);
 

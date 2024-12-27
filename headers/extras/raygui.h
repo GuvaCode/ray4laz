@@ -2149,7 +2149,9 @@ int GuiToggleSlider(Rectangle bounds, const char *text, int *active)
 
     // Get substrings items from text (items pointers)
     int itemCount = 0;
-    const char **items = GuiTextSplit(text, ';', &itemCount, NULL);
+    const char **items = NULL;
+
+    if (text != NULL) items = GuiTextSplit(text, ';', &itemCount, NULL);
 
     Rectangle slider = {
         0,      // Calculated later depending on the active toggle
@@ -2640,7 +2642,7 @@ int GuiTextBox(Rectangle bounds, char *text, int textSize, bool editMode)
 
                 // Make sure text last character is EOL
                 text[textLength] = '\0';
-            } 
+            }
             else if ((textLength > 0) && (IsKeyPressed(KEY_BACKSPACE) || (IsKeyDown(KEY_BACKSPACE) && (autoCursorCooldownCounter >= RAYGUI_TEXTBOX_AUTO_CURSOR_COOLDOWN))))
             {
                 autoCursorDelayCounter++;
