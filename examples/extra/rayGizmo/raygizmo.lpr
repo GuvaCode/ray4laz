@@ -3,7 +3,7 @@ program raygizmo;
 {$mode objfpc}{$H+}
 
 uses
- cthreads,
+ {$IFNDEF WINDOWS}cthreads,{$ENDIF}
  Classes, SysUtils, CustApp, raylib, raymath, rgizmo;
 
 type

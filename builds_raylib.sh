@@ -56,8 +56,18 @@ echo "build x64 linux ..."
 
 mkdir raylib_tmp/src/extras
 
+
 echo "Download raygui"
 wget https://raw.githubusercontent.com/raysan5/raygui/master/src/raygui.h -q --show-progress
+
+echo "copy raygizmo"
+# wget https://raw.githubusercontent.com/cloudofoz/raylib-gizmo/refs/heads/main/src/raygizmo.c -q --show-progress
+# wget https://raw.githubusercontent.com/cloudofoz/raylib-gizmo/refs/heads/main/src/raygizmo.h -q --show-progress
+
+cp headers/extras/ray-gizmo/raygizmo.h raylib_tmp/src/raygizmo.h
+cp headers/extras/ray-gizmo/raygizmo.c raylib_tmp/src/raygizmo.c
+cp headers/Makefile raylib_tmp/src/Makefile
+
 #echo "Download physac "
 #wget https://raw.githubusercontent.com/raysan5/physac/master/src/physac.h -q --show-progress
 
@@ -70,7 +80,7 @@ echo "Build x86_64_LINUX dynlib"
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 #echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 echo -e "\e[0m"  
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE 
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_RAYGIZMO=TRUE
 
 echo -e "\e[92m \e[1m"
 echo " copy libs x86_64-linux ..."
@@ -84,7 +94,7 @@ echo -e "\e[0m"
 make clean
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 #echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE 
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_RAYGIZMO=TRUE
 cp libraylib.a ../../libs/x86_64-linux/libraylib.a
 
 
@@ -94,7 +104,7 @@ echo -e "\e[0m"
 make clean
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 #echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE LDFLAG=-m32
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_RAYGIZMO=TRUE LDFLAG=-m32
 rm -f ../../libs/x86_32-linux/*
 cp libraylib.so.5.5.0 ../../libs/x86_32-linux/libraylib.so
 
@@ -104,7 +114,7 @@ echo -e "\e[0m"
 make clean
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 #echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE LDFLAG=-m32
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_RAYGIZMO=TRUE LDFLAG=-m32
 cp libraylib.a ../../libs/x86_32-linux
 #--------------------------------------------------------------------------------------------------------
 
@@ -130,7 +140,7 @@ echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui
 #echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 
 
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_RAYGIZMO=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
 
 rm -f ../../libs/x86_64-win64/*
 cp libraylibdll.a ../../libs/x86_64-win64
@@ -148,7 +158,7 @@ i686-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 #echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_RAYGIZMO=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
 
 rm -f ../../libs/i386-win32/*
 cp libraylibdll.a ../../libs/i386-win32
