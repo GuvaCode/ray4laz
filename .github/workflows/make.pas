@@ -191,7 +191,7 @@ type
 
 begin
   try
-    BuildAll
+    BuildAll;
     case ExitCode of
       0: OutLog(etInfo, 'Errors:'#9 + IntToStr(ExitCode));
       else
