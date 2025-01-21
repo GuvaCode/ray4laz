@@ -1080,7 +1080,7 @@ procedure SetShaderValue(shader: TShader; locIndex: Integer; const value: Pointe
 procedure SetShaderValueV(shader: TShader; locIndex: Integer; const value: Pointer; uniformType: TShaderUniformDataType; count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShaderValueV';
 {Set shader uniform value (matrix 4x4)}
 procedure SetShaderValueMatrix(shader: TShader; locIndex: Integer; mat:TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShaderValueMatrix';
-{Set shader uniform value for texture (sampler2d) }
+{Set shader uniform value and bind the texture (sampler2d)}
 procedure SetShaderValueTexture(shader: TShader; locIndex: Integer; texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShaderValueTexture';
 {Unload shader from GPU memory (VRAM)}
 procedure UnloadShader(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadShader';
@@ -1899,7 +1899,8 @@ function GetCodepointPrevious(const text: PChar; codepointSize: PInteger): Integ
 function CodepointToUTF8(codepoint: Integer; utf8Size: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CodepointToUTF8';
 
 (* Text strings management functions (no UTF-8 strings, only byte chars) *)
-// NOTE: Some strings allocate memory internally for returned strings, just be careful!
+// WARNING 1: Most of these functions use internal static buffers, it's recommended to store returned data on user-side for re-use
+// WARNING 2: Some strings allocate memory internally for the returned strings, those strings must be free by user using MemFree()
 
 {Copy one string to another, returns bytes copied}
 function TextCopy(dst: PChar; const src: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextCopy';
