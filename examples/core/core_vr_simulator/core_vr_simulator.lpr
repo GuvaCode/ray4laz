@@ -44,7 +44,7 @@ begin
   device.vResolution := 1200;                 // Vertical resolution in pixels
   device.hScreenSize := 0.133793;            // Horizontal size in meters
   device.vScreenSize := 0.0669;              // Vertical size in meters
-  device.vScreenCenter := 0.04678;           // Screen center in meters
+  //device.vScreenCenter := 0.04678;           // Screen center in meters
   device.eyeToScreenDistance := 0.041;       // Distance between eye and display in meters
   device.lensSeparationDistance := 0.07;     // Lens separation distance in meters
   device.interpupillaryDistance := 0.07;     // IPD (distance between pupils) in meters
