@@ -1,7 +1,0 @@
-{
-    "app" : "examples",
-    "lib" : "package",
-    "tst" : "tst",
-    "pkg" : [
-    ]
-}
