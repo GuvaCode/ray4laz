@@ -3,7 +3,7 @@ raylib ver 5.6-dev
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
-{$mode objfpc}{$H+}
+{$mode objfpc}{$H+}{$modeswitch advancedrecords}
 unit raylib;
 // Include configuration file
 {$I raylib.inc}
@@ -32,8 +32,9 @@ const
    { TColorB }
    PColorB = ^TColorB;
    TColorB = record
-       r,g,b,a : byte; // Color value
-     end;
+     r,g,b,a : byte; // Color value
+     procedure Create(aR: Byte; aG: Byte; aB: Byte; aA: Byte);
+   end;
 
   TColor = TColorB;
   PColor = PColorB;
@@ -68,12 +69,16 @@ const
   MAGENTA:        TColorB = (r: 255; g: 0; b: 255; a: 255);   // Magenta
   RAYWHITE:       TColorB = (r: 245; g: 245; b: 245; a: 255); // My own White (raylib logo)
 
-   (* Vector2, 2 components *)
+
    type
+    (* Vector2, 2 components *)
      PVector2 = ^TVector2;
      TVector2 = record
          x : single; // Vector x component
          y : single; // Vector y component
+        // {$IFDEF ADVANCEDRECORDS}
+         procedure Create(aX, aY: single);
+        // {$ENDIF}
        end;
 
      (* Vector3, 3 components *)
@@ -82,6 +87,7 @@ const
          x : single; // Vector x component
          y : single; // Vector y component
          z : single; // Vector z component
+         procedure Create(aX, aY, aZ: single);
        end;
 
      (* Vector4, 4 components *)
@@ -91,6 +97,7 @@ const
          y : single; // Vector y component
          z : single; // Vector z component
          w : single; // Vector w component
+         procedure Create(aX, aY, aZ, aW: single);
        end;
 
      (* Quaternion, 4 components (Vector4 alias) *)
@@ -121,15 +128,17 @@ const
      (* Rectangle, 4 components *)
      PPRectangle = ^PRectangle;
      PRectangle = ^TRectangle;
+
+     { TRectangle }
      TRectangle = record
          x      : single; // Rectangle top-left corner position x
          y      : single; // Rectangle top-left corner position y
          width  : single; // Rectangle width
          height : single; // Rectangle height
+         procedure Create(aX, aY, aWidth, aHeight: single);
        end;
 
      (* Image, pixel data stored in CPU memory (RAM) *)
-
      PImage = ^TImage;
      TImage = record
          data    : pointer; // Image raw data
@@ -204,12 +213,16 @@ const
    (* Camera, defines position/orientation in 3d space *)
    type
      PCamera3D = ^TCamera3D;
+
+     { TCamera3D }
+
      TCamera3D = record
-         position   : TVector3; // Camera position
-         target     : TVector3; // Camera target it looks-at
-         up         : TVector3; // Camera up vector (rotation over its axis)
-         fovy       : single;   // Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
-         projection : Integer;  // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
+       position   : TVector3; // Camera position
+       target     : TVector3; // Camera target it looks-at
+       up         : TVector3; // Camera up vector (rotation over its axis)
+       fovy       : single;   // Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
+       projection : Integer;  // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
+       procedure Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
      end;
 
      (* Camera type fallback, defaults to Camera3D *)
@@ -332,9 +345,13 @@ const
 
      (* BoundingBox *)
      PBoundingBox = ^TBoundingBox;
+
+     { TBoundingBox }
+
      TBoundingBox = record
          min : TVector3; // Minimum vertex box-corner
          max : TVector3; // Maximum vertex box-corner
+         procedure Create(aMin, aMax: TVector3);
        end;
 
      (* Wave, audio wave data *)
@@ -2269,11 +2286,11 @@ procedure SetAudioStreamBufferSizeDefault(size: Integer); cdecl; external {$IFND
 {Audio thread callback to request new data}
 procedure SetAudioStreamCallback(stream: TAudioStream; callback: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamCallback';
 
-{Attach audio stream processor to stream, receives the samples as 'float'}
+{Attach audio stream processor to stream, receives frames x 2 samples as 'float' (stereo)}
 procedure AttachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'AttachAudioStreamProcessor';
 {Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'}
 procedure DetachAudioStreamProcessor(stream: TAudioStream; processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DetachAudioStreamProcessor';
-{Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'}
+{Attach audio stream processor to the entire audio pipeline, receives frames x 2 samples as 'float' (stereo)}
 procedure AttachAudioMixedProcessor(processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'AttachAudioMixedProcessor';
 {Detach audio stream processor from the entire audio pipeline}
 procedure DetachAudioMixedProcessor(processor: TAudioCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DetachAudioMixedProcessor';
@@ -2454,6 +2471,56 @@ begin
   aCam^.fovy := aFOVY;
   aCam^.projection := aType;
 end;
+
+{ TColorB }
+
+procedure TColorB.Create(aR: Byte; aG: Byte; aB: Byte; aA: Byte);
+begin
+ self := ColorCreate(aR, aG, aB ,aA);
+end;
+
+{ TVector2 }
+
+procedure TVector2.Create(aX, aY: single);
+begin
+ self := Vector2Create(aX,aY);
+end;
+
+{ TVector3 }
+
+procedure TVector3.Create(aX, aY, aZ: single);
+begin
+  self := Vector3Create(aX, aY, aZ);
+end;
+
+{ TVector4 }
+
+procedure TVector4.Create(aX, aY, aZ, aW: single);
+begin
+  self := Vector4Create(aX, aY, aZ, aW);
+end;
+
+{ TRectangle }
+
+procedure TRectangle.Create(aX, aY, aWidth, aHeight: single);
+begin
+  self := RectangleCreate(aX, aY, aWidth, aHeight);
+end;
+
+{ TCamera3D }
+
+procedure TCamera3D.Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
+begin
+ self := Camera3DCreate(aPosition, aTarget, aUp, aFOVY, aType);
+end;
+
+{ TBoundingBox }
+
+procedure TBoundingBox.Create(aMin, aMax: TVector3);
+begin
+  self := BoundingBoxCreate(aMin, aMax);
+end;
+
 
 
 initialization

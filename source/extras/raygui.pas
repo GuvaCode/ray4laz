@@ -1,13 +1,13 @@
 {********************************************************************************************
 *                                                                                           *
-*   raygui v4.1-dev - A simple and easy-to-use immediate-mode gui library                   *
+*    5.0-dev (2025)    Current dev version...                                               *
 *                                                                                           *
 *   DESCRIPTION:                                                                            *
 *                                                                                           *
 *   raygui is a tools-dev-focused immediate-mode-gui library based on raylib but also       *
 *   available as a standalone library, as long as input and drawing functions are provided. *
 *                                                                                           *
-*   pascal header 2021 - 2024 by Gunko Vadim                                                *
+*   pascal header 2021 - 2025 by Gunko Vadim                                                *
 *                                                                                           *
 *********************************************************************************************}
 
@@ -26,10 +26,10 @@ uses
  raylib;
 
 const
-  RAYGUI_VERSION_MAJOR = 4;
+  RAYGUI_VERSION_MAJOR = 5;
   RAYGUI_VERSION_MINOR = 0;
   RAYGUI_VERSION_PATCH = 0;
-  RAYGUI_VERSION = '4.1-dev';
+  RAYGUI_VERSION = '5.0-dev';
   SCROLLBAR_LEFT_SIDE = 0;
   SCROLLBAR_RIGHT_SIDE = 1;
 
@@ -310,9 +310,8 @@ const
   STATE_DISABLED = 3;
 
 
-
-  // Gui control text alignment vertical
-  // NOTE: Text vertical position inside the text bounds
+// Gui control text alignment vertical
+// NOTE: Text vertical position inside the text bounds
 type
   PGuiTextAlignmentVertical = ^TGuiTextAlignmentVertical;
   TGuiTextAlignmentVertical = Integer;
@@ -326,8 +325,7 @@ const
   // NOTE: Useful for multiline text
 type
   PGuiTextWrapMode = ^TGuiTextWrapMode;
-  TGuiTextWrapMode = Integer;
-
+  TGuiTextWrapMode = integer;
 const
   TEXT_WRAP_NONE = 0;
   TEXT_WRAP_CHAR = 1;
@@ -335,8 +333,7 @@ const
 
 type
   PGuiTextAlignment = ^TGuiTextAlignment;
-  TGuiTextAlignment = Integer;
-
+  TGuiTextAlignment =integer;
 const
   TEXT_ALIGN_LEFT = 0;
   TEXT_ALIGN_CENTER = 1;
@@ -358,7 +355,7 @@ const
   DROPDOWNBOX = 8;
   TEXTBOX = 9;
   VALUEBOX = 10;
-  SPINNER = 11;
+  CONTROL11 = 11;
   LISTVIEW = 12;
   COLORPICKER = 13;
   SCROLLBAR = 14;
@@ -479,18 +476,18 @@ const
 type
   PGuiListViewProperty = ^TGuiListViewProperty;
   TGuiListViewProperty = Integer;
-
 const
   LIST_ITEMS_HEIGHT = 16;   // ListView items height
   LIST_ITEMS_SPACING = 17;
   SCROLLBAR_WIDTH = 18;
-  SCROLLBAR_SIDE = 19;
-  LIST_ITEMS_BORDER_WIDTH = 20;    // ListView items border width
-// ColorPicker
+  LIST_ITEMS_BORDER_NORMAL = 19;
+  SCROLLBAR_SIDE = 20;
+  LIST_ITEMS_BORDER_WIDTH = 21;    // ListView items border width
+
+  // ColorPicker
 type
   PGuiColorPickerProperty = ^TGuiColorPickerProperty;
   TGuiColorPickerProperty = Integer;
-
 const
   COLOR_SELECTOR_SIZE = 16;
   HUEBAR_WIDTH = 17;

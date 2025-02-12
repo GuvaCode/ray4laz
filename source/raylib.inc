@@ -37,6 +37,7 @@
 {.$define RAYGUI_NO_RICONS}
 
 // Other Settings
+
 {$PACKRECORDS C}
 {$ALIGN 8}
 {$MINENUMSIZE 4}
