@@ -125,6 +125,7 @@ begin
    cube := LoadModelFromMesh(GenMeshCube(1.0, 1.0, 1.0));
    cube.materials[0].shader := shadowShader;
    robot := LoadModel(PChar(GetApplicationDirectory + 'resources/models/robot.glb'));
+
    for i := 0 to robot.materialCount-1 do
    robot.materials[i].shader := shadowShader;
 

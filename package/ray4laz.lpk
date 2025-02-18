@@ -30,7 +30,7 @@
   3. This notice may not be removed or altered from any source distribution.
 "/>
     <Version Major="5" Minor="6"/>
-    <Files Count="6">
+    <Files Count="7">
       <Item1>
         <Filename Value="../source/raylib.pas"/>
         <UnitName Value="raylib"/>
@@ -55,6 +55,10 @@
         <Filename Value="../source/extras/rgizmo.pas"/>
         <UnitName Value="rgizmo"/>
       </Item6>
+      <Item7>
+        <Filename Value="../source/extras/raymedia.pas"/>
+        <UnitName Value="raymedia"/>
+      </Item7>
     </Files>
     <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="1">

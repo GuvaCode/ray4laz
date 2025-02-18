@@ -103,6 +103,7 @@ RAYLIB_MODULE_AUDIO  ?= TRUE
 RAYLIB_MODULE_MODELS ?= TRUE
 RAYLIB_MODULE_RAYGUI ?= FALSE
 RAYLIB_MODULE_RAYGIZMO ?= FALSE
+RAYLIB_MODULE_RAYMEDIA ?= FALSE
 
 # NOTE: Additional libraries have been moved to their own repos:
 # raygui: https://github.com/raysan5/raygui
@@ -110,6 +111,9 @@ RAYLIB_MODULE_RAYGUI_PATH ?= $(RAYLIB_SRC_PATH)/../../raygui/src
 
 # raygizmo: https://github.com/cloudofoz/raylib-gizmo/tree/main
 RAYLIB_MODULE_RAYGIZMO_PATH ?= $(RAYLIB_SRC_PATH)
+
+RAYLIB_MODULE_RAYMEDIA_PATH ?= $(RAYLIB_SRC_PATH)
+
 
 # Use external GLFW library instead of rglfw module
 USE_EXTERNAL_GLFW     ?= FALSE
@@ -124,6 +128,10 @@ GLFW_LINUX_ENABLE_X11      ?= TRUE
 SDL_INCLUDE_PATH      ?= $(RAYLIB_SRC_PATH)/external/SDL2/include
 SDL_LIBRARY_PATH      ?= $(RAYLIB_SRC_PATH)/external/SDL2/lib
 SDL_LIBRARIES         ?= -lSDL2 -lSDL2main
+
+# FFMPEG FOR VIDEO
+FFMPEG_LIBRARIES      ?= -lraylib -lavcodec -lavformat -lavutil -lswresample -lswscale
+
 
 # Determine if the file has root access (only required to install raylib)
 # "whoami" prints the name of the user that calls him (so, if it is the root user, "whoami" prints "root")
@@ -563,8 +571,11 @@ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW)
         endif
     endif
     ifeq ($(PLATFORM_OS),LINUX)
-        LDLIBS = -lGL -lc -lm -lpthread -ldl -lrt
-        ifeq ($(GLFW_LINUX_ENABLE_X11),TRUE)
+        LDLIBS = -lGL -lc -lm -lpthread -ldl -lrt 
+       ifeq ($(RAYLIB_MODULE_RAYMEDIA),TRUE)
+        LDLIBS += $(FFMPEG_LIBRARIES)
+       endif
+       ifeq ($(GLFW_LINUX_ENABLE_X11),TRUE)
             LDLIBS += -lX11
         endif
         # TODO: On ARM 32bit arch, miniaudio requires atomics library
@@ -602,7 +613,7 @@ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_RGFW)
     ifeq ($(PLATFORM_OS),LINUX)
         # Libraries for Debian GNU/Linux desktop compipling
         # NOTE: Required packages: libegl1-mesa-dev
-        LDLIBS = -lGL -lX11 -lXrandr -lXinerama -lXi -lXcursor -lm -lpthread -ldl -lrt
+        LDLIBS = -lGL -lX11 -lXrandr -lXinerama -lXi -lXcursor -lm -lpthread -ldl -lrt 
 
         # Explicit link to libc
         ifeq ($(RAYLIB_LIBTYPE),SHARED)
@@ -653,6 +664,10 @@ endif
 
 ifeq ($(RAYLIB_MODULE_RAYGIZMO),TRUE)
     OBJS += raygizmo.o 
+endif
+
+ifeq ($(RAYLIB_MODULE_RAYMEDIA),TRUE)
+    OBJS += rmedia.o 
 endif
 
 ifeq ($(TARGET_PLATFORM),PLATFORM_ANDROID)
@@ -789,6 +804,19 @@ ifeq ($(PLATFORM_SHELL), cmd)
 else
 	@echo "#define RAYGIZMO_IMPLEMENTATION" > raygizmo.c
 	@echo "#include \"$(RAYLIB_MODULE_RAYGIZMO_PATH)/raygizmo.h\"" >> raygizmo.c
+endif
+
+# Compile raymedia module
+# NOTE: raumedia header should be distributed with raylib.h
+rmedia.o : rmedia.c
+	$(CC) -c $< $(CFLAGS) $(INCLUDE_PATHS)
+rmedia.c:
+ifeq ($(PLATFORM_SHELL), cmd)
+	@echo #define RAYMEDIA_IMPLEMENTATION > rmedia.c
+	@echo #include "$(RAYLIB_MODULE_RAYMEDIA_PATH)/rmedia.h" >> rmedia.c
+else
+	@echo "#define RAYMEDIA_IMPLEMENTATION" > rmedia.c
+	@echo "#include \"$(RAYLIB_MODULE_RAYGIZMO_PATH)/rmedia.h\"" >> rmedia.c
 endif
 
 # Compile gizmo module

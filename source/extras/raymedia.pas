@@ -31,8 +31,16 @@ type
     hasAudio: boolean;     // True if audio is present
   end;
 
+type
+  TReadFn = function(userData: Pointer; buffer: PByte; bufferSize: Integer): Integer; cdecl;
+  TSeekFn = function(userData: Pointer; offset: Int64; whence: Integer): Int64; cdecl;
 
-  // Enumerators Definition
+  PMediaStreamReader = ^TMediaStreamReader;
+  TMediaStreamReader = record
+    readFn: TReadFn;
+    seekFn: TSeekFn;
+    userData: Pointer;
+  end;
 
   //Flags for LoadMediaEx() to customize media loading.
   PMediaLoadFlag = ^TMediaLoadFlag;
@@ -77,11 +85,16 @@ type
     AUDIO_FMT_FLT = TMediaAudioFormat(3);  // Float
     AUDIO_FMT_DBL = TMediaAudioFormat(4);  // Double
 
+  type
+    TMediaStreamIOResult = (
+      MEDIA_IO_EOF     = -541478725, // Конец потока достигнут (соответствует AVERROR_EOF)
+      MEDIA_IO_INVALID = -22         // Некорректный вызов или операция (соответствует AVERROR(EINVAL))
+    );
 
 function LoadMedia(const fileName: PChar): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}'libraylib.so'{$ENDIF} name 'LoadMedia';
-//function LoadMediaEx(const fileName: PChar; flags: Integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaEx';
-//function LoadMediaFromStream(streamReader: TMediaStreamReader; flags: integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaFromStream';
-{function IsMediaValid(media: TMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMediaValid';
+function LoadMediaEx(const fileName: PChar; flags: Integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaEx';
+function LoadMediaFromStream(streamReader: TMediaStreamReader; flags: integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaFromStream';
+function IsMediaValid(media: TMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMediaValid';
 function GetMediaProperties(media: TMediaStream): TMediaProperties; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaProperties';
 function UpdateMedia(media: PMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateMedia';
 function UpdateMediaEx(media: PMediaStream; deltaTime: Double): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateMediaEx';
@@ -92,7 +105,7 @@ function SetMediaLooping(media: TMediaStream; loopPlay: Boolean): Boolean; cdecl
 function SetMediaFlag(flag: Integer; value: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMediaFlag';
 function GetMediaFlag(flag: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaFlag';
 procedure UnloadMedia(media: PMediaStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMedia';
- }
+
 
 implementation
 
