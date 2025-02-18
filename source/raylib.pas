@@ -2333,6 +2333,7 @@ uses
   {$linklib dl}
   {$linklib pthread}
   {$linklib libraylib.a}
+  {$linklib librmedia.a}
   {$endif}
 {$endif}
 

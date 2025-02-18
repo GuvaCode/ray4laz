@@ -13,6 +13,13 @@ interface
 uses
   raylib;
 
+{$IFNDEF RAY_STATIC}
+const
+{$ifdef linux}
+  cDllName = 'librmedia.so';
+{$endif}
+{$endif}
+
 type
   PMediaContext = ^TMediaContext;
   TMediaContext = pointer; //record end;
@@ -91,7 +98,7 @@ type
       MEDIA_IO_INVALID = -22         // Некорректный вызов или операция (соответствует AVERROR(EINVAL))
     );
 
-function LoadMedia(const fileName: PChar): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}'libraylib.so'{$ENDIF} name 'LoadMedia';
+function LoadMedia(const fileName: PChar): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMedia';
 function LoadMediaEx(const fileName: PChar; flags: Integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaEx';
 function LoadMediaFromStream(streamReader: TMediaStreamReader; flags: integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaFromStream';
 function IsMediaValid(media: TMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMediaValid';
@@ -106,8 +113,20 @@ function SetMediaFlag(flag: Integer; value: Integer): Integer; cdecl; external {
 function GetMediaFlag(flag: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaFlag';
 procedure UnloadMedia(media: PMediaStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMedia';
 
-
 implementation
-
+ {$IFDEF linux}
+ {$IFDEF RAY_STATIC}
+  {$linklib c}
+  {$linklib m}
+  {$linklib dl}
+  {$linklib pthread}
+  {$linklib librmedia.a}
+  {$linklib libavcodec}
+  {$linklib libavformat}
+  {$linklib libavutil}
+  {$linklib libswresample}
+  {$linklib libswscale}
+ {$endif}
+{$endif}
 end.
 

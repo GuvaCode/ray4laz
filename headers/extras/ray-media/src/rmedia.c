@@ -27,7 +27,8 @@
 
 #include <assert.h>
 
-#include <rmedia.h>
+#include "rmedia.h"
+#include "raylib.h"
 
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>

@@ -3,7 +3,7 @@
 // Defines for GNU/Linux
 {$IFDEF LINUX}
   {$IFNDEF RAY_DYNAMIC}
-    {.$DEFINE RAY_STATIC}
+    {$DEFINE RAY_STATIC}
   {$ENDIF}
 {$ENDIF}
 
