@@ -14,8 +14,8 @@ uses
   raylib;
 
 {$IFNDEF RAY_STATIC}
-const
 {$ifdef linux}
+const
   cDllName = 'librmedia.so';
 {$endif}
 {$endif}
