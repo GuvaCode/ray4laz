@@ -21,8 +21,8 @@
 *
 ***************************************************************************************************/
 
-#ifndef RMEDIA_H
-#define RMEDIA_H
+#ifndef RAYMEDIA_H
+#define RAYMEDIA_H
 
 //--------------------------------------------------------------------------------------------------
 // Includes
@@ -164,7 +164,7 @@ extern "C" {
      * @param fileName Path to the movie file
      * @return MediaStream on success; empty structure on failure
      */
-     MediaStream LoadMedia(const char* fileName);
+    RLAPI MediaStream LoadMedia(const char* fileName);
 
     /**
      * Load a MediaStream from a file with flags.
@@ -172,7 +172,7 @@ extern "C" {
      * @param flags Combination of MediaLoadFlag values
      * @return MediaStream on success; empty structure on failure
      */
-     MediaStream LoadMediaEx(const char* fileName, int flags);
+    RLAPI MediaStream LoadMediaEx(const char* fileName, int flags);
 
     /**
      * Load a MediaStream from a custom stream with flags.
@@ -180,28 +180,28 @@ extern "C" {
      * @param flags Combination of MediaLoadFlag values
      * @return MediaStream on success; empty structure on failure
      */
-     MediaStream LoadMediaFromStream(MediaStreamReader streamReader, int flags);
+    RLAPI MediaStream LoadMediaFromStream(MediaStreamReader streamReader, int flags);
 
     /**
      * Check if a MediaStream is valid (loaded and initialized).
      * @param media MediaStream structure
      * @return true if media is valid; false otherwise
      */
-     bool IsMediaValid(MediaStream media);
+    RLAPI bool IsMediaValid(MediaStream media);
 
     /**
      * Retrieve properties of the loaded media.
      * @param media A valid MediaStream
      * @return Filled MediaProperties structure on success; empty structure on failure
      */
-     MediaProperties GetMediaProperties(MediaStream media);
+    RLAPI MediaProperties GetMediaProperties(MediaStream media);
 
     /**
      * Update a MediaStream.
      * @param media Pointer to a valid MediaStream
      * @return true on success; false otherwise
      */
-     bool UpdateMedia(MediaStream* media);
+    RLAPI bool UpdateMedia(MediaStream* media);
 
     /**
      * Update a MediaStream with a specified deltaTime.
@@ -209,14 +209,14 @@ extern "C" {
      * @param deltaTime Time in seconds since the last update
      * @return true on success; false otherwise
      */
-     bool UpdateMediaEx(MediaStream* media, double deltaTime);
+    RLAPI bool UpdateMediaEx(MediaStream* media, double deltaTime);
 
     /**
      * Get the state of a MediaStream.
      * @param media A valid MediaStream
      * @return Current state; MEDIA_STATE_INVALID on failure
      */
-     int GetMediaState(MediaStream media);
+    RLAPI int GetMediaState(MediaStream media);
 
     /**
      * Set the state of a MediaStream (play, pause, or stop).
@@ -224,14 +224,14 @@ extern "C" {
      * @param newState Desired state
      * @return The new state on success; MEDIA_STATE_INVALID on failure
      */
-     int SetMediaState(MediaStream media, int newState);
+    RLAPI int SetMediaState(MediaStream media, int newState);
 
     /**
      * Get the playback position of a MediaStream in seconds.
      * @param media A valid MediaStream
      * @return Playback position in seconds; negative on failure
      */
-     double GetMediaPosition(MediaStream media);
+    RLAPI double GetMediaPosition(MediaStream media);
 
     /**
      * Set the playback position of a MediaStream.
@@ -239,7 +239,7 @@ extern "C" {
      * @param timeSec Desired position in seconds
      * @return true on success; false otherwise
      */
-     bool SetMediaPosition(MediaStream media, double timeSec);
+    RLAPI bool SetMediaPosition(MediaStream media, double timeSec);
 
     /**
      * Enable or disable loop playback for a MediaStream.
@@ -247,7 +247,7 @@ extern "C" {
      * @param loopPlay true to enable looping; false to disable
      * @return true on success; false otherwise
      */
-     bool SetMediaLooping(MediaStream media, bool loopPlay);
+    RLAPI bool SetMediaLooping(MediaStream media, bool loopPlay);
 
     /**
      * Set a global configuration property.
@@ -255,20 +255,20 @@ extern "C" {
      * @param value New property value
      * @return 0 on success; -1 on failure
      */
-     int SetMediaFlag(int flag, int value);
+    RLAPI int SetMediaFlag(int flag, int value);
 
     /**
      * Get a global configuration property.
      * @param flag One of MediaConfigFlag values
      * @return Property value; negative on failure
      */
-     int GetMediaFlag(int flag);
+    RLAPI int GetMediaFlag(int flag);
 
     /**
      * Unload a MediaStream and free its associated memory.
      * @param media Pointer to a valid MediaStream
      */
-     void UnloadMedia(MediaStream* media);
+    RLAPI void UnloadMedia(MediaStream* media);
 
     //----------------------------------------------------------------------------------------------
 
@@ -278,4 +278,4 @@ extern "C" {
 
 //--------------------------------------------------------------------------------------------------
 
-#endif  // RMEDIA_H
+#endif  // RAYMEDIA_H

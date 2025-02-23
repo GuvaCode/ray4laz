@@ -71,14 +71,14 @@ extern "C" {
 	 * Initialize a gizmo Transform with default values.
 	 * @return A Transform initialized to default values.
 	 */
-	Transform GizmoIdentity(void);
+	RLAPI Transform GizmoIdentity(void);
 
 	/**
 	 * Convert a gizmo Transform to the corresponding Matrix.
 	 * @param transform The gizmo Transform to convert.
 	 * @return A Matrix built from the Transform values.
 	 */
-	Matrix GizmoToMatrix(Transform transform);
+	RLAPI Matrix GizmoToMatrix(Transform transform);
 
 	/**
 	 * Draw the gizmo on the screen in an immediate-mode style.
@@ -86,7 +86,7 @@ extern "C" {
 	 * @param transform A pointer to the Transform affected by the gizmo.
 	 * @return true if the gizmo is active and affecting the transform; false otherwise.
 	 */
-	bool DrawGizmo3D(int flags, Transform* transform);
+	RLAPI bool DrawGizmo3D(int flags, Transform* transform);
 
 	/**
 	 * Set the size of the gizmo.
@@ -94,14 +94,14 @@ extern "C" {
 	 * @note All internal gizmo metrics are expressed as a fraction of this measure.
 	 * @default 1.5f
 	 */
-	void SetGizmoSize(float size);
+	RLAPI void SetGizmoSize(float size);
 
 	/**
 	 * Set the line width of the gizmo geometry.
 	 * @param width The new line width.
 	 * @default 2.5f
 	 */
-	void SetGizmoLineWidth(float width);
+	RLAPI void SetGizmoLineWidth(float width);
 
 	/**
 	 * Set the colors used by the gizmo.
@@ -111,7 +111,7 @@ extern "C" {
 	 * @param center Color of the central circle.
 	 * @default {229, 72, 91, 255}, {131, 205, 56, 255}, {69, 138, 242, 255}, {255, 255, 255, 200}
 	 */
-	void SetGizmoColors(Color x, Color y, Color z, Color center);
+	RLAPI void SetGizmoColors(Color x, Color y, Color z, Color center);
 
 	/**
 	 * Change the global axis orientation.
@@ -121,7 +121,7 @@ extern "C" {
 	 * @note The vectors should be orthogonal to each other for consistent behavior.
 	 * @default (1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)
 	 */
-	void SetGizmoGlobalAxis(Vector3 right, Vector3 up, Vector3 forward);
+	RLAPI void SetGizmoGlobalAxis(Vector3 right, Vector3 up, Vector3 forward);
 
 
 //--------------------------------------------------------------------------------------------------
