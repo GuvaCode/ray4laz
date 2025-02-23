@@ -12,7 +12,7 @@ interface
 
 {$IFNDEF RAY_STATIC}
 const
-  cDllName = {$IFDEF WINDOWS} 'raylib.dll'; {$IFEND}
+  cDllName = {$IFDEF WINDOWS} 'libraylib.dll'; {$IFEND}
              {$IFDEF DARWIN} 'libraylib.dylib'; {$IFEND}
              {$IFDEF LINUX} 'libraylib.so'; {$IFEND}
              {$IFDEF HAIKU} 'libraylib.so'; {$IFEND}
@@ -2333,7 +2333,6 @@ uses
   {$linklib dl}
   {$linklib pthread}
   {$linklib libraylib.a}
-  {$linklib librmedia.a}
   {$endif}
 {$endif}
 

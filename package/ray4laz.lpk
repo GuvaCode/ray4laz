@@ -6,6 +6,7 @@
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
+        <IncludeFiles Value="../source"/>
         <OtherUnitFiles Value="../source;../source/extras"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
@@ -52,12 +53,12 @@
         <UnitName Value="reasings"/>
       </Item5>
       <Item6>
-        <Filename Value="../source/extras/rgizmo.pas"/>
-        <UnitName Value="rgizmo"/>
-      </Item6>
-      <Item7>
         <Filename Value="../source/extras/raymedia.pas"/>
         <UnitName Value="raymedia"/>
+      </Item6>
+      <Item7>
+        <Filename Value="../source/raylib.inc"/>
+        <Type Value="Include"/>
       </Item7>
     </Files>
     <CompatibilityMode Value="True"/>
