@@ -1,14 +1,15 @@
 #!/bin/bash
 rm -rvf raylib_tmp
 rm -Rfv raygui
-rm -master.zip
-clear
+rm master.zip
+rm main.zip
 echo -e "\e[91m \e[1m"
 echo "raylib build scripts "
 echo -e "\e[92m \e[1m"
 read -p "Install dependencies (y/n)?" answer
 case ${answer:0:1} in y|Y )
 echo -e "\e[0"
+echo -e "\e[0m"  
 sudo apt install -y libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev
 sudo apt-get install -y mingw-w64-x86-64-dev
 sudo apt-get install -y mingw-w64-i686-dev
@@ -21,7 +22,7 @@ sudo apt-get install -y build-essential #libc6-dev-i386
 sudo apt-get install -y libgl1-mesa-dev:i386
 sudo apt-get install -y libavcodec-dev libavformat-dev libavutil-dev libswresample-dev libswscale-dev
 sudo apt-get install -y libavcodec-dev:386 libavformat-dev:386 libavutil-dev:386 libswresample-dev:386 libswscale-dev:386
-sudo apt-get install mingw-w64-tools
+# sudo apt-get install mingw-w64-tools
 # sudo apt-get install -y nasm
 # ./configure --arch=x86 --target-os=mingw32 --enable-shared --cross-prefix=i686-w64-mingw32-
 
@@ -40,14 +41,10 @@ rm -f master
 
 mkdir libs
 mkdir libs/x86_64-linux
-mkdir libs/x86_64-linux/include_raymedia
 mkdir libs/x86_32-linux
-mkdir libs/x86_32-linux/include_raymedia
-
 mkdir libs/x86_64-win64
 mkdir libs/i386-win32
-mkdir libs/x86_64-win64/include_raymedia
-mkdir libs/i386-win32/include_raymedia
+
 #mkdir libs/wasm32-wasi
 
 echo -e "\e[92m \e[1m"
@@ -117,13 +114,10 @@ echo -e "\e[0m"
 
 
 rm -f ../../libs/x86_64-linux/*
-rm -f ../../libs/x86_64-linux/include_raymedia/*
 rm -f ../../libs/x86_32-linux/*
-rm -f ../../libs/x86_32-linux/include_raymedia/*
 rm -f ../../libs/x86_64-win64/*
 rm -f ../../libs/i386-win32/*
-#rm -f ../../libs/x86_64-win64/include_raymedia/*
-#rm -f ../../libs/i386-win32/include_raymedia/*
+
 
 make clean  
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE  #RAYLIB_MODULE_RAYMEDIA=TRUE
@@ -131,7 +125,7 @@ cp libraylib.so.5.5.0 ../../libs/x86_64-linux/libraylib.so.550
 
 make clean 
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE 
-cp libraylib.so.5.5.0 ../../libs/x86_64-linux/include_raymedia/libraylib.so.550 
+cp libraylib.so.5.5.0 ../../libs/x86_64-linux/libraylibmedia.so.550 
 
 
 echo -e "\e[34m \e[1m"  
@@ -147,7 +141,7 @@ cp libraylib.a ../../libs/x86_64-linux/libraylib.a
 
 make clean 
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE 
-cp libraylib.a ../../libs/x86_64-linux/include_raymedia/libraylib.a
+cp libraylib.a ../../libs/x86_64-linux/libraylibmedia.a
 
 
 echo -e "\e[34m \e[1m"  
@@ -161,7 +155,7 @@ cp libraylib.so.5.5.0 ../../libs/x86_32-linux/libraylib.so.550
 
 make clean 
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE LDFLAG=-m32
-cp libraylib.so.5.5.0 ../../libs/x86_32-linux/include_raymedia/libraylib.so.550 
+cp libraylib.so.5.5.0 ../../libs/x86_32-linux/libraylibmedia.so.550 
 
 echo -e "\e[34m \e[1m"  
 echo "Build x86_32_LINUX Statics" 
@@ -174,7 +168,7 @@ cp libraylib.a ../../libs/x86_32-linux
 
 make clean
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE LDFLAG=-m32
-cp libraylib.a ../../libs/x86_32-linux/include_raymedia/libraylib.a
+cp libraylib.a ../../libs/x86_32-linux/libraylibmedia.a
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -207,12 +201,12 @@ make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE R
 #cp libraylibdll.a ../../libs/x86_64-win64
 cp raylib.dll ../../libs/x86_64-win64/libraylib.dll
 
-#make clean 
-#x86_64-w64-mingw32-windres raylib.rc -o raylib.rc.data
-#x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
-#make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc #AR=x86_64-w64-mingw32-ar 
+make clean 
+x86_64-w64-mingw32-windres raylib.rc -o raylib.rc.data
+x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
 #cp libraylibdll.a ../../libs/x86_64-win64
-#cp raylib.dll ../../libs/x86_64-win64/include_raymedia/libraylib.dll
+cp raylib.dll ../../libs/x86_64-win64/libraylibmedia.dll
 
 #---------------------------------------------------------------------------------------------------------
 
@@ -231,16 +225,16 @@ make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE R
 cp raylib.dll ../../libs/i386-win32/libraylib.dll
 
 
-# make clean
-# i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
-#i686-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
+ make clean
+ i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
+i686-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 
 #echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 #echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 
-#make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
 #cp libraylibdll.a ../../libs/i386-win32
-#cp raylib.dll ../../libs/i386-win32/include_raymedia/libraylib.dll
+cp raylib.dll ../../libs/i386-win32/libraylibmedia.dll
 
 
 #---------------------------------------------------------------------------------------------------

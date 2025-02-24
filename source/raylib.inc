@@ -1,6 +1,9 @@
 // Configuration file for raylib
 
 // Defines for GNU/Linux
+
+{$DEFINE RAY_MEDIA}
+
 {$IFDEF LINUX}
   {$IFNDEF RAY_DYNAMIC}
     {$DEFINE RAY_STATIC}

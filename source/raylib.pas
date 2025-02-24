@@ -12,9 +12,16 @@ interface
 
 {$IFNDEF RAY_STATIC}
 const
-  cDllName = {$IFDEF WINDOWS} 'libraylib.dll'; {$IFEND}
+
+  cDllName = {$IFNDEF RAY_MEDIA}
+             {$IFDEF WINDOWS} 'libraylib.dll'; {$IFEND}
+             {$IFDEF LINUX} 'libraylib.so.550'; {$IFEND}
+             {$ELSE}
+             {$IFDEF WINDOWS} 'libraylibmedia.dll'; {$IFEND}
+             {$IFDEF LINUX} 'libraylibmedia.so.550'; {$IFEND}
+             {$ENDIF}
+
              {$IFDEF DARWIN} 'libraylib.dylib'; {$IFEND}
-             {$IFDEF LINUX} 'libraylib.so'; {$IFEND}
              {$IFDEF HAIKU} 'libraylib.so'; {$IFEND}
 {$ENDIF}
 
@@ -222,7 +229,7 @@ const
        up         : TVector3; // Camera up vector (rotation over its axis)
        fovy       : single;   // Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
        projection : Integer;  // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
-       procedure Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
+       procedure Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aProjection: integer);
      end;
 
      (* Camera type fallback, defaults to Camera3D *)
@@ -2318,7 +2325,7 @@ procedure RectangleSet(aRect: PRectangle; aX: Single; aY: Single; aWidth: Single
 function BoundingBoxCreate(aMin, aMax: TVector3): TBoundingBox;
 procedure BoundingBoxSet(aBoundingBox: PBoundingBox; aMin, aMax: TVector3);
 
-function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer): TCamera3D;
+function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aProjection: Integer): TCamera3D;
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer);
 
 
@@ -2332,7 +2339,11 @@ uses
   {$linklib m}
   {$linklib dl}
   {$linklib pthread}
-  {$linklib libraylib.a}
+   {$IFDEF RAY_MEDIA}
+      {$linklib libraylibmedia.a}
+   {$else}
+      {$linklib libraylib.a}
+   {$endif}
   {$endif}
 {$endif}
 
@@ -2454,13 +2465,13 @@ begin
   aBoundingBox^.max := aMax;
 end;
 
-function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer): TCamera3D;
+function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aProjection: integer): TCamera3D;
 begin
   Result.position := aPosition;
   Result.target := aTarget;
   Result.up := aUp;
   Result.fovy := aFOVY;
-  Result.projection := aType;
+  Result.projection := aProjection;
 end;
 
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
@@ -2509,9 +2520,9 @@ end;
 
 { TCamera3D }
 
-procedure TCamera3D.Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
+procedure TCamera3D.Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aProjection: integer);
 begin
- self := Camera3DCreate(aPosition, aTarget, aUp, aFOVY, aType);
+ self := Camera3DCreate(aPosition, aTarget, aUp, aFOVY, aProjection);
 end;
 
 { TBoundingBox }
