@@ -25,9 +25,6 @@
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="ray4lazgizmo"/>
-      </Item>
-      <Item>
         <PackageName Value="ray4laz"/>
       </Item>
     </RequiredPackages>

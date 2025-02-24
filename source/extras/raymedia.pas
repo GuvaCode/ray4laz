@@ -5,21 +5,13 @@ unit raymedia;
 {$ALIGN 8}
 {$MINENUMSIZE 4}
 // Include configuration file
-{$I ../raylib.inc}
+{$I raylib.inc}
 
 
 interface
 
 uses
   raylib;
-
-{$IFNDEF RAY_STATIC}
-{$ifdef linux}
-const
-  cDllName = 'librmedia.so';
-{$endif}
-{$endif}
-
 type
   PMediaContext = ^TMediaContext;
   TMediaContext = pointer; //record end;
@@ -114,19 +106,6 @@ function GetMediaFlag(flag: Integer): Integer; cdecl; external {$IFNDEF RAY_STAT
 procedure UnloadMedia(media: PMediaStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMedia';
 
 implementation
- {$IFDEF linux}
- {$IFDEF RAY_STATIC}
-  {$linklib c}
-  {$linklib m}
-  {$linklib dl}
-  {$linklib pthread}
-  {$linklib librmedia.a}
-  {$linklib libavcodec}
-  {$linklib libavformat}
-  {$linklib libavutil}
-  {$linklib libswresample}
-  {$linklib libswscale}
- {$endif}
-{$endif}
+
 end.
 

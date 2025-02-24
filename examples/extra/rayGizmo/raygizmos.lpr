@@ -1,4 +1,4 @@
-program raygizmos;
+program raygizmo;
 
 {$mode objfpc}{$H+}
 

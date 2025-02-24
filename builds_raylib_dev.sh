@@ -122,8 +122,8 @@ rm -f ../../libs/x86_32-linux/*
 rm -f ../../libs/x86_32-linux/include_raymedia/*
 rm -f ../../libs/x86_64-win64/*
 rm -f ../../libs/i386-win32/*
-rm -f ../../libs/x86_64-win64/include_raymedia/*
-rm -f ../../libs/i386-win32/include_raymedia/*
+#rm -f ../../libs/x86_64-win64/include_raymedia/*
+#rm -f ../../libs/i386-win32/include_raymedia/*
 
 make clean  
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE  #RAYLIB_MODULE_RAYMEDIA=TRUE
@@ -163,7 +163,6 @@ make clean
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE LDFLAG=-m32
 cp libraylib.so.5.5.0 ../../libs/x86_32-linux/include_raymedia/libraylib.so.550 
 
-
 echo -e "\e[34m \e[1m"  
 echo "Build x86_32_LINUX Statics" 
 echo -e "\e[0m"
@@ -189,8 +188,12 @@ cp libraylib.a ../../libs/x86_32-linux/include_raymedia/libraylib.a
 
 #--------------------------------------------------------------------------------------------------------
 
-
-
+# Build from windows only
+# download compiled ffmpeg
+# win64 https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-win64-lgpl-shared-7.1.zip
+# or  https://mirror.msys2.org/mingw/mingw64/mingw-w64-x86_64-ffmpeg-7.1-6-any.pkg.tar.zst
+# wni32 https://mirror.msys2.org/mingw/mingw32/mingw-w64-i686-ffmpeg-7.1-6-any.pkg.tar.zst 
+# copy lib include or etc to mingw
 echo -e "\e[34m \e[1m"  
 echo " build x64 windows"
 echo -e "\e[0m"
@@ -204,12 +207,12 @@ make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE R
 #cp libraylibdll.a ../../libs/x86_64-win64
 cp raylib.dll ../../libs/x86_64-win64/libraylib.dll
 
-make clean 
-x86_64-w64-mingw32-windres raylib.rc -o raylib.rc.data
-x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
+#make clean 
+#x86_64-w64-mingw32-windres raylib.rc -o raylib.rc.data
+#x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
+#make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc #AR=x86_64-w64-mingw32-ar 
 #cp libraylibdll.a ../../libs/x86_64-win64
-cp raylib.dll ../../libs/x86_64-win64/include_raymedia/libraylib.dll
+#cp raylib.dll ../../libs/x86_64-win64/include_raymedia/libraylib.dll
 
 #---------------------------------------------------------------------------------------------------------
 
@@ -228,16 +231,16 @@ make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE R
 cp raylib.dll ../../libs/i386-win32/libraylib.dll
 
 
-make clean
-i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
-i686-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
+# make clean
+# i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
+#i686-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 
 #echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 #echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
+#make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE RAYLIB_MODULE_RAYMEDIA=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
 #cp libraylibdll.a ../../libs/i386-win32
-cp raylib.dll ../../libs/i386-win32/include_raymedia/libraylib.dll
+#cp raylib.dll ../../libs/i386-win32/include_raymedia/libraylib.dll
 
 
 #---------------------------------------------------------------------------------------------------
