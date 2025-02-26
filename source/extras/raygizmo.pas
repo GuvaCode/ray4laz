@@ -3,8 +3,7 @@ unit raygizmo;
   Copyright (c) 2024 Claudio Z. (@cloudofoz)
   https://github.com/cloudofoz/raylib-gizmo
   pascal header translation 2024 gunko vadim
-
-  *)
+*)
 
 {$mode objfpc}{$H+}
 {$packrecords c}

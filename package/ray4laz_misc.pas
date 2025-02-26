@@ -5,8 +5,8 @@ unit ray4laz_misc;
 interface
 
 uses
-  Classes, SysUtils, Graphics, LCLIntf, LazFileUtils, PackageIntf, LazIDEIntf,
-  ProjectIntf, MenuIntf, SrcEditorIntf, Dialogs, Forms;
+  Classes, SysUtils, Graphics, LCLIntf, LazFileUtils, PackageIntf, LazIDEIntf, contnrs, System.UITypes,
+  ProjectIntf, MenuIntf, SrcEditorIntf, Dialogs, Forms, IDEMsgIntf, IDEExternToolIntf, CodeToolManager;
 
 type
   { TEventClass }
@@ -20,24 +20,25 @@ procedure Register;
 
  var EventCode : TEventClass;
      SectionRay: TIDEMenuSection;
+     SectionToolMenu: TIDEMenuSection;
      SectionRayMenu: TIDEMenuSection;
 
  resourcestring
    rsMnuMisc        = 'raylib Misc ...';
    rsHelpCheat      = 'Cheatsheet ...';
-   rsInsertClr      = 'ColorCreate from dialog';
+   rsInsertClr      = 'Color create from dialog';
    rsRayWiki        = 'raylib Wiki';
+   rsRlTools        = 'ray4laz tools ..';
+   rsCompilePkg     = 'Compilation package ray4laz';
 
 implementation
 
 function RayUsed: boolean;
 var
-lPkgList: TFPList;
-i: Integer;
+lPkgList: TFPList; i: Integer;
 begin
  result:=false;
- if  (LazarusIDE.ActiveProject = nil) or (PackageEditingInterface.GetPackageCount <= 0 ) then exit;
-  PackageEditingInterface.GetRequiredPackages(LazarusIDE.ActiveProject, lPkgList, [pirNotRecursive]);
+ PackageEditingInterface.GetRequiredPackages(LazarusIDE.ActiveProject, lPkgList, [pirNotRecursive]);
  if lPkgList = nil then exit;
  try
    for i := 0 to lPkgList.Count - 1 do
@@ -104,12 +105,47 @@ begin
   end;
 end;
 
+procedure CompileRay4laz(Sender: TObject);
+var Pkg: TIDEPackage;  Dir: String;
+    Prj: TLazProject;
+begin
+  Pkg:=PackageEditingInterface.FindPackageWithName('ray4laz');
+  if Pkg<>nil then
+  begin
+    try
+     if PackageEditingInterface.DoCompilePackage(Pkg,[pcfCleanCompile], False) <> mrOk then
+     exit;
+    finally
+        Dir:=''; // the empty directory is for new files and has the same settings as the project directory
+        IDEMessagesWindow.AddCustomMessage(mluNone,
+        CodeToolBoss.GetUnitPathForDirectory(Dir,false) ,'file.pas',0,0,
+        Pkg.Filename);
+
+     // IDEMessagesWindow.AddCustomMessage();
+     // IDEMessagesWindow.AddMsg('unit1.pas(30,4) Error: Identifier not found "a"',Dir,0);
+      //IDEMessagesWindow.EndBlock;
+    end;
+  end;
+end;  // TIDEProjPackBase
 
 procedure Register;
 begin
  SectionRay:=RegisterIDEMenuSection(SrcEditMenuSectionFirstStatic,'RayTool');
  SectionRayMenu:= RegisterIDESubMenu(SectionRay,'RayTool',rsMnuMisc,nil ,nil,'cc_class');
 
+ SectionToolMenu:= RegisterIDESubMenu(SectionRayMenu,'rltool',rsRlTools,nil ,nil,'pkg_properties');
+ RegisterIDEMenuCommand(SectionToolMenu, 'Compile', rsCompilePkg, nil, @CompileRay4laz,nil, 'pkg_compile');
+ RegisterIDEMenuCommand(SectionToolMenu, 'OpenSetting', 'Open setting', nil, @RayFunction,nil, 'menu_build_file');
+ RegisterIDEMenuCommand(SectionToolMenu, 'CopyDll', 'Copy to project', nil, @RayFunction,nil, 'pkg_lrs');
+
+ RegisterIDEMenuCommand(SectionToolMenu, 'SubSpl0','-',nil,nil);
+ RegisterIDEMenuCommand(SectionToolMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
+ RegisterIDEMenuCommand(SectionToolMenu, 'ShowWiki', rsRayWiki , nil, @RayFunction, nil, 'menu_information');
+
+
+ RegisterIDEMenuCommand(SectionRayMenu, 'Spl0','-',nil,nil);
+ RegisterIDEMenuCommand(SectionRayMenu, 'InsertColor', rsInsertClr , nil, @ShowColorDialog, nil, 'tcolordialog');
+ RegisterIDEMenuCommand(SectionRayMenu, 'Spl1','-',nil,nil);
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector2Create', 'Vector2Create', nil, @RayFunction,nil, 'cc_function');
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector3Create', 'Vector3Create', nil, @RayFunction,nil, 'cc_function');
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector4Create', 'Vector4Create', nil, @RayFunction,nil, 'cc_function');
@@ -118,7 +154,7 @@ begin
  RegisterIDEMenuCommand(SectionRayMenu, 'RectangleCreate', 'RectangleCreate', nil, @RayFunction,nil, 'cc_function');
  RegisterIDEMenuCommand(SectionRayMenu, 'BoundingBoxCreate', 'BoundingBoxCreate', nil, @RayFunction,nil, 'cc_function');
  RegisterIDEMenuCommand(SectionRayMenu, 'Camera3DCreate', 'Camera3DCreate', nil, @RayFunction,nil, 'cc_function');
-
+ RegisterIDEMenuCommand(SectionRayMenu, 'Spl2','-',nil,nil);
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector2Set', 'Vector2Set', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector3Set', 'Vector3Set', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'Vector4Set', 'Vector4Set', nil, @RayFunction,nil, 'cc_procedure');
@@ -127,13 +163,13 @@ begin
  RegisterIDEMenuCommand(SectionRayMenu, 'RectangleSet', 'RectangleSet', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'BoundingBoxSet', 'BoundingBoxSet', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'Camera3DSet', 'Camera3DSet', nil, @RayFunction,nil, 'cc_procedure');
- RegisterIDEMenuCommand(SectionRayMenu, 'Spl0','-',nil,nil);
 
- RegisterIDEMenuCommand(SectionRayMenu, 'InsertColor', rsInsertClr , nil, @ShowColorDialog, nil, 'tcolordialog');
- RegisterIDEMenuCommand(SectionRayMenu, 'Spl1','-',nil,nil);
 
- RegisterIDEMenuCommand(SectionRayMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
- RegisterIDEMenuCommand(SectionRayMenu, 'ShowWiki', rsRayWiki , nil, @RayFunction, nil, 'menu_information');
+// RegisterIDEMenuCommand(SectionRayMenu, 'InsertColor', rsInsertClr , nil, @ShowColorDialog, nil, 'tcolordialog');
+// RegisterIDEMenuCommand(SectionRayMenu, 'Spl2','-',nil,nil);
+
+// RegisterIDEMenuCommand(SectionRayMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
+// RegisterIDEMenuCommand(SectionRayMenu, 'ShowWiki', rsRayWiki , nil, @RayFunction, nil, 'menu_information');
 
  SectionRay.AddHandlerOnShow(@EventCode.DoSomething,true);
 end;

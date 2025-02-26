@@ -12,7 +12,6 @@ interface
 
 {$IFNDEF RAY_STATIC}
 const
-
   cDllName = {$IFNDEF RAY_MEDIA}
              {$IFDEF WINDOWS} 'libraylib.dll'; {$IFEND}
              {$IFDEF LINUX} 'libraylib.so.550'; {$IFEND}
@@ -20,11 +19,9 @@ const
              {$IFDEF WINDOWS} 'libraylibmedia.dll'; {$IFEND}
              {$IFDEF LINUX} 'libraylibmedia.so.550'; {$IFEND}
              {$ENDIF}
-
              {$IFDEF DARWIN} 'libraylib.dylib'; {$IFEND}
              {$IFDEF HAIKU} 'libraylib.so'; {$IFEND}
 {$ENDIF}
-
 
 const
   DEG2RAD = (PI / 180.0);

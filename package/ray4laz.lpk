@@ -57,12 +57,12 @@
         <UnitName Value="raymedia"/>
       </Item6>
       <Item7>
-        <Filename Value="../source/raylib.inc"/>
-        <Type Value="Include"/>
-      </Item7>
-      <Item8>
         <Filename Value="../source/extras/raygizmo.pas"/>
         <UnitName Value="raygizmo"/>
+      </Item7>
+      <Item8>
+        <Filename Value="../source/raylib.inc"/>
+        <Type Value="Include"/>
       </Item8>
     </Files>
     <CompatibilityMode Value="True"/>

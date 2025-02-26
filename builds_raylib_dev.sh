@@ -112,12 +112,10 @@ echo -e "\e[0m"
 #echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 #echo "#define PHYSAC_IMPLEMENTATION" > physac.c && echo "#include <extras/physac.h>" >> physac.c
 
-
 rm -f ../../libs/x86_64-linux/*
 rm -f ../../libs/x86_32-linux/*
 rm -f ../../libs/x86_64-win64/*
 rm -f ../../libs/i386-win32/*
-
 
 make clean  
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE RAYLIB_MODULE_GIZMO=TRUE  #RAYLIB_MODULE_RAYMEDIA=TRUE
@@ -224,9 +222,8 @@ make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE R
 #cp libraylibdll.a ../../libs/i386-win32
 cp raylib.dll ../../libs/i386-win32/libraylib.dll
 
-
- make clean
- i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
+make clean
+i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
 i686-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 
 #echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c

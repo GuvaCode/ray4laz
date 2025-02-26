@@ -1,9 +1,5 @@
 // Configuration file for raylib
 
-// Defines for GNU/Linux
-
-{$DEFINE RAY_MEDIA}
-
 {$IFDEF LINUX}
   {$IFNDEF RAY_DYNAMIC}
     {$DEFINE RAY_STATIC}
@@ -22,6 +18,8 @@
   {$ENDIF}
 {$IFEND}
 
+// Use raylib media
+{.$DEFINE RAY_MEDIA}
 
 //Use selected OpenGL graphics backend, should be supported by platform
 //Those preprocessor defines are only used on rlgl module, if OpenGL version is

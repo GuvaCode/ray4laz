@@ -1,12 +1,16 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: ray4laz_misc.rscompilepkg
+msgid "Compilation package ray4laz"
+msgstr ""
+
 #: ray4laz_misc.rshelpcheat
 msgid "Cheatsheet ..."
 msgstr ""
 
 #: ray4laz_misc.rsinsertclr
-msgid "ColorCreate from dialog"
+msgid "Color create from dialog"
 msgstr ""
 
 #: ray4laz_misc.rsmnumisc
@@ -15,5 +19,9 @@ msgstr ""
 
 #: ray4laz_misc.rsraywiki
 msgid "raylib Wiki"
+msgstr ""
+
+#: ray4laz_misc.rsrltools
+msgid "ray4laz tools .."
 msgstr ""
 

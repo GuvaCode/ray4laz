@@ -1,4 +1,9 @@
 unit raymedia;
+(*
+  Copyright (c) 2025 Claudio Z. (@cloudofoz)
+  https://github.com/cloudofoz/raylib-media
+  pascal header translation 2024 gunko vadim
+*)
 
 {$mode objfpc}{$H+}
 {$packrecords c}
