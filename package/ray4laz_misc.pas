@@ -5,8 +5,10 @@ unit ray4laz_misc;
 interface
 
 uses
-  Classes, SysUtils, Graphics, LCLIntf, LazFileUtils, PackageIntf, LazIDEIntf, contnrs, System.UITypes,
-  ProjectIntf, MenuIntf, SrcEditorIntf, Dialogs, Forms, IDEMsgIntf, IDEExternToolIntf, CodeToolManager;
+  Classes, SysUtils, Graphics, LCLIntf, LazFileUtils, fileutil,
+  PackageIntf, ProjectIntf, MenuIntf, SrcEditorIntf, IDEMsgIntf, LazIDEIntf,
+  IDEExternToolIntf, MacroIntf,
+  System.UITypes, Dialogs, Forms;
 
 type
   { TEventClass }
@@ -30,8 +32,16 @@ procedure Register;
    rsRayWiki        = 'raylib Wiki';
    rsRlTools        = 'ray4laz tools ..';
    rsCompilePkg     = 'Compilation package ray4laz';
+   rsCopyDll1       = 'Copy libraylib.dll to the executable file folder';
+   rsCopyDll2       = 'Copy libraylibmedia.dll to the executable file folder';
+   rsOnlyWin        = 'Only for windows.';
+   rsOpenConfig     = 'Open configuration file';
+   rsCopyTrue       = 'Copy successful';
+   rsCopyFalse      = 'Copy error';
+   rsDownloadFFmpeg = 'Download the necessary ffmpeg libraries';
 
 implementation
+uses HttpDownloader;
 
 function RayUsed: boolean;
 var
@@ -84,7 +94,6 @@ var  Editor: TSourceEditorInterface;
   'ShowCheatsheet'      : OpenURL('https://www.raylib.com/cheatsheet/cheatsheet.html');
   'ShowWiki'            : OpenURL('https://github.com/raysan5/raylib/wiki');
   end;
-
  end;
 
 procedure ShowColorDialog(Sender: TObject);
@@ -105,28 +114,146 @@ begin
   end;
 end;
 
+function MyGetProjectTargetFile: string;
+begin
+  Result:='$(TargetFile)';
+  if not IDEMacros.SubstituteMacros(Result) then
+    raise Exception.Create('unable to retrieve target file of project');
+end;
+
+function GetOSlibFolder: string;
+begin
+Result:='$(TargetCPU)-$(TargetOS)';
+if not IDEMacros.SubstituteMacros(Result) then
+  raise Exception.Create('unable to retrieve target file of project');
+end;
+
+function GetTargetOS: string;
+begin
+Result:='$(TargetOS)';
+if not IDEMacros.SubstituteMacros(Result) then
+  raise Exception.Create('unable to retrieve target file of project');
+end;
+
+function GetRay4lazDir: string;
+var Pkg: TIDEPackage;
+begin
+  Pkg:=PackageEditingInterface.FindPackageWithName('ray4laz');
+  if Pkg <> nil then result := ExtractFilePath(ExcludeTrailingPathDelimiter(Pkg.DirectoryExpanded));
+end;
+
+procedure CopyRayDllToProject(Sender: Tobject);
+var Src, Dst: string;
+const
+  dllFile = 'libraylib.dll';
+begin
+  if (GetTargetOS = 'win64') or (GetTargetOS = 'win32') then
+  begin
+    Src := GetRay4lazDir  + 'libs' + PathDelim + GetOslibFolder + PathDelim + dllFile;
+    Dst := ExtractFilePath(MyGetProjectTargetFile)+ dllFile;
+    if CopyFile(Src, Dst) then
+    IDEMessagesWindow.AddCustomMessage(mluHint, rsCopyTrue, dllFile, 0,0) else
+    IDEMessagesWindow.AddCustomMessage(mluError, rsCopyFalse);
+  end else
+  IDEMessagesWindow.AddCustomMessage(mluWarning, rsOnlyWin);
+end;
+
+procedure CopyMediaDllToProject(Sender: Tobject);
+var Src, Dst: string;
+const
+  dllFile = 'libraylibmedia.dll';
+begin
+  if (GetTargetOS = 'win64') or (GetTargetOS = 'win32') then
+  begin
+    Src := GetRay4lazDir  + 'libs' + PathDelim + GetOslibFolder + PathDelim + dllFile;
+    Dst := ExtractFilePath(MyGetProjectTargetFile)+ dllFile;
+    if CopyFile(Src, Dst) then
+    IDEMessagesWindow.AddCustomMessage(mluHint, rsCopyTrue, dllFile, 0,0) else
+    IDEMessagesWindow.AddCustomMessage(mluError, rsCopyFalse);
+  end else
+  IDEMessagesWindow.AddCustomMessage(mluWarning, rsOnlyWin);
+end;
+
 procedure CompileRay4laz(Sender: TObject);
-var Pkg: TIDEPackage;  Dir: String;
-    Prj: TLazProject;
+var Pkg: TIDEPackage;
 begin
   Pkg:=PackageEditingInterface.FindPackageWithName('ray4laz');
   if Pkg<>nil then
-  begin
-    try
-     if PackageEditingInterface.DoCompilePackage(Pkg,[pcfCleanCompile], False) <> mrOk then
-     exit;
-    finally
-        Dir:=''; // the empty directory is for new files and has the same settings as the project directory
-        IDEMessagesWindow.AddCustomMessage(mluNone,
-        CodeToolBoss.GetUnitPathForDirectory(Dir,false) ,'file.pas',0,0,
-        Pkg.Filename);
+  if PackageEditingInterface.DoCompilePackage(Pkg,[pcfCleanCompile], False) <> mrOk then
+  exit;
+end;
 
-     // IDEMessagesWindow.AddCustomMessage();
-     // IDEMessagesWindow.AddMsg('unit1.pas(30,4) Error: Identifier not found "a"',Dir,0);
-      //IDEMessagesWindow.EndBlock;
-    end;
-  end;
-end;  // TIDEProjPackBase
+procedure ShowSettingFile(Sender: TObject);
+begin
+  if LazarusIDE.DoOpenEditorFile(GetRay4lazDir + 'source' +
+  PathDelim + 'raylib.inc',-1,-1,[ofAddToRecent])<>mrOk then exit;
+end;
+
+procedure DownloadFFmpeg(Sender: TObject);
+begin
+ try
+   if GetTargetOS = 'win32' then
+   begin
+     ShowHttpDownloader('Downloading avcodec-61.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win32/bin/avcodec-61.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'avcodec-61.dll') ;
+     IDEMessagesWindow.AddCustomMessage(mluHint, 'Download', 'avcodec-61.dll',0,0, rsDownloadFFmpeg );
+
+      ShowHttpDownloader('Downloading avformat-61.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win32/bin/avformat-61.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'avformat-61.dll');
+      IDEMessagesWindow.AddCustomMessage(mluHint, 'Download', 'avformat-61.dll',0,0, rsDownloadFFmpeg );
+
+     ShowHttpDownloader('Downloading avutil-59.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win32/bin/avutil-59.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'avutil-59.dll');
+     IDEMessagesWindow.AddCustomMessage(mluHint, 'Download', 'avutil-59.dll',0,0, rsDownloadFFmpeg );
+
+     ShowHttpDownloader('Downloading swresample-5.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win32/bin/swresample-5.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'swresample-5.dll');
+     IDEMessagesWindow.AddCustomMessage(mluHint, 'Download', 'swresample-5.dll',0,0, rsDownloadFFmpeg );
+
+     ShowHttpDownloader('Downloading swscale-8.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win32/bin/swscale-8.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'swscale-8.dll');
+      IDEMessagesWindow.AddCustomMessage(mluHint, 'Download', 'swscale-8.dll',0,0, rsDownloadFFmpeg );
+   end else
+
+ if GetTargetOS = 'win64' then
+   begin
+     ShowHttpDownloader('Downloading avcodec-61.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win64/bin/avcodec-61.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'avcodec-61.dll') ;
+      IDEMessagesWindow.AddCustomMessage(mluHint, 'Download', 'avcodec-61.dll',0,0, rsDownloadFFmpeg );
+
+     ShowHttpDownloader('Downloading avformat-61.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win64/bin/avformat-61.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'avformat-61.dll');
+      IDEMessagesWindow.AddCustomMessage(mluHint, 'Download', 'avformat-61.dll',0,0, rsDownloadFFmpeg );
+
+     ShowHttpDownloader('Downloading avutil-59.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win64/bin/avutil-59.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'avutil-59.dll');
+      IDEMessagesWindow.AddCustomMessage(mluHint, 'Download', 'avutil-59.dll',0,0, rsDownloadFFmpeg );
+
+     ShowHttpDownloader('Downloading swresample-5.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win64/bin/swresample-5.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'swresample-5.dll');
+
+     ShowHttpDownloader('Downloading swscale-8.dll',
+       'https://github.com/GuvaCode/ffmpeg_7.1_win7/raw/refs/heads/main/ffmpeg-7.1-shared-win64/bin/swscale-8.dll',
+      ExtractFilePath(MyGetProjectTargetFile) + 'swscale-8.dll');
+      IDEMessagesWindow.AddCustomMessage(mluHint, 'Download', 'swscale-8.dll',0,0, rsDownloadFFmpeg );
+   end else
+   IDEMessagesWindow.AddCustomMessage(mluWarning, rsOnlyWin);
+
+
+   except
+     on E: Exception do ShowMessage(E.Message);
+   end;
+
+end;
 
 procedure Register;
 begin
@@ -135,13 +262,20 @@ begin
 
  SectionToolMenu:= RegisterIDESubMenu(SectionRayMenu,'rltool',rsRlTools,nil ,nil,'pkg_properties');
  RegisterIDEMenuCommand(SectionToolMenu, 'Compile', rsCompilePkg, nil, @CompileRay4laz,nil, 'pkg_compile');
- RegisterIDEMenuCommand(SectionToolMenu, 'OpenSetting', 'Open setting', nil, @RayFunction,nil, 'menu_build_file');
- RegisterIDEMenuCommand(SectionToolMenu, 'CopyDll', 'Copy to project', nil, @RayFunction,nil, 'pkg_lrs');
+ RegisterIDEMenuCommand(SectionToolMenu, 'Sep0','-',nil,nil);
+ RegisterIDEMenuCommand(SectionToolMenu, 'OpenSetting', rsOpenConfig, nil, @ShowSettingFile,nil, 'menu_build_file');
 
- RegisterIDEMenuCommand(SectionToolMenu, 'SubSpl0','-',nil,nil);
+
+ RegisterIDEMenuCommand(SectionToolMenu, 'Sep1','-',nil,nil);
+ RegisterIDEMenuCommand(SectionToolMenu, 'CopyDll1', rsCopyDll1, nil, @CopyRayDllToProject,nil, 'pkg_lrs');
+ RegisterIDEMenuCommand(SectionToolMenu, 'CopyDll2', rsCopyDll2, nil, @CopyMediaDllToProject,nil, 'pkg_lrs');
+
+ RegisterIDEMenuCommand(SectionToolMenu, 'Sep2','-',nil,nil);
+ RegisterIDEMenuCommand(SectionToolMenu, 'DownloadLibs', rsDownloadFFmpeg , nil, @DownloadFFmpeg,nil, 'menu_exporthtml');
+
+ RegisterIDEMenuCommand(SectionToolMenu, 'Sep3','-',nil,nil);
  RegisterIDEMenuCommand(SectionToolMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
  RegisterIDEMenuCommand(SectionToolMenu, 'ShowWiki', rsRayWiki , nil, @RayFunction, nil, 'menu_information');
-
 
  RegisterIDEMenuCommand(SectionRayMenu, 'Spl0','-',nil,nil);
  RegisterIDEMenuCommand(SectionRayMenu, 'InsertColor', rsInsertClr , nil, @ShowColorDialog, nil, 'tcolordialog');
@@ -163,13 +297,6 @@ begin
  RegisterIDEMenuCommand(SectionRayMenu, 'RectangleSet', 'RectangleSet', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'BoundingBoxSet', 'BoundingBoxSet', nil, @RayFunction,nil, 'cc_procedure');
  RegisterIDEMenuCommand(SectionRayMenu, 'Camera3DSet', 'Camera3DSet', nil, @RayFunction,nil, 'cc_procedure');
-
-
-// RegisterIDEMenuCommand(SectionRayMenu, 'InsertColor', rsInsertClr , nil, @ShowColorDialog, nil, 'tcolordialog');
-// RegisterIDEMenuCommand(SectionRayMenu, 'Spl2','-',nil,nil);
-
-// RegisterIDEMenuCommand(SectionRayMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
-// RegisterIDEMenuCommand(SectionRayMenu, 'ShowWiki', rsRayWiki , nil, @RayFunction, nil, 'menu_information');
 
  SectionRay.AddHandlerOnShow(@EventCode.DoSomething,true);
 end;

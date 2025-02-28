@@ -5,6 +5,26 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 msgid "Compilation package ray4laz"
 msgstr ""
 
+#: ray4laz_misc.rscopydll1
+msgid "Copy libraylib.dll to the executable file folder"
+msgstr ""
+
+#: ray4laz_misc.rscopydll2
+msgid "Copy libraylibmedia.dll to the executable file folder"
+msgstr ""
+
+#: ray4laz_misc.rscopyfalse
+msgid "Copy error"
+msgstr ""
+
+#: ray4laz_misc.rscopytrue
+msgid "Copy successful"
+msgstr ""
+
+#: ray4laz_misc.rsdownloadffmpeg
+msgid "Download the necessary ffmpeg libraries"
+msgstr ""
+
 #: ray4laz_misc.rshelpcheat
 msgid "Cheatsheet ..."
 msgstr ""
@@ -15,6 +35,14 @@ msgstr ""
 
 #: ray4laz_misc.rsmnumisc
 msgid "raylib Misc ..."
+msgstr ""
+
+#: ray4laz_misc.rsonlywin
+msgid "Only for windows."
+msgstr ""
+
+#: ray4laz_misc.rsopenconfig
+msgid "Open configuration file"
 msgstr ""
 
 #: ray4laz_misc.rsraywiki

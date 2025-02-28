@@ -111,6 +111,7 @@ function GetMediaFlag(flag: Integer): Integer; cdecl; external {$IFNDEF RAY_STAT
 procedure UnloadMedia(media: PMediaStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMedia';
 
 implementation
+
 {$IFDEF linux}
 {$IFDEF RAY_STATIC}
  {$linklib c}
@@ -125,4 +126,5 @@ implementation
 {$endif}
 {$endif}
 end.
+
 
