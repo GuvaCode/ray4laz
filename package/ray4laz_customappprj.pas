@@ -72,9 +72,7 @@ begin
     '{$mode objfpc}{$H+}' + LineEnding +
     LineEnding +
     'uses'  + LineEnding +
-    {$IFDEF UNIX}
-    ' cthreads,'  + LineEnding +
-    {$ENDIF}
+    '{$IFDEF LINUX} cthreads,{$ENDIF}'  + LineEnding +
     {$IFDEF DARWIN}
     ' CocoaAll,' + LineEnding +{$ENDIF}
     ' Classes, SysUtils, CustApp, raylib;'  + LineEnding +

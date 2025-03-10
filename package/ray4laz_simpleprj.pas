@@ -68,7 +68,7 @@ begin
     '{$mode objfpc}{$H+}' + LineEnding +
     LineEnding +
     'uses ' + LineEnding +
-    'cmem, ' + LineEnding +
+    'cmem, {$IFDEF LINUX} cthreads,{$ENDIF}' + LineEnding +
     {$IFDEF DARWIN} 'CocoaAll,' + LineEnding +{$ENDIF}
     '{uncomment if necessary}' + LineEnding +
     '//raymath, ' + LineEnding +

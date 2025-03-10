@@ -31,7 +31,7 @@
   3. This notice may not be removed or altered from any source distribution.
 "/>
     <Version Major="5" Minor="6"/>
-    <Files Count="8">
+    <Files Count="9">
       <Item1>
         <Filename Value="../source/raylib.pas"/>
         <UnitName Value="raylib"/>
@@ -64,6 +64,10 @@
         <Filename Value="../source/raylib.inc"/>
         <Type Value="Include"/>
       </Item8>
+      <Item9>
+        <Filename Value="../source/extras/r3d.pas"/>
+        <UnitName Value="r3d"/>
+      </Item9>
     </Files>
     <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="1">
