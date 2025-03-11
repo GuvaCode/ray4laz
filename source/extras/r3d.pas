@@ -1,4 +1,26 @@
 unit r3d;
+(*
+ * r3d header for pascal 2025 Gunko Vadim @guvacode
+ * this is part of ray4laz project
+ * original code r3d by Le Juez Victor
+ * https://github.com/Bigfoot71/r3d
+ *
+ * This software is provided "as-is", without any express or implied warranty. In no event
+ * will the authors be held liable for any damages arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose, including commercial
+ * applications, and to alter it and redistribute it freely, subject to the following restrictions:
+ *
+ *   1. The origin of this software must not be misrepresented; you must not claim that you
+ *   wrote the original software. If you use this software in a product, an acknowledgment
+ *   in the product documentation would be appreciated but is not required.
+ *
+ *   2. Altered source versions must be plainly marked as such, and must not be misrepresented
+ *   as being the original software.
+ *
+ *   3. This notice may not be removed or altered from any source distribution.
+ *)
+
 
 {$mode objfpc}{$H+}
 {$packrecords c}
@@ -8,6 +30,15 @@ unit r3d;
 {$I raylib.inc}
 
 interface
+
+
+{$IFNDEF RAY_STATIC}
+const
+  cR3dName =
+             {$IFDEF WINDOWS} 'libr3d.dll'; {$IFEND}
+             {$IFDEF LINUX} 'libr3d.so'; {$IFEND}
+{$ENDIF}
+
 
 uses
   raylib;
@@ -111,7 +142,7 @@ type
 
   PR3D_InterpolationCurve = ^TR3D_InterpolationCurve;
   TR3D_InterpolationCurve = record
-    Keyframes: array of PR3D_Keyframe;  //< Dynamic array of keyframes defining the interpolation curve. **todo
+    Keyframes: PR3D_Keyframe;           //< Dynamic array of keyframes defining the interpolation curve. **todo
     Capacity: Cardinal;                 //< Allocated size of the keyframes array.
     Count: Cardinal;                    //< Current number of keyframes in the array.
   end;
@@ -138,8 +169,7 @@ type
 
   PR3D_ParticleSystem = ^TR3D_ParticleSystem;
   TR3D_ParticleSystem = record
-    Particles: array of PR3D_Particle;  //< Dynamic array of particles in the system.
-    //Particles: PR3D_Particle;  //< Dynamic array of particles in the system.
+    Particles: PR3D_Particle;         //< Dynamic array of particles in the system.
     Capacity: Integer;                //< The maximum number of particles the system can manage.
     Count: Integer;                   //< The current number of active particles in the system.
 
@@ -193,7 +223,7 @@ type
  * @param resHeight Height of the internal resolution.
  * @param flags Flags indicating internal behavior (modifiable via R3D_SetState).
  *)
-procedure R3D_Init(resWidth, resHeight: Integer; flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_Init';
+procedure R3D_Init(resWidth, resHeight: Integer; flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_Init';
 
 (*
  * @brief Closes the rendering engine and deallocates all resources.
@@ -201,7 +231,7 @@ procedure R3D_Init(resWidth, resHeight: Integer; flags: Cardinal); cdecl; extern
  * This function shuts down the rendering system and frees all allocated memory,
  * including the resources associated with the created lights.
  *)
-procedure R3D_Close(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_Close';
+procedure R3D_Close(); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_Close';
 
 (*
  * @brief Checks if a specific internal state flag is set.
@@ -209,7 +239,7 @@ procedure R3D_Close(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name
  * @param flag The state flag to check.
  * @return True if the flag is set, false otherwise.
  *)
-function R3D_HasState(flag: Cardinal): boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_HasState';
+function R3D_HasState(flag: Cardinal): boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_HasState';
 
 (*
  * @brief Sets internal state flags for the rendering engine.
@@ -219,7 +249,7 @@ function R3D_HasState(flag: Cardinal): boolean; cdecl; external {$IFNDEF RAY_STA
  *
  * @param flags The flags to set.
  *)
-procedure R3D_SetState(flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetState';
+procedure R3D_SetState(flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetState';
 
 (*
  * @brief Clears specific internal state flags.
@@ -229,7 +259,7 @@ procedure R3D_SetState(flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}cDl
  *
  * @param flags The flags to clear.
  *)
-procedure R3D_ClearState(flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_ClearState';
+procedure R3D_ClearState(flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ClearState';
 
 (*
  * @brief Gets the current internal resolution.
@@ -240,7 +270,7 @@ procedure R3D_ClearState(flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}c
  * @param width Pointer to store the width of the internal resolution.
  * @param height Pointer to store the height of the internal resolution.
  *)
-procedure R3D_GetResolution(width, height: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetResolution';
+procedure R3D_GetResolution(width, height: PInteger); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetResolution';
 
 (*
  * @brief Updates the internal resolution.
@@ -253,7 +283,7 @@ procedure R3D_GetResolution(width, height: PInteger); cdecl; external {$IFNDEF R
  *
  * @warning This function may be slow due to the destruction and recreation of framebuffers.
  *)
-procedure R3D_UpdateResolution(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_UpdateResolution';
+procedure R3D_UpdateResolution(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UpdateResolution';
 
 (*
  * @brief Sets a custom render target.
@@ -263,7 +293,7 @@ procedure R3D_UpdateResolution(width, height: Integer); cdecl; external {$IFNDEF
  *
  * @param target The custom render target (can be NULL to revert to the default framebuffer).
  *)
-procedure R3D_SetRenderTarget(target: PRenderTexture); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetRenderTarget';
+procedure R3D_SetRenderTarget(target: PRenderTexture); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetRenderTarget';
 
 (*
  * @brief Defines the bounds of the scene for directional light calculations.
@@ -274,7 +304,7 @@ procedure R3D_SetRenderTarget(target: PRenderTexture); cdecl; external {$IFNDEF 
  *
  * @param sceneBounds The bounding box defining the scene's dimensions.
  *)
-procedure R3D_SetSceneBounds(sceneBounds: TBoundingBox); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetSceneBounds';
+procedure R3D_SetSceneBounds(sceneBounds: TBoundingBox); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSceneBounds';
 
 // --------------------------------------------
 // CORE: Rendering Config Functions
@@ -289,7 +319,7 @@ procedure R3D_SetSceneBounds(sceneBounds: TBoundingBox); cdecl; external {$IFNDE
  *
  * @param mode The render mode to apply.
  *)
-procedure R3D_ApplyRenderMode(mode: R3D_RenderMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_ApplyRenderMode';
+procedure R3D_ApplyRenderMode(mode: R3D_RenderMode); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ApplyRenderMode';
 
 (*
  * @brief Sets the active blend mode for rendering.
@@ -303,7 +333,7 @@ procedure R3D_ApplyRenderMode(mode: R3D_RenderMode); cdecl; external {$IFNDEF RA
  *
  * @param mode The blend mode to apply.
  *)
-procedure R3D_ApplyBlendMode(mode: R3D_BlendMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_ApplyBlendMode';
+procedure R3D_ApplyBlendMode(mode: R3D_BlendMode); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ApplyBlendMode';
 
 (*
  * @brief Sets the shadow casting mode for meshes.
@@ -314,7 +344,7 @@ procedure R3D_ApplyBlendMode(mode: R3D_BlendMode); cdecl; external {$IFNDEF RAY_
  *
  * @param mode The shadow casting mode to apply.
  *)
-procedure R3D_ApplyShadowCastMode(mode: R3D_ShadowCastMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_ApplyShadowCastMode';
+procedure R3D_ApplyShadowCastMode(mode: R3D_ShadowCastMode); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ApplyShadowCastMode';
 
 (*
  * @brief Applies a billboard mode to sprites or meshes.
@@ -326,7 +356,7 @@ procedure R3D_ApplyShadowCastMode(mode: R3D_ShadowCastMode); cdecl; external {$I
  *
  * @param mode The billboard mode to apply.
  *)
-procedure R3D_ApplyBillboardMode(mode: R3D_BillboardMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_ApplyBillboardMode';
+procedure R3D_ApplyBillboardMode(mode: R3D_BillboardMode); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ApplyBillboardMode';
 
 
 // --------------------------------------------
@@ -341,7 +371,7 @@ procedure R3D_ApplyBillboardMode(mode: R3D_BillboardMode); cdecl; external {$IFN
  *
  * @param camera The camera to use for rendering the scene.
  *)
-procedure R3D_Begin(camera: TCamera3D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_Begin';
+procedure R3D_Begin(camera: TCamera3D); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_Begin';
 
 (*
  * @brief Ends the current rendering session.
@@ -350,7 +380,7 @@ procedure R3D_Begin(camera: TCamera3D); cdecl; external {$IFNDEF RAY_STATIC}cDll
  * will process all necessary render passes and output the final result to the main
  * or custom framebuffer.
  *)
-procedure R3D_End(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_End';
+procedure R3D_End(); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_End';
 
 (*
  * @brief Draws a mesh with a specified material and transformation.
@@ -361,7 +391,7 @@ procedure R3D_End(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name '
  * @param material The material to apply to the mesh.
  * @param transform The transformation matrix to apply to the mesh.
  *)
-procedure R3D_DrawMesh(mesh: TMesh; material: TMaterial; transform: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawMesh';
+procedure R3D_DrawMesh(mesh: TMesh; material: TMaterial; transform: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawMesh';
 
 (*
  * @brief Draws a mesh with instancing support.
@@ -374,7 +404,7 @@ procedure R3D_DrawMesh(mesh: TMesh; material: TMaterial; transform: TMatrix); cd
  * @param instanceTransforms Array of transformation matrices for each instance.
  * @param instanceCount The number of instances to render.
  *)
-procedure R3D_DrawMeshInstanced(mesh: TMesh; material: TMaterial; instanceTransforms: PMatrix; instanceCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawMeshInstanced';
+procedure R3D_DrawMeshInstanced(mesh: TMesh; material: TMaterial; instanceTransforms: PMatrix; instanceCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawMeshInstanced';
 
 (*
  * @brief Draws a mesh with instancing support and different colors per instance.
@@ -388,7 +418,7 @@ procedure R3D_DrawMeshInstanced(mesh: TMesh; material: TMaterial; instanceTransf
  * @param instanceColors Array of colors for each instance.
  * @param instanceCount The number of instances to render.
  *)
-procedure R3D_DrawMeshInstancedEx(mesh: TMesh; material: TMaterial; instanceTransforms: PMatrix; instanceColors: PColorB; instanceCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawMeshInstancedEx';
+procedure R3D_DrawMeshInstancedEx(mesh: TMesh; material: TMaterial; instanceTransforms: PMatrix; instanceColors: PColorB; instanceCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawMeshInstancedEx';
 
 (*
  * @brief Draws a mesh with instancing support, a global transformation, and different colors per instance.
@@ -410,7 +440,7 @@ procedure R3D_DrawMeshInstancedEx(mesh: TMesh; material: TMaterial; instanceTran
 procedure R3D_DrawMeshInstancedPro(mesh: TMesh; material: TMaterial; transform: TMatrix;
                                      instanceTransforms: PMatrix; transformsStride: Integer;
                                      instanceColors: PColorB; colorsStride: Integer;
-                                     instanceCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawMeshInstancedPro';
+                                     instanceCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawMeshInstancedPro';
 
 (*
  * @brief Draws a model at a specified position and scale.
@@ -421,7 +451,7 @@ procedure R3D_DrawMeshInstancedPro(mesh: TMesh; material: TMaterial; transform: 
  * @param position The position to place the model at.
  * @param scale The scale factor to apply to the model.
  *)
-procedure R3D_DrawModel(model: TModel; position: TVector3; scale: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawModel';
+procedure R3D_DrawModel(model: TModel; position: TVector3; scale: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawModel';
 
 (*
  * @brief Draws a model with advanced transformation options.
@@ -436,7 +466,7 @@ procedure R3D_DrawModel(model: TModel; position: TVector3; scale: Single); cdecl
  * @param rotationAngle The angle to rotate the model.
  * @param scale The scale factor to apply to the model.
  *)
-procedure R3D_DrawModelEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawModelEx';
+procedure R3D_DrawModelEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawModelEx';
 
 (*
  * @brief Draws a sprite at a specified position.
@@ -447,7 +477,7 @@ procedure R3D_DrawModelEx(model: TModel; position, rotationAxis: TVector3; rotat
  * @param sprite The sprite to render.
  * @param position The position to place the sprite at.
  *)
-procedure R3D_DrawSprite(sprite: TR3D_Sprite; position: TVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawSprite';
+procedure R3D_DrawSprite(sprite: TR3D_Sprite; position: TVector3); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawSprite';
 
 (*
  * @brief Draws a sprite with size and rotation options.
@@ -460,7 +490,7 @@ procedure R3D_DrawSprite(sprite: TR3D_Sprite; position: TVector3); cdecl; extern
  * @param size The size of the sprite (negative values flip the sprite).
  * @param rotation The rotation angle in degrees.
  *)
-procedure R3D_DrawSpriteEx(sprite: TR3D_Sprite; position: TVector3; size: TVector2; rotation: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawSpriteEx';
+procedure R3D_DrawSpriteEx(sprite: TR3D_Sprite; position: TVector3; size: TVector2; rotation: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawSpriteEx';
 
 (*
  * @brief Draws a sprite with full transformation control.
@@ -475,7 +505,7 @@ procedure R3D_DrawSpriteEx(sprite: TR3D_Sprite; position: TVector3; size: TVecto
  * @param rotationAxis The axis around which the sprite rotates.
  * @param rotationAngle The angle to rotate the sprite around the given axis.
  *)
-procedure R3D_DrawSpritePro(sprite: TR3D_Sprite; position: TVector3; size: TVector2; rotationAxis: TVector3; rotationAngle: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawSpritePro';
+procedure R3D_DrawSpritePro(sprite: TR3D_Sprite; position: TVector3; size: TVector2; rotationAxis: TVector3; rotationAngle: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawSpritePro';
 
 (*
  * @brief Renders the current state of a CPU-based particle system.
@@ -490,7 +520,7 @@ procedure R3D_DrawSpritePro(sprite: TR3D_Sprite; position: TVector3; size: TVect
  * @param mesh The mesh used to represent each particle.
  * @param material The material applied to the particle mesh.
  *)
-procedure R3D_DrawParticleSystem(const system: PR3D_ParticleSystem; mesh: Tmesh; material: Tmaterial); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawParticleSystem';
+procedure R3D_DrawParticleSystem(const system: PR3D_ParticleSystem; mesh: Tmesh; material: Tmaterial); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawParticleSystem';
 
 (*
  * @brief Renders the current state of a CPU-based particle system with a global transformation.
@@ -506,7 +536,7 @@ procedure R3D_DrawParticleSystem(const system: PR3D_ParticleSystem; mesh: Tmesh;
  * @param material The material applied to the particle mesh.
  * @param transform A transformation matrix applied to all particles.
  *)
-procedure R3D_DrawParticleSystemEx(const system: PR3D_ParticleSystem; mesh: TMesh; material: TMaterial; transform: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawParticleSystemEx';
+procedure R3D_DrawParticleSystemEx(const system: PR3D_ParticleSystem; mesh: TMesh; material: TMaterial; transform: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawParticleSystemEx';
 
 // --------------------------------------------
 // LIGHTING: Lights Config Functions
@@ -521,7 +551,7 @@ procedure R3D_DrawParticleSystemEx(const system: PR3D_ParticleSystem; mesh: TMes
  * @param type The type of light to create (directional, spot or omni-directional).
  * @return The ID of the created light.
  *)
-function R3D_CreateLight(type_: R3D_LightType): TR3D_Light; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_CreateLight';
+function R3D_CreateLight(type_: R3D_LightType): TR3D_Light; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_CreateLight';
 
 (*
  * @brief Destroys the specified light.
@@ -531,7 +561,7 @@ function R3D_CreateLight(type_: R3D_LightType): TR3D_Light; cdecl; external {$IF
  *
  * @param id The ID of the light to destroy.
  *)
-procedure R3D_DestroyLight(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DestroyLight';
+procedure R3D_DestroyLight(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DestroyLight';
 
 (*
  * @brief Checks if a light exists.
@@ -541,7 +571,7 @@ procedure R3D_DestroyLight(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}
  * @param id The ID of the light to check.
  * @return True if the light exists, false otherwise.
  *)
-function R3D_IsLightExist(id: TR3D_Light): boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_IsLightExist';
+function R3D_IsLightExist(id: TR3D_Light): boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_IsLightExist';
 
 (*
  * @brief Gets the type of a light.
@@ -551,7 +581,7 @@ function R3D_IsLightExist(id: TR3D_Light): boolean; cdecl; external {$IFNDEF RAY
  * @param id The ID of the light.
  * @return The type of the light.
  *)
-function R3D_GetLightType(id: TR3D_Light): R3D_LightType; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightType';
+function R3D_GetLightType(id: TR3D_Light): R3D_LightType; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightType';
 
 (*
  * @brief Checks if a light is active.
@@ -561,7 +591,7 @@ function R3D_GetLightType(id: TR3D_Light): R3D_LightType; cdecl; external {$IFND
  * @param id The ID of the light to check.
  * @return True if the light is active, false otherwise.
  *)
-function R3D_IsLightActive(id: TR3D_Light): boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_IsLightActive';
+function R3D_IsLightActive(id: TR3D_Light): boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_IsLightActive';
 
 (*
  * @brief Toggles the state of a light (active or inactive).
@@ -571,7 +601,7 @@ function R3D_IsLightActive(id: TR3D_Light): boolean; cdecl; external {$IFNDEF RA
  *
  * @param id The ID of the light to toggle.
  *)
-procedure R3D_ToggleLight(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_ToggleLight';
+procedure R3D_ToggleLight(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ToggleLight';
 
 (*
  * @brief Sets the active state of a light.
@@ -581,7 +611,7 @@ procedure R3D_ToggleLight(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}c
  * @param id The ID of the light to set the active state for.
  * @param active True to activate the light, false to deactivate it.
  *)
-procedure R3D_SetLightActive(id: TR3D_Light;  active: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightActive';
+procedure R3D_SetLightActive(id: TR3D_Light;  active: Boolean); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightActive';
 
 (*
  * @brief Gets the color of a light.
@@ -591,7 +621,7 @@ procedure R3D_SetLightActive(id: TR3D_Light;  active: Boolean); cdecl; external 
  * @param id The ID of the light.
  * @return The color of the light as a `Color` structure.
  *)
-function R3D_GetLightColor(id: TR3D_Light): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightColor';
+function R3D_GetLightColor(id: TR3D_Light): TColorB; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightColor';
 
 (*
  * @brief Gets the color of a light as a `Vector3`.
@@ -602,7 +632,7 @@ function R3D_GetLightColor(id: TR3D_Light): TColorB; cdecl; external {$IFNDEF RA
  * @param id The ID of the light.
  * @return The color of the light as a `Vector3`.
  *)
-function R3D_GetLightColorV(id: TR3D_Light): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightColorV';
+function R3D_GetLightColorV(id: TR3D_Light): TVector3; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightColorV';
 
 (*
  * @brief Sets the color of a light.
@@ -612,7 +642,7 @@ function R3D_GetLightColorV(id: TR3D_Light): TVector3; cdecl; external {$IFNDEF 
  * @param id The ID of the light.
  * @param color The new color to set for the light.
  *)
-procedure R3D_SetLightColor(id: TR3D_Light; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightColor';
+procedure R3D_SetLightColor(id: TR3D_Light; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightColor';
 
 (*
  * @brief Sets the color of a light using a `Vector3`.
@@ -623,7 +653,7 @@ procedure R3D_SetLightColor(id: TR3D_Light; color: TColorB); cdecl; external {$I
  * @param id The ID of the light.
  * @param color The new color to set for the light as a `Vector3`.
  *)
-procedure R3D_SetLightColorV(id: TR3D_Light; color: TVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightColorV';
+procedure R3D_SetLightColorV(id: TR3D_Light; color: TVector3); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightColorV';
 
 (*
  * @brief Gets the position of a light.
@@ -634,7 +664,7 @@ procedure R3D_SetLightColorV(id: TR3D_Light; color: TVector3); cdecl; external {
  * @param id The ID of the light.
  * @return The position of the light as a `Vector3`.
  *)
-function R3D_GetLightPosition(id: TR3D_Light): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightPosition';
+function R3D_GetLightPosition(id: TR3D_Light): TVector3; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightPosition';
 
 (*
  * @brief Sets the position of a light.
@@ -645,7 +675,7 @@ function R3D_GetLightPosition(id: TR3D_Light): TVector3; cdecl; external {$IFNDE
  * @param id The ID of the light.
  * @param position The new position to set for the light.
  *)
-procedure R3D_SetLightPosition(id: TR3D_Light; position: TVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightPosition';
+procedure R3D_SetLightPosition(id: TR3D_Light; position: TVector3); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightPosition';
 
 (*
  * @brief Gets the direction of a light.
@@ -656,7 +686,7 @@ procedure R3D_SetLightPosition(id: TR3D_Light; position: TVector3); cdecl; exter
  * @param id The ID of the light.
  * @return The direction of the light as a `Vector3`.
  *)
-function R3D_GetLightDirection(id: TR3D_Light): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightDirection';
+function R3D_GetLightDirection(id: TR3D_Light): TVector3; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightDirection';
 
 (*
  * @brief Sets the direction of a light.
@@ -667,7 +697,7 @@ function R3D_GetLightDirection(id: TR3D_Light): TVector3; cdecl; external {$IFND
  * @param id The ID of the light.
  * @param direction The new direction to set for the light.
  *)
-procedure R3D_SetLightDirection(id: TR3D_Light; direction: TVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightDirection';
+procedure R3D_SetLightDirection(id: TR3D_Light; direction: TVector3); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightDirection';
 
 (*
  * @brief Sets the target of a directional light.
@@ -678,7 +708,7 @@ procedure R3D_SetLightDirection(id: TR3D_Light; direction: TVector3); cdecl; ext
  * @param id The ID of the light.
  * @param target The target position the light should focus on.
  *)
-procedure R3D_SetLightTarget(id: TR3D_Light; target: TVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightTarget';
+procedure R3D_SetLightTarget(id: TR3D_Light; target: TVector3); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightTarget';
 
 (*
  * @brief Gets the energy level of a light.
@@ -689,7 +719,7 @@ procedure R3D_SetLightTarget(id: TR3D_Light; target: TVector3); cdecl; external 
  * @param id The ID of the light.
  * @return The energy level of the light.
  *)
-function R3D_GetLightEnergy(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightEnergy';
+function R3D_GetLightEnergy(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightEnergy';
 
 (*
  * @brief Sets the energy level of a light.
@@ -700,7 +730,7 @@ function R3D_GetLightEnergy(id: TR3D_Light): Single; cdecl; external {$IFNDEF RA
  * @param id The ID of the light.
  * @param energy The new energy value to set for the light.
  *)
-procedure R3D_SetLightEnergy(id: TR3D_Light; energy: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightEnergy';
+procedure R3D_SetLightEnergy(id: TR3D_Light; energy: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightEnergy';
 
 (*
  * @brief Gets the specular intensity of a light.
@@ -711,7 +741,7 @@ procedure R3D_SetLightEnergy(id: TR3D_Light; energy: Single); cdecl; external {$
  * @param id The ID of the light.
  * @return The current specular intensity of the light.
  *)
-function R3D_GetLightSpecular(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightSpecular';
+function R3D_GetLightSpecular(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightSpecular';
 
 (*
  * @brief Sets the specular intensity of a light.
@@ -722,7 +752,7 @@ function R3D_GetLightSpecular(id: TR3D_Light): Single; cdecl; external {$IFNDEF 
  * @param id The ID of the light.
  * @param specular The new specular intensity value to set for the light.
  *)
-procedure R3D_SetLightSpecular(id: TR3D_Light; specular: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightSpecular';
+procedure R3D_SetLightSpecular(id: TR3D_Light; specular: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightSpecular';
 
 (*
  * @brief Gets the range of a light.
@@ -733,7 +763,7 @@ procedure R3D_SetLightSpecular(id: TR3D_Light; specular: Single); cdecl; externa
  * @param id The ID of the light.
  * @return The range of the light.
  *)
-function R3D_GetLightRange(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightRange';
+function R3D_GetLightRange(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightRange';
 
 (*
  * @brief Sets the range of a light.
@@ -745,7 +775,7 @@ function R3D_GetLightRange(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY
  * @param id The ID of the light.
  * @param range The new range to set for the light.
  *)
-procedure R3D_SetLightRange(id: TR3D_Light; range: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightRange';
+procedure R3D_SetLightRange(id: TR3D_Light; range: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightRange';
 
 
 (*
@@ -757,7 +787,7 @@ procedure R3D_SetLightRange(id: TR3D_Light; range: Single); cdecl; external {$IF
  * @param id The ID of the light.
  * @return The size of the light.
  *)
-function R3D_GetLightSize(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightSize';
+function R3D_GetLightSize(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightSize';
 
 (*
  * @brief Sets the size of a light source.
@@ -768,7 +798,7 @@ function R3D_GetLightSize(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_
  * @param id The ID of the light.
  * @param size The new size to set for the light.
  *)
-procedure R3D_SetLightSize(id: TR3D_Light; size: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightSize';
+procedure R3D_SetLightSize(id: TR3D_Light; size: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightSize';
 
 (*
  * @brief Gets the attenuation factor of a light.
@@ -780,7 +810,7 @@ procedure R3D_SetLightSize(id: TR3D_Light; size: Single); cdecl; external {$IFND
  * @param id The ID of the light.
  * @return The attenuation factor of the light.
  *)
-function R3D_GetLightAttenuation(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightAttenuation';
+function R3D_GetLightAttenuation(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightAttenuation';
 
 (*
  * @brief Sets the attenuation factor of a light.
@@ -792,7 +822,7 @@ function R3D_GetLightAttenuation(id: TR3D_Light): Single; cdecl; external {$IFND
  * @param id The ID of the light.
  * @param attenuation The new attenuation factor to set for the light.
  *)
-procedure R3D_SetLightAttenuation(id: TR3D_Light; attenuation: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightAttenuation';
+procedure R3D_SetLightAttenuation(id: TR3D_Light; attenuation: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightAttenuation';
 
 (*
  * @brief Gets the inner cutoff angle of a spotlight.
@@ -803,7 +833,7 @@ procedure R3D_SetLightAttenuation(id: TR3D_Light; attenuation: Single); cdecl; e
  * @param id The ID of the light.
  * @return The inner cutoff angle in degrees of the spotlight.
  *)
-function R3D_GetLightInnerCutOff(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightInnerCutOff';
+function R3D_GetLightInnerCutOff(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightInnerCutOff';
 
 (*
  * @brief Sets the inner cutoff angle of a spotlight.
@@ -815,7 +845,7 @@ function R3D_GetLightInnerCutOff(id: TR3D_Light): Single; cdecl; external {$IFND
  * @param id The ID of the light.
  * @param degrees The new inner cutoff angle in degrees.
  *)
-procedure R3D_SetLightInnerCutOff(id: TR3D_Light; degrees: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightInnerCutOff';
+procedure R3D_SetLightInnerCutOff(id: TR3D_Light; degrees: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightInnerCutOff';
 
 (*
  * @brief Gets the outer cutoff angle of a spotlight.
@@ -826,7 +856,7 @@ procedure R3D_SetLightInnerCutOff(id: TR3D_Light; degrees: Single); cdecl; exter
  * @param id The ID of the light.
  * @return The outer cutoff angle in degrees of the spotlight.
  *)
-function R3D_GetLightOuterCutOff(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetLightOuterCutOff';
+function R3D_GetLightOuterCutOff(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightOuterCutOff';
 
 (*
  * @brief Sets the outer cutoff angle of a spotlight.
@@ -837,7 +867,7 @@ function R3D_GetLightOuterCutOff(id: TR3D_Light): Single; cdecl; external {$IFND
  * @param id The ID of the light.
  * @param degrees The new outer cutoff angle in degrees.
  *)
-procedure R3D_SetLightOuterCutOff(id: TR3D_Light; degrees: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetLightOuterCutOff';
+procedure R3D_SetLightOuterCutOff(id: TR3D_Light; degrees: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightOuterCutOff';
 
 
 // --------------------------------------------
@@ -853,7 +883,7 @@ procedure R3D_SetLightOuterCutOff(id: TR3D_Light; degrees: Single); cdecl; exter
  * @param id The ID of the light for which shadows should be enabled.
  * @param resolution The resolution of the shadow map to be used by the light.
  *)
-procedure R3D_EnableShadow(id: TR3D_Light; resolution: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_EnableShadow';
+procedure R3D_EnableShadow(id: TR3D_Light; resolution: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_EnableShadow';
 
 (*
  * @brief Disables shadow casting for a light and optionally destroys its shadow map.
@@ -865,7 +895,7 @@ procedure R3D_EnableShadow(id: TR3D_Light; resolution: Integer); cdecl; external
  * @param id The ID of the light for which shadows should be disabled.
  * @param destroyMap Whether or not to destroy the shadow map associated with the light.
  *)
-procedure R3D_DisableShadow(id: TR3D_Light; destroyMap: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DisableShadow';
+procedure R3D_DisableShadow(id: TR3D_Light; destroyMap: Boolean); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DisableShadow';
 
 (*
  * @brief Checks if shadow casting is enabled for a light.
@@ -875,7 +905,7 @@ procedure R3D_DisableShadow(id: TR3D_Light; destroyMap: Boolean); cdecl; externa
  * @param id The ID of the light.
  * @return True if shadow casting is enabled, false otherwise.
  *)
-function R3D_IsShadowEnabled(id: TR3D_Light): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_IsShadowEnabled';
+function R3D_IsShadowEnabled(id: TR3D_Light): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_IsShadowEnabled';
 
 (*
  * @brief Checks if a light has an associated shadow map.
@@ -885,7 +915,7 @@ function R3D_IsShadowEnabled(id: TR3D_Light): Boolean; cdecl; external {$IFNDEF 
  * @param id The ID of the light.
  * @return True if the light has a shadow map, false otherwise.
  *)
-function R3D_HasShadowMap(id: TR3D_Light): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_HasShadowMap';
+function R3D_HasShadowMap(id: TR3D_Light): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_HasShadowMap';
 
 (*
  * @brief Gets the shadow map update mode of a light.
@@ -898,7 +928,7 @@ function R3D_HasShadowMap(id: TR3D_Light): Boolean; cdecl; external {$IFNDEF RAY
  * @param id The ID of the light.
  * @return The shadow map update mode.
  *)
-function R3D_GetShadowUpdateMode(id: TR3D_Light): R3D_ShadowUpdateMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetShadowUpdateMode';
+function R3D_GetShadowUpdateMode(id: TR3D_Light): R3D_ShadowUpdateMode; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetShadowUpdateMode';
 
 (*
  * @brief Sets the shadow map update mode of a light.
@@ -909,7 +939,7 @@ function R3D_GetShadowUpdateMode(id: TR3D_Light): R3D_ShadowUpdateMode; cdecl; e
  * @param id The ID of the light.
  * @param mode The update mode to set for the shadow map (Interval, Continuous, or Manual).
  *)
-procedure R3D_SetShadowUpdateMode(id: TR3D_Light; mode: R3D_ShadowUpdateMode); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetShadowUpdateMode';
+procedure R3D_SetShadowUpdateMode(id: TR3D_Light; mode: R3D_ShadowUpdateMode); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetShadowUpdateMode';
 
 (*
  * @brief Gets the frequency of shadow map updates for the interval update mode.
@@ -921,7 +951,7 @@ procedure R3D_SetShadowUpdateMode(id: TR3D_Light; mode: R3D_ShadowUpdateMode); c
  * @param id The ID of the light.
  * @return The frequency in milliseconds at which the shadow map is updated.
  *)
-function R3D_GetShadowUpdateFrequency(id: TR3D_Light): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetShadowUpdateFrequency';
+function R3D_GetShadowUpdateFrequency(id: TR3D_Light): Integer; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetShadowUpdateFrequency';
 
 (*
  * @brief Sets the frequency of shadow map updates for the interval update mode.
@@ -933,7 +963,7 @@ function R3D_GetShadowUpdateFrequency(id: TR3D_Light): Integer; cdecl; external 
  * @param id The ID of the light.
  * @param msec The frequency in milliseconds at which to update the shadow map.
  *)
-procedure R3D_SetShadowUpdateFrequency(id: TR3D_Light; msec: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetShadowUpdateFrequency';
+procedure R3D_SetShadowUpdateFrequency(id: TR3D_Light; msec: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetShadowUpdateFrequency';
 
 (*
  * @brief Forces an immediate update of the shadow map during the next rendering pass.
@@ -943,7 +973,7 @@ procedure R3D_SetShadowUpdateFrequency(id: TR3D_Light; msec: Integer); cdecl; ex
  *
  * @param id The ID of the light.
  *)
-procedure R3D_UpdateShadowMap(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_UpdateShadowMap';
+procedure R3D_UpdateShadowMap(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UpdateShadowMap';
 
 (*
  * @brief Gets the shadow bias of a light.
@@ -954,7 +984,7 @@ procedure R3D_UpdateShadowMap(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STAT
  * @param id The ID of the light.
  * @return The shadow bias value.
  *)
-function R3D_GetShadowBias(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetShadowBias';
+function R3D_GetShadowBias(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetShadowBias';
 
 (*
  * @brief Sets the shadow bias of a light.
@@ -965,7 +995,7 @@ function R3D_GetShadowBias(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY
  * @param id The ID of the light.
  * @param value The shadow bias value to set.
  *)
-procedure R3D_SetShadowBias(id: TR3D_Light; value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetShadowBias';
+procedure R3D_SetShadowBias(id: TR3D_Light; value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetShadowBias';
 
 
 // --------------------------------------------
@@ -984,7 +1014,7 @@ procedure R3D_SetShadowBias(id: TR3D_Light; value: Single); cdecl; external {$IF
  *
  * @param id The ID of the light.
  *)
-procedure R3D_DrawLightShape(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawLightShape';
+procedure R3D_DrawLightShape(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawLightShape';
 
 
 // --------------------------------------------
@@ -1003,7 +1033,7 @@ procedure R3D_DrawLightShape(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATI
  * @return A newly initialized `R3D_ParticleSystem` structure.
  *         The caller is responsible for properly managing and freeing the system when no longer needed.
  *)
-function R3D_LoadParticleSystem(maxParticles: Integer): TR3D_ParticleSystem; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_LoadParticleSystem';
+function R3D_LoadParticleSystem(maxParticles: Integer): TR3D_ParticleSystem; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadParticleSystem';
 
 (*
  * @brief Unloads the particle emitter system and frees allocated memory.
@@ -1013,7 +1043,7 @@ function R3D_LoadParticleSystem(maxParticles: Integer): TR3D_ParticleSystem; cde
  *
  * @param system A pointer to the `R3D_ParticleSystem` to be unloaded.
  *)
-procedure R3D_UnloadParticleSystem(system: PR3D_ParticleSystem); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_UnloadParticleSystem';
+procedure R3D_UnloadParticleSystem(system: PR3D_ParticleSystem); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UnloadParticleSystem';
 
 (*
  * @brief Emits a particle in the particle system.
@@ -1024,7 +1054,7 @@ procedure R3D_UnloadParticleSystem(system: PR3D_ParticleSystem); cdecl; external
  * @param system A pointer to the `R3D_ParticleSystemCPU` where the particle will be emitted.
  * @return `true` if the particle was successfully emitted, `false` if the system is at full capacity and cannot emit more particles.
  *)
-function R3D_EmitParticle(system: PR3D_ParticleSystem): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_EmitParticle';
+function R3D_EmitParticle(system: PR3D_ParticleSystem): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_EmitParticle';
 
 (*
  * @brief Updates the particle emitter system by advancing particle positions.
@@ -1035,7 +1065,7 @@ function R3D_EmitParticle(system: PR3D_ParticleSystem): Boolean; cdecl; external
  * @param system A pointer to the `R3D_ParticleSystem` to be updated.
  * @param deltaTime The time elapsed since the last update (in seconds).
  *)
-procedure R3D_UpdateParticleSystem(system: PR3D_ParticleSystem; deltaTime: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_UpdateParticleSystem';
+procedure R3D_UpdateParticleSystem(system: PR3D_ParticleSystem; deltaTime: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UpdateParticleSystem';
 
 (*
  * @brief Computes and returns the AABB (Axis-Aligned Bounding Box) of the particle emitter system.
@@ -1048,7 +1078,7 @@ procedure R3D_UpdateParticleSystem(system: PR3D_ParticleSystem; deltaTime: Singl
  * @param system A pointer to the `R3D_ParticleSystem` whose AABB is to be computed.
  * @return The computed `BoundingBox` of the particle system.
  *)
-function R3D_GetParticleSystemBoundingBox(system: PR3D_ParticleSystem): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetParticleSystemBoundingBox';
+function R3D_GetParticleSystemBoundingBox(system: PR3D_ParticleSystem): TBoundingBox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetParticleSystemBoundingBox';
 
 // --------------------------------------------
 // CURVES: Interpolation Curves Functions
@@ -1067,7 +1097,7 @@ function R3D_GetParticleSystemBoundingBox(system: PR3D_ParticleSystem): TBoundin
  *
  * @return A `R3D_Sprite` object initialized with the given texture and frame configuration.
  *)
-function R3D_LoadSprite(texture: TTexture2D; xFrameCount, yFrameCount: Integer): TR3D_Sprite; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_LoadSprite';
+function R3D_LoadSprite(texture: TTexture2D; xFrameCount, yFrameCount: Integer): TR3D_Sprite; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSprite';
 
 (*
  * @brief Unload a sprite and free associated resources.
@@ -1080,7 +1110,7 @@ function R3D_LoadSprite(texture: TTexture2D; xFrameCount, yFrameCount: Integer):
  *
  * @param sprite The `R3D_Sprite` to be unloaded.
  *)
-procedure R3D_UnloadSprite(sprite: TR3D_Sprite); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_UnloadSprite';
+procedure R3D_UnloadSprite(sprite: TR3D_Sprite); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UnloadSprite';
 
 (*
  * @brief Updates the animation of a sprite.
@@ -1093,7 +1123,7 @@ procedure R3D_UnloadSprite(sprite: TR3D_Sprite); cdecl; external {$IFNDEF RAY_ST
  * @param sprite A pointer to the `R3D_Sprite` to update.
  * @param speed The speed at which the animation progresses, in frames per second.
  *)
-procedure R3D_UpdateSprite(sprite: PR3D_Sprite; speed: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_UpdateSprite';
+procedure R3D_UpdateSprite(sprite: PR3D_Sprite; speed: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UpdateSprite';
 
 (*
  * @brief Updates the animation of a sprite with specified frame boundaries.
@@ -1109,7 +1139,7 @@ procedure R3D_UpdateSprite(sprite: PR3D_Sprite; speed: Single); cdecl; external 
  * @param lastFrame The last frame of the animation loop.
  * @param speed The speed at which the animation progresses, in frames per second.
  *)
-procedure R3D_UpdateSpriteEx(sprite: PR3D_Sprite; firstFrame, lastFrame: Integer; speed: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_UpdateSpriteEx';
+procedure R3D_UpdateSpriteEx(sprite: PR3D_Sprite; firstFrame, lastFrame: Integer; speed: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UpdateSpriteEx';
 
 (*
  * @brief Retrieves the current frame's texture coordinates for a sprite.
@@ -1120,7 +1150,7 @@ procedure R3D_UpdateSpriteEx(sprite: PR3D_Sprite; firstFrame, lastFrame: Integer
  *
  * @return A `Vector2` containing the current frame's texture coordinates.
  *)
-function R3D_GetCurrentSpriteFrameCoord(const sprite: PR3D_Sprite): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetCurrentSpriteFrameCoord';
+function R3D_GetCurrentSpriteFrameCoord(const sprite: PR3D_Sprite): TVector2; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetCurrentSpriteFrameCoord';
 
 (*
  * @brief Retrieves the current frame's rectangle for a sprite.
@@ -1131,7 +1161,7 @@ function R3D_GetCurrentSpriteFrameCoord(const sprite: PR3D_Sprite): TVector2; cd
  *
  * @return A `Rectangle` representing the current frame's position and size.
  *)
-function R3D_GetCurrentSpriteFrameRect(const sprite: PR3D_Sprite): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetCurrentSpriteFrameRect';
+function R3D_GetCurrentSpriteFrameRect(const sprite: PR3D_Sprite): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetCurrentSpriteFrameRect';
 
 // --------------------------------------------
 // CURVES: Interpolation Curves Functions
@@ -1148,7 +1178,7 @@ function R3D_GetCurrentSpriteFrameRect(const sprite: PR3D_Sprite): TRectangle; c
  *                 before a reallocation occurs.
  * @return An initialized interpolation curve with the specified capacity.
  *)
-function R3D_LoadInterpolationCurve(capacity: Integer): TR3D_InterpolationCurve; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_LoadInterpolationCurve';
+function R3D_LoadInterpolationCurve(capacity: Integer): TR3D_InterpolationCurve; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadInterpolationCurve';
 
 (*
  * @brief Unloads the interpolation curve and frees the allocated memory.
@@ -1158,7 +1188,7 @@ function R3D_LoadInterpolationCurve(capacity: Integer): TR3D_InterpolationCurve;
  *
  * @param curve The interpolation curve to be unloaded.
  *)
-procedure R3D_UnloadInterpolationCurve(curve: TR3D_InterpolationCurve); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_UnloadInterpolationCurve';
+procedure R3D_UnloadInterpolationCurve(curve: TR3D_InterpolationCurve); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UnloadInterpolationCurve';
 
 (*
  * @brief Adds a keyframe to the interpolation curve.
@@ -1172,7 +1202,7 @@ procedure R3D_UnloadInterpolationCurve(curve: TR3D_InterpolationCurve); cdecl; e
  * @param value The value associated with the keyframe.
  * @return `true` if the keyframe was successfully added, or `false` if the reallocation failed.
  *)
-function R3D_AddKeyframe(curve: PR3D_InterpolationCurve; time, value: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_AddKeyframe';
+function R3D_AddKeyframe(curve: PR3D_InterpolationCurve; time, value: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_AddKeyframe';
 
 (*
  * @brief Evaluates the interpolation curve at a specific time.
@@ -1184,7 +1214,7 @@ function R3D_AddKeyframe(curve: PR3D_InterpolationCurve; time, value: Single): B
  * @param time The time at which to evaluate the curve.
  * @return The value of the curve at the specified time.
  *)
-function R3D_EvaluateCurve(curve: TR3D_InterpolationCurve; time: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_EvaluateCurve';
+function R3D_EvaluateCurve(curve: TR3D_InterpolationCurve; time: Single): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_EvaluateCurve';
 
 // --------------------------------------------
 // ENVIRONMENT: Background And Ambient
@@ -1198,7 +1228,7 @@ function R3D_EvaluateCurve(curve: TR3D_InterpolationCurve; time: Single): Single
  *
  * @param color The color to set as the background color.
  *)
-procedure R3D_SetBackgroundColor(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetBackgroundColor';
+procedure R3D_SetBackgroundColor(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBackgroundColor';
 
 (*
  * @brief Sets the ambient light color when no skybox is enabled.
@@ -1208,7 +1238,7 @@ procedure R3D_SetBackgroundColor(color: TColorB); cdecl; external {$IFNDEF RAY_S
  *
  * @param color The color to set for ambient light.
  *)
-procedure R3D_SetAmbientColor(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetAmbientColor';
+procedure R3D_SetAmbientColor(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetAmbientColor';
 
 (*
  * @brief Enables a skybox for the scene.
@@ -1218,7 +1248,7 @@ procedure R3D_SetAmbientColor(color: TColorB); cdecl; external {$IFNDEF RAY_STAT
  *
  * @param skybox The skybox to enable.
  *)
-procedure R3D_EnableSkybox(skybox: TR3D_Skybox); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_EnableSkybox';
+procedure R3D_EnableSkybox(skybox: TR3D_Skybox); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_EnableSkybox';
 
 (*
  * @brief Disables the skybox in the scene.
@@ -1227,7 +1257,7 @@ procedure R3D_EnableSkybox(skybox: TR3D_Skybox); cdecl; external {$IFNDEF RAY_ST
  * color (or no background if none is set). It should be called to remove the skybox
  * from the scene.
  *)
-procedure R3D_DisableSkybox(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DisableSkybox';
+procedure R3D_DisableSkybox(); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DisableSkybox';
 
 (*
  * @brief Sets the rotation of the skybox.
@@ -1239,7 +1269,7 @@ procedure R3D_DisableSkybox(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$END
  * @param yaw The rotation angle around the Y-axis (in degrees).
  * @param roll The rotation angle around the Z-axis (in degrees).
  *)
-procedure R3D_SetSkyboxRotation(pitch, yaw, roll: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetSkyboxRotation';
+procedure R3D_SetSkyboxRotation(pitch, yaw, roll: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSkyboxRotation';
 
 (*
  * @brief Gets the current rotation of the skybox.
@@ -1249,7 +1279,7 @@ procedure R3D_SetSkyboxRotation(pitch, yaw, roll: Single); cdecl; external {$IFN
  *
  * @return A vector containing the current pitch, yaw, and roll of the skybox.
  *)
-function R3D_GetSkyboxRotation(): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetSkyboxRotation';
+function R3D_GetSkyboxRotation(): TVector3; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSkyboxRotation';
 
 // --------------------------------------------
 // ENVIRONMENT: SSAO Config Functions
@@ -1264,7 +1294,7 @@ function R3D_GetSkyboxRotation(): TVector3; cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @param enabled Whether to enable or disable SSAO.
  *)
-procedure R3D_SetSSAO(enabled: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetSSAO';
+procedure R3D_SetSSAO(enabled: Boolean); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSAO';
 
 (*
  * @brief Gets the current state of SSAO.
@@ -1273,7 +1303,7 @@ procedure R3D_SetSSAO(enabled: Boolean); cdecl; external {$IFNDEF RAY_STATIC}cDl
  *
  * @return True if SSAO is enabled, false otherwise.
  *)
-function R3D_GetSSAO(): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetSSAO';
+function R3D_GetSSAO(): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSAO';
 
 (*
  * @brief Sets the radius for SSAO effect.
@@ -1284,7 +1314,7 @@ function R3D_GetSSAO(): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$E
  *
  * @param value The radius value to set for SSAO.
  *)
-procedure R3D_SetSSAORadius(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetSSAORadius';
+procedure R3D_SetSSAORadius(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSAORadius';
 
 (*
  * @brief Gets the current SSAO radius.
@@ -1293,7 +1323,7 @@ procedure R3D_SetSSAORadius(value: Single); cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @return The radius value for SSAO.
  *)
-function R3D_GetSSAORadius(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetSSAORadius';
+function R3D_GetSSAORadius(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSAORadius';
 
 (*
  * @brief Sets the bias for SSAO effect.
@@ -1304,7 +1334,7 @@ function R3D_GetSSAORadius(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllNa
  *
  * @param value The bias value for SSAO.
  *)
-procedure R3D_SetSSAOBias(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetSSAOBias';
+procedure R3D_SetSSAOBias(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSAOBias';
 
 (*
  * @brief Gets the current SSAO bias.
@@ -1313,7 +1343,7 @@ procedure R3D_SetSSAOBias(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cD
  *
  * @return The SSAO bias value.
  *)
-function R3D_GetSSAOBias(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetSSAOBias';
+function R3D_GetSSAOBias(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSAOBias';
 
 (*
  * @brief Sets the number of iterations for SSAO effect.
@@ -1324,7 +1354,7 @@ function R3D_GetSSAOBias(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName
  *
  * @param value The number of iterations for SSAO.
  *)
-procedure R3D_SetSSAOIterations(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetSSAOIterations';
+procedure R3D_SetSSAOIterations(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSAOIterations';
 
 (*
  * @brief Gets the current number of SSAO iterations.
@@ -1334,7 +1364,7 @@ procedure R3D_SetSSAOIterations(value: Integer); cdecl; external {$IFNDEF RAY_ST
  *
  * @return The number of SSAO iterations.
  *)
-function R3D_GetSSAOIterations(): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetSSAOIterations';
+function R3D_GetSSAOIterations(): Integer; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSAOIterations';
 
 // --------------------------------------------
 // ENVIRONMENT: Bloom Config Functions
@@ -1348,7 +1378,7 @@ function R3D_GetSSAOIterations(): Integer; cdecl; external {$IFNDEF RAY_STATIC}c
  *
  * @param mode The bloom mode to set.
  *)
-procedure R3D_SetBloomMode(mode: R3D_Bloom); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetBloomMode';
+procedure R3D_SetBloomMode(mode: R3D_Bloom); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomMode';
 
 (*
  * @brief Gets the current bloom mode.
@@ -1357,7 +1387,7 @@ procedure R3D_SetBloomMode(mode: R3D_Bloom); cdecl; external {$IFNDEF RAY_STATIC
  *
  * @return The current bloom mode.
  *)
-function R3D_GetBloomMode(): R3D_Bloom; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetBloomMode';
+function R3D_GetBloomMode(): R3D_Bloom; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomMode';
 
 (*
  * @brief Sets the bloom intensity.
@@ -1367,7 +1397,7 @@ function R3D_GetBloomMode(): R3D_Bloom; cdecl; external {$IFNDEF RAY_STATIC}cDll
  *
  * @param value The intensity value for bloom.
  *)
-procedure R3D_SetBloomIntensity(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetBloomIntensity';
+procedure R3D_SetBloomIntensity(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomIntensity';
 
 (*
  * @brief Gets the current bloom intensity.
@@ -1376,7 +1406,7 @@ procedure R3D_SetBloomIntensity(value: Single); cdecl; external {$IFNDEF RAY_STA
  *
  * @return The current bloom intensity.
  *)
-function R3D_GetBloomIntensity(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetBloomIntensity';
+function R3D_GetBloomIntensity(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomIntensity';
 
 (*
  * @brief Sets the HDR threshold for bloom.
@@ -1386,7 +1416,7 @@ function R3D_GetBloomIntensity(): Single; cdecl; external {$IFNDEF RAY_STATIC}cD
  *
  * @param value The HDR threshold for bloom.
  *)
-procedure R3D_SetBloomHdrThreshold(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetBloomHdrThreshold';
+procedure R3D_SetBloomHdrThreshold(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomHdrThreshold';
 
 (*
  * @brief Gets the current HDR threshold for bloom.
@@ -1396,7 +1426,7 @@ procedure R3D_SetBloomHdrThreshold(value: Single); cdecl; external {$IFNDEF RAY_
  *
  * @return The current HDR threshold for bloom.
  *)
-function R3D_GetBloomHdrThreshold(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetBloomHdrThreshold';
+function R3D_GetBloomHdrThreshold(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomHdrThreshold';
 
 (*
  * @brief Sets the HDR threshold for the sky in bloom.
@@ -1406,7 +1436,7 @@ function R3D_GetBloomHdrThreshold(): Single; cdecl; external {$IFNDEF RAY_STATIC
  *
  * @param value The HDR threshold for bloom on the sky.
  *)
-procedure R3D_SetBloomSkyHdrThreshold(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetBloomSkyHdrThreshold';
+procedure R3D_SetBloomSkyHdrThreshold(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomSkyHdrThreshold';
 
 (*
  * @brief Gets the current HDR threshold for bloom on the sky.
@@ -1415,7 +1445,7 @@ procedure R3D_SetBloomSkyHdrThreshold(value: Single); cdecl; external {$IFNDEF R
  *
  * @return The current HDR threshold for sky bloom.
  *)
-function R3D_GetBloomSkyHdrThreshold(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetBloomSkyHdrThreshold';
+function R3D_GetBloomSkyHdrThreshold(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomSkyHdrThreshold';
 
 (*
  * @brief Sets the number of iterations for the bloom effect.
@@ -1426,7 +1456,7 @@ function R3D_GetBloomSkyHdrThreshold(): Single; cdecl; external {$IFNDEF RAY_STA
  *
  * @param value The number of bloom iterations.
  *)
-procedure R3D_SetBloomIterations(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetBloomIterations';
+procedure R3D_SetBloomIterations(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomIterations';
 
 (*
  * @brief Gets the current number of bloom iterations.
@@ -1435,7 +1465,7 @@ procedure R3D_SetBloomIterations(value: Integer); cdecl; external {$IFNDEF RAY_S
  *
  * @return The current number of bloom iterations.
  *)
-function R3D_GetBloomIterations(): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetBloomIterations';
+function R3D_GetBloomIterations(): Integer; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomIterations';
 
 // --------------------------------------------
 // ENVIRONMENT: Fog Config Functions
@@ -1449,7 +1479,7 @@ function R3D_GetBloomIterations(): Integer; cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @param mode The fog mode to set.
  *)
-procedure R3D_SetFogMode(mode: R3D_Fog); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetFogMode';
+procedure R3D_SetFogMode(mode: R3D_Fog); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogMode';
 
 (*
  * @brief Gets the current fog mode.
@@ -1458,7 +1488,7 @@ procedure R3D_SetFogMode(mode: R3D_Fog); cdecl; external {$IFNDEF RAY_STATIC}cDl
  *
  * @return The current fog mode.
  *)
-function R3D_GetFogMode(): R3D_Fog; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetFogMode';
+function R3D_GetFogMode(): R3D_Fog; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetFogMode';
 
 (*
  * @brief Sets the color of the fog.
@@ -1468,7 +1498,7 @@ function R3D_GetFogMode(): R3D_Fog; cdecl; external {$IFNDEF RAY_STATIC}cDllName
  *
  * @param color The color to set for the fog.
  *)
-procedure R3D_SetFogColor(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetFogColor';
+procedure R3D_SetFogColor(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogColor';
 
 (*
  * @brief Gets the current fog color.
@@ -1477,7 +1507,7 @@ procedure R3D_SetFogColor(color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}c
  *
  * @return The current fog color.
  *)
-function R3D_GetFogColor(): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetFogColor';
+function R3D_GetFogColor(): TColorB; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetFogColor';
 
 (*
  * @brief Sets the start distance of the fog.
@@ -1487,7 +1517,7 @@ function R3D_GetFogColor(): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllNam
  *
  * @param value The start distance for the fog effect.
  *)
-procedure R3D_SetFogStart(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetFogStart';
+procedure R3D_SetFogStart(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogStart';
 
 (*
  * @brief Gets the current fog start distance.
@@ -1496,7 +1526,7 @@ procedure R3D_SetFogStart(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cD
  *
  * @return The current fog start distance.
  *)
-function R3D_GetFogStart(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetFogStart';
+function R3D_GetFogStart(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetFogStart';
 
 (*
  * @brief Sets the end distance of the fog.
@@ -1506,7 +1536,7 @@ function R3D_GetFogStart(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName
  *
  * @param value The end distance for the fog effect.
  *)
-procedure R3D_SetFogEnd(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetFogEnd';
+procedure R3D_SetFogEnd(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogEnd';
 
 (*
  * @brief Gets the current fog end distance.
@@ -1515,7 +1545,7 @@ procedure R3D_SetFogEnd(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDll
  *
  * @return The current fog end distance.
  *)
-function R3D_GetFogEnd(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetFogEnd';
+function R3D_GetFogEnd(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetFogEnd';
 
 (*
  * @brief Sets the density of the fog.
@@ -1525,7 +1555,7 @@ function R3D_GetFogEnd(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$
  *
  * @param value The density of the fog (higher values increase fog thickness).
  *)
-procedure R3D_SetFogDensity(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetFogDensity';
+procedure R3D_SetFogDensity(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogDensity';
 
 (*
  * @brief Gets the current fog density.
@@ -1534,7 +1564,7 @@ procedure R3D_SetFogDensity(value: Single); cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @return The current fog density.
  *)
-function R3D_GetFogDensity(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetFogDensity';
+function R3D_GetFogDensity(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetFogDensity';
 
 // --------------------------------------------
 // ENVIRONMENT: Tonemap Config Functions
@@ -1549,7 +1579,7 @@ function R3D_GetFogDensity(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllNa
  *
  * @param mode The tonemap mode to set.
  *)
-procedure R3D_SetTonemapMode(mode: R3D_Tonemap); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetTonemapMode';
+procedure R3D_SetTonemapMode(mode: R3D_Tonemap); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetTonemapMode';
 
 (*
  * @brief Gets the current tonemapping mode.
@@ -1558,7 +1588,7 @@ procedure R3D_SetTonemapMode(mode: R3D_Tonemap); cdecl; external {$IFNDEF RAY_ST
  *
  * @return The current tonemap mode.
  *)
-function R3D_GetTonemapMode(): R3D_Tonemap; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetTonemapMode';
+function R3D_GetTonemapMode(): R3D_Tonemap; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetTonemapMode';
 
 (*
  * @brief Sets the exposure level for tonemapping.
@@ -1568,7 +1598,7 @@ function R3D_GetTonemapMode(): R3D_Tonemap; cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @param value The exposure value (higher values make the scene brighter).
  *)
-procedure R3D_SetTonemapExposure(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetTonemapExposure';
+procedure R3D_SetTonemapExposure(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetTonemapExposure';
 
 (*
  * @brief Gets the current tonemap exposure level.
@@ -1577,7 +1607,7 @@ procedure R3D_SetTonemapExposure(value: Single); cdecl; external {$IFNDEF RAY_ST
  *
  * @return The current tonemap exposure value.
  *)
-function R3D_GetTonemapExposure(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetTonemapExposure';
+function R3D_GetTonemapExposure(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetTonemapExposure';
 
 (*
  * @brief Sets the white point for tonemapping.
@@ -1587,7 +1617,7 @@ function R3D_GetTonemapExposure(): Single; cdecl; external {$IFNDEF RAY_STATIC}c
  *
  * @param value The white point value.
  *)
-procedure R3D_SetTonemapWhite(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetTonemapWhite';
+procedure R3D_SetTonemapWhite(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetTonemapWhite';
 
 (*
  * @brief Gets the current tonemap white point.
@@ -1596,7 +1626,7 @@ procedure R3D_SetTonemapWhite(value: Single); cdecl; external {$IFNDEF RAY_STATI
  *
  * @return The current tonemap white value.
  *)
-function R3D_GetTonemapWhite(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetTonemapWhite';
+function R3D_GetTonemapWhite(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetTonemapWhite';
 
 // --------------------------------------------
 // ENVIRONMENT: Color Adjustment Functions
@@ -1610,7 +1640,7 @@ function R3D_GetTonemapWhite(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDll
  *
  * @param value The brightness adjustment value.
  *)
-procedure R3D_SetBrightness(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetBrightness';
+procedure R3D_SetBrightness(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBrightness';
 
 (*
  * @brief Gets the current brightness level.
@@ -1619,7 +1649,7 @@ procedure R3D_SetBrightness(value: Single); cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @return The current brightness value.
  *)
-function R3D_GetBrightness(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetBrightness';
+function R3D_GetBrightness(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBrightness';
 
 (*
  * @brief Sets the global contrast adjustment.
@@ -1629,7 +1659,7 @@ function R3D_GetBrightness(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllNa
  *
  * @param value The contrast adjustment value.
  *)
-procedure R3D_SetContrast(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetContrast';
+procedure R3D_SetContrast(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetContrast';
 
 (*
  * @brief Gets the current contrast level.
@@ -1638,7 +1668,7 @@ procedure R3D_SetContrast(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cD
  *
  * @return The current contrast value.
  *)
-function R3D_GetContrast(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetContrast';
+function R3D_GetContrast(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetContrast';
 
 (*
  * @brief Sets the global saturation adjustment.
@@ -1648,7 +1678,7 @@ function R3D_GetContrast(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName
  *
  * @param value The saturation adjustment value.
  *)
-procedure R3D_SetSaturation(value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetSaturation';
+procedure R3D_SetSaturation(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSaturation';
 
 (*
  * @brief Gets the current saturation level.
@@ -1657,7 +1687,7 @@ procedure R3D_SetSaturation(value: Single); cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @return The current saturation value.
  *)
-function R3D_GetSaturation(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetSaturation';
+function R3D_GetSaturation(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSaturation';
 
 // --------------------------------------------
 // SKYBOX: Skybox Loading Functions
@@ -1673,7 +1703,7 @@ function R3D_GetSaturation(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllNa
  * @param layout The cubemap layout format.
  * @return The loaded skybox object.
  *)
-function  R3D_LoadSkybox(const fileName: PChar; layout: TCubemapLayout): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_LoadSkybox';
+function  R3D_LoadSkybox(const fileName: PChar; layout: TCubemapLayout): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkybox';
 
 (*
  * @brief Loads a skybox from a high dynamic range (HDR) image.
@@ -1685,7 +1715,7 @@ function  R3D_LoadSkybox(const fileName: PChar; layout: TCubemapLayout): TR3D_Sk
  * @param size The resolution of the cubemap (e.g., 512, 1024).
  * @return The loaded skybox object.
  *)
-function R3D_LoadSkyboxHDR(const fileName: PChar; size: Integer): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_LoadSkyboxHDR';
+function R3D_LoadSkyboxHDR(const fileName: PChar; size: Integer): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkyboxHDR';
 
 (*
  * @brief Unloads a skybox and frees its resources.
@@ -1695,7 +1725,7 @@ function R3D_LoadSkyboxHDR(const fileName: PChar; size: Integer): TR3D_Skybox; c
  *
  * @param sky The skybox to unload.
  *)
-procedure R3D_UnloadSkybox(sky: TR3D_Skybox); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_UnloadSkybox';
+procedure R3D_UnloadSkybox(sky: TR3D_Skybox); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UnloadSkybox';
 
 // --------------------------------------------
 // CULLING: Frustum Test Functions
@@ -1710,7 +1740,7 @@ procedure R3D_UnloadSkybox(sky: TR3D_Skybox); cdecl; external {$IFNDEF RAY_STATI
  * @param position The position of the point to check.
  * @return `true` if the point is inside the frustum, `false` otherwise.
  *)
-function R3D_IsPointInFrustum(position: TVector3): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_IsPointInFrustum';
+function R3D_IsPointInFrustum(position: TVector3): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_IsPointInFrustum';
 
 (*
  * @brief Checks if a point is inside the view frustum (alternative XYZ version).
@@ -1724,7 +1754,7 @@ function R3D_IsPointInFrustum(position: TVector3): Boolean; cdecl; external {$IF
  * @param z The Z coordinate of the point.
  * @return `true` if the point is inside the frustum, `false` otherwise.
  *)
-function R3D_IsPointInFrustumXYZ(x, y, z: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_IsPointInFrustumXYZ';
+function R3D_IsPointInFrustumXYZ(x, y, z: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_IsPointInFrustumXYZ';
 
 (*
  * @brief Checks if a sphere is inside the view frustum.
@@ -1737,7 +1767,7 @@ function R3D_IsPointInFrustumXYZ(x, y, z: Single): Boolean; cdecl; external {$IF
  * @param radius The radius of the sphere.
  * @return `true` if the sphere is at least partially inside the frustum, `false` otherwise.
  *)
-function R3D_IsSphereInFrustum(position: TVector3; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_IsSphereInFrustum';
+function R3D_IsSphereInFrustum(position: TVector3; radius: Single): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_IsSphereInFrustum';
 
 (*
  * @brief Checks if an axis-aligned bounding box (AABB) is inside the view frustum.
@@ -1748,7 +1778,7 @@ function R3D_IsSphereInFrustum(position: TVector3; radius: Single): Boolean; cde
  * @param aabb The bounding box to test.
  * @return `true` if any part of the bounding box is inside the frustum, `false` otherwise.
  *)
-function R3D_IsBoundingBoxInFrustum(aabb: TBoundingBox): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_IsBoundingBoxInFrustum';
+function R3D_IsBoundingBoxInFrustum(aabb: TBoundingBox): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_IsBoundingBoxInFrustum';
 
 // --------------------------------------------
 // UTILS: Material Configuration Functions
@@ -1765,7 +1795,7 @@ function R3D_IsBoundingBoxInFrustum(aabb: TBoundingBox): Boolean; cdecl; externa
  * @param texture Optional albedo texture (set to NULL for none).
  * @param color Albedo color to apply.
  *)
-procedure R3D_SetMaterialAlbedo(material: PMaterial; texture: PTexture2D; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetMaterialAlbedo';
+procedure R3D_SetMaterialAlbedo(material: PMaterial; texture: PTexture2D; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetMaterialAlbedo';
 
 (*
  * @brief Sets the ambient occlusion properties of a material.
@@ -1777,7 +1807,7 @@ procedure R3D_SetMaterialAlbedo(material: PMaterial; texture: PTexture2D; color:
  * @param texture Optional occlusion texture (set to NULL for none).
  * @param value Occlusion strength (0.0 to 1.0).
  *)
-procedure R3D_SetMaterialOcclusion(material: PMaterial; texture: PTexture2D; value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetMaterialOcclusion';
+procedure R3D_SetMaterialOcclusion(material: PMaterial; texture: PTexture2D; value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetMaterialOcclusion';
 
 (*
  * @brief Sets the roughness properties of a material.
@@ -1790,7 +1820,7 @@ procedure R3D_SetMaterialOcclusion(material: PMaterial; texture: PTexture2D; val
  * @param texture Optional roughness texture (set to NULL for none).
  * @param value Roughness factor (0.0 = smooth, 1.0 = rough).
  *)
-procedure R3D_SetMaterialRoughness(material: PMaterial; texture: PTexture2D; value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetMaterialRoughness';
+procedure R3D_SetMaterialRoughness(material: PMaterial; texture: PTexture2D; value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetMaterialRoughness';
 
 (*
  * @brief Sets the metalness properties of a material.
@@ -1803,7 +1833,7 @@ procedure R3D_SetMaterialRoughness(material: PMaterial; texture: PTexture2D; val
  * @param texture Optional metalness texture (set to NULL for none).
  * @param value Metalness factor (0.0 = non-metallic, 1.0 = metallic).
  *)
-procedure R3D_SetMaterialMetalness(material: PMaterial; texture: PTexture2D; value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetMaterialMetalness';
+procedure R3D_SetMaterialMetalness(material: PMaterial; texture: PTexture2D; value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetMaterialMetalness';
 
 (*
  * @brief Sets the emission properties of a material.
@@ -1817,7 +1847,7 @@ procedure R3D_SetMaterialMetalness(material: PMaterial; texture: PTexture2D; val
  * @param color Emission color.
  * @param value Emission intensity.
  *)
-procedure R3D_SetMaterialEmission(material: PMaterial; texture: PTexture2D; color: TColorB; value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_SetMaterialEmission';
+procedure R3D_SetMaterialEmission(material: PMaterial; texture: PTexture2D; color: TColorB; value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetMaterialEmission';
 
 
 
@@ -1832,7 +1862,7 @@ procedure R3D_SetMaterialEmission(material: PMaterial; texture: PTexture2D; colo
  *
  * @return A white texture.
  *)
-function R3D_GetWhiteTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetWhiteTexture';
+function R3D_GetWhiteTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetWhiteTexture';
 
 (*
  * @brief Retrieves a default black texture.
@@ -1841,7 +1871,7 @@ function R3D_GetWhiteTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @return A black texture.
  *)
-function R3D_GetBlackTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetBlackTexture';
+function R3D_GetBlackTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBlackTexture';
 
 (*
  * @brief Retrieves a default normal map texture.
@@ -1850,7 +1880,7 @@ function R3D_GetBlackTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @return A neutral normal texture.
  *)
-function R3D_GetNormalTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_GetNormalTexture';
+function R3D_GetNormalTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetNormalTexture';
 
 // --------------------------------------------
 // UTILS: Debug Buffer Rendering Functions
@@ -1867,7 +1897,7 @@ function R3D_GetNormalTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC
  * @param w Width of the drawn buffer.
  * @param h Height of the drawn buffer.
  *)
-procedure R3D_DrawBufferAlbedo(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawBufferAlbedo';
+procedure R3D_DrawBufferAlbedo(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawBufferAlbedo';
 
 (*
  * @brief Renders the internal emission buffer to the screen.
@@ -1880,7 +1910,7 @@ procedure R3D_DrawBufferAlbedo(x, y, w, h: Single); cdecl; external {$IFNDEF RAY
  * @param w Width of the drawn buffer.
  * @param h Height of the drawn buffer.
  *)
-procedure R3D_DrawBufferEmission(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawBufferEmission';
+procedure R3D_DrawBufferEmission(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawBufferEmission';
 
 (*
  * @brief Renders the internal normal buffer to the screen.
@@ -1893,7 +1923,7 @@ procedure R3D_DrawBufferEmission(x, y, w, h: Single); cdecl; external {$IFNDEF R
  * @param w Width of the drawn buffer.
  * @param h Height of the drawn buffer.
  *)
-procedure R3D_DrawBufferNormal(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawBufferNormal';
+procedure R3D_DrawBufferNormal(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawBufferNormal';
 
 (*
  * @brief Renders the ORM (Occlusion, Roughness, Metalness) buffer to the screen.
@@ -1910,7 +1940,7 @@ procedure R3D_DrawBufferNormal(x, y, w, h: Single); cdecl; external {$IFNDEF RAY
  * @param w Width of the drawn buffer.
  * @param h Height of the drawn buffer.
  *)
-procedure R3D_DrawBufferORM(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawBufferORM';
+procedure R3D_DrawBufferORM(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawBufferORM';
 
 (*
  * @brief Renders the SSAO (Screen Space Ambient Occlusion) buffer to the screen.
@@ -1923,7 +1953,7 @@ procedure R3D_DrawBufferORM(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_ST
  * @param w Width of the drawn buffer.
  * @param h Height of the drawn buffer.
  *)
-procedure R3D_DrawBufferSSAO(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawBufferSSAO';
+procedure R3D_DrawBufferSSAO(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawBufferSSAO';
 
 (*
  * @brief Renders the bright colors buffer to the screen.
@@ -1936,7 +1966,7 @@ procedure R3D_DrawBufferSSAO(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_S
  * @param w Width of the drawn buffer.
  * @param h Height of the drawn buffer.
  *)
-procedure R3D_DrawBufferBrightColors(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawBufferBrightColors';
+procedure R3D_DrawBufferBrightColors(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawBufferBrightColors';
 
 (*
  * @brief Renders the bloom buffer to the screen.
@@ -1949,17 +1979,7 @@ procedure R3D_DrawBufferBrightColors(x, y, w, h: Single); cdecl; external {$IFND
  * @param w Width of the drawn buffer.
  * @param h Height of the drawn buffer.
  *)
-procedure R3D_DrawBufferBloom(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'R3D_DrawBufferBloom';
-
-
-
-
-
-
-
-
-
-
+procedure R3D_DrawBufferBloom(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawBufferBloom';
 
 
 implementation

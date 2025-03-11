@@ -226,7 +226,7 @@ const
        up         : TVector3; // Camera up vector (rotation over its axis)
        fovy       : single;   // Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
        projection : Integer;  // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
-       procedure Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aProjection: integer);
+       procedure Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aProjection: integer = 0);
      end;
 
      (* Camera type fallback, defaults to Camera3D *)
@@ -2517,7 +2517,7 @@ end;
 
 { TCamera3D }
 
-procedure TCamera3D.Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aProjection: integer);
+procedure TCamera3D.Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aProjection: integer = 0);
 begin
  self := Camera3DCreate(aPosition, aTarget, aUp, aFOVY, aProjection);
 end;
