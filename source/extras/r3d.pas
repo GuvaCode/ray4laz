@@ -30,89 +30,96 @@ unit r3d;
 {$I raylib.inc}
 
 interface
-
-
 {$IFNDEF RAY_STATIC}
 const
   cR3dName =
-             {$IFDEF WINDOWS} 'libr3d.dll'; {$IFEND}
-             {$IFDEF LINUX} 'libr3d.so'; {$IFEND}
+    {$IFDEF WINDOWS} 'libr3d.dll'; {$IFEND}
+    {$IFDEF LINUX} 'libr3d.so'; {$IFEND}
 {$ENDIF}
-
-
 uses
   raylib;
 
 type
-  R3D_Flags = (
-    R3D_FLAG_NONE = 0,                  //< No special rendering flags.
-    R3D_FLAG_FXAA = 1 shl 0,            //< Enables Fast Approximate Anti-Aliasing (FXAA).
-    R3D_FLAG_BLIT_LINEAR = 1 shl 1,     //< Uses linear filtering when blitting the final image.
-    R3D_FLAG_ASPECT_KEEP = 1 shl 2,     //< Maintains the aspect ratio when rendering.
-    R3D_FLAG_STENCIL_TEST = 1 shl 3     //< Performs a stencil test on each rendering pass affecting geometry, useful for outdoor scenes where the sky is dominant.
-  );
+  R3D_Flags = Integer;
+  const
+    R3D_FLAG_NONE           = R3D_Flags(0);        //< No special rendering flags.
+    R3D_FLAG_FXAA           = R3D_Flags(1 shl 0);  //< Enables Fast Approximate Anti-Aliasing (FXAA).
+    R3D_FLAG_BLIT_LINEAR    = R3D_Flags(1 shl 1);  //< Uses linear filtering when blitting the final image.
+    R3D_FLAG_ASPECT_KEEP    = R3D_Flags(1 shl 2);  //< Maintains the aspect ratio when rendering.
+    R3D_FLAG_STENCIL_TEST   = R3D_Flags(1 shl 3);  //< Performs a stencil test on each rendering pass affecting geometry, useful for outdoor scenes where the sky is dominant.
 
-  R3D_RenderMode = (
-    R3D_RENDER_AUTO_DETECT = 0,         {*< Automatically determines the rendering mode based on the material,
-                                             for example, by analyzing the albedo texture formats or the alpha
-                                             value of albedo colors. This is the default mode. *}
-    R3D_RENDER_DEFERRED = 1,            //< Optimized for desktop GPUs, but does not support transparency.
-    R3D_RENDER_FORWARD = 2              //< Works well on tile-based renderers, supports transparency.
-  );
+type
+  R3D_RenderMode = Integer;
+  const
+    {*< Automatically determines the rendering mode based on the material,
+    for example, by analyzing the albedo texture formats or the alpha
+    value of albedo colors. This is the default mode. *}
+    R3D_RENDER_AUTO_DETECT = R3D_RenderMode(0);
+    R3D_RENDER_DEFERRED    = R3D_RenderMode(1);  //< Optimized for desktop GPUs, but does not support transparency.
+    R3D_RENDER_FORWARD     = R3D_RenderMode(2);  //< Works well on tile-based renderers, supports transparency.
 
-  R3D_BlendMode = (
-    R3D_BLEND_OPAQUE,          //< No blending, the source color fully replaces the destination color.
-    R3D_BLEND_ALPHA,           //< Alpha blending: source color is blended with the destination based on alpha value.
-    R3D_BLEND_ADDITIVE,        //< Additive blending: source color is added to the destination, making bright effects.
-    R3D_BLEND_MULTIPLY         //< Multiply blending: source color is multiplied with the destination, darkening the image.
-  );
+type
+  R3D_BlendMode = Integer;
+  const
+    R3D_BLEND_OPAQUE   = R3D_BlendMode(0);  //< No blending, the source color fully replaces the destination color.
+    R3D_BLEND_ALPHA    = R3D_BlendMode(1);  //< Alpha blending: source color is blended with the destination based on alpha value.
+    R3D_BLEND_ADDITIVE = R3D_BlendMode(2);  //< Additive blending: source color is added to the destination, making bright effects.
+    R3D_BLEND_MULTIPLY = R3D_BlendMode(3);  //< Multiply blending: source color is multiplied with the destination, darkening the image.
 
-  R3D_ShadowCastMode = (
-    R3D_SHADOW_CAST_DISABLED,     //< The object does not cast shadows.
-    R3D_SHADOW_CAST_FRONT_FACES,  //< Only front-facing polygons cast shadows.
-    R3D_SHADOW_CAST_BACK_FACES,   //< Only back-facing polygons cast shadows.
-    R3D_SHADOW_CAST_ALL_FACES     //< Both front and back-facing polygons cast shadows.
-  );
+type
+  R3D_ShadowCastMode = Integer;
+  const
+    R3D_SHADOW_CAST_DISABLED    = R3D_ShadowCastMode(0);  //< The object does not cast shadows.
+    R3D_SHADOW_CAST_FRONT_FACES = R3D_ShadowCastMode(1);  //< Only front-facing polygons cast shadows.
+    R3D_SHADOW_CAST_BACK_FACES  = R3D_ShadowCastMode(2);  //< Only back-facing polygons cast shadows.
+    R3D_SHADOW_CAST_ALL_FACES   = R3D_ShadowCastMode(3);  //< Both front and back-facing polygons cast shadows.
 
-  R3D_BillboardMode = (
-    R3D_BILLBOARD_DISABLED,     //< Billboarding is disabled; the object retains its original orientation.
-    R3D_BILLBOARD_FRONT,        //< Full billboarding; the object fully faces the camera, rotating on all axes.
-    R3D_BILLBOARD_Y_AXIS        {*< Y-axis constrained billboarding; the object rotates only around the Y-axis,
-                                     keeping its "up" orientation fixed. This is suitable for upright objects like characters or signs. *}
-  );
+type
+  R3D_BillboardMode = Integer;
+  const
+    R3D_BILLBOARD_DISABLED = R3D_BillboardMode(0);  //< Billboarding is disabled; the object retains its original orientation.
+    R3D_BILLBOARD_FRONT    = R3D_BillboardMode(1);  //< Full billboarding; the object fully faces the camera, rotating on all axes.
+    R3D_BILLBOARD_Y_AXIS   = R3D_BillboardMode(2);
+    {*< Y-axis constrained billboarding; the object rotates only around the Y-axis,
+    keeping its "up" orientation fixed. This is suitable for upright objects like characters or signs. *}
+type
+ R3D_LightType = Integer;
+ const
+    R3D_LIGHT_DIR  = R3D_LightType(0);  //< Directional light, affects the entire scene with parallel rays.
+    R3D_LIGHT_SPOT = R3D_LightType(1);  //< Spot light, emits light in a cone shape.
+    R3D_LIGHT_OMNI = R3D_LightType(2); //< Omni light, emits light in all directions from a single point.
 
-  R3D_LightType = (
-    R3D_LIGHT_DIR,              //< Directional light, affects the entire scene with parallel rays.
-    R3D_LIGHT_SPOT,             //< Spot light, emits light in a cone shape.
-    R3D_LIGHT_OMNI              //< Omni light, emits light in all directions from a single point.
-  );
+type
+  R3D_ShadowUpdateMode = Integer;
+  const
+    R3D_SHADOW_UPDATE_MANUAL = R3D_ShadowUpdateMode(0);     //< Shadow maps update only when explicitly requested.
+    R3D_SHADOW_UPDATE_INTERVAL = R3D_ShadowUpdateMode(1);   //< Shadow maps update at defined time intervals.
+    R3D_SHADOW_UPDATE_CONTINUOUS = R3D_ShadowUpdateMode(2); //< Shadow maps update every frame for real-time accuracy.
 
-  R3D_ShadowUpdateMode = (
-    R3D_SHADOW_UPDATE_MANUAL,   //< Shadow maps update only when explicitly requested.
-    R3D_SHADOW_UPDATE_INTERVAL, //< Shadow maps update at defined time intervals.
-    R3D_SHADOW_UPDATE_CONTINUOUS //< Shadow maps update every frame for real-time accuracy.
-  );
+type
+  R3D_Bloom = Integer;
+  const
+    R3D_BLOOM_DISABLED = R3D_Bloom(0);         //< Bloom effect is disabled.
+    R3D_BLOOM_ADDITIVE = R3D_Bloom(1);         //< Enhances bright areas by adding light to them (stronger glow effect).
+    R3D_BLOOM_SOFT_LIGHT = R3D_Bloom(2);       //< Creates a softer, more diffused glow around bright areas.
 
-  R3D_Bloom = (
-    R3D_BLOOM_DISABLED,         //< Bloom effect is disabled.
-    R3D_BLOOM_ADDITIVE,         //< Enhances bright areas by adding light to them (stronger glow effect).
-    R3D_BLOOM_SOFT_LIGHT        //< Creates a softer, more diffused glow around bright areas.
-  );
+type
+  R3D_Fog = Integer;
+  const
+    R3D_FOG_DISABLED = R3D_Fog(0);  //< Fog effect is disabled.
+    R3D_FOG_LINEAR = R3D_Fog(1);    //< Fog density increases linearly with distance from the camera.
+    R3D_FOG_EXP2 = R3D_Fog(2);      //< Exponential fog (exp2), where density increases exponentially with distance.
+    R3D_FOG_EXP = R3D_Fog(3);       //< Exponential fog, similar to EXP2 but with a different rate of increase.
 
-  R3D_Fog = (
-    R3D_FOG_DISABLED,           //< Fog effect is disabled.
-    R3D_FOG_LINEAR,             //< Fog density increases linearly with distance from the camera.
-    R3D_FOG_EXP2,               //< Exponential fog (exp2), where density increases exponentially with distance.
-    R3D_FOG_EXP                 //< Exponential fog, similar to EXP2 but with a different rate of increase.
-  );
+type
+  R3D_Tonemap = Integer;
+  const
+    R3D_TONEMAP_LINEAR = R3D_Tonemap(0);         //< Simple linear mapping of HDR values.
+    R3D_TONEMAP_REINHARD = R3D_Tonemap(1);       //< Reinhard tone mapping, a balanced method for compressing HDR values.
+    R3D_TONEMAP_FILMIC = R3D_Tonemap(2);         //< Filmic tone mapping, mimicking the response of photographic film.
+    R3D_TONEMAP_ACES = R3D_Tonemap(3);           //< ACES tone mapping, a high-quality cinematic rendering technique.
+    R3D_TONEMAP_AGX   = R3D_Tonemap(4);          //< AGX tone mapping, a modern technique designed to preserve both highlight and shadow details for HDR rendering.
 
-  R3D_Tonemap = (
-    R3D_TONEMAP_LINEAR,         //< Simple linear mapping of HDR values.
-    R3D_TONEMAP_REINHARD,       //< Reinhard tone mapping, a balanced method for compressing HDR values.
-    R3D_TONEMAP_FILMIC,         //< Filmic tone mapping, mimicking the response of photographic film.
-    R3D_TONEMAP_ACES,           //< ACES tone mapping, a high-quality cinematic rendering technique.
-    R3D_TONEMAP_AGX             //< AGX tone mapping, a modern technique designed to preserve both highlight and shadow details for HDR rendering.
-  );
 
 type
   PR3D_Light = ^TR3D_Light;
@@ -223,7 +230,7 @@ type
  * @param resHeight Height of the internal resolution.
  * @param flags Flags indicating internal behavior (modifiable via R3D_SetState).
  *)
-procedure R3D_Init(resWidth, resHeight: Integer; flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_Init';
+procedure R3D_Init(resWidth, resHeight: Integer; flags: R3D_Flags); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_Init';
 
 (*
  * @brief Closes the rendering engine and deallocates all resources.
@@ -239,7 +246,7 @@ procedure R3D_Close(); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 
  * @param flag The state flag to check.
  * @return True if the flag is set, false otherwise.
  *)
-function R3D_HasState(flag: Cardinal): boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_HasState';
+function R3D_HasState(flag: R3D_Flags): boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_HasState';
 
 (*
  * @brief Sets internal state flags for the rendering engine.
@@ -249,7 +256,7 @@ function R3D_HasState(flag: Cardinal): boolean; cdecl; external {$IFNDEF RAY_STA
  *
  * @param flags The flags to set.
  *)
-procedure R3D_SetState(flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetState';
+procedure R3D_SetState(flags: R3D_Flags); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetState';
 
 (*
  * @brief Clears specific internal state flags.
@@ -259,7 +266,7 @@ procedure R3D_SetState(flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}r3d
  *
  * @param flags The flags to clear.
  *)
-procedure R3D_ClearState(flags: Cardinal); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ClearState';
+procedure R3D_ClearState(flags: R3D_Flags); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ClearState';
 
 (*
  * @brief Gets the current internal resolution.
