@@ -36,7 +36,7 @@ begin
 
   InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags
   Init;
-  SetTargetFPS(60); // Set our game to run at 60 frames-per-second
+  //SetTargetFPS(60); // Set our game to run at 60 frames-per-second
 end;
 
 procedure TRayApplication.DoRun;

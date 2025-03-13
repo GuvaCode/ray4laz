@@ -21,23 +21,23 @@ unit r3d;
  *   3. This notice may not be removed or altered from any source distribution.
  *)
 
-
 {$mode objfpc}{$H+}
 {$packrecords c}
 {$ALIGN 8}
 {$MINENUMSIZE 4}
 // Include configuration file
 {$I raylib.inc}
-
 interface
+
+uses
+  raylib;
+
 {$IFNDEF RAY_STATIC}
 const
   cR3dName =
     {$IFDEF WINDOWS} 'libr3d.dll'; {$IFEND}
     {$IFDEF LINUX} 'libr3d.so'; {$IFEND}
 {$ENDIF}
-uses
-  raylib;
 
 type
   R3D_Flags = Integer;

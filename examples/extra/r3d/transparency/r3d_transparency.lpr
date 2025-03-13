@@ -119,6 +119,7 @@ begin
 
     R3D_DrawModel(cube, Vector3Create ( 0,0,0 ), 1.0);
   R3D_End();
+  DrawFps(10,10);
 end;
 
 procedure TRayApplication.Close;
