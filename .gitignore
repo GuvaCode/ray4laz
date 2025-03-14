@@ -17,8 +17,16 @@ binary/*
 .DS_Store
 #*.dylib
 
+# other git repo
+raylib-gizmo/
+raylib/
+raygui/
+r3d/
+
 # laz
 backup/
+
+
 #examples/
 lib/
 templates/standard_game/

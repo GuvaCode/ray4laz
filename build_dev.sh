@@ -39,25 +39,25 @@ git clone https://github.com/raysan5/raygui.git
 
 cd raylib/src
 
-rm -f ../../libs/x86_64-linux/*
-rm -f ../../libs/x86_32-linux/*
-rm -f ../../libs/x86_64-win64/*
-rm -f ../../libs/i386-win32/*
+rm -f ../../libs/x86_64-linux/libraylib*
+rm -f ../../libs/x86_32-linux/libraylib*
+rm -f ../../libs/x86_64-win64/libraylib*
+rm -f ../../libs/i386-win32/libraylib*
 
-echo "Build x86_64_LINUX dynamic" 
-make clean  
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE 
-cp libraylib.so.5.5.0 ../../libs/x86_64-linux/libraylib.so.550
+#echo "Build x86_64_LINUX dynamic" 
+#make clean  
+#make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE 
+#cp libraylib.so.5.5.0 ../../libs/x86_64-linux/libraylib.so.550
 
 echo "Build x86_64_LINUX statics" 
 make clean
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE 
 cp libraylib.a ../../libs/x86_64-linux/libraylib.a
 
-echo "Build x86_32_Linux dynamic"
-make clean
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE LDFLAG=-m32
-cp libraylib.so.5.5.0 ../../libs/x86_32-linux/libraylib.so.550 
+#echo "Build x86_32_Linux dynamic"
+#make clean
+#make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE LDFLAG=-m32
+#cp libraylib.so.5.5.0 ../../libs/x86_32-linux/libraylib.so.550 
 
 echo "Build x86_32_Linux statics"
 make clean
@@ -71,6 +71,7 @@ make clean
 cp ../../raygui/src/raygui.h raygui.c 
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
 cp raylib.dll ../../libs/x86_64-win64/libraylib.dll
+cp libraylibdll.a ../../libs/x86_64-win64/libraylibdll.a 
 
 echo " build x32 windows"
 i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
@@ -79,10 +80,40 @@ make clean
 cp ../../raygui/src/raygui.h raygui.c 
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
 cp raylib.dll ../../libs/i386-win32/libraylib.dll
-
+cp libraylibdll.a ../../libs/i386-win32/libraylibdll.a
 cd ../../
-rm -rvf raylib
-rm -rvf raygui
+
+echo "Build plugin libs ?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) 
+             sh build_gizmo.sh; 
+             sh build_r3d.sh;  
+             exit;;
+        No ) exit;;
+    esac
+done
+
+
+
+
+
+
+echo "remove submodule ?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) rm -rvf raylib 
+              rm -rvf raylib-gizmo
+              rm -rvf r3d
+              rm -rvf raygui; exit;;
+        No ) exit;;
+    esac
+done
+
+#rm -rvf raylib
+#rm -rvf raygui
+
+
 
 echo "All done ............"
 

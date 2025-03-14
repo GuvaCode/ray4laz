@@ -4,10 +4,10 @@
 # sudo apt install gcc-multilib
 # sudo apt install g++-multilib
 
-rm -f libs/x86_64-linux/libraygizmo.a
-rm -f libs/x86_32-linux/libraygizmo.a
-rm -f libs/x86_64-win64/libraygizmo.dll
-rm -f libs/i386-win32/libraygizmo.dll
+rm -f libs/x86_64-linux/libraygizmo*
+rm -f libs/x86_32-linux/libraygizmo*
+rm -f libs/x86_64-win64/libraygizmo*
+rm -f libs/i386-win32/libraygizmo*
 
 git clone https://github.com/GuvaCode/raylib-gizmo
 
@@ -33,8 +33,10 @@ echo " build x64 windows"
 cmake -DCMAKE_TOOLCHAIN_FILE=mingw-w64-x86_64.cmake -DRGIZMO_BUILD_SHARED=ON -DRGIZMO_BUILD_EXAMPLES=OFF ..
 cmake --build .
 cp libraygizmo.dll ../../libs/x86_64-win64/libraygizmo.dll
+cp libraygizmo.dll.a ../../libs/x86_64-win64/libraygizmo.dll.a
 
 echo " build x32 windows"
 cmake -DCMAKE_TOOLCHAIN_FILE=mingw-w32-x86_64.cmake -DRGIZMO_BUILD_SHARED=ON -DRGIZMO_BUILD_EXAMPLES=OFF ..
 cmake --build .
 cp libraygizmo.dll ../../libs/i386-win32/libraygizmo.dll
+cp libraygizmo.dll.a ../../libs/i386-win32/libraygizmo.dll.a
