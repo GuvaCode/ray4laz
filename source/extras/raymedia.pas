@@ -10,13 +10,13 @@ unit raymedia;
 {$ALIGN 8}
 {$MINENUMSIZE 4}
 // Include configuration file
-{$I raylib.inc}
-
+//{$I raylib.inc}
 
 interface
 
 uses
   raylib;
+
 type
   PMediaContext = ^TMediaContext;
   TMediaContext = pointer; //record end;
@@ -94,7 +94,7 @@ type
       MEDIA_IO_EOF     = -541478725, // Конец потока достигнут (соответствует AVERROR_EOF)
       MEDIA_IO_INVALID = -22         // Некорректный вызов или операция (соответствует AVERROR(EINVAL))
     );
-
+{
 function LoadMedia(const fileName: PChar): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMedia';
 function LoadMediaEx(const fileName: PChar; flags: Integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaEx';
 function LoadMediaFromStream(streamReader: TMediaStreamReader; flags: integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaFromStream';
@@ -109,7 +109,7 @@ function SetMediaLooping(media: TMediaStream; loopPlay: Boolean): Boolean; cdecl
 function SetMediaFlag(flag: Integer; value: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMediaFlag';
 function GetMediaFlag(flag: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaFlag';
 procedure UnloadMedia(media: PMediaStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMedia';
-
+  }
 implementation
 
 {$IFDEF linux}

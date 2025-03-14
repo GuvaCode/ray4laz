@@ -77,5 +77,20 @@ procedure SetGizmoGlobalAxis(right, up, forward: TVector3); cdecl; external {$IF
 
 implementation
 
+{$IFDEF linux}
+  {$linklib c}
+  {$linklib m}
+  {$linklib dl}
+  {$linklib pthread}
+  {$linklib libraylib.a}
+  {$linklib libraygizmo.a}
+{$endif}
+
+{$IFDEF Windows}
+  {$linklib libraylibdll.a}
+  {$linklib libraygizmo.dll.a}
+{$endif}
+
+
 end.
 
