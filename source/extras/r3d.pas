@@ -1148,28 +1148,6 @@ procedure R3D_UpdateSprite(sprite: PR3D_Sprite; speed: Single); cdecl; external 
  *)
 procedure R3D_UpdateSpriteEx(sprite: PR3D_Sprite; firstFrame, lastFrame: Integer; speed: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UpdateSpriteEx';
 
-(*
- * @brief Retrieves the current frame's texture coordinates for a sprite.
- *
- * This function returns the `Vector2` representing the top-left corner of the current frame's texture coordinates.
- *
- * @param sprite A pointer to the `R3D_Sprite` to query.
- *
- * @return A `Vector2` containing the current frame's texture coordinates.
- *)
-function R3D_GetCurrentSpriteFrameCoord(const sprite: PR3D_Sprite): TVector2; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetCurrentSpriteFrameCoord';
-
-(*
- * @brief Retrieves the current frame's rectangle for a sprite.
- *
- * This function returns a `Rectangle` representing the dimensions and position of the current frame within the texture.
- *
- * @param sprite A pointer to the `R3D_Sprite` to query.
- *
- * @return A `Rectangle` representing the current frame's position and size.
- *)
-function R3D_GetCurrentSpriteFrameRect(const sprite: PR3D_Sprite): TRectangle; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetCurrentSpriteFrameRect';
-
 // --------------------------------------------
 // CURVES: Interpolation Curves Functions
 // --------------------------------------------
