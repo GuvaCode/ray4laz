@@ -602,6 +602,8 @@ function GuiValueBoxFloat( bounds: TRectangle; const text, textValue: PChar; val
 function GuiTextBox(bounds: TRectangle; text: PChar; textSize: Integer; editMode: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextBox';
 {Slider control}
 function GuiSlider(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value: PSingle; minValue, maxValue: Single): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSlider';
+{Slider control with extended parameters}
+function GuiSliderPro(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value: PSingle; minValue, maxValue: Single; sliderWidth: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSliderPro';
 {Slider Bar control}
 function GuiSliderBar(bounds: TRectangle; const textLeft: PChar; const textRight: PChar; value: PSingle; minValue, maxValue: Single): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiSliderBar';
 {Progress Bar control}

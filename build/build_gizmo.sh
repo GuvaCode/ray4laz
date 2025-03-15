@@ -29,7 +29,7 @@ cp libraygizmo.a ../../../libs/x86_64-linux/libraygizmo.a
 rm -rf *
 
 echo "Build x86_32_Linux statics" 
-cmake -DRGIZMO_BUILD_EXAMPLES=OFF -D CMAKE_CXX_FLAGS=-m32 .. 
+cmake -DRGIZMO_BUILD_EXAMPLES=OFF -DCMAKE_CXX_FLAGS=-m32 .. 
 cmake --build .
 cp libraygizmo.a ../../../libs/x86_32-linux/libraygizmo.a
 rm -rf *

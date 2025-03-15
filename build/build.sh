@@ -2,6 +2,7 @@
 rm -rvf raylib
 rm -rvf raylib-gizmo
 rm -rvf r3d
+rm -rvf raylib-media
 
 echo "raylib build scripts "
 read -p "Install dependencies (y/n)?" answer
@@ -97,9 +98,9 @@ cp raylib.dll ../../../libs/i386-win32/libraylib.dll
 
 cd ../../
 
-sh build_r3d.sh;  
-sh build_gizmo.sh; 
-
+sh build_r3d.sh  
+sh build_gizmo.sh 
+sh build_raylib_media.sh
 
 #rm -rvf raylib
 #rm -rvf raygui

@@ -78,27 +78,33 @@ uses raylib;
 
 
 const
-  (* Default internal render batch elements limits *)
-  {$ifndef RL_DEFAULT_BATCH_BUFFER_ELEMENTS}
-     {$if defined (GRAPHICS_API_OPENGL_ES2)}
-          // We reduce memory sizes for embedded systems (RPI and HTML5)
-          // NOTE: On HTML5 (emscripten) this is allocated on heap,
-          // by default it's only 16MB!...just take care...
-          RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 2048;
-      {$else}
-          // This is the maximum amount of elements (quads) per batch
-          // NOTE: Be careful with text, every letter maps to a quad
-          RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 8192;
-      {$endif}
-  {$endif}
-
+  RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 8192;   // Default internal render batch elements limits
   RL_DEFAULT_BATCH_BUFFERS = 1;              // Default number of batch buffers (multi-buffering)
   RL_DEFAULT_BATCH_DRAWCALLS = 256;          // Default number of batch draw calls (by state changes: mode, texture)
   RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS = 4;    // Maximum number of textures units that can be activated on batch drawing (SetShaderValueTexture())
   RL_MAX_MATRIX_STACK_SIZE = 32;             // Maximum size of Matrix stack
   RL_MAX_SHADER_LOCATIONS = 32;              // Maximum number of shader locations supported
-  RL_CULL_DISTANCE_NEAR = 0.01;              // Default near cull distance
-  RL_CULL_DISTANCE_FAR = 1000.0;             // Default far cull distance
+  RL_CULL_DISTANCE_NEAR = 0.001;              // Default near cull distance
+  RL_CULL_DISTANCE_FAR = 10000.0;             // Default far cull distance
+
+  RL_DEFAULT_SHADER_ATTRIB_NAME_POSITION     = 'vertexPosition';    // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_POSITION
+  RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD     = 'vertexTexCoord';    // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD
+  RL_DEFAULT_SHADER_ATTRIB_NAME_NORMAL       = 'vertexNormal';      // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_NORMAL
+  RL_DEFAULT_SHADER_ATTRIB_NAME_COLOR        = 'vertexColor';       // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR
+  RL_DEFAULT_SHADER_ATTRIB_NAME_TANGENT      = 'vertexTangent';     // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT
+  RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD2    = 'vertexTexCoord2';   // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2
+  RL_DEFAULT_SHADER_ATTRIB_NAME_BONEIDS      = 'vertexBoneIds';     // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS
+  RL_DEFAULT_SHADER_ATTRIB_NAME_BONEWEIGHTS  = 'vertexBoneWeights'; // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS
+  RL_DEFAULT_SHADER_UNIFORM_NAME_MVP         = 'mvp';               // model-view-projection matrix
+  RL_DEFAULT_SHADER_UNIFORM_NAME_VIEW        = 'matView';           // view matrix
+  RL_DEFAULT_SHADER_UNIFORM_NAME_PROJECTION  = 'matProjection';     // projection matrix
+  RL_DEFAULT_SHADER_UNIFORM_NAME_MODEL       = 'matModel';          // model matrix
+  RL_DEFAULT_SHADER_UNIFORM_NAME_NORMAL      = 'matNormal';         // normal matrix (transpose(inverse(matModelView)))
+  RL_DEFAULT_SHADER_UNIFORM_NAME_COLOR       = 'colDiffuse';        // color diffuse (base tint color, multiplied by texture color)
+  RL_DEFAULT_SHADER_UNIFORM_NAME_BONE_MATRICES  = 'boneMatrices';   // bone matrices
+  RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE0  = 'texture0';          // texture0 (texture slot active 0)
+  RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE1  = 'texture1';          // texture1 (texture slot active 1)
+  RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE2  = 'texture2';          // texture2 (texture slot active 2)
 
 const
   (* Texture parameters (equivalent to OpenGL defines) *)
