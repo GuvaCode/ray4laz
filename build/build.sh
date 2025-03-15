@@ -1,6 +1,7 @@
 #!/bin/bash
-#rm -rvf raylib
-#rm -rvf raygui
+rm -rvf raylib
+rm -rvf raylib-gizmo
+rm -rvf r3d
 
 echo "raylib build scripts "
 read -p "Install dependencies (y/n)?" answer
@@ -26,23 +27,31 @@ esac
 
 clear
 
-mkdir libs
-mkdir libs/x86_64-linux
-mkdir libs/x86_32-linux
-mkdir libs/x86_64-win64
-mkdir libs/i386-win32
+mkdir ../libs
+mkdir ../libs/x86_64-linux
+mkdir ../libs/x86_32-linux
+mkdir ../libs/x86_64-win64
+mkdir ../libs/i386-win32
 
 echo "Download raylib master branch"
 
 git clone https://github.com/raysan5/raylib.git
-git clone https://github.com/raysan5/raygui.git
+#git clone https://github.com/raysan5/raygui.git
+echo "Download raygui"
+wget https://raw.githubusercontent.com/raysan5/raygui/master/src/raygui.h -q --show-progress
+
+mkdir raylib/src/extras
+mv raygui.h raylib/src/extras/raygui.h
+
+#cp raygui/src/raygui.h raygui/src/raygui.c 
+
 
 cd raylib/src
 
-rm -f ../../libs/x86_64-linux/libraylib*
-rm -f ../../libs/x86_32-linux/libraylib*
-rm -f ../../libs/x86_64-win64/libraylib*
-rm -f ../../libs/i386-win32/libraylib*
+rm -f ../../../libs/x86_64-linux/libraylib*
+rm -f ../../../libs/x86_32-linux/libraylib*
+rm -f ../../../libs/x86_64-win64/libraylib*
+rm -f ../../../libs/i386-win32/libraylib*
 
 #echo "Build x86_64_LINUX dynamic" 
 #make clean  
@@ -51,8 +60,9 @@ rm -f ../../libs/i386-win32/libraylib*
 
 echo "Build x86_64_LINUX statics" 
 make clean
+echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE 
-cp libraylib.a ../../libs/x86_64-linux/libraylib.a
+cp libraylib.a ../../../libs/x86_64-linux/libraylib.a
 
 #echo "Build x86_32_Linux dynamic"
 #make clean
@@ -61,54 +71,35 @@ cp libraylib.a ../../libs/x86_64-linux/libraylib.a
 
 echo "Build x86_32_Linux statics"
 make clean
+echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE LDFLAG=-m32
-cp libraylib.a ../../libs/x86_32-linux/libraylib.a
+cp libraylib.a ../../../libs/x86_32-linux/libraylib.a
 
-echo " build x64 windows"
+echo "Build x64 windows"
 x86_64-w64-mingw32-windres raylib.rc -o raylib.rc.data
 x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
-make clean
-cp ../../raygui/src/raygui.h raygui.c 
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
-cp raylib.dll ../../libs/x86_64-win64/libraylib.dll
-cp libraylibdll.a ../../libs/x86_64-win64/libraylibdll.a 
 
-echo " build x32 windows"
+make clean
+echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
+cp raylib.dll ../../../libs/x86_64-win64/libraylib.dll
+#cp libraylibdll.a ../../../libs/x86_64-win64/libraylibdll.a 
+
+echo "Build x32 windows"
 i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
 i686-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 make clean 
-cp ../../raygui/src/raygui.h raygui.c 
+echo "#define RAYGUI_IMPLEMENTATION" > raygui.c && echo "#include <extras/raygui.h>" >> raygui.c
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar
-cp raylib.dll ../../libs/i386-win32/libraylib.dll
-cp libraylibdll.a ../../libs/i386-win32/libraylibdll.a
+cp raylib.dll ../../../libs/i386-win32/libraylib.dll
+#cp libraylibdll.a ../../../libs/i386-win32/libraylibdll.a
+
+
 cd ../../
 
-echo "Build plugin libs ?"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) 
-             sh build_gizmo.sh; 
-             sh build_r3d.sh;  
-             exit;;
-        No ) exit;;
-    esac
-done
+sh build_r3d.sh;  
+sh build_gizmo.sh; 
 
-
-
-
-
-
-echo "remove submodule ?"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) rm -rvf raylib 
-              rm -rvf raylib-gizmo
-              rm -rvf r3d
-              rm -rvf raygui; exit;;
-        No ) exit;;
-    esac
-done
 
 #rm -rvf raylib
 #rm -rvf raygui

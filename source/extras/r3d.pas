@@ -34,7 +34,7 @@ uses
 
 {$IFNDEF RAY_STATIC}
 const
-  cR3dName =
+  r3dName =
     {$IFDEF WINDOWS} 'libr3d.dll'; {$IFEND}
     {$IFDEF LINUX} 'libr3d.so'; {$IFEND}
 {$ENDIF}
