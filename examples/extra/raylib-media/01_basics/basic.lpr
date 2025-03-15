@@ -5,12 +5,12 @@ program basic;
 
 
 uses
-  raylib, raymedia, r3d, raygizmo;
+  raylib, raymedia;
 
 const
   screenWidth = 800;
   screenHeight = 450;
-  MovieFile = 'resources/clips/010.mp4';
+  MovieFile = 'resources/clips/001.mp4';
 var
   videoMedia: TMediaStream;
   videoPosX, videoPosY: integer;
@@ -22,7 +22,7 @@ begin
 
   InitAudioDevice();
   // Load the media stream with default settings
-  videoMedia := LoadMedia('resources/clips/010.mp4');
+  videoMedia := LoadMedia(MovieFile);
 
   // Verify if the media has loaded correctly
   if not IsMediaValid(videoMedia) then
