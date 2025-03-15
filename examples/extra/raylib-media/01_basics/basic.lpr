@@ -5,7 +5,7 @@ program basic;
 
 
 uses
-  raylib, raymedia;
+  raylib, raymedia, r3d, raygizmo;
 
 const
   screenWidth = 800;

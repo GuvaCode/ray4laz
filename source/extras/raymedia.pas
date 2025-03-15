@@ -6,16 +6,19 @@ unit raymedia;
 *)
 
 {$mode objfpc}{$H+}
-{$packrecords c}
-{$ALIGN 8}
-{$MINENUMSIZE 4}
-// Include configuration file
-//{$I raylib.inc}
+{$I raylib.inc}
 
 interface
 
 uses
   raylib;
+
+{$IFNDEF RAY_STATIC}
+const
+  rMediaName =
+    {$IFDEF WINDOWS} 'libraymedia.dll'; {$IFEND}
+    {$IFDEF LINUX} 'libraymedia.so'; {$IFEND}
+{$ENDIF}
 
 type
   PMediaContext = ^TMediaContext;
@@ -91,25 +94,115 @@ type
 
   type
     TMediaStreamIOResult = (
-      MEDIA_IO_EOF     = -541478725, // Конец потока достигнут (соответствует AVERROR_EOF)
-      MEDIA_IO_INVALID = -22         // Некорректный вызов или операция (соответствует AVERROR(EINVAL))
+      MEDIA_IO_EOF     = -541478725, // End of the stream reached (matches AVERROR_EOF)
+      MEDIA_IO_INVALID = -22         // Invalid call or operation (matches AVERROR(EINVAL))
     );
-{
-function LoadMedia(const fileName: PChar): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMedia';
-function LoadMediaEx(const fileName: PChar; flags: Integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaEx';
-function LoadMediaFromStream(streamReader: TMediaStreamReader; flags: integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMediaFromStream';
-function IsMediaValid(media: TMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMediaValid';
-function GetMediaProperties(media: TMediaStream): TMediaProperties; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaProperties';
-function UpdateMedia(media: PMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateMedia';
-function UpdateMediaEx(media: PMediaStream; deltaTime: Double): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateMediaEx';
-function GetMediaState(media: TMediaStream): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaState';
-function GetMediaPosition(media: TMediaStream): Double; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaPosition';
-function SetMediaPosition(media: TMediaStream; timeSec: Double): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMediaPosition';
-function SetMediaLooping(media: TMediaStream; loopPlay: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMediaLooping';
-function SetMediaFlag(flag: Integer; value: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMediaFlag';
-function GetMediaFlag(flag: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMediaFlag';
-procedure UnloadMedia(media: PMediaStream); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadMedia';
-  }
+
+
+(*
+ * Load a MediaStream from a file.
+ * @param fileName Path to the movie file
+ * @return MediaStream on success; empty structure on failure
+ *)
+function LoadMedia(const fileName: PChar): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'LoadMedia';
+
+(*
+ * Load a MediaStream from a file with flags.
+ * @param fileName Path to the movie file
+ * @param flags Combination of MediaLoadFlag values
+ * @return MediaStream on success; empty structure on failure
+ *)
+function LoadMediaEx(const fileName: PChar; flags: Integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'LoadMediaEx';
+
+(*
+ * Load a MediaStream from a custom stream with flags.
+ * @param streamReader A valid MediaStreamReader with callback functions and context
+ * @param flags Combination of MediaLoadFlag values
+ * @return MediaStream on success; empty structure on failure
+ *)
+function LoadMediaFromStream(streamReader: TMediaStreamReader; flags: integer): TMediaStream; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'LoadMediaFromStream';
+
+(*
+ * Check if a MediaStream is valid (loaded and initialized).
+ * @param media MediaStream structure
+ * @return true if media is valid; false otherwise
+ *)
+function IsMediaValid(media: TMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'IsMediaValid';
+
+(*
+ * Retrieve properties of the loaded media.
+ * @param media A valid MediaStream
+ * @return Filled MediaProperties structure on success; empty structure on failure
+ *)
+function GetMediaProperties(media: TMediaStream): TMediaProperties; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'GetMediaProperties';
+
+(*
+ * Update a MediaStream.
+ * @param media Pointer to a valid MediaStream
+ * @return true on success; false otherwise
+ *)
+function UpdateMedia(media: PMediaStream): Boolean; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'UpdateMedia';
+
+(*
+  * Update a MediaStream with a specified deltaTime.
+  * @param media Pointer to a valid MediaStream
+  * @param deltaTime Time in seconds since the last update
+  * @return true on success; false otherwise
+  *)
+function UpdateMediaEx(media: PMediaStream; deltaTime: Double): Boolean; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'UpdateMediaEx';
+
+(*
+ * Set the state of a MediaStream (play, pause, or stop).
+ * @param media A valid MediaStream
+ * @param newState Desired state
+ * @return The new state on success; MEDIA_STATE_INVALID on failure
+ *)
+function GetMediaState(media: TMediaStream): Integer; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'GetMediaState';
+
+(*
+  * Get the playback position of a MediaStream in seconds.
+  * @param media A valid MediaStream
+  * @return Playback position in seconds; negative on failure
+  *)
+function GetMediaPosition(media: TMediaStream): Double; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'GetMediaPosition';
+
+(*
+ * Set the playback position of a MediaStream.
+ * @param media A valid MediaStream
+ * @param timeSec Desired position in seconds
+ * @return true on success; false otherwise
+ *)
+function SetMediaPosition(media: TMediaStream; timeSec: Double): Boolean; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'SetMediaPosition';
+
+(*
+ * Enable or disable loop playback for a MediaStream.
+ * @param media A valid MediaStream
+ * @param loopPlay true to enable looping; false to disable
+ * @return true on success; false otherwise
+ *)
+function SetMediaLooping(media: TMediaStream; loopPlay: Boolean): Boolean; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'SetMediaLooping';
+
+(*
+ * Set a global configuration property.
+ * @param flag One of MediaConfigFlag values
+ * @param value New property value
+ * @return 0 on success; -1 on failure
+ *)
+function SetMediaFlag(flag: Integer; value: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'SetMediaFlag';
+
+(*
+ * Get a global configuration property.
+ * @param flag One of MediaConfigFlag values
+ * @return Property value; negative on failure
+ *)
+function GetMediaFlag(flag: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'GetMediaFlag';
+
+(*
+ * Unload a MediaStream and free its associated memory.
+ * @param media Pointer to a valid MediaStream
+ *)
+procedure UnloadMedia(media: PMediaStream); cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'UnloadMedia';
+
 implementation
 
 {$IFDEF linux}
@@ -118,6 +211,7 @@ implementation
  {$linklib m}
  {$linklib dl}
  {$linklib pthread}
+ {$linklib libraymedia.a}
  {$linklib libavcodec}
  {$linklib libavformat}
  {$linklib libavutil}
