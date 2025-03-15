@@ -22,6 +22,7 @@ procedure Register;
 
  var EventCode : TEventClass;
      SectionRay: TIDEMenuSection;
+     SectionTool: TIDEMenuSection;
      SectionToolMenu: TIDEMenuSection;
      SectionRayMenu: TIDEMenuSection;
 
@@ -32,8 +33,11 @@ procedure Register;
    rsRayWiki        = 'raylib Wiki';
    rsRlTools        = 'ray4laz tools ..';
    rsCompilePkg     = 'Compilation package ray4laz';
-   rsCopyDll1       = 'Copy libraylib.dll to the executable file folder';
-   rsCopyDll2       = 'Copy libraylibmedia.dll to the executable file folder';
+   rsCopyLibs       = 'Copy libraries to the executable folder';
+   rsCopyDll1       = 'Copy raylib.dll';
+   rsCopyDll2       = 'Copy br3d.dll';
+   rsCopyDll3       = 'Copy raygizmo.dll';
+   rsCopyDll4       = 'Copy raymedia.dll';
    rsOnlyWin        = 'Only for windows.';
    rsOpenConfig     = 'Open configuration file';
    rsCopyTrue       = 'Copy successful';
@@ -142,36 +146,42 @@ begin
   if Pkg <> nil then result := ExtractFilePath(ExcludeTrailingPathDelimiter(Pkg.DirectoryExpanded));
 end;
 
-procedure CopyRayDllToProject(Sender: Tobject);
+procedure CopyByName(dllFile: String);
 var Src, Dst: string;
+begin
+ Src := GetRay4lazDir  + 'libs' + PathDelim + GetOslibFolder + PathDelim + dllFile;
+ Dst := ExtractFilePath(MyGetProjectTargetFile)+ dllFile;
+ if CopyFile(Src, Dst) then
+ IDEMessagesWindow.AddCustomMessage(mluHint, rsCopyTrue, dllFile, 0,0) else
+ IDEMessagesWindow.AddCustomMessage(mluError, rsCopyFalse);
+end;
+
+procedure CopyRaylibToProject(Sender: Tobject);
 const
   dllFile = 'libraylib.dll';
 begin
-  if (GetTargetOS = 'win64') or (GetTargetOS = 'win32') then
-  begin
-    Src := GetRay4lazDir  + 'libs' + PathDelim + GetOslibFolder + PathDelim + dllFile;
-    Dst := ExtractFilePath(MyGetProjectTargetFile)+ dllFile;
-    if CopyFile(Src, Dst) then
-    IDEMessagesWindow.AddCustomMessage(mluHint, rsCopyTrue, dllFile, 0,0) else
-    IDEMessagesWindow.AddCustomMessage(mluError, rsCopyFalse);
-  end else
-  IDEMessagesWindow.AddCustomMessage(mluWarning, rsOnlyWin);
+ CopyByName(dllFile);
 end;
 
-procedure CopyMediaDllToProject(Sender: Tobject);
-var Src, Dst: string;
+procedure CopyR3DToProject(Sender: Tobject);
 const
-  dllFile = 'libraylibmedia.dll';
+  dllFile = 'libr3d.dll';
 begin
-  if (GetTargetOS = 'win64') or (GetTargetOS = 'win32') then
-  begin
-    Src := GetRay4lazDir  + 'libs' + PathDelim + GetOslibFolder + PathDelim + dllFile;
-    Dst := ExtractFilePath(MyGetProjectTargetFile)+ dllFile;
-    if CopyFile(Src, Dst) then
-    IDEMessagesWindow.AddCustomMessage(mluHint, rsCopyTrue, dllFile, 0,0) else
-    IDEMessagesWindow.AddCustomMessage(mluError, rsCopyFalse);
-  end else
-  IDEMessagesWindow.AddCustomMessage(mluWarning, rsOnlyWin);
+ CopyByName(dllFile);
+end;
+
+procedure CopyGizmoToProject(Sender: Tobject);
+const
+  dllFile = 'libraygizmo.dll';
+begin
+ CopyByName(dllFile);
+end;
+
+procedure CopyMediaToProject(Sender: Tobject);
+const
+  dllFile = 'libraymedia.dll';
+begin
+ CopyByName(dllFile);
 end;
 
 procedure CompileRay4laz(Sender: TObject);
@@ -265,13 +275,14 @@ begin
  RegisterIDEMenuCommand(SectionToolMenu, 'Sep0','-',nil,nil);
  RegisterIDEMenuCommand(SectionToolMenu, 'OpenSetting', rsOpenConfig, nil, @ShowSettingFile,nil, 'menu_build_file');
 
-
- RegisterIDEMenuCommand(SectionToolMenu, 'Sep1','-',nil,nil);
- RegisterIDEMenuCommand(SectionToolMenu, 'CopyDll1', rsCopyDll1, nil, @CopyRayDllToProject,nil, 'pkg_lrs');
- RegisterIDEMenuCommand(SectionToolMenu, 'CopyDll2', rsCopyDll2, nil, @CopyMediaDllToProject,nil, 'pkg_lrs');
-
- RegisterIDEMenuCommand(SectionToolMenu, 'Sep2','-',nil,nil);
- RegisterIDEMenuCommand(SectionToolMenu, 'DownloadLibs', rsDownloadFFmpeg , nil, @DownloadFFmpeg,nil, 'menu_exporthtml');
+ SectionTool:= RegisterIDESubMenu(SectionToolMenu,'rltoolSub',rsCopyLibs,nil ,nil,'pkg_lrs');
+ RegisterIDEMenuCommand(SectionTool, 'Sep1','-',nil,nil);
+ RegisterIDEMenuCommand(SectionTool, 'CopyDll1', rsCopyDll1, nil, @CopyRaylibToProject,nil, 'pkg_lrs');
+ RegisterIDEMenuCommand(SectionTool, 'CopyDll2', rsCopyDll2, nil, @CopyR3DToProject,nil, 'pkg_lrs');
+ RegisterIDEMenuCommand(SectionTool, 'CopyDll3', rsCopyDll3, nil, @CopyGizmoToProject,nil, 'pkg_lrs');
+ RegisterIDEMenuCommand(SectionTool, 'Sep2','-',nil,nil);
+ RegisterIDEMenuCommand(SectionTool, 'CopyDll4', rsCopyDll4, nil, @CopyMediaToProject,nil, 'pkg_lrs');
+ RegisterIDEMenuCommand(SectionTool, 'DownloadLibs', rsDownloadFFmpeg , nil, @DownloadFFmpeg,nil, 'menu_exporthtml');
 
  RegisterIDEMenuCommand(SectionToolMenu, 'Sep3','-',nil,nil);
  RegisterIDEMenuCommand(SectionToolMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
@@ -304,6 +315,10 @@ end;
 procedure TEventClass.DoSomething(Sender: TObject);
 begin
  SectionRayMenu.Visible:=RayUsed;
+  if (GetTargetOS = 'win64') or (GetTargetOS = 'win32') then
+  begin
+    SectionTool.Visible := true;
+  end else SectionTool.Visible := false;
 end;
 
 

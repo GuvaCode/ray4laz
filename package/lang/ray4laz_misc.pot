@@ -6,15 +6,27 @@ msgid "Compilation package ray4laz"
 msgstr ""
 
 #: ray4laz_misc.rscopydll1
-msgid "Copy libraylib.dll to the executable file folder"
+msgid "Copy raylib.dll"
 msgstr ""
 
 #: ray4laz_misc.rscopydll2
-msgid "Copy libraylibmedia.dll to the executable file folder"
+msgid "Copy br3d.dll"
+msgstr ""
+
+#: ray4laz_misc.rscopydll3
+msgid "Copy raygizmo.dll"
+msgstr ""
+
+#: ray4laz_misc.rscopydll4
+msgid "Copy raymedia.dll"
 msgstr ""
 
 #: ray4laz_misc.rscopyfalse
 msgid "Copy error"
+msgstr ""
+
+#: ray4laz_misc.rscopylibs
+msgid "Copy libraries to the executable folder"
 msgstr ""
 
 #: ray4laz_misc.rscopytrue
