@@ -9,20 +9,16 @@ unit raylib;
 {$I raylib.inc}
 
 interface
-{
+
 {$IFNDEF RAY_STATIC}
 const
-  cDllName = {$IFNDEF RAY_MEDIA}
+  cDllName =
              {$IFDEF WINDOWS} 'libraylib.dll'; {$IFEND}
-             {$IFDEF LINUX} 'libraylib.so.550'; {$IFEND}
-             {$ELSE}
-             {$IFDEF WINDOWS} 'libraylibmedia.dll'; {$IFEND}
-             {$IFDEF LINUX} 'libraylibmedia.so.550'; {$IFEND}
-             {$ENDIF}
+             {$IFDEF LINUX} 'libraylib.so'; {$IFEND}
              {$IFDEF DARWIN} 'libraylib.dylib'; {$IFEND}
              {$IFDEF HAIKU} 'libraylib.so'; {$IFEND}
 {$ENDIF}
- }
+
 
 const
   DEG2RAD = (PI / 180.0);
@@ -2337,10 +2333,6 @@ uses
   {$linklib dl}
   {$linklib pthread}
   {$linklib libraylib.a}
-{$endif}
-
-{$IFDEF Windows}
-  {$linklib libraylibdll.a}
 {$endif}
 
 function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay;

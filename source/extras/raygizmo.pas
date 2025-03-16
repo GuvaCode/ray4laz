@@ -6,15 +6,20 @@ unit raygizmo;
 *)
 
 {$mode objfpc}{$H+}
-{$packrecords c}
-{$ALIGN 8}
-{$MINENUMSIZE 4}
-// Include configuration file
-{$I ../raylib.inc}
+{$I raylib.inc}
+
 interface
 
 uses
   raylib;
+
+{$IFNDEF RAY_STATIC}
+const
+  rGizmoName =
+    {$IFDEF WINDOWS} 'libraygizmo.dll'; {$IFEND}
+    {$IFDEF LINUX} 'libraygizmo.so'; {$IFEND}
+{$ENDIF}
+
 
 type
   PGizmoFlags = ^TGizmoFlags;
@@ -31,30 +36,30 @@ type
 
 (* Initialize a gizmo Transform with default values.
    @return A Transform initialized to default values. *)
-function GizmoIdentity(): TTransform; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GizmoIdentity';
+function GizmoIdentity(): TTransform; cdecl; external {$IFNDEF RAY_STATIC}rGizmoName{$ENDIF} name 'GizmoIdentity';
 
 (* Convert a gizmo Transform to the corresponding Matrix.
    @param transform The gizmo Transform to convert.
    @return A Matrix built from the Transform values. *)
-function GizmoToMatrix(transform: TTransform): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GizmoToMatrix';
+function GizmoToMatrix(transform: TTransform): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}rGizmoName{$ENDIF} name 'GizmoToMatrix';
 
 (* Draw the gizmo on the screen in an immediate-mode style.
    @param flags A combination of GizmoFlags to configure gizmo behavior.
    @param transform A pointer to the Transform affected by the gizmo.
    @return true if the gizmo is active and affecting the transform; false otherwise. *)
-function DrawGizmo3D(flags: integer; transform: PTransform): boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawGizmo3D';
+function DrawGizmo3D(flags: integer; transform: PTransform): boolean; cdecl; external {$IFNDEF RAY_STATIC}rGizmoName{$ENDIF} name 'DrawGizmo3D';
 
 (* Set the size of the gizmo.
    @param size The new size of the gizmo.
    @note All internal gizmo metrics are expressed as a fraction of this measure.
    @default 1.5f *)
-procedure SetGizmoSize(size: single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGizmoSize';
+procedure SetGizmoSize(size: single); cdecl; external {$IFNDEF RAY_STATIC}rGizmoName{$ENDIF} name 'SetGizmoSize';
 
 
 (* Set the line width of the gizmo geometry.
    @param width The new line width.
    @default 2.5f *)
-procedure SetGizmoLineWidth(width: single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGizmoLineWidth';
+procedure SetGizmoLineWidth(width: single); cdecl; external {$IFNDEF RAY_STATIC}rGizmoName{$ENDIF} name 'SetGizmoLineWidth';
 
 (* Set the colors used by the gizmo.
    @param x Color of the X-axis.
@@ -62,7 +67,7 @@ procedure SetGizmoLineWidth(width: single); cdecl; external {$IFNDEF RAY_STATIC}
    @param z Color of the Z-axis.
    @param center Color of the central circle.
    @default {229, 72, 91, 255}, {131, 205, 56, 255}, {69, 138, 242, 255}, {255, 255, 255, 200} *)
-procedure SetGizmoColors(x, y, z, center: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGizmoColors';
+procedure SetGizmoColors(x, y, z, center: TColorB); cdecl; external {$IFNDEF RAY_STATIC}rGizmoName{$ENDIF} name 'SetGizmoColors';
 
 
 (* Change the global axis orientation.
@@ -71,7 +76,7 @@ procedure SetGizmoColors(x, y, z, center: TColorB); cdecl; external {$IFNDEF RAY
    @param forward Direction of the forward vector.
    @note The vectors should be orthogonal to each other for consistent behavior.
    @default (1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0) *)
-procedure SetGizmoGlobalAxis(right, up, forward: TVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGizmoGlobalAxis';
+procedure SetGizmoGlobalAxis(right, up, forward: TVector3); cdecl; external {$IFNDEF RAY_STATIC}rGizmoName{$ENDIF} name 'SetGizmoGlobalAxis';
 
 
 
@@ -82,15 +87,8 @@ implementation
   {$linklib m}
   {$linklib dl}
   {$linklib pthread}
-  {$linklib libraylib.a}
   {$linklib libraygizmo.a}
 {$endif}
-
-{$IFDEF Windows}
-  {$linklib libraylibdll.a}
-  {$linklib libraygizmo.dll.a}
-{$endif}
-
 
 end.
 

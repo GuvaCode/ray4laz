@@ -25,7 +25,7 @@ begin
   for  i:= 0 to CRATE_COUNT -1 do
   begin
     crateTransforms[i] := GizmoIdentity();
-    crateTransforms[i].translation.x := -15.0 + 6.0 * i;  // Offset crates along the X-axis
+    crateTransforms[i].translation.x := -12.0 + 6.0 * i;  // Offset crates along the X-axis
   end;
 
   // Assign each crate a different gizmo type
@@ -50,8 +50,8 @@ begin
 
   // Setup the 3D camera.
   cam.fovy := 45.0;
-  cam.position := Vector3Create( 7.5, 5.5, 5.0 );
-  cam.target := Vector3Create( 0, 1.5, 0 );
+  cam.position := Vector3Create( -5.5, 10.5, 14.0 );
+  cam.target := Vector3Create( -2.5, 0.0, 0 );
   cam.up := Vector3Create( 0, 1, 0 );
   cam.projection := CAMERA_PERSPECTIVE;
 

@@ -4,7 +4,7 @@ program r3d_sprite;
 
 uses
 {$IFDEF LINUX} cthreads,{$ENDIF}
- Classes, SysUtils, CustApp, raylib, r3d, math;
+ Classes, SysUtils, CustApp, raylib, math, r3d;
 
 type
   { TRayApplication }

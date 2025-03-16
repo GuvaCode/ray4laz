@@ -12,7 +12,7 @@
       </SearchPaths>
     </CompilerOptions>
     <Description Value="Desing time package for ray4laz "/>
-    <License Value="  Copyright (C) 2020-2024 Gunko Vadim
+    <License Value="  Copyright (C) 2020-2025 Gunko Vadim
 
   This software is provided &apos;as-is&apos;, without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -70,6 +70,7 @@
     </RequiredPkgs>
     <UsageOptions>
       <CustomOptions Value="-dUseCThreads"/>
+      <LibraryPath Value="openssl/$(TargetCPU)-$(TargetOS)"/>
       <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>
