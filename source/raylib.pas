@@ -2335,10 +2335,6 @@ uses
   {$linklib libraylib.a}
 {$endif}
 
-{$IFDEF Windows}
-  {$linklib libraylibdll.a}
-{$endif}
-
 function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay;
 begin
   Result := GetScreenToWorldRay(mousePosition,camera);

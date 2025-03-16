@@ -46,6 +46,11 @@ raylib.h   | :heavy_check_mark: |
 raymath.h  | :heavy_check_mark: |
 rlgl.h     | :heavy_check_mark: |
 raygui.h   | :heavy_check_mark: |
+r3d.h*     | :heavy_check_mark: |
+raygizmo.h*| :heavy_check_mark: |
+raymedia*  | :heavy_check_mark: |
+
+\* extension library for raylib from third-party developers.
 
 tested platforms
 --------
