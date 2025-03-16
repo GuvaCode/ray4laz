@@ -70,6 +70,7 @@
     </RequiredPkgs>
     <UsageOptions>
       <CustomOptions Value="-dUseCThreads"/>
+      <LibraryPath Value="openssl/$(TargetCPU)-$(TargetOS)"/>
       <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>
