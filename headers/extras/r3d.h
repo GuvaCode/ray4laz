@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2025 Le Juez Victor
  *
  * This software is provided "as-is", without any express or implied warranty. In no event
@@ -62,7 +62,8 @@ typedef enum {
     R3D_FLAG_FXAA = 1 << 0,             ///< Enables Fast Approximate Anti-Aliasing (FXAA).
     R3D_FLAG_BLIT_LINEAR = 1 << 1,      ///< Uses linear filtering when blitting the final image.
     R3D_FLAG_ASPECT_KEEP = 1 << 2,      ///< Maintains the aspect ratio when rendering.
-    R3D_FLAG_STENCIL_TEST = 1 << 3      ///< Performs a stencil test on each rendering pass affecting geometry, useful for outdoor scenes where the sky is dominant.
+    R3D_FLAG_STENCIL_TEST = 1 << 3,     ///< Performs a stencil test on each rendering pass affecting geometry, useful for outdoor scenes where the sky is dominant.
+    R3D_FLAG_DEPTH_PREPASS = 1 << 4,    ///< Performs a depth pre-pass before forward rendering, improving desktop GPU performance but unnecessary on mobile.
 } R3D_Flags;
 
 /**
@@ -474,6 +475,16 @@ R3DAPI void R3D_ApplyShadowCastMode(R3D_ShadowCastMode mode);
  */
 R3DAPI void R3D_ApplyBillboardMode(R3D_BillboardMode mode);
 
+/**
+ * @brief Sets an alpha threshold for forward rendering.
+ *
+ * This function defines an alpha scissor threshold, determining the minimum alpha
+ * value required for a fragment to be rendered. Fragments with an alpha value below
+ * the threshold will be discarded.
+ *
+ * @param threshold The alpha value threshold (usually from 0.0 to 1.0).
+ */
+R3DAPI void R3D_ApplyAlphaScissorThreshold(float threshold);
 
 
 // --------------------------------------------
@@ -1263,28 +1274,6 @@ R3DAPI void R3D_UpdateSprite(R3D_Sprite* sprite, float speed);
  * @param speed The speed at which the animation progresses, in frames per second.
  */
 R3DAPI void R3D_UpdateSpriteEx(R3D_Sprite* sprite, int firstFrame, int lastFrame, float speed);
-
-/**
- * @brief Retrieves the current frame's texture coordinates for a sprite.
- *
- * This function returns the `Vector2` representing the top-left corner of the current frame's texture coordinates.
- *
- * @param sprite A pointer to the `R3D_Sprite` to query.
- *
- * @return A `Vector2` containing the current frame's texture coordinates.
- */
-R3DAPI Vector2 R3D_GetCurrentSpriteFrameCoord(const R3D_Sprite* sprite);
-
-/**
- * @brief Retrieves the current frame's rectangle for a sprite.
- *
- * This function returns a `Rectangle` representing the dimensions and position of the current frame within the texture.
- *
- * @param sprite A pointer to the `R3D_Sprite` to query.
- *
- * @return A `Rectangle` representing the current frame's position and size.
- */
-R3DAPI Rectangle R3D_GetCurrentSpriteFrameRect(const R3D_Sprite* sprite);
 
 
 
