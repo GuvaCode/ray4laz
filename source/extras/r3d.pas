@@ -47,6 +47,7 @@ type
     R3D_FLAG_BLIT_LINEAR    = R3D_Flags(1 shl 1);  //< Uses linear filtering when blitting the final image.
     R3D_FLAG_ASPECT_KEEP    = R3D_Flags(1 shl 2);  //< Maintains the aspect ratio when rendering.
     R3D_FLAG_STENCIL_TEST   = R3D_Flags(1 shl 3);  //< Performs a stencil test on each rendering pass affecting geometry, useful for outdoor scenes where the sky is dominant.
+    R3D_FLAG_DEPTH_PREPASS  = R3D_Flags(1 shl 4);  //< Performs a depth pre-pass before forward rendering, improving desktop GPU performance but unnecessary on mobile.
 
 type
   R3D_RenderMode = Integer;
@@ -364,6 +365,17 @@ procedure R3D_ApplyShadowCastMode(mode: R3D_ShadowCastMode); cdecl; external {$I
  * @param mode The billboard mode to apply.
  *)
 procedure R3D_ApplyBillboardMode(mode: R3D_BillboardMode); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ApplyBillboardMode';
+
+(*
+ * @brief Sets an alpha threshold for forward rendering.
+ *
+ * This function defines an alpha scissor threshold, determining the minimum alpha
+ * value required for a fragment to be rendered. Fragments with an alpha value below
+ * the threshold will be discarded.
+ *
+ * @param threshold The alpha value threshold (usually from 0.0 to 1.0).
+ *)
+procedure R3D_ApplyAlphaScissorThreshold(threshold: float); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ApplyAlphaScissorThreshold';
 
 
 // --------------------------------------------
