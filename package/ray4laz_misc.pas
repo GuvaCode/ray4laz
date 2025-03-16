@@ -43,6 +43,7 @@ procedure Register;
    rsCopyTrue       = 'Copy successful';
    rsCopyFalse      = 'Copy error';
    rsDownloadFFmpeg = 'Download the necessary ffmpeg libraries';
+   rsSSL            = 'Copy OpenSSL to Lazarus directory';
 
 implementation
 uses HttpDownloader;
@@ -67,11 +68,14 @@ end;
 
 procedure RayFunction(Sender: TObject);
 var  Editor: TSourceEditorInterface;
-
+     Pos: TPoint;
   procedure insertXY(Text:String);
    begin
     Editor.CutToClipboard;
     Editor.ReplaceText(editor.CursorTextXY,editor.CursorTextXY,Text);
+    Pos := editor.CursorTextXY;
+    Pos.X := Pos.x-1;
+    Editor.CursorTextXY := Pos;
    end;
 
  begin
@@ -146,6 +150,14 @@ begin
   if Pkg <> nil then result := ExtractFilePath(ExcludeTrailingPathDelimiter(Pkg.DirectoryExpanded));
 end;
 
+
+function GetLazdir: string;
+begin
+Result:='$(LazarusDir)';
+if not IDEMacros.SubstituteMacros(Result) then
+  raise Exception.Create('unable to retrieve target file of project');
+end;
+
 procedure CopyByName(dllFile: String);
 var Src, Dst: string;
 begin
@@ -182,6 +194,24 @@ const
   dllFile = 'libraymedia.dll';
 begin
  CopyByName(dllFile);
+end;
+
+procedure CopySSl(dllFile: string);
+var Src, Dst : string;
+begin
+ Src := GetRay4lazDir  + 'package' + PathDelim + 'openssl' + PathDelim + GetOslibFolder + PathDelim + dllFile;
+ Dst := GetLazdir + dllFile;
+
+ if CopyFile(Src, Dst) then
+   IDEMessagesWindow.AddCustomMessage(mluHint, rsCopyTrue, dllFile, 0,0) else
+   IDEMessagesWindow.AddCustomMessage(mluError, rsCopyFalse);
+end;
+
+
+procedure CopySSlAll(Sender: TObject);
+begin
+  CopySSl('ssleay32.dll');
+  CopySSl('libeay32.dll');
 end;
 
 procedure CompileRay4laz(Sender: TObject);
@@ -283,6 +313,7 @@ begin
  RegisterIDEMenuCommand(SectionTool, 'Sep2','-',nil,nil);
  RegisterIDEMenuCommand(SectionTool, 'CopyDll4', rsCopyDll4, nil, @CopyMediaToProject,nil, 'pkg_lrs');
  RegisterIDEMenuCommand(SectionTool, 'DownloadLibs', rsDownloadFFmpeg , nil, @DownloadFFmpeg,nil, 'menu_exporthtml');
+ RegisterIDEMenuCommand(SectionTool, 'DownloadLibs1', rsSSL , nil, @CopySSlAll,nil, 'pkg_lrs');
 
  RegisterIDEMenuCommand(SectionToolMenu, 'Sep3','-',nil,nil);
  RegisterIDEMenuCommand(SectionToolMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
@@ -320,7 +351,6 @@ begin
     SectionTool.Visible := true;
   end else SectionTool.Visible := false;
 end;
-
 
 initialization
  EventCode := TEventClass.Create;

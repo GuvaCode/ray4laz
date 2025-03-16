@@ -65,3 +65,7 @@ msgstr ""
 msgid "ray4laz tools .."
 msgstr ""
 
+#: ray4laz_misc.rsssl
+msgid "Copy OpenSSL to Lazarus directory"
+msgstr ""
+
