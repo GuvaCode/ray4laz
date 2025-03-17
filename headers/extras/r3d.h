@@ -2056,6 +2056,52 @@ R3DAPI Texture2D R3D_GetBufferDepth(void);
 
 
 // --------------------------------------------
+// UTILS: Camera Matrices Retrieval Functions
+// --------------------------------------------
+
+/**
+ * @brief Retrieves the view matrix.
+ *
+ * This matrix represents the camera's transformation from world space to view space.
+ * It is updated at the last call to 'R3D_Begin'.
+ *
+ * @return The current view matrix.
+ */
+R3DAPI Matrix R3D_GetMatrixView(void);
+
+/**
+ * @brief Retrieves the inverse view matrix.
+ *
+ * This matrix transforms coordinates from view space back to world space.
+ * It is updated at the last call to 'R3D_Begin'.
+ *
+ * @return The current inverse view matrix.
+ */
+R3DAPI Matrix R3D_GetMatrixInvView(void);
+
+/**
+ * @brief Retrieves the projection matrix.
+ *
+ * This matrix defines the transformation from view space to clip space.
+ * It is updated at the last call to 'R3D_Begin'.
+ *
+ * @return The current projection matrix.
+ */
+R3DAPI Matrix R3D_GetMatrixProjection(void);
+
+/**
+ * @brief Retrieves the inverse projection matrix.
+ *
+ * This matrix transforms coordinates from clip space back to view space.
+ * It is updated at the last call to 'R3D_Begin'.
+ *
+ * @return The current inverse projection matrix.
+ */
+R3DAPI Matrix R3D_GetMatrixInvProjection(void);
+
+
+
+// --------------------------------------------
 // UTILS: Debug Buffer Rendering Functions
 // --------------------------------------------
 
