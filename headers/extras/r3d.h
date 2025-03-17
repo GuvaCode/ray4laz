@@ -2030,6 +2030,17 @@ R3DAPI Texture2D R3D_GetNormalTexture(void);
 R3DAPI Texture2D R3D_GetBufferColor(void);
 
 /**
+ * @brief Retrieves the buffer containing the scene's normal data.
+ *
+ * This texture stores octahedral-compressed normals using two 16-bit per-channel RG components.
+ *
+ * @note You can find the decoding functions in the embedded shaders, such as 'screen/lighting.fs.glsl'.
+ *
+ * @return The normal buffer texture.
+ */
+R3DAPI Texture2D R3D_GetBufferNormal(void);
+
+/**
  * @brief Retrieves the final depth buffer.
  *
  * This texture contains the depth stored in 24 bits and a stencil buffer where each value is 0 or 1, indicating the presence of geometry.
