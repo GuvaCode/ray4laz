@@ -1893,6 +1893,17 @@ function R3D_GetNormalTexture(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC
 function R3D_GetBufferColor(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBufferColor';
 
 (*
+ * @brief Retrieves the buffer containing the scene's normal data.
+ *
+ * This texture stores octahedral-compressed normals using two 16-bit per-channel RG components.
+ *
+ * @note You can find the decoding functions in the embedded shaders, such as 'screen/lighting.fs.glsl'.
+ *
+ * @return The normal buffer texture.
+ *)
+function R3D_GetBufferNormal(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBufferNormal';
+
+(*
  * @brief Retrieves the final depth buffer.
  *
  * This texture contains the depth stored in 24 bits and a stencil buffer where each value is 0 or 1, indicating the presence of geometry.
