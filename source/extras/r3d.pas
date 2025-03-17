@@ -1917,6 +1917,50 @@ function R3D_GetBufferNormal(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}
 function R3D_GetBufferDepth(): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBufferDepth';
 
 // --------------------------------------------
+// UTILS: Camera Matrices Retrieval Functions
+// --------------------------------------------
+
+(*
+ * @brief Retrieves the view matrix.
+ *
+ * This matrix represents the camera's transformation from world space to view space.
+ * It is updated at the last call to 'R3D_Begin'.
+ *
+ * @return The current view matrix.
+ *)
+function R3D_GetMatrixView(): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetMatrixView';
+
+(*
+ * @brief Retrieves the inverse view matrix.
+ *
+ * This matrix transforms coordinates from view space back to world space.
+ * It is updated at the last call to 'R3D_Begin'.
+ *
+ * @return The current inverse view matrix.
+ *)
+function R3D_GetMatrixInvView(): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetMatrixInvView';
+
+(*
+ * @brief Retrieves the projection matrix.
+ *
+ * This matrix defines the transformation from view space to clip space.
+ * It is updated at the last call to 'R3D_Begin'.
+ *
+ * @return The current projection matrix.
+ *)
+function R3D_GetMatrixProjection(): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetMatrixProjection';
+
+(*
+ * @brief Retrieves the inverse projection matrix.
+ *
+ * This matrix transforms coordinates from clip space back to view space.
+ * It is updated at the last call to 'R3D_Begin'.
+ *
+ * @return The current inverse projection matrix.
+ *)
+function R3D_GetMatrixInvProjection(): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetMatrixInvProjection';
+
+// --------------------------------------------
 // UTILS: Debug Buffer Rendering Functions
 // --------------------------------------------
 
