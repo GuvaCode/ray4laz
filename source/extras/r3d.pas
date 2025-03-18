@@ -375,7 +375,7 @@ procedure R3D_ApplyBillboardMode(mode: R3D_BillboardMode); cdecl; external {$IFN
  *
  * @param threshold The alpha value threshold (usually from 0.0 to 1.0).
  *)
-procedure R3D_ApplyAlphaScissorThreshold(threshold: float); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ApplyAlphaScissorThreshold';
+procedure R3D_ApplyAlphaScissorThreshold(threshold: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ApplyAlphaScissorThreshold';
 
 
 // --------------------------------------------

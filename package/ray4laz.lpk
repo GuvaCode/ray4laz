@@ -30,7 +30,7 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 "/>
-    <Version Major="5" Minor="6"/>
+    <Version Major="5" Minor="6" Release="2"/>
     <Files Count="9">
       <Item1>
         <Filename Value="../source/raylib.pas"/>

@@ -10,7 +10,7 @@ msgid "Copy raylib.dll"
 msgstr ""
 
 #: ray4laz_misc.rscopydll2
-msgid "Copy br3d.dll"
+msgid "Copy r3d.dll"
 msgstr ""
 
 #: ray4laz_misc.rscopydll3
