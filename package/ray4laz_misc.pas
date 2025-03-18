@@ -35,7 +35,7 @@ procedure Register;
    rsCompilePkg     = 'Compilation package ray4laz';
    rsCopyLibs       = 'Copy libraries to the executable folder';
    rsCopyDll1       = 'Copy raylib.dll';
-   rsCopyDll2       = 'Copy br3d.dll';
+   rsCopyDll2       = 'Copy r3d.dll';
    rsCopyDll3       = 'Copy raygizmo.dll';
    rsCopyDll4       = 'Copy raymedia.dll';
    rsOnlyWin        = 'Only for windows.';
