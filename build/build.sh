@@ -100,7 +100,7 @@ cd ../../
 
 sh build_r3d.sh  
 sh build_gizmo.sh 
-sh build_raylib_media.sh
+sh build_media.sh
 
 #rm -rvf raylib
 #rm -rvf raygui
