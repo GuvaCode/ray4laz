@@ -8,8 +8,6 @@ rm -f ../libs/i386-win32/librmedia*
 git clone https://github.com/GuvaCode/raylib-media
 #git clone https://github.com/cloudofoz/raylib-media
 
-
-
 cp mingw-w32-x86_64.cmake r3d/mingw-w32-x86_64.cmake
 cp mingw-w64-x86_64.cmake r3d/mingw-w64-x86_64.cmake
 
