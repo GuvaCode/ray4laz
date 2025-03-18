@@ -2,7 +2,7 @@
 
 ---
 
-<img align="left" src="https://github.com/GuvaCode/Ray4Laz-Example/tree/main/binary/resources/raylogo.png" width="256px">
+<img align="left" src="https://raw.githubusercontent.com/GuvaCode/Ray4Laz-Example/refs/heads/main/binary/resources/raylogo.png" width="256px">
 
 [raylib](https://github.com/raysan5/raylib) is a simple and easy-to-use library to enjoy videogames programming.
 
