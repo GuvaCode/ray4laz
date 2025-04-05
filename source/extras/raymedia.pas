@@ -152,6 +152,13 @@ function UpdateMedia(media: PMediaStream): Boolean; cdecl; external {$IFNDEF RAY
 function UpdateMediaEx(media: PMediaStream; deltaTime: Double): Boolean; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'UpdateMediaEx';
 
 (*
+ * Get the state of a MediaStream.
+ * @param media A valid MediaStream
+ * @return Current state; MEDIA_STATE_INVALID on failure
+ *)
+ function SetMediaState(media: TMediaStream; newState: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}rMediaName{$ENDIF} name 'SetMediaState';
+
+(*
  * Set the state of a MediaStream (play, pause, or stop).
  * @param media A valid MediaStream
  * @param newState Desired state

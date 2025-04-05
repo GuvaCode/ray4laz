@@ -15,7 +15,9 @@ cp -r raylib raylib-media/external
 
 cd raylib-media
 #rm -f CMakeLists.txt
-#cp ../Cmake_Media.txt CMakeLists.txt
+rm -f CMakeModules/FindRAYLIB.cmake
+
+cp ../Cmake_Media.txt CMakeLists.txt
 mkdir build
 cd build
 

@@ -114,6 +114,10 @@ manual installation and use without lazarus ide
 clone this repository, then use 'fpc-wrapper.sh' or 'fpc-wrapper.bat' as your compiler. this script automatically feeds fpc with the necessary arguments.
 
 
+tutorials using raylib in pascal.
+--------
+-[How to Use C Libraries in Free Pascal | Raylib + FPC Linux Example](https://www.youtube.com/watch?v=f29SMhakdtE)
+
 usage examples from other developers
 --------
 
