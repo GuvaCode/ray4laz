@@ -125,9 +125,9 @@ usage examples from other developers
 - [Sonic The Hedgehog physics in Object Pascal (Raylib, Ray4laz)](https://www.youtube.com/watch?v=3PAmUILrFGw&t=101s)
 
 
-other examples are rewritten from other programming languages
+huge collection with +180 code examples for ray4laz package.
 --------
-[Ray4LazExample](https://github.com/GuvaCode/Ray4LazExample)
+- [Ray4LazExample](https://github.com/GuvaCode/Ray4LazExample)
 
 
 contributors
