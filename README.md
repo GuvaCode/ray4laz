@@ -121,6 +121,8 @@ tutorials using raylib in pascal.
 - [How to Use C Libraries in Free Pascal | Raylib + FPC Linux Example](https://www.youtube.com/watch?v=f29SMhakdtE)
 
 **RetroNick's Programming Channel**
+- [raylib for lazarus install and demos - Day 16](https://www.youtube.com/watch?v=LWRgv_4E9lY)
+- [Breakout using raylib On Lazarus / Freepascal - Day 30](https://www.youtube.com/watch?v=UXVy8_6xThU)
 - [Raylib Path Finding with Lazarus Freepascal - Day 34](https://www.youtube.com/watch?v=9R9VpIEAtjk)
 - [Raylib Path Finding Final Video - Lazarus Freepascal - Day 35](https://www.youtube.com/watch?v=2MMaP3TsMsk)
 - [RayLib RGB and RGBA Image arrays with FreePascal and Lazarus - Day 133](https://www.youtube.com/watch?v=RX8K3Cgz64E) 
