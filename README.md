@@ -116,7 +116,15 @@ clone this repository, then use 'fpc-wrapper.sh' or 'fpc-wrapper.bat' as your co
 
 tutorials using raylib in pascal.
 --------
+
+**The Silver Pascal Coder**
 - [How to Use C Libraries in Free Pascal | Raylib + FPC Linux Example](https://www.youtube.com/watch?v=f29SMhakdtE)
+
+**RetroNick's Programming Channel**
+- [Raylib Path Finding with Lazarus Freepascal - Day 34](https://www.youtube.com/watch?v=9R9VpIEAtjk)
+- [Raylib Path Finding Final Video - Lazarus Freepascal - Day 35](https://www.youtube.com/watch?v=2MMaP3TsMsk)
+- [RayLib RGB and RGBA Image arrays with FreePascal and Lazarus - Day 133](https://www.youtube.com/watch?v=RX8K3Cgz64E) 
+
 
 usage examples from other developers
 --------
