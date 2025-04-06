@@ -120,6 +120,7 @@ begin
      Editor.CutToClipboard;
      Editor.ReplaceText(editor.CursorTextXY,editor.CursorTextXY,Txt);
   end;
+  if not Assigned(ColorDialog) then ColorDialog.Free;
 end;
 
 function MyGetProjectTargetFile: string;
