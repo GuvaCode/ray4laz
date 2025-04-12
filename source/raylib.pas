@@ -955,7 +955,7 @@ procedure ToggleBorderlessWindowed; cdecl; external {$IFNDEF RAY_STATIC}cDllName
 procedure MaximizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MaximizeWindow';
 {Set window state: minimized, if resizable}
 procedure MinimizeWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MinimizeWindow';
-{Set window state: not minimized/maximized}
+{Restore window from being minimized/maximized}
 procedure RestoreWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'RestoreWindow';
 {Set icon for window}
 procedure SetWindowIcon(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowIcon';

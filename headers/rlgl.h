@@ -1459,9 +1459,6 @@ void rlBegin(int mode)
     // NOTE: In all three cases, vertex are accumulated over default internal vertex buffer
     if (RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].mode != mode)
     {
-        // Get current binded texture to preserve it between draw modes change (QUADS <--> TRIANGLES)
-        int currentTexture = RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].textureId;
-
         if (RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].vertexCount > 0)
         {
             // Make sure current RLGL.currentBatch->draws[i].vertexCount is aligned a multiple of 4,
@@ -1484,16 +1481,13 @@ void rlBegin(int mode)
 
         RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].mode = mode;
         RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].vertexCount = 0;
-        RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].textureId = currentTexture; // Preserve active texture
+        RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].textureId = RLGL.State.defaultTextureId;
     }
 }
 
 // Finish vertex providing
 void rlEnd(void)
 {
-    // Reset texture to default
-    rlSetTexture(RLGL.State.defaultTextureId);
-
     // NOTE: Depth increment is dependant on rlOrtho(): z-near and z-far values,
     // as well as depth buffer bit-depth (16bit or 24bit or 32bit)
     // Correct increment formula would be: depthInc = (zfar - znear)/pow(2, bits)
@@ -3317,7 +3311,7 @@ unsigned int rlLoadTexture(const void *data, int width, int height, int format, 
         // Activate Trilinear filtering if mipmaps are available
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipmapCount);      //  user defined mip count would break without this.
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipmapCount); // Required for user-defined mip count
     }
 #endif
 
@@ -3690,7 +3684,7 @@ unsigned char *rlReadScreenPixels(int width, int height)
 
     // Flip image vertically!
     // NOTE: Alpha value has already been applied to RGB in framebuffer, we don't need it!
-    for (int y = height - 1; y >= height / 2; y--)
+    for (int y = height - 1; y >= height/2; y--)
     {
         for (int x = 0; x < (width*4); x += 4)
         {

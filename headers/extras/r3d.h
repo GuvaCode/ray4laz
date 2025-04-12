@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2025 Le Juez Victor
  *
  * This software is provided "as-is", without any express or implied warranty. In no event
@@ -57,14 +57,15 @@
  *
  * These flags control various aspects of the rendering pipeline.
  */
-typedef enum {
-    R3D_FLAG_NONE = 0,                  ///< No special rendering flags.
-    R3D_FLAG_FXAA = 1 << 0,             ///< Enables Fast Approximate Anti-Aliasing (FXAA).
-    R3D_FLAG_BLIT_LINEAR = 1 << 1,      ///< Uses linear filtering when blitting the final image.
-    R3D_FLAG_ASPECT_KEEP = 1 << 2,      ///< Maintains the aspect ratio when rendering.
-    R3D_FLAG_STENCIL_TEST = 1 << 3,     ///< Performs a stencil test on each rendering pass affecting geometry, useful for outdoor scenes where the sky is dominant.
-    R3D_FLAG_DEPTH_PREPASS = 1 << 4,    ///< Performs a depth pre-pass before forward rendering, improving desktop GPU performance but unnecessary on mobile.
-} R3D_Flags;
+typedef unsigned int R3D_Flags;
+
+#define R3D_FLAG_NONE           0           /*< No special rendering flags */
+#define R3D_FLAG_FXAA           (1 << 0)    /*< Enables Fast Approximate Anti-Aliasing (FXAA) */
+#define R3D_FLAG_BLIT_LINEAR    (1 << 1)    /*< Uses linear filtering when blitting the final image */
+#define R3D_FLAG_ASPECT_KEEP    (1 << 2)    /*< Maintains the aspect ratio of the internal resolution when blitting the final image */
+#define R3D_FLAG_STENCIL_TEST   (1 << 3)    /*< Performs a stencil test on each rendering pass affecting geometry */
+#define R3D_FLAG_DEPTH_PREPASS  (1 << 4)    /*< Performs a depth pre-pass before forward rendering, improving desktop GPU performance but unnecessary on mobile */
+#define R3D_FLAG_8_BIT_NORMALS  (1 << 5)    /*< Use 8-bit precision for the normals buffer (deferred); default is 16-bit float */
 
 /**
  * @brief Defines the rendering mode used in the pipeline.
