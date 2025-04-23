@@ -806,6 +806,10 @@ R3DAPI Vector3 R3D_GetLightPosition(R3D_Light id);
  * This function sets the position of the specified light.
  * Only applicable to spot lights or omni-lights.
  *
+ * @note Has no effect for directional lights.
+ *       If called on a directional light, 
+ *       a warning will be logged.
+ *
  * @param id The ID of the light.
  * @param position The new position to set for the light.
  */
@@ -828,21 +832,31 @@ R3DAPI Vector3 R3D_GetLightDirection(R3D_Light id);
  * This function sets the direction of the specified light.
  * Only applicable to directional lights or spot lights.
  *
+ * @note Has no effect for omni-directional lights.
+ *       If called on an omni-directional light,
+ *       a warning will be logged.
+ *
  * @param id The ID of the light.
  * @param direction The new direction to set for the light.
  */
 R3DAPI void R3D_SetLightDirection(R3D_Light id, Vector3 direction);
 
 /**
- * @brief Sets the target of a directional light.
+ * @brief Sets the position and direction of a light to look at a target point.
  *
- * This function sets the target that a directional light will point towards.
- * Only applicable to directional lights or spot lights.
+ * This function sets both the position and the direction of the specified light,
+ * causing it to "look at" a given target point.
+ *
+ * @note - For directional lights, only the direction is updated (position is ignored).
+ *       - For omni-directional lights, only the position is updated (direction is not calculated).
+ *       - For spot lights, both position and direction are set accordingly.
+ *       - This function does **not** emit any warning or log message.
  *
  * @param id The ID of the light.
- * @param target The target position the light should focus on.
+ * @param position The position to set for the light.
+ * @param target The point the light should look at.
  */
-R3DAPI void R3D_SetLightTarget(R3D_Light id, Vector3 target);
+R3DAPI void R3D_LightLookAt(R3D_Light id, Vector3 position, Vector3 target);
 
 /**
  * @brief Gets the energy level of a light.

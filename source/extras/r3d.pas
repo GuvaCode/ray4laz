@@ -721,15 +721,21 @@ function R3D_GetLightDirection(id: TR3D_Light): TVector3; cdecl; external {$IFND
 procedure R3D_SetLightDirection(id: TR3D_Light; direction: TVector3); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightDirection';
 
 (*
- * @brief Sets the target of a directional light.
+ * @brief Sets the position and direction of a light to look at a target point.
  *
- * This function sets the target that a directional light will point towards.
- * Only applicable to directional lights or spot lights.
+ * This function sets both the position and the direction of the specified light,
+ * causing it to "look at" a given target point.
+ *
+ * @note - For directional lights, only the direction is updated (position is ignored).
+ *       - For omni-directional lights, only the position is updated (direction is not calculated).
+ *       - For spot lights, both position and direction are set accordingly.
+ *       - This function does **not** emit any warning or log message.
  *
  * @param id The ID of the light.
- * @param target The target position the light should focus on.
+ * @param position The position to set for the light.
+ * @param target The point the light should look at.
  *)
-procedure R3D_SetLightTarget(id: TR3D_Light; target: TVector3); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightTarget';
+procedure R3D_LightLookAt(id: TR3D_Light; position, target: TVector3); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LightLookAt';
 
 (*
  * @brief Gets the energy level of a light.
