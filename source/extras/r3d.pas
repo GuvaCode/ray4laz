@@ -101,9 +101,11 @@ type
 type
   R3D_Bloom = Integer;
   const
-    R3D_BLOOM_DISABLED = R3D_Bloom(0);         //< Bloom effect is disabled.
-    R3D_BLOOM_ADDITIVE = R3D_Bloom(1);         //< Enhances bright areas by adding light to them (stronger glow effect).
-    R3D_BLOOM_SOFT_LIGHT = R3D_Bloom(2);       //< Creates a softer, more diffused glow around bright areas.
+    R3D_BLOOM_DISABLED = R3D_Bloom(0);  // Bloom effect is disabled. The scene is rendered without any glow enhancement.
+    R3D_BLOOM_MIX = R3D_Bloom(1);       // Blends the bloom effect with the original scene using linear interpolation (Lerp).
+    R3D_BLOOM_ADDITIVE = R3D_Bloom(2);  // Adds the bloom effect additively to the scene, intensifying bright regions.
+    R3D_BLOOM_SCREEN = R3D_Bloom(3);    // Combines the scene and bloom using screen blending, which brightens highlights
+
 
 type
   R3D_Fog = Integer;
@@ -121,7 +123,6 @@ type
     R3D_TONEMAP_FILMIC = R3D_Tonemap(2);         //< Filmic tone mapping, mimicking the response of photographic film.
     R3D_TONEMAP_ACES = R3D_Tonemap(3);           //< ACES tone mapping, a high-quality cinematic rendering technique.
     R3D_TONEMAP_AGX   = R3D_Tonemap(4);          //< AGX tone mapping, a modern technique designed to preserve both highlight and shadow details for HDR rendering.
-
 
 type
   PR3D_Light = ^TR3D_Light;
@@ -1407,63 +1408,26 @@ procedure R3D_SetBloomIntensity(value: Single); cdecl; external {$IFNDEF RAY_STA
 function R3D_GetBloomIntensity(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomIntensity';
 
 (*
- * @brief Sets the HDR threshold for bloom.
+ * @brief Sets the bloom filter radius.
  *
- * This function defines the brightness threshold above which pixels contribute
- * to the bloom effect. Lower values will make more areas of the image glow.
+ * Controls the radius of the blur filter applied during the upscaling stage
+ * of the bloom effect. A larger radius results in a wider glow around bright
+ * objects, creating a softer and more diffuse bloom. A value of 0 disables
+ * the filtering effect, preserving sharp bloom highlights.
  *
- * @param value The HDR threshold for bloom.
+ * @param value The radius of the bloom filter (in pixels or arbitrary units depending on implementation).
  *)
-procedure R3D_SetBloomHdrThreshold(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomHdrThreshold';
+ procedure R3D_SetBloomFilterRadius(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomFilterRadius';
 
-(*
- * @brief Gets the current HDR threshold for bloom.
- *
- * This function retrieves the brightness threshold above which pixels contribute
- * to the bloom effect.
- *
- * @return The current HDR threshold for bloom.
- *)
-function R3D_GetBloomHdrThreshold(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomHdrThreshold';
-
-(*
- * @brief Sets the HDR threshold for the sky in bloom.
- *
- * This function defines a separate HDR threshold for the sky when applying bloom.
- * This allows finer control over the intensity of the bloom effect on sky elements.
- *
- * @param value The HDR threshold for bloom on the sky.
- *)
-procedure R3D_SetBloomSkyHdrThreshold(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomSkyHdrThreshold';
-
-(*
- * @brief Gets the current HDR threshold for bloom on the sky.
- *
- * This function retrieves the HDR threshold specifically applied to the sky for bloom.
- *
- * @return The current HDR threshold for sky bloom.
- *)
-function R3D_GetBloomSkyHdrThreshold(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomSkyHdrThreshold';
-
-(*
- * @brief Sets the number of iterations for the bloom effect.
- *
- * This function defines how many iterations are performed to blur the bright areas.
- * Higher values result in a smoother and more pronounced bloom effect but may
- * impact performance.
- *
- * @param value The number of bloom iterations.
- *)
-procedure R3D_SetBloomIterations(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomIterations';
-
-(*
- * @brief Gets the current number of bloom iterations.
- *
- * This function retrieves the number of iterations used to process the bloom effect.
- *
- * @return The current number of bloom iterations.
- *)
-function R3D_GetBloomIterations(): Integer; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomIterations';
+ (*
+  * @brief Gets the current bloom filter radius.
+  *
+  * Retrieves the current radius used for the bloom filter. This value determines
+  * how far the glow effect extends around bright areas in the scene.
+  *
+  * @return The current bloom filter radius.
+  *)
+ function R3D_GetBloomFilterRadius(): Integer; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomFilterRadius';
 
 // --------------------------------------------
 // ENVIRONMENT: Fog Config Functions
@@ -2033,19 +1997,6 @@ procedure R3D_DrawBufferORM(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_ST
  * @param h Height of the drawn buffer.
  *)
 procedure R3D_DrawBufferSSAO(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawBufferSSAO';
-
-(*
- * @brief Renders the bright colors buffer to the screen.
- *
- * Displays the bright color buffer, which is used for bloom effects.
- * Must be called outside of `R3D_Begin` and `R3D_End`.
- *
- * @param x X position to draw the buffer.
- * @param y Y position to draw the buffer.
- * @param w Width of the drawn buffer.
- * @param h Height of the drawn buffer.
- *)
-procedure R3D_DrawBufferBrightColors(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawBufferBrightColors';
 
 (*
  * @brief Renders the bloom buffer to the screen.

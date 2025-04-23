@@ -144,12 +144,15 @@ typedef enum {
 /**
  * @brief Bloom effect modes.
  *
- * Defines different post-processing bloom effects applied to the rendered scene.
+ * Specifies different post-processing bloom techniques that can be applied
+ * to the rendered scene. Bloom effects enhance the appearance of bright areas
+ * by simulating light bleeding, contributing to a more cinematic and realistic look.
  */
-typedef enum {
-    R3D_BLOOM_DISABLED,  ///< Bloom effect is disabled.
-    R3D_BLOOM_ADDITIVE,  ///< Enhances bright areas by adding light to them (stronger glow effect).
-    R3D_BLOOM_SOFT_LIGHT ///< Creates a softer, more diffused glow around bright areas.
+ typedef enum {
+    R3D_BLOOM_DISABLED,     ///< Bloom effect is disabled. The scene is rendered without any glow enhancement.
+    R3D_BLOOM_MIX,          ///< Blends the bloom effect with the original scene using linear interpolation (Lerp).
+    R3D_BLOOM_ADDITIVE,     ///< Adds the bloom effect additively to the scene, intensifying bright regions.
+    R3D_BLOOM_SCREEN        ///< Combines the scene and bloom using screen blending, which brightens highlights
 } R3D_Bloom;
 
 /**
@@ -1530,64 +1533,26 @@ R3DAPI void R3D_SetBloomIntensity(float value);
 R3DAPI float R3D_GetBloomIntensity(void);
 
 /**
- * @brief Sets the HDR threshold for bloom.
+ * @brief Sets the bloom filter radius.
  *
- * This function defines the brightness threshold above which pixels contribute
- * to the bloom effect. Lower values will make more areas of the image glow.
+ * Controls the radius of the blur filter applied during the upscaling stage
+ * of the bloom effect. A larger radius results in a wider glow around bright
+ * objects, creating a softer and more diffuse bloom. A value of 0 disables 
+ * the filtering effect, preserving sharp bloom highlights.
  *
- * @param value The HDR threshold for bloom.
+ * @param value The radius of the bloom filter (in pixels or arbitrary units depending on implementation).
  */
-R3DAPI void R3D_SetBloomHdrThreshold(float value);
+ R3DAPI void R3D_SetBloomFilterRadius(int value);
 
-/**
- * @brief Gets the current HDR threshold for bloom.
- *
- * This function retrieves the brightness threshold above which pixels contribute
- * to the bloom effect.
- *
- * @return The current HDR threshold for bloom.
- */
-R3DAPI float R3D_GetBloomHdrThreshold(void);
-
-/**
- * @brief Sets the HDR threshold for the sky in bloom.
- *
- * This function defines a separate HDR threshold for the sky when applying bloom.
- * This allows finer control over the intensity of the bloom effect on sky elements.
- *
- * @param value The HDR threshold for bloom on the sky.
- */
-R3DAPI void R3D_SetBloomSkyHdrThreshold(float value);
-
-/**
- * @brief Gets the current HDR threshold for bloom on the sky.
- *
- * This function retrieves the HDR threshold specifically applied to the sky for bloom.
- *
- * @return The current HDR threshold for sky bloom.
- */
-R3DAPI float R3D_GetBloomSkyHdrThreshold(void);
-
-/**
- * @brief Sets the number of iterations for the bloom effect.
- *
- * This function defines how many iterations are performed to blur the bright areas.
- * Higher values result in a smoother and more pronounced bloom effect but may
- * impact performance.
- *
- * @param value The number of bloom iterations.
- */
-R3DAPI void R3D_SetBloomIterations(int value);
-
-/**
- * @brief Gets the current number of bloom iterations.
- *
- * This function retrieves the number of iterations used to process the bloom effect.
- *
- * @return The current number of bloom iterations.
- */
-R3DAPI int R3D_GetBloomIterations(void);
-
+ /**
+  * @brief Gets the current bloom filter radius.
+  *
+  * Retrieves the current radius used for the bloom filter. This value determines
+  * how far the glow effect extends around bright areas in the scene.
+  *
+  * @return The current bloom filter radius.
+  */
+ R3DAPI int R3D_GetBloomFilterRadius(void);
 
 
 // --------------------------------------------
@@ -2174,19 +2139,6 @@ R3DAPI void R3D_DrawBufferORM(float x, float y, float w, float h);
  * @param h Height of the drawn buffer.
  */
 R3DAPI void R3D_DrawBufferSSAO(float x, float y, float w, float h);
-
-/**
- * @brief Renders the bright colors buffer to the screen.
- *
- * Displays the bright color buffer, which is used for bloom effects.
- * Must be called outside of `R3D_Begin` and `R3D_End`.
- *
- * @param x X position to draw the buffer.
- * @param y Y position to draw the buffer.
- * @param w Width of the drawn buffer.
- * @param h Height of the drawn buffer.
- */
-R3DAPI void R3D_DrawBufferBrightColors(float x, float y, float w, float h);
 
 /**
  * @brief Renders the bloom buffer to the screen.
