@@ -133,7 +133,7 @@ usage examples from other developers
 
 - [Raylib Platformer Game Created with Lazarus and Raster Master](https://www.youtube.com/watch?v=DhdHi7fPkhk)
 - [Sonic The Hedgehog physics in Object Pascal (Raylib, Ray4laz)](https://www.youtube.com/watch?v=3PAmUILrFGw&t=101s)
-
+- [Breakout clone with raylib (ray4laz)](https://forum.lazarus.freepascal.org/index.php/topic,70942.0.html)
 
 huge collection with +180 code examples for ray4laz package.
 --------
