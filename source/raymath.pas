@@ -133,7 +133,7 @@ function Vector2Invert(v: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STAT
 { Clamp the components of the vector between min and max values specified by the given vectors }
 function Vector2Clamp(v, min, max: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Clamp';
 { Clamp the magnitude of the vector between two min and max values }
-function Vector2ClampValue(v, min, max: TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2ClampValue';
+function Vector2ClampValue(v: TVector2; min, max: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2ClampValue';
 { Check whether two given vectors are almost equal }
 function Vector2Equals(p, q: TVector2): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Equals';
 { Compute the direction of a refracted ray }
