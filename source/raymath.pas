@@ -371,6 +371,41 @@ function fMaxf(a, b: Single):single;
 
 function Vector2AngleDeg(v1, v2: TVector2): single;
 
+{ TVector2 operators }
+operator + (a, b: TVector2): TVector2; overload; inline;
+operator + (a: TVector2; b: Single): TVector2; overload; inline;
+operator - (a: TVector2): TVector2; overload; inline;
+operator - (a, b: TVector2): TVector2; overload; inline;
+operator - (a: TVector2; b: Single): TVector2; overload; inline;
+operator * (a, b: TVector2): TVector2; overload; inline;
+operator * (a: TVector2; b: Single): TVector2; overload; inline;
+operator / (a, b: TVector2): TVector2; overload; inline; 
+
+{ TVector3 operators }
+operator + (a, b: TVector3): TVector3; overload; inline;
+operator + (a: TVector3; b: Single): TVector3; overload; inline;
+operator - (a: TVector3): TVector3; overload; inline;
+operator - (a, b: TVector3): TVector3; overload; inline;
+operator - (a: TVector3; b: Single): TVector3; overload; inline;
+operator * (a, b: TVector3): TVector3; overload; inline;
+operator * (a: TVector3; b: Single): TVector3; overload; inline;
+operator / (a, b: TVector3): TVector3; overload; inline;
+
+{ TVector4 operators }
+operator + (a, b: TVector4): TVector4; overload; inline;
+operator + (a: TVector4; b: Single): TVector4; overload; inline;
+operator - (a: TVector4): TVector4; overload; inline;
+operator - (a, b: TVector4): TVector4; overload; inline;
+operator - (a: TVector4; b: Single): TVector4; overload; inline;
+operator * (a, b: TVector4): TVector4; overload; inline;
+operator * (a: TVector4; b: Single): TVector4; overload; inline;
+operator / (a, b: TVector4): TVector4; overload; inline;
+
+{ TMatrix operators }
+operator + (a, b: TMatrix): TMatrix; overload; inline;
+operator - (a, b: TMatrix): TMatrix; overload; inline;
+operator * (a, b: TMatrix): TMatrix; overload; inline;
+
 implementation
 uses Math;
 
@@ -394,6 +429,8 @@ function Vector2AngleDeg(v1, v2: TVector2): single;
 begin
   result := arctan2(v2.y - v1.y, v2.x - v1.x) / DEG2RAD;
 end;
+
+{$include operators.inc}
 
 initialization
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);
