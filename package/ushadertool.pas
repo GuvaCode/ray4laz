@@ -335,7 +335,9 @@ end;
 procedure TShaderToyConverterForm.actNewExecute(Sender: TObject);
 begin
   InputEditor.Lines.Clear;
+  InputEditor.Modified:=False;
   ResultEditor.Lines.Clear;
+  ResultEditor.Modified:=False;
 end;
 
 procedure TShaderToyConverterForm.actPasteExecute(Sender: TObject);
@@ -353,8 +355,8 @@ begin
  actPaste.Enabled := (Clipboard.HasFormat(CF_TEXT) and InputEditor.Focused) or
  (Clipboard.HasFormat(CF_TEXT) and ResultEditor.Focused) ;
 
- actFileSaveAs.Enabled := ResultEditor.Lines.Count > 1;
- actConvert.Enabled := (InputEditor.Lines.Count>1);
+ actFileSaveAs.Enabled := (ResultEditor.Lines.Count > 1) and (ResultEditor.Modified);
+ actConvert.Enabled := (InputEditor.Lines.Count>1) and (InputEditor.Modified);
 
 
  actCopy.Enabled := (InputEditor.SelText <> '') and (InputEditor.Focused) or
@@ -373,12 +375,13 @@ procedure TShaderToyConverterForm.actConvertExecute(Sender: TObject);
 begin
  ResultEditor.ClearAll;
  ResultEditor.Text := ConvertShaderToyToRaylib(InputEditor.Text);
+ ResultEditor.Modified := True;
 end;
 
 procedure TShaderToyConverterForm.actCompileFsUpdate(Sender: TObject);
 begin //  (InputEditor.Lines.Count>0)
-  actCompileFs.Enabled := IsSystemSupport() and (InputEditor.Lines.Count>0);
-  actCompileVs.Enabled := IsSystemSupport() and (InputEditor.Lines.Count>0);
+  actCompileFs.Enabled := IsSystemSupport() and (ResultEditor.Lines.Count>0) and (ResultEditor.Modified);
+  actCompileVs.Enabled := IsSystemSupport() and (ResultEditor.Lines.Count>0) and (ResultEditor.Modified);
 end;
 
 procedure TShaderToyConverterForm.actCompileFsExecute(Sender: TObject);

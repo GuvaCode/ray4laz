@@ -1,0 +1,70 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: ushadertool.rsaboutconvert
+msgid "Automatically converted from ShaderToy for use with raylib."
+msgstr "Автоматично конвертовано з ShaderToy для використання з raylib."
+
+#: ushadertool.rscallorig
+msgid "Calling the original function from ShaderToy"
+msgstr "Виклик оригінальної функції з ShaderToy"
+
+#: ushadertool.rscalloriginnormal
+msgid "Call the original function from ShaderToy with normalized coordinates"
+msgstr "Викликати оригінальну функцію з ShaderToy з нормалізованими координатами"
+
+#: ushadertool.rscompilefs
+msgid "Compile fragment shader"
+msgstr "Компілювати фрагментний шейдер"
+
+#: ushadertool.rscompilevs
+msgid "Compile vertex shader"
+msgstr "Компілювати вершинний шейдер"
+
+#: ushadertool.rsconvert
+msgid "Convert shader"
+msgstr "Конвертувати шейдер"
+
+#: ushadertool.rscopy
+msgid "Copy"
+msgstr "Копіювати"
+
+#: ushadertool.rscut
+msgid "Cut"
+msgstr "Вирізати"
+
+#: ushadertool.rsinputvar
+msgid "Input variables from raylib"
+msgstr "Вхідні змінні від raylib"
+
+#: ushadertool.rsinsertasunit
+msgid "Insert as code"
+msgstr "Вставити як код"
+
+#: ushadertool.rsmainfunction
+msgid "The main function that raylib calls"
+msgstr "Головна функція, яку викликає raylib"
+
+#: ushadertool.rsnewshader
+msgid "New shader"
+msgstr "Новий шейдер"
+
+#: ushadertool.rsopenshader
+msgid "Open shader"
+msgstr "Відкрити шейдер"
+
+#: ushadertool.rspaste
+msgid "Paste"
+msgstr "Вставити"
+
+#: ushadertool.rssaveas
+msgid "Save as.."
+msgstr "Зберегти як.."
+
+#: ushadertool.rsselall
+msgid "Select all"
+msgstr "Вибрати все"
+
+#: ushadertool.rsuniformvar
+msgid "Uniform variables ShaderToy"
+msgstr "Uniform-змінні ShaderToy"
