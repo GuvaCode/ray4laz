@@ -1203,6 +1203,7 @@ object ShaderToyConverterForm: TShaderToyConverterForm
     object actNew: TAction
       Category = 'Edit'
       Caption = 'New'
+      Hint = 'New'
       ImageIndex = 0
       OnExecute = actNewExecute
     end
@@ -1217,49 +1218,55 @@ object ShaderToyConverterForm: TShaderToyConverterForm
     object actPaste: TAction
       Category = 'Edit'
       Caption = 'Paste'
+      Hint = 'Paste'
       ImageIndex = 4
       OnExecute = actPasteExecute
     end
     object actFileSaveAs: TFileSaveAs
       Category = 'File'
       Caption = 'Save as..'
-      Hint = 'Сохранить как...'
+      Hint = 'Save as..'
       ImageIndex = 2
       OnAccept = actFileSaveAsAccept
     end
     object actCopy: TAction
       Category = 'Edit'
       Caption = 'Copy'
+      Hint = 'Copy'
       ImageIndex = 3
       OnExecute = actCopyExecute
     end
     object actConvert: TAction
       Category = 'Converting'
-      Caption = 'Convert'
+      Caption = 'Convert shader'
+      Hint = 'Convert shader'
       ImageIndex = 5
       OnExecute = actConvertExecute
     end
     object actCut: TAction
       Category = 'Edit'
       Caption = 'Cut'
+      Hint = 'Cut'
       ImageIndex = 6
       OnExecute = actCutExecute
     end
     object actSelAll: TAction
       Category = 'Edit'
       Caption = 'Select all'
+      Hint = 'Select all'
       ImageIndex = 7
       OnExecute = actSelAllExecute
     end
     object actInsertAsUnit: TAction
       Category = 'File'
-      Caption = 'Add as new code unit'
+      Caption = 'Insert as code'
+      Hint = 'Insert as code'
       ImageIndex = 8
       OnExecute = actInsertAsUnitExecute
     end
     object actCompileVs: TAction
       Category = 'Run'
-      Caption = 'actCompileVs'
+      Caption = 'Compile vertex shader'
       Hint = 'Compile vertex shader'
       ImageIndex = 9
       OnExecute = actCompileVsExecute
@@ -1267,7 +1274,7 @@ object ShaderToyConverterForm: TShaderToyConverterForm
     end
     object actCompileFs: TAction
       Category = 'Run'
-      Caption = 'actCompileFs'
+      Caption = 'Compile fragment shader'
       Hint = 'Compile fragment shader'
       ImageIndex = 10
       OnExecute = actCompileFsExecute

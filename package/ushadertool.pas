@@ -10,6 +10,8 @@ uses
   SynEditKeyCmds, LCLType, Menus, SynEditMiscClasses, SynEditMarkupHighAll, IDEWindowIntf;
 
 type
+  TShaderType = (StVertex, StFragment);
+
   { TShaderToyConverterForm }
   TShaderToyConverterForm = class(TForm)
     actCopy: TAction;
@@ -66,8 +68,7 @@ type
     procedure actSelAllExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    procedure ShaderCompileFs(FragmentShader: string);
-
+    procedure ShaderCompile(ShaderType: TShaderType; FragmentShader: string);
     function ConvertShaderToyToRaylib(const ShaderCode: string): string;
     function StringListToConstDeclaration(sl: TStrings; const ConstName: string): string;
     function GenerateConstUnit(const UnitName_, ConstName: string;
@@ -88,6 +89,18 @@ resourcestring
   rsMainFunction = 'The main function that raylib calls';
   rsCallOrig = 'Calling the original function from ShaderToy';
   rsCallOrigInNormal = 'Call the original function from ShaderToy with normalized coordinates';
+
+  rsNewShader = 'New shader';
+  rsOpenShader = 'Open shader';
+  rsPaste = 'Paste';
+  rsSaveAs = 'Save as..';
+  rsCopy = 'Copy';
+  rsConvert = 'Convert shader';
+  rsCut = 'Cut';
+  rsSelAll = 'Select all';
+  rsInsertAsUnit = 'Insert as code';
+  rsCompileVs = 'Compile vertex shader';
+  rsCompileFs = 'Compile fragment shader';
 
 var
   ShaderToyConverterForm: TShaderToyConverterForm;
@@ -120,7 +133,7 @@ implementation
     exit;
   end;
   IDEWindowCreators.CreateForm(AForm, TShaderToyConverterForm, DoDisableAutoSizing,
-    {LazarusIDE.OwningComponent} Application);
+    LazarusIDE.OwningComponent {Application}) ;
   AForm.Name:=aFormName;
   ShaderToyConverterForm:=AForm as TShaderToyConverterForm;
  end;
@@ -156,10 +169,41 @@ begin
   ErrorMarkUp.MarkupInfo.FrameEdges := sfeBottom;
   ErrorMarkUp.MarkupInfo.FrameColor := clRED;
 
+  actNew.Caption := rsNewShader;
+  actNew.Hint := rsNewShader;
 
+  actFileopen.Caption := rsOpenShader;
+  actFileopen.Hint := rsOpenShader;
 
- // ErrorMarkUp.MarkupInfo.Foreground := clWhite;
+  actPaste.Caption := rsPaste;
+  actPaste.Hint := rsPaste;
+
+  actFileSaveAs.Caption := rsSaveAs;
+  actFileSaveAs.Hint := rsSaveAs;
+
+  actCopy.Caption := rsCopy;
+  actCopy.Hint := rsCopy;
+
+  actConvert.Caption := rsConvert;
+  actConvert.Hint := rsConvert;
+
+  actCut.Caption := rsCut;
+  actCut.Hint := rsCut;
+
+  actSelAll.Caption := rsSelAll;
+  actSelAll.Hint := rsSelAll;
+
+  actInsertAsUnit.Caption := rsInsertAsUnit;
+  actInsertAsUnit.Hint := rsInsertAsUnit;
+
+  actCompileVs.Caption := rsCompileVs;
+  actCompileVs.Hint := rsCompileVs;
+
+  actCompileFs.Caption := rsCompileFs;
+  actCompileFs.Hint := rsCompileFs;
 end;
+
+
 
 function GetTargetOS: string;
 begin
@@ -175,7 +219,8 @@ begin
   if Pkg <> nil then result := ExtractFilePath(ExcludeTrailingPathDelimiter(Pkg.DirectoryExpanded));
 end;
 
-procedure TShaderToyConverterForm.ShaderCompileFs(FragmentShader: string);
+procedure TShaderToyConverterForm.ShaderCompile(ShaderType: TShaderType;
+  FragmentShader: string);
 var
   ShProcess: TProcess;
   Output: TStringList;
@@ -204,8 +249,11 @@ begin
        ShProcess.Executable := GetRay4lazDir + PathDelim + 'tool' + PathDelim + 'shader_compiler_windows32.exe';
     {$ENDIF}
   {$ENDIF}
-
+  if ShaderType = StVertex then
+  ShProcess.Parameters.Add('-vs')
+  else
   ShProcess.Parameters.Add('-fs');
+
   ShProcess.Parameters.Add(FragmentShader);
   ShProcess.Options := [poWaitOnExit, poUsePipes];
   ShProcess.Execute;
@@ -280,12 +328,6 @@ begin
  if ResultEditor.Focused then
   begin
     ResultEditor.SelectAll;
-    //ResultEditor.ExecuteCommand(ecStickySelectionLine,'',nil);
-    ///ErrorMarkUp.MarkupInfo.SetFrameBoundsLog(1,5);
-
-  //  ResultEditor.SelectWord;
-   // ErrorMarkUp.SearchString:='version 330';
-
   end;
 end;
 
@@ -341,13 +383,13 @@ end;
 
 procedure TShaderToyConverterForm.actCompileFsExecute(Sender: TObject);
 begin
-  ShaderCompileFs(resultEditor.Text);
+  ShaderCompile(stFragment,resultEditor.Text);
 
 end;
 
 procedure TShaderToyConverterForm.actCompileVsExecute(Sender: TObject);
 begin
-
+ ShaderCompile(stVertex,resultEditor.Text);
 end;
 
 procedure TShaderToyConverterForm.actCopyExecute(Sender: TObject);

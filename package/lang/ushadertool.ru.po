@@ -3,69 +3,69 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 
 #: ushadertool.rsaboutconvert
 msgid "Automatically converted from ShaderToy for use with raylib."
-msgstr ""
+msgstr "Автоматически сконвертировано из ShaderToy в raylib формат."
 
 #: ushadertool.rscallorig
 msgid "Calling the original function from ShaderToy"
-msgstr ""
+msgstr "Вызываем оригинальную функцию из ShaderToy"
 
 #: ushadertool.rscalloriginnormal
 msgid "Call the original function from ShaderToy with normalized coordinates"
-msgstr ""
+msgstr "Вызываем оригинальную функцию из ShaderToy с нормализованными координатами"
 
 #: ushadertool.rscompilefs
 msgid "Compile fragment shader"
-msgstr ""
+msgstr "Компиляция фрагментного шейдера"
 
 #: ushadertool.rscompilevs
 msgid "Compile vertex shader"
-msgstr ""
+msgstr "Компиляция вершинного шейдера"
 
 #: ushadertool.rsconvert
 msgid "Convert shader"
-msgstr ""
+msgstr "Конвертировать шейдер"
 
 #: ushadertool.rscopy
 msgid "Copy"
-msgstr ""
+msgstr "Копировать"
 
 #: ushadertool.rscut
 msgid "Cut"
-msgstr ""
+msgstr "Вырезать"
 
 #: ushadertool.rsinputvar
 msgid "Input variables from raylib"
-msgstr ""
+msgstr "Входные переменные от raylib"
 
 #: ushadertool.rsinsertasunit
 msgid "Insert as code"
-msgstr ""
+msgstr "Вставить как код"
 
 #: ushadertool.rsmainfunction
 msgid "The main function that raylib calls"
-msgstr ""
+msgstr "Главная функция, которую вызывает raylib"
 
 #: ushadertool.rsnewshader
 msgid "New shader"
-msgstr ""
+msgstr "Новый шейдер"
 
 #: ushadertool.rsopenshader
 msgid "Open shader"
-msgstr ""
+msgstr "Открыть шейдер"
 
 #: ushadertool.rspaste
 msgid "Paste"
-msgstr ""
+msgstr "Вставить"
 
 #: ushadertool.rssaveas
 msgid "Save as.."
-msgstr ""
+msgstr "Сохоанить как.."
 
 #: ushadertool.rsselall
 msgid "Select all"
-msgstr ""
+msgstr "Выбрать все"
 
 #: ushadertool.rsuniformvar
 msgid "Uniform variables ShaderToy"
-msgstr ""
+msgstr "Uniform-переменные ShaderToy"
 

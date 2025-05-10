@@ -31,7 +31,7 @@
   3. This notice may not be removed or altered from any source distribution.
 "/>
     <Version Major="5" Minor="6" Release="2"/>
-    <Files Count="3">
+    <Files Count="4">
       <Item1>
         <Filename Value="ray4laz_simpleprj.pas"/>
         <HasRegisterProc Value="True"/>
@@ -47,6 +47,10 @@
         <HasRegisterProc Value="True"/>
         <UnitName Value="ray4laz_customAppPrj"/>
       </Item3>
+      <Item4>
+        <Filename Value="ushadertool.pas"/>
+        <UnitName Value="uShaderTool"/>
+      </Item4>
     </Files>
     <CompatibilityMode Value="True"/>
     <i18n>

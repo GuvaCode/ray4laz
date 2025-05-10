@@ -8,7 +8,8 @@ unit ray4laz_designtime;
 interface
 
 uses
-  ray4laz_simplePrj, ray4laz_misc, ray4laz_customAppPrj, LazarusPackageIntf;
+  ray4laz_simplePrj, ray4laz_misc, ray4laz_customAppPrj, uShaderTool, 
+  LazarusPackageIntf;
 
 implementation
 
