@@ -69,3 +69,7 @@ msgstr ""
 msgid "Copy OpenSSL to Lazarus directory"
 msgstr ""
 
+#: ray4laz_misc.srtoy
+msgid "Shadertoy converter"
+msgstr ""
+

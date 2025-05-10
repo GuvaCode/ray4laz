@@ -1,0 +1,27 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: ushadertool.rsaboutconvert
+msgid "Automatically converted from ShaderToy for use with raylib."
+msgstr ""
+
+#: ushadertool.rscallorig
+msgid "Calling the original function from ShaderToy"
+msgstr ""
+
+#: ushadertool.rscalloriginnormal
+msgid "Call the original function from ShaderToy with normalized coordinates"
+msgstr ""
+
+#: ushadertool.rsinputvar
+msgid "Input variables from raylib"
+msgstr ""
+
+#: ushadertool.rsmainfunction
+msgid "The main function that raylib calls"
+msgstr ""
+
+#: ushadertool.rsuniformvar
+msgid "Uniform variables ShaderToy"
+msgstr ""
+

@@ -6,9 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Graphics, LCLIntf, LazFileUtils, fileutil,
-  PackageIntf, ProjectIntf, MenuIntf, SrcEditorIntf, IDEMsgIntf, LazIDEIntf,
-  IDEExternToolIntf, MacroIntf,
-  System.UITypes, Dialogs, Forms;
+  PackageIntf, MenuIntf, System.UITypes, Dialogs, Forms;
 
 type
   { TEventClass }
@@ -25,6 +23,7 @@ procedure Register;
      SectionTool: TIDEMenuSection;
      SectionToolMenu: TIDEMenuSection;
      SectionRayMenu: TIDEMenuSection;
+
 
  resourcestring
    rsMnuMisc        = 'raylib Misc ...';
@@ -44,9 +43,11 @@ procedure Register;
    rsCopyFalse      = 'Copy error';
    rsDownloadFFmpeg = 'Download the necessary ffmpeg libraries';
    rsSSL            = 'Copy OpenSSL to Lazarus directory';
+   srToy            = 'Shadertoy converter';
 
 implementation
-uses HttpDownloader;
+uses HttpDownloader, uShaderTool, IDEWindowIntf, IDEExternToolIntf, IDEMsgIntf,
+  LazIDEIntf, ProjectIntf, SrcEditorIntf, MacroIntf;
 
 function RayUsed: boolean;
 var
@@ -150,7 +151,6 @@ begin
   Pkg:=PackageEditingInterface.FindPackageWithName('ray4laz');
   if Pkg <> nil then result := ExtractFilePath(ExcludeTrailingPathDelimiter(Pkg.DirectoryExpanded));
 end;
-
 
 function GetLazdir: string;
 begin
@@ -296,27 +296,41 @@ begin
 
 end;
 
+procedure ShowShaderToy(Sender: TObject);
+begin
+ IDEWindowCreators.ShowForm(ShaderToyConverterFormCreator.FormName, false );
+end;
+
+
 procedure Register;
 begin
+ // register dockable Window
+ ShaderToyConverterFormCreator:=IDEWindowCreators.Add(
+   'ShaderToyConverterForm',
+   @CreateShaderToyConverterForm, nil,
+   '250', '250', '', '');
+
  SectionRay:=RegisterIDEMenuSection(SrcEditMenuSectionFirstStatic,'RayTool');
  SectionRayMenu:= RegisterIDESubMenu(SectionRay,'RayTool',rsMnuMisc,nil ,nil,'cc_class');
 
  SectionToolMenu:= RegisterIDESubMenu(SectionRayMenu,'rltool',rsRlTools,nil ,nil,'pkg_properties');
- RegisterIDEMenuCommand(SectionToolMenu, 'Compile', rsCompilePkg, nil, @CompileRay4laz,nil, 'pkg_compile');
+ RegisterIDEMenuCommand(SectionToolMenu, 'ShaderConverter', srToy, nil, @ShowShaderToy,nil, 'laz_wand');
  RegisterIDEMenuCommand(SectionToolMenu, 'Sep0','-',nil,nil);
+ RegisterIDEMenuCommand(SectionToolMenu, 'Compile', rsCompilePkg, nil, @CompileRay4laz,nil, 'pkg_compile');
+ RegisterIDEMenuCommand(SectionToolMenu, 'Sep1','-',nil,nil);
  RegisterIDEMenuCommand(SectionToolMenu, 'OpenSetting', rsOpenConfig, nil, @ShowSettingFile,nil, 'menu_build_file');
 
  SectionTool:= RegisterIDESubMenu(SectionToolMenu,'rltoolSub',rsCopyLibs,nil ,nil,'pkg_lrs');
- RegisterIDEMenuCommand(SectionTool, 'Sep1','-',nil,nil);
+ RegisterIDEMenuCommand(SectionTool, 'Sep2','-',nil,nil);
  RegisterIDEMenuCommand(SectionTool, 'CopyDll1', rsCopyDll1, nil, @CopyRaylibToProject,nil, 'pkg_lrs');
  RegisterIDEMenuCommand(SectionTool, 'CopyDll2', rsCopyDll2, nil, @CopyR3DToProject,nil, 'pkg_lrs');
  RegisterIDEMenuCommand(SectionTool, 'CopyDll3', rsCopyDll3, nil, @CopyGizmoToProject,nil, 'pkg_lrs');
- RegisterIDEMenuCommand(SectionTool, 'Sep2','-',nil,nil);
+ RegisterIDEMenuCommand(SectionTool, 'Sep3','-',nil,nil);
  RegisterIDEMenuCommand(SectionTool, 'CopyDll4', rsCopyDll4, nil, @CopyMediaToProject,nil, 'pkg_lrs');
  RegisterIDEMenuCommand(SectionTool, 'DownloadLibs', rsDownloadFFmpeg , nil, @DownloadFFmpeg,nil, 'menu_exporthtml');
  RegisterIDEMenuCommand(SectionTool, 'DownloadLibs1', rsSSL , nil, @CopySSlAll,nil, 'pkg_lrs');
 
- RegisterIDEMenuCommand(SectionToolMenu, 'Sep3','-',nil,nil);
+ RegisterIDEMenuCommand(SectionToolMenu, 'Sep4','-',nil,nil);
  RegisterIDEMenuCommand(SectionToolMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
  RegisterIDEMenuCommand(SectionToolMenu, 'ShowWiki', rsRayWiki , nil, @RayFunction, nil, 'menu_information');
 

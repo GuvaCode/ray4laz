@@ -54,19 +54,22 @@
       <OutDir Value="lang"/>
       <EnableI18NForLFM Value="True"/>
     </i18n>
-    <RequiredPkgs Count="4">
+    <RequiredPkgs Count="5">
       <Item1>
-        <PackageName Value="CodeTools"/>
+        <PackageName Value="SynEditDsgn"/>
       </Item1>
       <Item2>
-        <PackageName Value="ray4laz"/>
+        <PackageName Value="CodeTools"/>
       </Item2>
       <Item3>
-        <PackageName Value="IDEIntf"/>
+        <PackageName Value="ray4laz"/>
       </Item3>
       <Item4>
-        <PackageName Value="FCL"/>
+        <PackageName Value="IDEIntf"/>
       </Item4>
+      <Item5>
+        <PackageName Value="FCL"/>
+      </Item5>
     </RequiredPkgs>
     <UsageOptions>
       <CustomOptions Value="-dUseCThreads"/>
