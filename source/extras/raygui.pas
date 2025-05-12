@@ -26,10 +26,10 @@ uses
  raylib;
 
 const
-  RAYGUI_VERSION_MAJOR = 5;
-  RAYGUI_VERSION_MINOR = 0;
+  RAYGUI_VERSION_MAJOR = 4;
+  RAYGUI_VERSION_MINOR = 5;
   RAYGUI_VERSION_PATCH = 0;
-  RAYGUI_VERSION = '5.0-dev';
+  RAYGUI_VERSION = '4.5-dev';
   SCROLLBAR_LEFT_SIDE = 0;
   SCROLLBAR_RIGHT_SIDE = 1;
 
@@ -37,277 +37,275 @@ const
 // Icons enumeration
 //----------------------------------------------------------------------------------
 type
-  GuiIconName = Integer;
-  PGuiIconName = ^GuiIconName;
-
+  TGuiIconName = Integer;
+  PGuiIconName = ^TGuiIconName;
 const
-  ICON_NONE = 0;
-  ICON_FOLDER_FILE_OPEN = 1;
-  ICON_FILE_SAVE_CLASSIC = 2;
-  ICON_FOLDER_OPEN = 3;
-  ICON_FOLDER_SAVE = 4;
-  ICON_FILE_OPEN = 5;
-  ICON_FILE_SAVE = 6;
-  ICON_FILE_EXPORT = 7;
-  ICON_FILE_ADD = 8;
-  ICON_FILE_DELETE = 9;
-  ICON_FILETYPE_TEXT = 10;
-  ICON_FILETYPE_AUDIO = 11;
-  ICON_FILETYPE_IMAGE = 12;
-  ICON_FILETYPE_PLAY = 13;
-  ICON_FILETYPE_VIDEO = 14;
-  ICON_FILETYPE_INFO = 15;
-  ICON_FILE_COPY = 16;
-  ICON_FILE_CUT = 17;
-  ICON_FILE_PASTE = 18;
-  ICON_CURSOR_HAND = 19;
-  ICON_CURSOR_POINTER = 20;
-  ICON_CURSOR_CLASSIC = 21;
-  ICON_PENCIL = 22;
-  ICON_PENCIL_BIG = 23;
-  ICON_BRUSH_CLASSIC = 24;
-  ICON_BRUSH_PAINTER = 25;
-  ICON_WATER_DROP = 26;
-  ICON_COLOR_PICKER = 27;
-  ICON_RUBBER = 28;
-  ICON_COLOR_BUCKET = 29;
-  ICON_TEXT_T = 30;
-  ICON_TEXT_A = 31;
-  ICON_SCALE = 32;
-  ICON_RESIZE = 33;
-  ICON_FILTER_POINT = 34;
-  ICON_FILTER_BILINEAR = 35;
-  ICON_CROP = 36;
-  ICON_CROP_ALPHA = 37;
-  ICON_SQUARE_TOGGLE = 38;
-  ICON_SYMMETRY = 39;
-  ICON_SYMMETRY_HORIZONTAL = 40;
-  ICON_SYMMETRY_VERTICAL = 41;
-  ICON_LENS = 42;
-  ICON_LENS_BIG = 43;
-  ICON_EYE_ON = 44;
-  ICON_EYE_OFF = 45;
-  ICON_FILTER_TOP = 46;
-  ICON_FILTER = 47;
-  ICON_TARGET_POINT = 48;
-  ICON_TARGET_SMALL = 49;
-  ICON_TARGET_BIG = 50;
-  ICON_TARGET_MOVE = 51;
-  ICON_CURSOR_MOVE = 52;
-  ICON_CURSOR_SCALE = 53;
-  ICON_CURSOR_SCALE_RIGHT = 54;
-  ICON_CURSOR_SCALE_LEFT = 55;
-  ICON_UNDO = 56;
-  ICON_REDO = 57;
-  ICON_REREDO = 58;
-  ICON_MUTATE = 59;
-  ICON_ROTATE = 60;
-  ICON_REPEAT = 61;
-  ICON_SHUFFLE = 62;
-  ICON_EMPTYBOX = 63;
-  ICON_TARGET = 64;
-  ICON_TARGET_SMALL_FILL = 65;
-  ICON_TARGET_BIG_FILL = 66;
-  ICON_TARGET_MOVE_FILL = 67;
-  ICON_CURSOR_MOVE_FILL = 68;
-  ICON_CURSOR_SCALE_FILL = 69;
-  ICON_CURSOR_SCALE_RIGHT_FILL = 70;
-  ICON_CURSOR_SCALE_LEFT_FILL = 71;
-  ICON_UNDO_FILL = 72;
-  ICON_REDO_FILL = 73;
-  ICON_REREDO_FILL = 74;
-  ICON_MUTATE_FILL = 75;
-  ICON_ROTATE_FILL = 76;
-  ICON_REPEAT_FILL = 77;
-  ICON_SHUFFLE_FILL = 78;
-  ICON_EMPTYBOX_SMALL = 79;
-  ICON_BOX = 80;
-  ICON_BOX_TOP = 81;
-  ICON_BOX_TOP_RIGHT = 82;
-  ICON_BOX_RIGHT = 83;
-  ICON_BOX_BOTTOM_RIGHT = 84;
-  ICON_BOX_BOTTOM = 85;
-  ICON_BOX_BOTTOM_LEFT = 86;
-  ICON_BOX_LEFT = 87;
-  ICON_BOX_TOP_LEFT = 88;
-  ICON_BOX_CENTER = 89;
-  ICON_BOX_CIRCLE_MASK = 90;
-  ICON_POT = 91;
-  ICON_ALPHA_MULTIPLY = 92;
-  ICON_ALPHA_CLEAR = 93;
-  ICON_DITHERING = 94;
-  ICON_MIPMAPS = 95;
-  ICON_BOX_GRID = 96;
-  ICON_GRID = 97;
-  ICON_BOX_CORNERS_SMALL = 98;
-  ICON_BOX_CORNERS_BIG = 99;
-  ICON_FOUR_BOXES = 100;
-  ICON_GRID_FILL = 101;
-  ICON_BOX_MULTISIZE = 102;
-  ICON_ZOOM_SMALL = 103;
-  ICON_ZOOM_MEDIUM = 104;
-  ICON_ZOOM_BIG = 105;
-  ICON_ZOOM_ALL = 106;
-  ICON_ZOOM_CENTER = 107;
-  ICON_BOX_DOTS_SMALL = 108;
-  ICON_BOX_DOTS_BIG = 109;
-  ICON_BOX_CONCENTRIC = 110;
-  ICON_BOX_GRID_BIG = 111;
-  ICON_OK_TICK = 112;
-  ICON_CROSS = 113;
-  ICON_ARROW_LEFT = 114;
-  ICON_ARROW_RIGHT = 115;
-  ICON_ARROW_DOWN = 116;
-  ICON_ARROW_UP = 117;
-  ICON_ARROW_LEFT_FILL = 118;
-  ICON_ARROW_RIGHT_FILL = 119;
-  ICON_ARROW_DOWN_FILL = 120;
-  ICON_ARROW_UP_FILL = 121;
-  ICON_AUDIO = 122;
-  ICON_FX = 123;
-  ICON_WAVE = 124;
-  ICON_WAVE_SINUS = 125;
-  ICON_WAVE_SQUARE = 126;
-  ICON_WAVE_TRIANGULAR = 127;
-  ICON_CROSS_SMALL = 128;
-  ICON_PLAYER_PREVIOUS = 129;
-  ICON_PLAYER_PLAY_BACK = 130;
-  ICON_PLAYER_PLAY = 131;
-  ICON_PLAYER_PAUSE = 132;
-  ICON_PLAYER_STOP = 133;
-  ICON_PLAYER_NEXT = 134;
-  ICON_PLAYER_RECORD = 135;
-  ICON_MAGNET = 136;
-  ICON_LOCK_CLOSE = 137;
-  ICON_LOCK_OPEN = 138;
-  ICON_CLOCK = 139;
-  ICON_TOOLS = 140;
-  ICON_GEAR = 141;
-  ICON_GEAR_BIG = 142;
-  ICON_BIN = 143;
-  ICON_HAND_POINTER = 144;
-  ICON_LASER = 145;
-  ICON_COIN = 146;
-  ICON_EXPLOSION = 147;
-  ICON_1UP = 148;
-  ICON_PLAYER = 149;
-  ICON_PLAYER_JUMP = 150;
-  ICON_KEY = 151;
-  ICON_DEMON = 152;
-  ICON_TEXT_POPUP = 153;
-  ICON_GEAR_EX = 154;
-  ICON_CRACK = 155;
-  ICON_CRACK_POINTS = 156;
-  ICON_STAR = 157;
-  ICON_DOOR = 158;
-  ICON_EXIT = 159;
-  ICON_MODE_2D = 160;
-  ICON_MODE_3D = 161;
-  ICON_CUBE = 162;
-  ICON_CUBE_FACE_TOP = 163;
-  ICON_CUBE_FACE_LEFT = 164;
-  ICON_CUBE_FACE_FRONT = 165;
-  ICON_CUBE_FACE_BOTTOM = 166;
-  ICON_CUBE_FACE_RIGHT = 167;
-  ICON_CUBE_FACE_BACK = 168;
-  ICON_CAMERA = 169;
-  ICON_SPECIAL = 170;
-  ICON_LINK_NET = 171;
-  ICON_LINK_BOXES = 172;
-  ICON_LINK_MULTI = 173;
-  ICON_LINK = 174;
-  ICON_LINK_BROKE = 175;
-  ICON_TEXT_NOTES = 176;
-  ICON_NOTEBOOK = 177;
-  ICON_SUITCASE = 178;
-  ICON_SUITCASE_ZIP = 179;
-  ICON_MAILBOX = 180;
-  ICON_MONITOR = 181;
-  ICON_PRINTER = 182;
-  ICON_PHOTO_CAMERA = 183;
-  ICON_PHOTO_CAMERA_FLASH = 184;
-  ICON_HOUSE = 185;
-  ICON_HEART = 186;
-  ICON_CORNER = 187;
-  ICON_VERTICAL_BARS = 188;
-  ICON_VERTICAL_BARS_FILL = 189;
-  ICON_LIFE_BARS = 190;
-  ICON_INFO = 191;
-  ICON_CROSSLINE = 192;
-  ICON_HELP = 193;
-  ICON_FILETYPE_ALPHA = 194;
-  ICON_FILETYPE_HOME = 195;
-  ICON_LAYERS_VISIBLE = 196;
-  ICON_LAYERS = 197;
-  ICON_WINDOW = 198;
-  ICON_HIDPI = 199;
-  ICON_FILETYPE_BINARY = 200;
-  ICON_HEX = 201;
-  ICON_SHIELD = 202;
-  ICON_FILE_NEW = 203;
-  ICON_FOLDER_ADD = 204;
-  ICON_ALARM = 205;
-  ICON_CPU = 206;
-  ICON_ROM = 207;
-  ICON_STEP_OVER = 208;
-  ICON_STEP_INTO = 209;
-  ICON_STEP_OUT = 210;
-  ICON_RESTART = 211;
-  ICON_BREAKPOINT_ON = 212;
-  ICON_BREAKPOINT_OFF = 213;
-  ICON_BURGER_MENU = 214;
-  ICON_CASE_SENSITIVE = 215;
-  ICON_REG_EXP = 216;
-  ICON_FOLDER = 217;
-  ICON_FILE = 218;
-  ICON_SAND_TIMER = 219;
-  ICON_WARNING = 220;
-  ICON_HELP_BOX = 221;
-  ICON_INFO_BOX = 222;
-  ICON_PRIORITY = 223;
-  ICON_LAYERS_ISO = 224;
-  ICON_LAYERS2 = 225;
-  ICON_MLAYERS = 226;
-  ICON_MAPS = 227;
-  ICON_HOT = 228;
-  ICON_LABEL = 229;
-  ICON_NAME_ID = 230;
-  ICON_SLICING = 231;
-  ICON_MANUAL_CONTROL = 232;
-  ICON_COLLISION = 233;
-  ICON_234 = 234;
-  ICON_235 = 235;
-  ICON_236 = 236;
-  ICON_237 = 237;
-  ICON_238 = 238;
-  ICON_239 = 239;
-  ICON_240 = 240;
-  ICON_241 = 241;
-  ICON_242 = 242;
-  ICON_243 = 243;
-  ICON_244 = 244;
-  ICON_245 = 245;
-  ICON_246 = 246;
-  ICON_247 = 247;
-  ICON_248 = 248;
-  ICON_249 = 249;
-  ICON_250 = 250;
-  ICON_251 = 251;
-  ICON_252 = 252;
-  ICON_253 = 253;
-  ICON_254 = 254;
-  ICON_255 = 255;
+  ICON_NONE = TGuiIconName(0);
+  ICON_FOLDER_FILE_OPEN = TGuiIconName(1);
+  ICON_FILE_SAVE_CLASSIC = TGuiIconName(2);
+  ICON_FOLDER_OPEN = TGuiIconName(3);
+  ICON_FOLDER_SAVE = TGuiIconName(4);
+  ICON_FILE_OPEN = TGuiIconName(5);
+  ICON_FILE_SAVE = TGuiIconName(6);
+  ICON_FILE_EXPORT = TGuiIconName(7);
+  ICON_FILE_ADD = TGuiIconName(8);
+  ICON_FILE_DELETE = TGuiIconName(9);
+  ICON_FILETYPE_TEXT = TGuiIconName(10);
+  ICON_FILETYPE_AUDIO = TGuiIconName(11);
+  ICON_FILETYPE_IMAGE = TGuiIconName(12);
+  ICON_FILETYPE_PLAY = TGuiIconName(13);
+  ICON_FILETYPE_VIDEO = TGuiIconName(14);
+  ICON_FILETYPE_INFO = TGuiIconName(15);
+  ICON_FILE_COPY = TGuiIconName(16);
+  ICON_FILE_CUT = TGuiIconName(17);
+  ICON_FILE_PASTE = TGuiIconName(18);
+  ICON_CURSOR_HAND = TGuiIconName(19);
+  ICON_CURSOR_POINTER = TGuiIconName(20);
+  ICON_CURSOR_CLASSIC = TGuiIconName(21);
+  ICON_PENCIL = TGuiIconName(22);
+  ICON_PENCIL_BIG = TGuiIconName(23);
+  ICON_BRUSH_CLASSIC = TGuiIconName(24);
+  ICON_BRUSH_PAINTER = TGuiIconName(25);
+  ICON_WATER_DROP = TGuiIconName(26);
+  ICON_COLOR_PICKER = TGuiIconName(27);
+  ICON_RUBBER = TGuiIconName(28);
+  ICON_COLOR_BUCKET = TGuiIconName(29);
+  ICON_TEXT_T = TGuiIconName(30);
+  ICON_TEXT_A = TGuiIconName(31);
+  ICON_SCALE = TGuiIconName(32);
+  ICON_RESIZE = TGuiIconName(33);
+  ICON_FILTER_POINT = TGuiIconName(34);
+  ICON_FILTER_BILINEAR = TGuiIconName(35);
+  ICON_CROP = TGuiIconName(36);
+  ICON_CROP_ALPHA = TGuiIconName(37);
+  ICON_SQUARE_TOGGLE = TGuiIconName(38);
+  ICON_SYMMETRY = TGuiIconName(39);
+  ICON_SYMMETRY_HORIZONTAL = TGuiIconName(40);
+  ICON_SYMMETRY_VERTICAL = TGuiIconName(41);
+  ICON_LENS = TGuiIconName(42);
+  ICON_LENS_BIG = TGuiIconName(43);
+  ICON_EYE_ON = TGuiIconName(44);
+  ICON_EYE_OFF = TGuiIconName(45);
+  ICON_FILTER_TOP = TGuiIconName(46);
+  ICON_FILTER = TGuiIconName(47);
+  ICON_TARGET_POINT = TGuiIconName(48);
+  ICON_TARGET_SMALL = TGuiIconName(49);
+  ICON_TARGET_BIG = TGuiIconName(50);
+  ICON_TARGET_MOVE = TGuiIconName(51);
+  ICON_CURSOR_MOVE = TGuiIconName(52);
+  ICON_CURSOR_SCALE = TGuiIconName(53);
+  ICON_CURSOR_SCALE_RIGHT = TGuiIconName(54);
+  ICON_CURSOR_SCALE_LEFT = TGuiIconName(55);
+  ICON_UNDO = TGuiIconName(56);
+  ICON_REDO = TGuiIconName(57);
+  ICON_REREDO = TGuiIconName(58);
+  ICON_MUTATE = TGuiIconName(59);
+  ICON_ROTATE = TGuiIconName(60);
+  ICON_REPEAT = TGuiIconName(61);
+  ICON_SHUFFLE = TGuiIconName(62);
+  ICON_EMPTYBOX = TGuiIconName(63);
+  ICON_TARGET = TGuiIconName(64);
+  ICON_TARGET_SMALL_FILL = TGuiIconName(65);
+  ICON_TARGET_BIG_FILL = TGuiIconName(66);
+  ICON_TARGET_MOVE_FILL = TGuiIconName(67);
+  ICON_CURSOR_MOVE_FILL = TGuiIconName(68);
+  ICON_CURSOR_SCALE_FILL = TGuiIconName(69);
+  ICON_CURSOR_SCALE_RIGHT_FILL = TGuiIconName(70);
+  ICON_CURSOR_SCALE_LEFT_FILL = TGuiIconName(71);
+  ICON_UNDO_FILL = TGuiIconName(72);
+  ICON_REDO_FILL = TGuiIconName(73);
+  ICON_REREDO_FILL = TGuiIconName(74);
+  ICON_MUTATE_FILL = TGuiIconName(75);
+  ICON_ROTATE_FILL = TGuiIconName(76);
+  ICON_REPEAT_FILL = TGuiIconName(77);
+  ICON_SHUFFLE_FILL = TGuiIconName(78);
+  ICON_EMPTYBOX_SMALL = TGuiIconName(79);
+  ICON_BOX = TGuiIconName(80);
+  ICON_BOX_TOP = TGuiIconName(81);
+  ICON_BOX_TOP_RIGHT = TGuiIconName(82);
+  ICON_BOX_RIGHT = TGuiIconName(83);
+  ICON_BOX_BOTTOM_RIGHT = TGuiIconName(84);
+  ICON_BOX_BOTTOM = TGuiIconName(85);
+  ICON_BOX_BOTTOM_LEFT = TGuiIconName(86);
+  ICON_BOX_LEFT = TGuiIconName(87);
+  ICON_BOX_TOP_LEFT = TGuiIconName(88);
+  ICON_BOX_CENTER = TGuiIconName(89);
+  ICON_BOX_CIRCLE_MASK = TGuiIconName(90);
+  ICON_POT = TGuiIconName(91);
+  ICON_ALPHA_MULTIPLY = TGuiIconName(92);
+  ICON_ALPHA_CLEAR = TGuiIconName(93);
+  ICON_DITHERING = TGuiIconName(94);
+  ICON_MIPMAPS = TGuiIconName(95);
+  ICON_BOX_GRID = TGuiIconName(96);
+  ICON_GRID = TGuiIconName(97);
+  ICON_BOX_CORNERS_SMALL = TGuiIconName(98);
+  ICON_BOX_CORNERS_BIG = TGuiIconName(99);
+  ICON_FOUR_BOXES = TGuiIconName(100);
+  ICON_GRID_FILL = TGuiIconName(101);
+  ICON_BOX_MULTISIZE = TGuiIconName(102);
+  ICON_ZOOM_SMALL = TGuiIconName(103);
+  ICON_ZOOM_MEDIUM = TGuiIconName(104);
+  ICON_ZOOM_BIG = TGuiIconName(105);
+  ICON_ZOOM_ALL = TGuiIconName(106);
+  ICON_ZOOM_CENTER = TGuiIconName(107);
+  ICON_BOX_DOTS_SMALL = TGuiIconName(108);
+  ICON_BOX_DOTS_BIG = TGuiIconName(109);
+  ICON_BOX_CONCENTRIC = TGuiIconName(110);
+  ICON_BOX_GRID_BIG = TGuiIconName(111);
+  ICON_OK_TICK = TGuiIconName(112);
+  ICON_CROSS = TGuiIconName(113);
+  ICON_ARROW_LEFT = TGuiIconName(114);
+  ICON_ARROW_RIGHT = TGuiIconName(115);
+  ICON_ARROW_DOWN = TGuiIconName(116);
+  ICON_ARROW_UP = TGuiIconName(117);
+  ICON_ARROW_LEFT_FILL = TGuiIconName(118);
+  ICON_ARROW_RIGHT_FILL = TGuiIconName(119);
+  ICON_ARROW_DOWN_FILL = TGuiIconName(120);
+  ICON_ARROW_UP_FILL = TGuiIconName(121);
+  ICON_AUDIO = TGuiIconName(122);
+  ICON_FX = TGuiIconName(123);
+  ICON_WAVE = TGuiIconName(124);
+  ICON_WAVE_SINUS = TGuiIconName(125);
+  ICON_WAVE_SQUARE = TGuiIconName(126);
+  ICON_WAVE_TRIANGULAR = TGuiIconName(127);
+  ICON_CROSS_SMALL = TGuiIconName(128);
+  ICON_PLAYER_PREVIOUS = TGuiIconName(129);
+  ICON_PLAYER_PLAY_BACK = TGuiIconName(130);
+  ICON_PLAYER_PLAY = TGuiIconName(131);
+  ICON_PLAYER_PAUSE = TGuiIconName(132);
+  ICON_PLAYER_STOP = TGuiIconName(133);
+  ICON_PLAYER_NEXT = TGuiIconName(134);
+  ICON_PLAYER_RECORD = TGuiIconName(135);
+  ICON_MAGNET = TGuiIconName(136);
+  ICON_LOCK_CLOSE = TGuiIconName(137);
+  ICON_LOCK_OPEN = TGuiIconName(138);
+  ICON_CLOCK = TGuiIconName(139);
+  ICON_TOOLS = TGuiIconName(140);
+  ICON_GEAR = TGuiIconName(141);
+  ICON_GEAR_BIG = TGuiIconName(142);
+  ICON_BIN = TGuiIconName(143);
+  ICON_HAND_POINTER = TGuiIconName(144);
+  ICON_LASER = TGuiIconName(145);
+  ICON_COIN = TGuiIconName(146);
+  ICON_EXPLOSION = TGuiIconName(147);
+  ICON_1UP = TGuiIconName(148);
+  ICON_PLAYER = TGuiIconName(149);
+  ICON_PLAYER_JUMP = TGuiIconName(150);
+  ICON_KEY = TGuiIconName(151);
+  ICON_DEMON = TGuiIconName(152);
+  ICON_TEXT_POPUP = TGuiIconName(153);
+  ICON_GEAR_EX = TGuiIconName(154);
+  ICON_CRACK = TGuiIconName(155);
+  ICON_CRACK_POINTS = TGuiIconName(156);
+  ICON_STAR = TGuiIconName(157);
+  ICON_DOOR = TGuiIconName(158);
+  ICON_EXIT = TGuiIconName(159);
+  ICON_MODE_2D = TGuiIconName(160);
+  ICON_MODE_3D = TGuiIconName(161);
+  ICON_CUBE = TGuiIconName(162);
+  ICON_CUBE_FACE_TOP = TGuiIconName(163);
+  ICON_CUBE_FACE_LEFT = TGuiIconName(164);
+  ICON_CUBE_FACE_FRONT = TGuiIconName(165);
+  ICON_CUBE_FACE_BOTTOM = TGuiIconName(166);
+  ICON_CUBE_FACE_RIGHT = TGuiIconName(167);
+  ICON_CUBE_FACE_BACK = TGuiIconName(168);
+  ICON_CAMERA = TGuiIconName(169);
+  ICON_SPECIAL = TGuiIconName(170);
+  ICON_LINK_NET = TGuiIconName(171);
+  ICON_LINK_BOXES = TGuiIconName(172);
+  ICON_LINK_MULTI = TGuiIconName(173);
+  ICON_LINK = TGuiIconName(174);
+  ICON_LINK_BROKE = TGuiIconName(175);
+  ICON_TEXT_NOTES = TGuiIconName(176);
+  ICON_NOTEBOOK = TGuiIconName(177);
+  ICON_SUITCASE = TGuiIconName(178);
+  ICON_SUITCASE_ZIP = TGuiIconName(179);
+  ICON_MAILBOX = TGuiIconName(180);
+  ICON_MONITOR = TGuiIconName(181);
+  ICON_PRINTER = TGuiIconName(182);
+  ICON_PHOTO_CAMERA = TGuiIconName(183);
+  ICON_PHOTO_CAMERA_FLASH = TGuiIconName(184);
+  ICON_HOUSE = TGuiIconName(185);
+  ICON_HEART = TGuiIconName(186);
+  ICON_CORNER = TGuiIconName(187);
+  ICON_VERTICAL_BARS = TGuiIconName(188);
+  ICON_VERTICAL_BARS_FILL = TGuiIconName(189);
+  ICON_LIFE_BARS = TGuiIconName(190);
+  ICON_INFO = TGuiIconName(191);
+  ICON_CROSSLINE = TGuiIconName(192);
+  ICON_HELP = TGuiIconName(193);
+  ICON_FILETYPE_ALPHA = TGuiIconName(194);
+  ICON_FILETYPE_HOME = TGuiIconName(195);
+  ICON_LAYERS_VISIBLE = TGuiIconName(196);
+  ICON_LAYERS = TGuiIconName(197);
+  ICON_WINDOW = TGuiIconName(198);
+  ICON_HIDPI = TGuiIconName(199);
+  ICON_FILETYPE_BINARY = TGuiIconName(200);
+  ICON_HEX = TGuiIconName(201);
+  ICON_SHIELD = TGuiIconName(202);
+  ICON_FILE_NEW = TGuiIconName(203);
+  ICON_FOLDER_ADD = TGuiIconName(204);
+  ICON_ALARM = TGuiIconName(205);
+  ICON_CPU = TGuiIconName(206);
+  ICON_ROM = TGuiIconName(207);
+  ICON_STEP_OVER = TGuiIconName(208);
+  ICON_STEP_INTO = TGuiIconName(209);
+  ICON_STEP_OUT = TGuiIconName(210);
+  ICON_RESTART = TGuiIconName(211);
+  ICON_BREAKPOINT_ON = TGuiIconName(212);
+  ICON_BREAKPOINT_OFF = TGuiIconName(213);
+  ICON_BURGER_MENU = TGuiIconName(214);
+  ICON_CASE_SENSITIVE = TGuiIconName(215);
+  ICON_REG_EXP = TGuiIconName(216);
+  ICON_FOLDER = TGuiIconName(217);
+  ICON_FILE = TGuiIconName(218);
+  ICON_SAND_TIMER = TGuiIconName(219);
+  ICON_WARNING = TGuiIconName(220);
+  ICON_HELP_BOX = TGuiIconName(221);
+  ICON_INFO_BOX = TGuiIconName(222);
+  ICON_PRIORITY = TGuiIconName(223);
+  ICON_LAYERS_ISO = TGuiIconName(224);
+  ICON_LAYERS2 = TGuiIconName(225);
+  ICON_MLAYERS = TGuiIconName(226);
+  ICON_MAPS = TGuiIconName(227);
+  ICON_HOT = TGuiIconName(228);
+  ICON_LABEL = TGuiIconName(229);
+  ICON_NAME_ID = TGuiIconName(230);
+  ICON_SLICING = TGuiIconName(231);
+  ICON_MANUAL_CONTROL = TGuiIconName(232);
+  ICON_COLLISION = TGuiIconName(233);
+  ICON_234 = TGuiIconName(234);
+  ICON_235 = TGuiIconName(235);
+  ICON_236 = TGuiIconName(236);
+  ICON_237 = TGuiIconName(237);
+  ICON_238 = TGuiIconName(238);
+  ICON_239 = TGuiIconName(239);
+  ICON_240 = TGuiIconName(240);
+  ICON_241 = TGuiIconName(241);
+  ICON_242 = TGuiIconName(242);
+  ICON_243 = TGuiIconName(243);
+  ICON_244 = TGuiIconName(244);
+  ICON_245 = TGuiIconName(245);
+  ICON_246 = TGuiIconName(246);
+  ICON_247 = TGuiIconName(247);
+  ICON_248 = TGuiIconName(248);
+  ICON_249 = TGuiIconName(249);
+  ICON_250 = TGuiIconName(250);
+  ICON_251 = TGuiIconName(251);
+  ICON_252 = TGuiIconName(252);
+  ICON_253 = TGuiIconName(253);
+  ICON_254 = TGuiIconName(254);
+  ICON_255 = TGuiIconName(255);
 
 
 type
   PGuiState = ^TGuiState;
   TGuiState = Integer;
-
 const
-  STATE_NORMAL = 0;
-  STATE_FOCUSED = 1;
-  STATE_PRESSED = 2;
-  STATE_DISABLED = 3;
+  STATE_NORMAL = TGuiState(0);
+  STATE_FOCUSED = TGuiState(1);
+  STATE_PRESSED = TGuiState(2);
+  STATE_DISABLED = TGuiState(3);
 
 
 // Gui control text alignment vertical
@@ -315,11 +313,10 @@ const
 type
   PGuiTextAlignmentVertical = ^TGuiTextAlignmentVertical;
   TGuiTextAlignmentVertical = Integer;
-
 const
-  TEXT_ALIGN_TOP = 0;
-  TEXT_ALIGN_MIDDLE = 1;
-  TEXT_ALIGN_BOTTOM = 2;
+  TEXT_ALIGN_TOP = TGuiTextAlignmentVertical(0);
+  TEXT_ALIGN_MIDDLE = TGuiTextAlignmentVertical(1);
+  TEXT_ALIGN_BOTTOM = TGuiTextAlignmentVertical(2);
 
   // Gui control text wrap mode
   // NOTE: Useful for multiline text
@@ -327,173 +324,161 @@ type
   PGuiTextWrapMode = ^TGuiTextWrapMode;
   TGuiTextWrapMode = integer;
 const
-  TEXT_WRAP_NONE = 0;
-  TEXT_WRAP_CHAR = 1;
-  TEXT_WRAP_WORD = 2;
+  TEXT_WRAP_NONE = TGuiTextWrapMode(0);
+  TEXT_WRAP_CHAR = TGuiTextWrapMode(1);
+  TEXT_WRAP_WORD = TGuiTextWrapMode(2);
 
 type
   PGuiTextAlignment = ^TGuiTextAlignment;
   TGuiTextAlignment =integer;
 const
-  TEXT_ALIGN_LEFT = 0;
-  TEXT_ALIGN_CENTER = 1;
-  TEXT_ALIGN_RIGHT = 2;
+  TEXT_ALIGN_LEFT = TGuiTextAlignment(0);
+  TEXT_ALIGN_CENTER = TGuiTextAlignment(1);
+  TEXT_ALIGN_RIGHT = TGuiTextAlignment(2);
 
 type
   PGuiControl = ^TGuiControl;
   TGuiControl = Integer;
-
 const
-  DEFAULT = 0;
-  LABELS = 1;
-  BUTTON = 2;
-  TOGGLE = 3;
-  SLIDER = 4;
-  PROGRESSBAR = 5;
-  CHECKBOX = 6;
-  COMBOBOX = 7;
-  DROPDOWNBOX = 8;
-  TEXTBOX = 9;
-  VALUEBOX = 10;
-  CONTROL11 = 11;
-  LISTVIEW = 12;
-  COLORPICKER = 13;
-  SCROLLBAR = 14;
-  STATUSBAR = 15;
+  DEFAULT = TGuiControl(0);
+  LABELS = TGuiControl(1);
+  BUTTON = TGuiControl(2);
+  TOGGLE = TGuiControl(3);
+  SLIDER = TGuiControl(4);
+  PROGRESSBAR = TGuiControl(5);
+  CHECKBOX = TGuiControl(6);
+  COMBOBOX = TGuiControl(7);
+  DROPDOWNBOX = TGuiControl(8);
+  TEXTBOX = TGuiControl(9);
+  VALUEBOX = TGuiControl(10);
+  CONTROL11 = TGuiControl(11);
+  LISTVIEW = TGuiControl(12);
+  COLORPICKER = TGuiControl(13);
+  SCROLLBAR = TGuiControl(14);
+  STATUSBAR = TGuiControl(15);
 
 type
   PGuiControlProperty = ^TGuiControlProperty;
   TGuiControlProperty = Integer;
-
 const
-  BORDER_COLOR_NORMA    = 0;    // Control border color in STATE_NORMAL
-  BASE_COLOR_NORMAL     = 1;    // Control base color in STATE_NORMAL
-  TEXT_COLOR_NORMAL     = 2;    // Control text color in STATE_NORMAL
-  BORDER_COLOR_FOCUSED  = 3;    // Control border color in STATE_FOCUSED
-  BASE_COLOR_FOCUSED    = 4;    // Control base color in STATE_FOCUSED
-  TEXT_COLOR_FOCUSED    = 5;    // Control text color in STATE_FOCUSED
-  BORDER_COLOR_PRESSED  = 6;    // Control border color in STATE_PRESSED
-  BASE_COLOR_PRESSED    = 7;    // Control base color in STATE_PRESSED
-  TEXT_COLOR_PRESSED    = 8;    // Control text color in STATE_PRESSED
-  BORDER_COLOR_DISABLED = 9;    // Control border color in STATE_DISABLED
-  BASE_COLOR_DISABLED   = 10;   // Control base color in STATE_DISABLED
-  TEXT_COLOR_DISABLED   = 11;   // Control text color in STATE_DISABLED
-  BORDER_WIDTH          = 12;   // Control border size, 0 for no border
-  TEXT_PADDING          = 13;   // Control text padding, not considering border
-  TEXT_ALIGNMENT        = 14;   // Control text horizontal alignment inside control text bound (after border and padding)
+  BORDER_COLOR_NORMAL   = TGuiControlProperty(0);    // Control border color in STATE_NORMAL
+  BASE_COLOR_NORMAL     = TGuiControlProperty(1);    // Control base color in STATE_NORMAL
+  TEXT_COLOR_NORMAL     = TGuiControlProperty(2);    // Control text color in STATE_NORMAL
+  BORDER_COLOR_FOCUSED  = TGuiControlProperty(3);    // Control border color in STATE_FOCUSED
+  BASE_COLOR_FOCUSED    = TGuiControlProperty(4);    // Control base color in STATE_FOCUSED
+  TEXT_COLOR_FOCUSED    = TGuiControlProperty(5);    // Control text color in STATE_FOCUSED
+  BORDER_COLOR_PRESSED  = TGuiControlProperty(6);    // Control border color in STATE_PRESSED
+  BASE_COLOR_PRESSED    = TGuiControlProperty(7);    // Control base color in STATE_PRESSED
+  TEXT_COLOR_PRESSED    = TGuiControlProperty(8);    // Control text color in STATE_PRESSED
+  BORDER_COLOR_DISABLED = TGuiControlProperty(9);    // Control border color in STATE_DISABLED
+  BASE_COLOR_DISABLED   = TGuiControlProperty(10);   // Control base color in STATE_DISABLED
+  TEXT_COLOR_DISABLED   = TGuiControlProperty(11);   // Control text color in STATE_DISABLED
+  BORDER_WIDTH          = TGuiControlProperty(12);   // Control border size, 0 for no border
+  TEXT_PADDING          = TGuiControlProperty(13);   // Control text padding, not considering border
+  TEXT_ALIGNMENT        = TGuiControlProperty(14);   // Control text horizontal alignment inside control text bound (after border and padding)
 
 
 type
   PGuiDefaultProperty = ^TGuiDefaultProperty;
   TGuiDefaultProperty = Integer;
-
 const
-  TEXT_SIZE = 16;                  // Text size (glyphs max height
-  TEXT_SPACING = 17;               // Text spacing between glyphs
-  LINE_COLOR = 18;                 // Line control color
-  BACKGROUND_COLOR = 19;           // Background color
-  TEXT_LINE_SPACING = 20;          // Text spacing between lines
-  TEXT_ALIGNMENT_VERTICAL = 21;    // Text vertical alignment inside text bounds (after border and padding)
-  TEXT_WRAP_MODE = 22;             // Text wrap-mode inside text bounds
+  TEXT_SIZE = TGuiDefaultProperty(16);                  // Text size (glyphs max height
+  TEXT_SPACING = TGuiDefaultProperty(17);               // Text spacing between glyphs
+  LINE_COLOR = TGuiDefaultProperty(18);                 // Line control color
+  BACKGROUND_COLOR = TGuiDefaultProperty(19);           // Background color
+  TEXT_LINE_SPACING = TGuiDefaultProperty(20);          // Text spacing between lines
+  TEXT_ALIGNMENT_VERTICAL = TGuiDefaultProperty(21);    // Text vertical alignment inside text bounds (after border and padding)
+  TEXT_WRAP_MODE = TGuiDefaultProperty(22);             // Text wrap-mode inside text bounds
 
 type
   PGuiToggleProperty = ^TGuiToggleProperty;
   TGuiToggleProperty = Integer;
-
 const
-  GROUP_PADDING = 16;
+  GROUP_PADDING = TGuiToggleProperty(16);
 
 type
   PGuiSliderProperty = ^TGuiSliderProperty;
   TGuiSliderProperty = Integer;
-
 const
-  SLIDER_WIDTH = 16;
-  SLIDER_PADDING = 17;
+  SLIDER_WIDTH = TGuiSliderProperty(16);
+  SLIDER_PADDING = TGuiSliderProperty(17);
 
 type
   PGuiProgressBarProperty = ^TGuiProgressBarProperty;
   TGuiProgressBarProperty = Integer;
-
 const
-  PROGRESS_PADDING = 16;
+  PROGRESS_PADDING = TGuiProgressBarProperty(16);
 
 type
   PGuiScrollBarProperty = ^TGuiScrollBarProperty;
   TGuiScrollBarProperty = Integer;
-
 const
-  ARROWS_SIZE = 16;
-  ARROWS_VISIBLE = 17;
-  SCROLL_SLIDER_PADDING = 18;
-  SCROLL_SLIDER_SIZE = 19;
-  SCROLL_PADDING = 20;
-  SCROLL_SPEED = 21;
-
+  ARROWS_SIZE = TGuiScrollBarProperty(16);
+  ARROWS_VISIBLE = TGuiScrollBarProperty(17);
+  SCROLL_SLIDER_PADDING = TGuiScrollBarProperty(18);
+  SCROLL_SLIDER_SIZE = TGuiScrollBarProperty(19);
+  SCROLL_PADDING = TGuiScrollBarProperty(20);
+  SCROLL_SPEED = TGuiScrollBarProperty(21);
 
 type
   PGuiCheckBoxProperty = ^TGuiCheckBoxProperty;
   TGuiCheckBoxProperty = Integer;
-
 const
-  CHECK_PADDING = 16;
+  CHECK_PADDING = TGuiCheckBoxProperty(16);
 
 type
   PGuiComboBoxProperty = ^TGuiComboBoxProperty;
   TGuiComboBoxProperty = Integer;
-
 const
-  COMBO_BUTTON_WIDTH = 16;
-  COMBO_BUTTON_SPACING = 17;
+  COMBO_BUTTON_WIDTH = TGuiComboBoxProperty(16);
+  COMBO_BUTTON_SPACING = TGuiComboBoxProperty(17);
 
 type
   PGuiDropdownBoxProperty = ^TGuiDropdownBoxProperty;
   TGuiDropdownBoxProperty = Integer;
-
 const
-  ARROW_PADDING = 16;
-  DROPDOWN_ITEMS_SPACING = 17;
-  DROPDOWN_ARROW_HIDDEN = 18;      // DropdownBox arrow hidden
-  DROPDOWN_ROLL_UP = 19;           // DropdownBox roll up flag (default rolls down)
+  ARROW_PADDING = TGuiDropdownBoxProperty(16);
+  DROPDOWN_ITEMS_SPACING = TGuiDropdownBoxProperty(17);
+  DROPDOWN_ARROW_HIDDEN = TGuiDropdownBoxProperty(18);      // DropdownBox arrow hidden
+  DROPDOWN_ROLL_UP = TGuiDropdownBoxProperty(19);           // DropdownBox roll up flag (default rolls down)
 // TextBox/TextBoxMulti/ValueBox/Spinner
+
 type
   PGuiTextBoxProperty = ^TGuiTextBoxProperty;
   TGuiTextBoxProperty = Integer;
-
 const
-  TEXT_READONLY = 16;         // TextBox in read-only mode: 0-text editable, 1-text no-editable
+  TEXT_READONLY = TGuiTextBoxProperty(16);         // TextBox in read-only mode: 0-text editable, 1-text no-editable
 
 // Spinner
 type
   PGuiSpinnerProperty = ^TGuiSpinnerProperty;
   TGuiSpinnerProperty = Integer;
-
 const
-  SPIN_BUTTON_WIDTH = 16;    // Spinner left/right buttons width
-  SPIN_BUTTON_SPACING = 17;  // Spinner buttons separation
+  SPIN_BUTTON_WIDTH = TGuiSpinnerProperty(16);    // Spinner left/right buttons width
+  SPIN_BUTTON_SPACING = TGuiSpinnerProperty(17);  // Spinner buttons separation
 
 // ListView
 type
   PGuiListViewProperty = ^TGuiListViewProperty;
   TGuiListViewProperty = Integer;
 const
-  LIST_ITEMS_HEIGHT = 16;   // ListView items height
-  LIST_ITEMS_SPACING = 17;
-  SCROLLBAR_WIDTH = 18;
-  LIST_ITEMS_BORDER_NORMAL = 19;
-  SCROLLBAR_SIDE = 20;
-  LIST_ITEMS_BORDER_WIDTH = 21;    // ListView items border width
+  LIST_ITEMS_HEIGHT = TGuiListViewProperty(16);   // ListView items height
+  LIST_ITEMS_SPACING = TGuiListViewProperty(17);
+  SCROLLBAR_WIDTH = TGuiListViewProperty(18);
+  LIST_ITEMS_BORDER_NORMAL = TGuiListViewProperty(19);
+  SCROLLBAR_SIDE = TGuiListViewProperty(20);
+  LIST_ITEMS_BORDER_WIDTH = TGuiListViewProperty(21);    // ListView items border width
 
   // ColorPicker
 type
   PGuiColorPickerProperty = ^TGuiColorPickerProperty;
   TGuiColorPickerProperty = Integer;
 const
-  COLOR_SELECTOR_SIZE = 16;
-  HUEBAR_WIDTH = 17;
-  HUEBAR_PADDING = 18;
-  HUEBAR_SELECTOR_HEIGHT = 19;
-  HUEBAR_SELECTOR_OVERFLOW = 20;
+  COLOR_SELECTOR_SIZE = TGuiColorPickerProperty(16);
+  HUEBAR_WIDTH = TGuiColorPickerProperty(17);
+  HUEBAR_PADDING = TGuiColorPickerProperty(18);
+  HUEBAR_SELECTOR_HEIGHT = TGuiColorPickerProperty(19);
+  HUEBAR_SELECTOR_OVERFLOW = TGuiColorPickerProperty(20);
 
 // Style property
 type
