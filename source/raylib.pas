@@ -2337,6 +2337,7 @@ operator - (a: TVector2; b: Single): TVector2; overload; inline;
 operator * (a, b: TVector2): TVector2; overload; inline;
 operator * (a: TVector2; b: Single): TVector2; overload; inline;
 operator / (a, b: TVector2): TVector2; inline;
+operator = (a, b: TVector2): Boolean; inline;
 
 { TVector3 operators }
 operator := (a: TVector3Data): TVector3; inline;
@@ -2348,6 +2349,7 @@ operator - (a: TVector3; b: Single): TVector3; overload; inline;
 operator * (a, b: TVector3): TVector3; overload; inline;
 operator * (a: TVector3; b: Single): TVector3; overload; inline;
 operator / (a, b: TVector3): TVector3; inline;
+operator = (a, b: TVector3): Boolean; inline;
 
 { TVector4 operators }
 operator := (a: TVector4Data): TVector4; inline;
@@ -2359,14 +2361,17 @@ operator - (a: TVector4; b: Single): TVector4; overload; inline;
 operator * (a, b: TVector4): TVector4; overload; inline;
 operator * (a: TVector4; b: Single): TVector4; overload; inline;
 operator / (a, b: TVector4): TVector4; inline;
+operator = (a, b: TVector4): Boolean; inline;
 
 { TMatrix operators }
 operator + (a, b: TMatrix): TMatrix; inline;
 operator - (a, b: TMatrix): TMatrix; inline;
 operator * (a, b: TMatrix): TMatrix; inline;
+operator = (a, b: TMatrix): Boolean; inline;
 
 { TColorB operators }
 operator := (a: TColorBData): TColorB; inline;
+operator = (a, b: TColorB): Boolean; inline;
 
 implementation
 uses
