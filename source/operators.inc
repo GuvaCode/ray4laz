@@ -1,6 +1,6 @@
 { TVector2 operators }
 
-operator := (a: TFloat2Array): TVector2;
+operator := (a: TVector2Data): TVector2;
 begin
   Result := Vector2Create(a[0], a[1]);
 end;
@@ -47,7 +47,7 @@ end;
 
 { TVector3 operators }
 
-operator := (a: TFloat3Array): TVector3;
+operator := (a: TVector3Data): TVector3;
 begin
   Result := Vector3Create(a[0], a[1], a[2]);
 end;
@@ -94,7 +94,7 @@ end;
 
 { TVector4 operators }
 
-operator := (a: TFloat4Array): TVector4;
+operator := (a: TVector4Data): TVector4;
 begin
   Result := Vector4Create(a[0], a[1], a[2], a[3]);
 end;
@@ -155,3 +155,10 @@ operator * (a, b: TMatrix): TMatrix;
 begin
   Result := MatrixMultiply(a, b);
 end;
+
+{ TColorB operators }
+operator := (a: TColorBData): TColorB;
+begin
+  Result := ColorCreate(a[0], a[1], a[2], a[3]);
+end;
+

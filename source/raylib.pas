@@ -36,6 +36,7 @@ const
      r,g,b,a : byte; // Color value
      procedure Create(aR: Byte; aG: Byte; aB: Byte; aA: Byte);
    end;
+   TColorBData = array[0..3] of Byte;
 
   TColor = TColorB;
   PColor = PColorB;
@@ -81,6 +82,7 @@ const
          procedure Create(aX, aY: single);
         // {$ENDIF}
        end;
+     TVector2Data = array[0..1] of Single;
 
      (* Vector3, 3 components *)
      PVector3 = ^TVector3;
@@ -90,6 +92,7 @@ const
          z : single; // Vector z component
          procedure Create(aX, aY, aZ: single);
        end;
+     TVector3Data = array[0..2] of Single;
 
      (* Vector4, 4 components *)
      PVector4 = ^TVector4;
@@ -100,6 +103,7 @@ const
          w : single; // Vector w component
          procedure Create(aX, aY, aZ, aW: single);
        end;
+     TVector4Data = array[0..3] of Single;
 
      (* Quaternion, 4 components (Vector4 alias) *)
      PQuaternion = ^TQuaternion;
@@ -2322,10 +2326,50 @@ procedure BoundingBoxSet(aBoundingBox: PBoundingBox; aMin, aMax: TVector3);
 function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aProjection: Integer): TCamera3D;
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer);
 
+{ TVector2 operators }
+operator := (a: TVector2Data): TVector2; inline;
+operator + (a, b: TVector2): TVector2; overload; inline;
+operator + (a: TVector2; b: Single): TVector2; overload; inline;
+operator - (a: TVector2): TVector2; overload; inline;
+operator - (a, b: TVector2): TVector2; overload; inline;
+operator - (a: TVector2; b: Single): TVector2; overload; inline;
+operator * (a, b: TVector2): TVector2; overload; inline;
+operator * (a: TVector2; b: Single): TVector2; overload; inline;
+operator / (a, b: TVector2): TVector2; inline;
+
+{ TVector3 operators }
+operator := (a: TVector3Data): TVector3; inline;
+operator + (a, b: TVector3): TVector3; overload; inline;
+operator + (a: TVector3; b: Single): TVector3; overload; inline;
+operator - (a: TVector3): TVector3; overload; inline;
+operator - (a, b: TVector3): TVector3; overload; inline;
+operator - (a: TVector3; b: Single): TVector3; overload; inline;
+operator * (a, b: TVector3): TVector3; overload; inline;
+operator * (a: TVector3; b: Single): TVector3; overload; inline;
+operator / (a, b: TVector3): TVector3; inline;
+
+{ TVector4 operators }
+operator := (a: TVector4Data): TVector4; inline;
+operator + (a, b: TVector4): TVector4; overload; inline;
+operator + (a: TVector4; b: Single): TVector4; overload; inline;
+operator - (a: TVector4): TVector4; overload; inline;
+operator - (a, b: TVector4): TVector4; overload; inline;
+operator - (a: TVector4; b: Single): TVector4; overload; inline;
+operator * (a, b: TVector4): TVector4; overload; inline;
+operator * (a: TVector4; b: Single): TVector4; overload; inline;
+operator / (a, b: TVector4): TVector4; inline;
+
+{ TMatrix operators }
+operator + (a, b: TMatrix): TMatrix; inline;
+operator - (a, b: TMatrix): TMatrix; inline;
+operator * (a, b: TMatrix): TMatrix; inline;
+
+{ TColorB operators }
+operator := (a: TColorBData): TColorB; inline;
 
 implementation
 uses
-  Math;
+  Math, raymath;
 
 {$IFDEF linux}
   {$linklib c}
@@ -2514,7 +2558,7 @@ begin
   self := BoundingBoxCreate(aMin, aMax);
 end;
 
-
+{$include operators.inc}
 
 initialization
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);

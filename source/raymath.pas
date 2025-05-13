@@ -59,10 +59,6 @@ type
      v: array[0..15] of Single;
     end;
 
-    TFloat2Array = array[0..1] of Single;
-    TFloat3Array = array[0..2] of Single;
-    TFloat4Array = array[0..3] of Single;
-
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Utils math
 //----------------------------------------------------------------------------------
@@ -375,44 +371,6 @@ function fMaxf(a, b: Single):single;
 
 function Vector2AngleDeg(v1, v2: TVector2): single;
 
-{ TVector2 operators }
-operator := (a: TFloat2Array): TVector2; inline;
-operator + (a, b: TVector2): TVector2; overload; inline;
-operator + (a: TVector2; b: Single): TVector2; overload; inline;
-operator - (a: TVector2): TVector2; overload; inline;
-operator - (a, b: TVector2): TVector2; overload; inline;
-operator - (a: TVector2; b: Single): TVector2; overload; inline;
-operator * (a, b: TVector2): TVector2; overload; inline;
-operator * (a: TVector2; b: Single): TVector2; overload; inline;
-operator / (a, b: TVector2): TVector2; inline;
-
-{ TVector3 operators }
-operator := (a: TFloat3Array): TVector3; inline;
-operator + (a, b: TVector3): TVector3; overload; inline;
-operator + (a: TVector3; b: Single): TVector3; overload; inline;
-operator - (a: TVector3): TVector3; overload; inline;
-operator - (a, b: TVector3): TVector3; overload; inline;
-operator - (a: TVector3; b: Single): TVector3; overload; inline;
-operator * (a, b: TVector3): TVector3; overload; inline;
-operator * (a: TVector3; b: Single): TVector3; overload; inline;
-operator / (a, b: TVector3): TVector3; inline;
-
-{ TVector4 operators }
-operator := (a: TFloat4Array): TVector4; inline;
-operator + (a, b: TVector4): TVector4; overload; inline;
-operator + (a: TVector4; b: Single): TVector4; overload; inline;
-operator - (a: TVector4): TVector4; overload; inline;
-operator - (a, b: TVector4): TVector4; overload; inline;
-operator - (a: TVector4; b: Single): TVector4; overload; inline;
-operator * (a, b: TVector4): TVector4; overload; inline;
-operator * (a: TVector4; b: Single): TVector4; overload; inline;
-operator / (a, b: TVector4): TVector4; inline;
-
-{ TMatrix operators }
-operator + (a, b: TMatrix): TMatrix; inline;
-operator - (a, b: TMatrix): TMatrix; inline;
-operator * (a, b: TMatrix): TMatrix; inline;
-
 implementation
 uses Math;
 
@@ -436,8 +394,6 @@ function Vector2AngleDeg(v1, v2: TVector2): single;
 begin
   result := arctan2(v2.y - v1.y, v2.x - v1.x) / DEG2RAD;
 end;
-
-{$include operators.inc}
 
 initialization
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);
