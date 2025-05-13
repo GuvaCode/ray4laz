@@ -34,6 +34,7 @@ const
    PColorB = ^TColorB;
    TColorB = record
      r,g,b,a : byte; // Color value
+     class operator = (aColor, bColor: TColorB): Boolean;
      procedure Create(aR: Byte; aG: Byte; aB: Byte; aA: Byte);
    end;
 
@@ -2466,6 +2467,11 @@ begin
 end;
 
 { TColorB }
+
+class operator TColorB.=(aColor, bColor: TColorB): Boolean;
+begin
+  Result := (aColor.R = bColor.R) and (aColor.G = bColor.G) and (aColor.B = bColor.B);
+end;
 
 procedure TColorB.Create(aR: Byte; aG: Byte; aB: Byte; aA: Byte);
 begin

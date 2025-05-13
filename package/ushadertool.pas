@@ -115,7 +115,7 @@ procedure CreateShaderToyConverterForm(Sender: TObject; aFormName: string;
 
 implementation
  uses SynEditTypes, LazIDEIntf, SrcEditorIntf, ProjectIntf, Process,
-      MacroIntf, PackageIntf, IDEExternToolIntf, IDEMsgIntf, strutils, math;
+      MacroIntf, PackageIntf, IDEExternToolIntf, IDEMsgIntf, strutils;
 
  procedure ShowShaderToyConverterForm(Sender: TObject);
  begin
