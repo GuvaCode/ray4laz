@@ -1,5 +1,10 @@
 { TVector2 operators }
 
+operator := (a: TFloat2Array): TVector2;
+begin
+  Result := Vector2Create(a[0], a[1]);
+end;
+
 operator + (a, b: TVector2): TVector2;
 begin
   Result := Vector2Add(a, b);
@@ -42,6 +47,11 @@ end;
 
 { TVector3 operators }
 
+operator := (a: TFloat3Array): TVector3;
+begin
+  Result := Vector3Create(a[0], a[1], a[2]);
+end;
+
 operator + (a, b: TVector3): TVector3;
 begin
   Result := Vector3Add(a, b);
@@ -83,6 +93,11 @@ begin
 end;
 
 { TVector4 operators }
+
+operator := (a: TFloat4Array): TVector4;
+begin
+  Result := Vector4Create(a[0], a[1], a[2], a[3]);
+end;
 
 operator + (a, b: TVector4): TVector4;
 begin
