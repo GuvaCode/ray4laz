@@ -1269,13 +1269,13 @@ function GetFileModTime(const fileName: PChar): QWord; cdecl; external {$IFNDEF 
 (* Compression/Encoding functionality *)
 
 {Compress data (DEFLATE algorithm), memory must be MemFree()}
-function CompressData(const data: Pointer; dataSize: Integer; compDataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CompressData';
+function CompressData(const data: PByte; dataSize: Integer; compDataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CompressData';
 {Decompress data (DEFLATE algorithm), memory must be MemFree()}
-function DecompressData(const compData: Pointer; compDataSize: Integer; dataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecompressData';
+function DecompressData(const compData: PByte; compDataSize: Integer; dataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecompressData';
 {Encode data to Base64 string, memory must be MemFree()}
-function EncodeDataBase64(const data: PChar; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EncodeDataBase64';
+function EncodeDataBase64(const data: PByte; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EncodeDataBase64';
 {Decode Base64 string data, memory must be MemFree()}
-function DecodeDataBase64(const data: PChar; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
+function DecodeDataBase64(const data: PByte; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
 {Compute CRC32 hash code}
 function ComputeCRC32(data: PChar; dataSize: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeCRC32';
 {Compute MD5 hash code, returns static int[4] (16 bytes)}
