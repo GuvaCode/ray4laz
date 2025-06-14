@@ -679,7 +679,7 @@ const
         GAMEPAD_BUTTON_LEFT_THUMB        = TGamepadButton(16); // Gamepad joystick pressed button left
         GAMEPAD_BUTTON_RIGHT_THUMB       = TGamepadButton(17); // Gamepad joystick pressed button right
 
-   (* Gamepad axis *)
+   (* Gamepad axes *)
    type
      PGamepadAxis = ^TGamepadAxis;
      TGamepadAxis =  Integer;
@@ -1272,10 +1272,10 @@ function GetFileModTime(const fileName: PChar): QWord; cdecl; external {$IFNDEF 
 function CompressData(const data: PByte; dataSize: Integer; compDataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CompressData';
 {Decompress data (DEFLATE algorithm), memory must be MemFree()}
 function DecompressData(const compData: PByte; compDataSize: Integer; dataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecompressData';
-{Encode data to Base64 string, memory must be MemFree()}
+{Encode data to Base64 string (includes NULL terminator), memory must be MemFree()}
 function EncodeDataBase64(const data: PByte; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EncodeDataBase64';
-{Decode Base64 string data, memory must be MemFree()}
-function DecodeDataBase64(const data: PByte; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
+{Decode Base64 string (expected NULL terminated), memory must be MemFree()}
+function DecodeDataBase64(const text: PChar; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
 {Compute CRC32 hash code}
 function ComputeCRC32(data: PChar; dataSize: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeCRC32';
 {Compute MD5 hash code, returns static int[4] (16 bytes)}
@@ -1343,9 +1343,9 @@ function IsGamepadButtonReleased(gamepad: Integer; button: TGamepadButton): Bool
 function IsGamepadButtonUp(gamepad: Integer; button: TGamepadButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGamepadButtonUp';
 {Get the last gamepad button pressed}
 function GetGamepadButtonPressed: TGamepadButton; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadButtonPressed';
-{Get gamepad axis count for a gamepad}
+{Get axis count for a gamepad}
 function GetGamepadAxisCount(gamepad: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadAxisCount';
-{Get axis movement value for a gamepad axis}
+{Get movement value for a gamepad axis}
 function GetGamepadAxisMovement(gamepad: Integer; axis: TGamepadAxis): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadAxisMovement';
 {Set internal gamepad mappings (SDL_GameControllerDB)}
 function SetGamepadMappings(const mappings: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadMappings';
@@ -1474,8 +1474,12 @@ procedure DrawCircleLines(centerX, centerY: Integer; radius: Single; color: TCol
 procedure DrawCircleLinesV(center: TVector2; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleLinesV';
 {Draw ellipse}
 procedure DrawEllipse(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawEllipse';
+{Draw ellipse (Vector version)}
+procedure DrawEllipseV(center: TVector2; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawEllipseV';
 {Draw ellipse outline}
 procedure DrawEllipseLines(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawEllipseLines';
+{Draw ellipse outline (Vector version)}
+procedure DrawEllipseLinesV(center: TVector2; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawEllipseLinesV';
 {Draw ring}
 procedure DrawRing(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRing';
 {Draw ring outline}
@@ -1493,7 +1497,7 @@ procedure DrawRectangleGradientV(posX, posY, width, height: Integer; top, bottom
 {Draw a horizontal-gradient-filled rectangle}
 procedure DrawRectangleGradientH(posX, posY, width, height: Integer; left, right: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientH';
 {Draw a gradient-filled rectangle with custom vertex colors}
-procedure DrawRectangleGradientEx(rec: TRectangle; topLeft, bottomLeft, topRight, bottomRight: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientEx';
+procedure DrawRectangleGradientEx(rec: TRectangle; topLeft, bottomLeft, bottomRight, topRight: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientEx';
 {Draw rectangle outline}
 procedure DrawRectangleLines(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleLines';
 {Draw rectangle outline with extended parameters}
@@ -1746,9 +1750,9 @@ procedure ImageDrawTriangleEx(dst: PImage; v1, v2, v3: TVector2; c1, c2, c3: TCo
 {Draw triangle outline within an image}
 procedure ImageDrawTriangleLines(dst: PImage; v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleLines';
 {Draw a triangle fan defined by points within an image (first vertex is the center)}
-procedure ImageDrawTriangleFan(dst: PImage; points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleFan';
+procedure ImageDrawTriangleFan(dst: PImage; const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleFan';
 {Draw a triangle strip defined by points within an image}
-procedure ImageDrawTriangleStrip(dst: PImage; points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleStrip';
+procedure ImageDrawTriangleStrip(dst: PImage; const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleStrip';
 {Draw a source image within a destination image (tint applied to source)}
 procedure ImageDraw(dst: PImage; src: TImage; srcRec, dstRec: TRectangle; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDraw';
 {Draw text (using default font) within an image (destination)}
