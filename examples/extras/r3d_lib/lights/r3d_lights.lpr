@@ -127,7 +127,10 @@ begin
        R3D_DrawLightShape(lights[i]);
    EndMode3D();
   end;
+     DrawFPS(10, 10);
 
+
+    DrawText('Press SPACE to show the lights', 10, GetScreenHeight() - 34, 24, BLACK);
 end;
 
 procedure TRayApplication.Close;
