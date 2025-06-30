@@ -303,7 +303,7 @@ procedure R3D_UpdateResolution(width, height: Integer); cdecl; external {$IFNDEF
  *
  * @param target The custom render target (can be NULL to revert to the default framebuffer).
  *)
-procedure R3D_SetRenderTarget(target: PRenderTexture); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetRenderTarget';
+procedure R3D_SetRenderTarget(const target: PRenderTexture); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetRenderTarget';
 
 (*
  * @brief Defines the bounds of the scene for directional light calculations.
@@ -804,29 +804,6 @@ function R3D_GetLightRange(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY
  *)
 procedure R3D_SetLightRange(id: TR3D_Light; range: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightRange';
 
-
-(*
- * @brief Gets the size of a light source.
- *
- * This function retrieves the size of the specified light source, which is used for PCSS.
- * The size affects how shadows are computed and how soft or sharp they appear.
- *
- * @param id The ID of the light.
- * @return The size of the light.
- *)
-function R3D_GetLightSize(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetLightSize';
-
-(*
- * @brief Sets the size of a light source.
- *
- * This function sets the size of the specified light source.
- * The size influences how shadows are rendered, with larger sizes creating softer shadows.
- *
- * @param id The ID of the light.
- * @param size The new size to set for the light.
- *)
-procedure R3D_SetLightSize(id: TR3D_Light; size: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetLightSize';
-
 (*
  * @brief Gets the attenuation factor of a light.
  *
@@ -1001,6 +978,31 @@ procedure R3D_SetShadowUpdateFrequency(id: TR3D_Light; msec: Integer); cdecl; ex
  * @param id The ID of the light.
  *)
 procedure R3D_UpdateShadowMap(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UpdateShadowMap';
+
+
+(*
+ * @brief Retrieves the softness factor used to simulate penumbra in shadows.
+ *
+ * This function returns the current softness factor for the specified light's shadow map.
+ * A higher softness value will produce softer shadow edges, simulating a broader penumbra,
+ * while a lower value results in sharper shadows.
+ *
+ * @param id The ID of the light.
+ * @return The softness factor currently set for the shadow (typically in the range [0.0, 1.0]).
+ *)
+function R3D_GetShadowSoftness(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetShadowSoftness';
+
+(*
+ * @brief Sets the softness factor used to simulate penumbra in shadows.
+ *
+ * This function adjusts the softness of the shadow edges for the specified light.
+ * Increasing the softness value creates more diffuse, penumbra-like shadows.
+ *
+ * @param id The ID of the light.
+ * @param softness The softness factor to apply (typically in the range [0.0, 1.0]).
+ *)
+procedure R3D_SetShadowSoftness(id: TR3D_Light; softness: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetShadowSoftness';
+
 
 (*
  * @brief Gets the shadow bias of a light.
