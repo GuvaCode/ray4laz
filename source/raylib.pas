@@ -1504,8 +1504,8 @@ procedure DrawRectangleLines(posX, posY, width, height: Integer; color: TColorB)
 procedure DrawRectangleLinesEx(rec: TRectangle; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleLinesEx';
 {Draw rectangle with rounded edges}
 procedure DrawRectangleRounded(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRounded';
-{Draw rectangle with rounded edges outline}
-procedure DrawRectangleRoundedLines(rec: TRectangle; roundness: Single; segments: Integer; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRoundedLines';
+{Draw rectangle lines with rounded edges}
+procedure DrawRectangleRoundedLines(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRoundedLines';
 {Draw rectangle with rounded edges outline}
 procedure DrawRectangleRoundedLinesEx(rec: TRectangle; roundness: Single; segments: Integer; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRoundedLinesEx';
 {Draw a color-filled triangle (vertex in counter-clockwise order!)}
