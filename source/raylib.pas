@@ -2382,11 +2382,13 @@ uses
   Math, raymath;
 
 {$IFDEF linux}
-  {$linklib c}
-  {$linklib m}
-  {$linklib dl}
-  {$linklib pthread}
-  {$linklib libraylib.a}
+  {$IFDEF RAY_STATIC}
+    {$linklib c}
+    {$linklib m}
+    {$linklib dl}
+    {$linklib pthread}
+    {$linklib libraylib.a}
+  {$endif}
 {$endif}
 
 function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay;

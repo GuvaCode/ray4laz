@@ -4,7 +4,7 @@ program basic;
 
 uses
  cthreads,
- Classes, SysUtils, CustApp, raylib, r3d;
+ Classes, SysUtils, CustApp, raylib, r3d, raymath;
 
 type
   { TRayApplication }
@@ -12,7 +12,8 @@ type
   protected
     procedure DoRun; override;
   private
-    plane, sphere: TModel;
+    plane, sphere: TR3D_Mesh;
+    material: TR3D_Material;
     camera: TCamera3D;
     procedure Init;
     procedure Update;
@@ -59,15 +60,10 @@ begin
   R3D_Init(GetScreenWidth, GetScreenHeight, 0);
   SetTargetFPS(60);
 
-  plane := LoadModelFromMesh(GenMeshPlane(1000, 1000, 1, 1));
-  plane.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1;
-  plane.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value := 1;
-  plane.materials[0].maps[MATERIAL_MAP_METALNESS].value := 0;
+  plane := R3D_GenMeshPlane(1000, 1000, 1, 1, true);
+  sphere := R3D_GenMeshSphere(0.5, 64, 64, true);
+  material := R3D_GetDefaultMaterial();
 
-  sphere := LoadModelFromMesh(GenMeshSphere(0.5, 64, 64));
-  sphere.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1;
-  sphere.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value := 0.25;
-  sphere.materials[0].maps[MATERIAL_MAP_METALNESS].value := 0.75;
 
   Camera.Create(Vector3Create(0,2,2), Vector3Create(0,0,0), Vector3Create(0,1,0),60,0);
 
@@ -87,15 +83,15 @@ end;
 procedure TRayApplication.Draw;
 begin
   R3D_Begin(camera);
-  R3D_DrawModel(plane, Vector3Create ( 0, -0.5, 0 ), 1.0);
-  R3D_DrawModel(sphere, Vector3Create ( 0, 0, 0 ), 1.0);
+  R3D_DrawMesh(@plane, @material, MatrixTranslate(0, -0.5, 0));
+  R3D_DrawMesh(@sphere, @material, MatrixIdentity());
   R3D_End();
 end;
 
 procedure TRayApplication.Close;
 begin
-  UnloadModel(plane);
-  UnloadModel(sphere);
+  R3D_UnloadMesh(@plane);
+  R3D_UnloadMesh(@sphere);
   R3D_Close();
 end;
 

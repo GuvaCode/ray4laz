@@ -13,6 +13,14 @@ binary/*
 !libs/x86_32-windows/
 !libs/x86_32-linux/
 
+
+# other git repo
+build/raylib-gizmo/
+build/raylib/
+build/raygui/
+build/r3d/
+
+
 # macos
 .DS_Store
 #*.dylib

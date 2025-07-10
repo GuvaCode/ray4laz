@@ -17,6 +17,7 @@ sudo apt-get install -y gcc-mingw-w64-i686-posix
 sudo apt-get install -y gcc-mingw-w64-i686-win32
 sudo apt-get install -y build-essential #libc6-dev-i386
 sudo apt-get install -y libgl1-mesa-dev:i386
+sudo apt-get install zlib1g-dev:i386
     ;;
     * )
         echo skiping
@@ -30,10 +31,13 @@ clear
 
 mkdir ../libs
 mkdir ../libs/x86_64-linux
+mkdir ../libs/x86_64-linux/r3d
 mkdir ../libs/x86_32-linux
+mkdir ../libs/x86_32-linux/r3d
 mkdir ../libs/x86_64-win64
+mkdir ../libs/x86_64-win64/r3d
 mkdir ../libs/i386-win32
-
+mkdir ../libs/i386-win32/r3d
 
 echo "Download raylib master branch"
 

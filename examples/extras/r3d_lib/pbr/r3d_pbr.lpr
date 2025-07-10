@@ -12,7 +12,7 @@ type
   protected
     procedure DoRun; override;
   private
-    model: TModel;
+    model: TR3D_Model;
     skybox: TR3D_Skybox;
     camera: TCamera3D;
     modelScale: Single;
@@ -71,8 +71,8 @@ begin
   R3D_SetTonemapExposure(0.75);
   R3D_SetTonemapWhite(1.25);
 
-  model := LoadModel('123.glb');
-  model.transform := MatrixMultiply(model.transform, MatrixRotateY(PI / 2));
+  model := R3D_LoadModel('pbr/car.glb');
+  //model.transform := MatrixMultiply(model.transform, MatrixRotateY(PI / 2));
 
   for i := 0 to model.materialCount -1 do
   begin
