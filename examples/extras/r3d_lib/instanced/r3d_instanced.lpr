@@ -1,148 +1,119 @@
 program r3d_instanced;
-
 {$mode objfpc}{$H+}
 
 uses
-{$IFDEF LINUX} cthreads,{$ENDIF}
- Classes, SysUtils, CustApp, raylib, r3d, raymath;
+  cthreads,
+  Classes, SysUtils, CustApp, raylib, r3d, raymath;
 
-const INSTANCE_COUNT = 1000;
+const
+  INSTANCE_COUNT = 1000;
 
-type
-  { TRayApplication }
-  TRayApplication = class(TCustomApplication)
-  protected
-    procedure DoRun; override;
-  private
-    camera: TCamera3D;
-    mesh: TMesh;
-    material: TMaterial;
-    transforms: array[0..INSTANCE_COUNT - 1] of TMatrix;
-    colors: array[0..INSTANCE_COUNT - 1] of TColor;
-    procedure Init;
-    procedure Update;
-    procedure Draw;
-    procedure Close;
-  public
-    constructor Create(TheOwner: TComponent); override;
-    destructor Destroy; override;
-  end;
+var
+  Camera: TCamera3D;
+  Mesh: TR3D_Mesh;
+  Material: TR3D_Material;
+  Transforms: array[0..INSTANCE_COUNT-1] of TMatrix;
+  Colors: array[0..INSTANCE_COUNT-1] of TColor;
+  Light: TR3D_Light;
 
-  const AppTitle = '[r3d] - instanced example';
-
-{ TRayApplication }
-
-constructor TRayApplication.Create(TheOwner: TComponent);
+function Init: PChar;
+var
+  i: Integer;
+  Translate, Rotate, Scale, FinalTransform: TMatrix;
+  RotAngles: TVector3;
+  LightDir: TVector3;
 begin
-  inherited Create(TheOwner);
-
-  InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags
-  Init;
-  SetTargetFPS(60); // Set our game to run at 60 frames-per-second
-end;
-
-procedure TRayApplication.DoRun;
-begin
-
-  while (not WindowShouldClose) do // Detect window close button or ESC key
-  begin
-    // Update your variables here
-    Update;
-    // Draw
-    BeginDrawing();
-      Draw;
-    EndDrawing();
-  end;
-
-  // Stop program loop
-  Terminate;
-end;
-
-procedure TRayApplication.Init;
-var i: Integer;
-    translate, rotate, scale: TMatrix;
-    light: TR3D_Light;
-begin
-  R3D_Init(GetScreenWidth(), GetScreenHeight(), 0);
+  R3D_Init(GetScreenWidth, GetScreenHeight, 0);
   SetTargetFPS(60);
 
-  mesh := GenMeshCube(1, 1, 1);
+  // Create cube mesh and default material
+  Mesh := R3D_GenMeshCube(1, 1, 1, True);
+  Material := R3D_GetDefaultMaterial();
 
-  material := LoadMaterialDefault();
-  R3D_SetMaterialOcclusion(@material, nil, 1.0);
-  R3D_SetMaterialRoughness(@material, nil, 0.5);
-  R3D_SetMaterialMetalness(@material, nil, 0.5);
-  //GenMeshTangents(&mesh);
-
-  for i:=0 to INSTANCE_COUNT -1 do
+  // Generate random transforms and colors for instances
+  for i := 0 to INSTANCE_COUNT - 1 do
   begin
-   translate := MatrixTranslate(
-          GetRandomValue(-50000, 50000) / 1000,
-          GetRandomValue(-50000, 50000) / 1000,
-          GetRandomValue(-50000, 50000) / 1000);
+    // Random position
+    Translate := MatrixTranslate(
+      GetRandomValue(-50000, 50000) / 1000,
+      GetRandomValue(-50000, 50000) / 1000,
+      GetRandomValue(-50000, 50000) / 1000
+    );
 
-   rotate := MatrixRotateXYZ(Vector3Create(
-          GetRandomValue(-314000, 314000) / 100000,
-          GetRandomValue(-314000, 314000) / 100000,
-          GetRandomValue(-314000, 314000) / 100000));
+    // Random rotation
+    RotAngles := Vector3Create(
+      GetRandomValue(-314000, 314000) / 100000,
+      GetRandomValue(-314000, 314000) / 100000,
+      GetRandomValue(-314000, 314000) / 100000
+    );
+    Rotate := MatrixRotateXYZ(RotAngles);
 
-   scale := MatrixScale(
-          GetRandomValue(100, 2000) / 1000,
-          GetRandomValue(100, 2000) / 1000,
-          GetRandomValue(100, 2000) / 1000);
+    // Random scale
+    Scale := MatrixScale(
+      GetRandomValue(100, 2000) / 1000,
+      GetRandomValue(100, 2000) / 1000,
+      GetRandomValue(100, 2000) / 1000
+    );
 
-      transforms[i] := MatrixMultiply(MatrixMultiply(scale, rotate), translate);
-      colors[i] := ColorFromHSV(GetRandomValue(0, 360000) / 1000, 1.0, 1.0);
+    // Combine transformations
+    FinalTransform := MatrixMultiply(MatrixMultiply(Scale, Rotate), Translate);
+    Transforms[i] := FinalTransform;
+
+    // Random color
+    Colors[i] := ColorFromHSV(GetRandomValue(0, 360000) / 1000, 1.0, 1.0);
   end;
 
-  camera.Create(Vector3Create(2,2,2), Vector3Create(0,0,0), Vector3Create(0,1,0), 60);
+  // Setup camera
+  Camera.position := Vector3Create(0, 2, 2);
+  Camera.target := Vector3Create(0, 0, 0);
+  Camera.up := Vector3Create(0, 1, 0);
+  Camera.fovy := 60;
 
-   light := R3D_CreateLight(R3D_LIGHT_DIR);
+  // Create directional light
+  Light := R3D_CreateLight(R3D_LIGHT_DIR);
+  LightDir := Vector3Create(0, -1, 0);
+  R3D_SetLightDirection(Light, LightDir);
+  R3D_SetLightActive(Light, True);
 
-   R3D_SetLightDirection(light, Vector3Create( 0, -1, 0 ));
-   R3D_SetLightActive(light, true);
-   DisableCursor();
+  DisableCursor();
 
+  Result := '[r3d] - Instanced rendering example';
 end;
 
-procedure TRayApplication.Update;
+procedure Update(delta: Single);
 begin
-  UpdateCamera(@camera, CAMERA_FREE);
+  UpdateCamera(@Camera, CAMERA_FREE);
 end;
 
-procedure TRayApplication.Draw;
+procedure Draw;
 begin
-  R3D_Begin(camera);
-      R3D_DrawMeshInstancedEx(mesh, material, transforms, colors, INSTANCE_COUNT);
+  R3D_Begin(Camera);
+    R3D_DrawMeshInstancedEx(@Mesh, @Material, @Transforms[0], @Colors[0], INSTANCE_COUNT);
   R3D_End();
 
   DrawFPS(10, 10);
 end;
 
-procedure TRayApplication.Close;
+procedure Close;
 begin
-  UnloadMaterial(material);
-  UnloadMesh(mesh);
+  R3D_UnloadMaterial(@Material);
+  R3D_UnloadMesh(@Mesh);
   R3D_Close();
 end;
 
-destructor TRayApplication.Destroy;
 begin
-  Close;
-  CloseWindow(); // Close window and OpenGL context
+  InitWindow(800, 600, 'Instanced Rendering Example');
+  Init();
 
-  // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
-  TraceLog(LOG_INFO, 'your first window is close and destroy');
+  while not WindowShouldClose() do
+  begin
+    Update(GetFrameTime());
+    BeginDrawing();
+      ClearBackground(BLACK);
+      Draw();
+    EndDrawing();
+  end;
 
-  inherited Destroy;
-end;
-
-var
-  Application: TRayApplication;
-begin
-  Application:=TRayApplication.Create(nil);
-  Application.Title:=AppTitle;
-  Application.Run;
-  Application.Free;
+  Close();
+  CloseWindow();
 end.
-

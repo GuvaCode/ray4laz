@@ -9,7 +9,7 @@
         <MainUnitHasScaledStatement Value="False"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="r3d_pbr"/>
+      <Title Value="r3d_car"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -30,7 +30,7 @@
     </RequiredPackages>
     <Units>
       <Unit>
-        <Filename Value="r3d_pbr.lpr"/>
+        <Filename Value="r3d_car.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
@@ -38,10 +38,11 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="../../../../binary/r3d_pbr"/>
+      <Filename Value="../../../../binary/r3d_car"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <Libraries Value="../../../../binary/dll"/>
       <UnitOutputDirectory Value="../../../../temp/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -49,6 +50,9 @@
         <DebugInfoType Value="dsDwarf3"/>
       </Debugging>
     </Linking>
+    <Other>
+      <CustomOptions Value="-k&quot;-rpath=$ORIGIN/dll&quot;"/>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions>

@@ -1,19 +1,14 @@
 // Configuration file for raylib
 
+//
+//{$DEFINE USE_R3D}
 
 
 {$IFDEF LINUX}
-  {$IFDEF USE_R3D}
-    // При USE_R3D форсируем динамическую линковку, даже если RAY_STATIC был определён ранее
-    {$UNDEF RAY_STATIC}
-    {$DEFINE RAY_DYNAMIC}
-  {$ELSE}
-    // Стандартное поведение, если USE_R3D не активирован
-    {$IFNDEF RAY_DYNAMIC}
-      {$DEFINE RAY_STATIC}
-    {$ENDIF}
+  {$IFNDEF RAY_DYNAMIC}
+    {.$DEFINE RAY_STATIC}
   {$ENDIF}
-{$ENDIF}
+{$IFEND}
 
 {$IFDEF WINDOWS}
   {$IFNDEF RAY_DYNAMIC}

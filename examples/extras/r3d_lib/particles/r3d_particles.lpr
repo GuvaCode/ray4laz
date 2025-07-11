@@ -1,141 +1,109 @@
 program r3d_particles;
-
 {$mode objfpc}{$H+}
 
 uses
-{$IFDEF LINUX} cthreads,{$ENDIF}
- Classes, SysUtils, CustApp, raylib, r3d;
+  cthreads,
+  Classes, SysUtils, CustApp, raylib, r3d, raymath;
 
-type
-  { TRayApplication }
-  TRayApplication = class(TCustomApplication)
-  protected
-    procedure DoRun; override;
-  private
-    sphere: TMesh;
-    material: TMaterial;
-    skybox: TR3D_Skybox;
-    camera: TCamera3D;
-    curve: TR3D_InterpolationCurve;
-    particles: TR3D_ParticleSystem;
-    particlesAabb: TBoundingBox;
-    procedure Init;
-    procedure Update(delta: Single);
-    procedure Draw;
-    procedure Close;
-  public
-    constructor Create(TheOwner: TComponent); override;
-    destructor Destroy; override;
-  end;
+var
+  Sphere: TR3D_Mesh;
+  Material: TR3D_Material;
+  Skybox: TR3D_Skybox;
+  Camera: TCamera3D;
+  Curve: TR3D_InterpolationCurve;
+  Particles: TR3D_ParticleSystem;
 
-  const AppTitle = '[r3d] - particles example';
-
-{ TRayApplication }
-
-constructor TRayApplication.Create(TheOwner: TComponent);
+function Init: PChar;
+var
+  InitialVelocity: TVector3;
+  BgColor: TColor;
 begin
-  inherited Create(TheOwner);
-
-  InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags
-  Init;
-  SetTargetFPS(60); // Set our game to run at 60 frames-per-second
-end;
-
-procedure TRayApplication.DoRun;
-begin
-
-  while (not WindowShouldClose) do // Detect window close button or ESC key
-  begin
-    // Update your variables here
-    Update(GetFrameTime);
-    // Draw
-    BeginDrawing();
-      Draw;
-    EndDrawing();
-  end;
-
-  // Stop program loop
-  Terminate;
-end;
-
-procedure TRayApplication.Init;
-begin
-  R3D_Init(GetScreenWidth(), GetScreenHeight(), 0);
+  R3D_Init(GetScreenWidth, GetScreenHeight, 0);
   SetTargetFPS(60);
 
+  // Configure bloom and background
   R3D_SetBloomMode(R3D_BLOOM_ADDITIVE);
-  R3D_SetBackgroundColor(ColorCreate( 4, 4, 4, 255 ));
+  BgColor := ColorCreate(4, 4, 4, 255);
+  R3D_SetBackgroundColor(BgColor);
   R3D_SetAmbientColor(BLACK);
 
-  sphere := GenMeshSphere(0.1, 16, 32);
+  // Create sphere mesh for particles
+  Sphere := R3D_GenMeshSphere(0.1, 16, 32, True);
 
-   material := LoadMaterialDefault();
-   R3D_SetMaterialEmission(@material, nil, ColorCreate( 255, 0, 0, 255 ), 1.0);
+  // Configure material with emission
+  Material := R3D_GetDefaultMaterial();
+  Material.emission.color := RED;
+  Material.emission.energy := 1.0;
 
-   curve := R3D_LoadInterpolationCurve(3);
-   R3D_AddKeyframe(@curve, 0.0, 0.0);
-   R3D_AddKeyframe(@curve, 0.5, 1.0);
-   R3D_AddKeyframe(@curve, 1.0, 0.0);
+  // Create interpolation curve for particle scaling
+  Curve := R3D_LoadInterpolationCurve(3);
+  R3D_AddKeyframe(@Curve, 0.0, 0.0);
+  R3D_AddKeyframe(@Curve, 0.5, 1.0);
+  R3D_AddKeyframe(@Curve, 1.0, 0.0);
 
-   particles := R3D_LoadParticleSystem(2048);
-   particles.initialVelocity := Vector3Create( 0, 10.0, 0 );
-   particles.scaleOverLifetime := @curve;
-   particles.spreadAngle := 45.0;
-   particles.emissionRate := 2048;
-   particles.lifetime := 2.0;
+  // Configure particle system
+  Particles := R3D_LoadParticleSystem(2048);
+  InitialVelocity := Vector3Create(0, 10.0, 0);
+  Particles.initialVelocity := InitialVelocity;
+  Particles.scaleOverLifetime := @Curve;
+  Particles.spreadAngle := 45.0;
+  Particles.emissionRate := 2048;
+  Particles.lifetime := 2.0;
 
-   particlesAabb := R3D_GetParticleSystemBoundingBox(@particles);
+  R3D_CalculateParticleSystemBoundingBox(@Particles);
 
-   camera.Create(Vector3Create(-7,7,-7), Vector3Create(0, 1, 0), Vector3Create(0, 1, 0), 60 , CAMERA_PERSPECTIVE);
+  // Setup camera
+  Camera.position := Vector3Create(-7, 7, -7);
+  Camera.target := Vector3Create(0, 1, 0);
+  Camera.up := Vector3Create(0, 1, 0);
+  Camera.fovy := 60.0;
+  Camera.projection := CAMERA_PERSPECTIVE;
+
+  Result := '[r3d] - Particles example';
 end;
 
-procedure TRayApplication.Update(delta: Single);
+procedure Update(delta: Single);
 begin
-  UpdateCamera(@camera, CAMERA_ORBITAL);
-  R3D_UpdateParticleSystem(@particles, GetFrameTime());
+  UpdateCamera(@Camera, CAMERA_ORBITAL);
+  R3D_UpdateParticleSystem(@Particles, GetFrameTime());
 end;
 
-procedure TRayApplication.Draw;
+procedure Draw;
 begin
-  R3D_Begin(camera);
-    R3D_DrawParticleSystem(@particles, sphere, material);
+  R3D_Begin(Camera);
+    R3D_DrawParticleSystem(@Particles, @Sphere, @Material);
   R3D_End();
 
-  BeginMode3D(camera);
-    DrawBoundingBox(particlesAabb, GREEN);
+  // Draw bounding box in 3D space
+  BeginMode3D(Camera);
+    DrawBoundingBox(Particles.aabb, GREEN);
   EndMode3D();
 
   DrawFPS(10, 10);
 end;
 
-procedure TRayApplication.Close;
+procedure Close;
 begin
-  R3D_UnloadInterpolationCurve(curve);
-  R3D_UnloadParticleSystem(@particles);
-
-  UnloadMesh(sphere);
-  UnloadMaterial(material);
-
+  R3D_UnloadInterpolationCurve(Curve);
+  R3D_UnloadParticleSystem(@Particles);
+  R3D_UnloadMesh(@Sphere);
+  R3D_UnloadMaterial(@Material);
   R3D_Close();
 end;
 
-destructor TRayApplication.Destroy;
 begin
-  Close;
-  CloseWindow(); // Close window and OpenGL context
+  InitWindow(800, 600, 'Particles Example');
+  Init();
 
-  // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
-  TraceLog(LOG_INFO, 'your first window is close and destroy');
+  while not WindowShouldClose() do
+  begin
+    Update(GetFrameTime());
+    BeginDrawing();
+      ClearBackground(BLACK);
+      Draw();
+    EndDrawing();
+  end;
 
-  inherited Destroy;
-end;
-
-var
-  Application: TRayApplication;
-begin
-  Application:=TRayApplication.Create(nil);
-  Application.Title:=AppTitle;
-  Application.Run;
-  Application.Free;
+  Close();
+  CloseWindow();
 end.
-

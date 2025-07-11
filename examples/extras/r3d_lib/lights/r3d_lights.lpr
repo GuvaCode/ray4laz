@@ -1,164 +1,128 @@
 program r3d_lights;
-
 {$mode objfpc}{$H+}
 
 uses
-{$IFDEF LINUX} cthreads,{$ENDIF}
- Classes, SysUtils, CustApp, raylib, r3d, raymath;
+  cthreads,
+  Classes, SysUtils, CustApp, raylib, r3d, raymath;
 
-type
-  { TRayApplication }
-  TRayApplication = class(TCustomApplication)
-  protected
-    procedure DoRun; override;
-  private
-    plane: TModel;
-    sphere: TMesh;
-    material: TMaterial;
-    camera: TCamera3D;
-    transforms: PMatrix;
-    lights: array[0..99] of TR3D_Light;
-    procedure Init;
-    procedure Update;
-    procedure Draw;
-    procedure Close;
-  public
-    constructor Create(TheOwner: TComponent); override;
-    destructor Destroy; override;
-  end;
+const
+  GRID_SIZE = 100;  // 100x100 grid for spheres
+  LIGHT_COUNT = 100; // 10x10 grid for lights
 
-  const AppTitle = '[r3d] - lights example';
+var
+  Plane: TR3D_Mesh;
+  Sphere: TR3D_Mesh;
+  Material: TR3D_Material;
+  Camera: TCamera3D;
+  Transforms: array of TMatrix;
+  Lights: array[0..LIGHT_COUNT-1] of TR3D_Light;
 
-{ TRayApplication }
-
-constructor TRayApplication.Create(TheOwner: TComponent);
+function Init: PChar;
+var
+  x, z, index: Integer;
+  LightPos: TVector3;
+  LightColor: TColor;
 begin
-  inherited Create(TheOwner);
-
-  InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags
-  Init;
-  SetTargetFPS(60); // Set our game to run at 60 frames-per-second
-end;
-
-procedure TRayApplication.DoRun;
-begin
-
-  while (not WindowShouldClose) do // Detect window close button or ESC key
-  begin
-    // Update your variables here
-    Update;
-    // Draw
-    BeginDrawing();
-      Draw;
-      DrawText('Press Space to view light shape' ,10, 30, 20, BLACK);
-    EndDrawing();
-  end;
-
-  // Stop program loop
-  Terminate;
-end;
-
-procedure TRayApplication.Init;
-var x, z, index: integer;
-begin
-  R3D_Init(GetScreenWidth(), GetScreenHeight(), 0);
+  R3D_Init(GetScreenWidth, GetScreenHeight, 0);
   SetTargetFPS(60);
 
-  plane := LoadModelFromMesh(GenMeshPlane(1000, 1000, 1, 1));
-  plane.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1;
-  plane.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value := 1;
-  plane.materials[0].maps[MATERIAL_MAP_METALNESS].value := 0;
+  // Create plane and sphere meshes
+  Plane := R3D_GenMeshPlane(1000, 1000, 1, 1, True);
+  Sphere := R3D_GenMeshSphere(0.35, 16, 16, True);
+  Material := R3D_GetDefaultMaterial();
 
-  sphere := GenMeshSphere(0.35, 16, 16);
+  // Setup camera
+  Camera.position := Vector3Create(0, 2, 2);
+  Camera.target := Vector3Create(0, 0, 0);
+  Camera.up := Vector3Create(0, 1, 0);
+  Camera.fovy := 60;
 
-  material := LoadMaterialDefault();
-  material.maps[MATERIAL_MAP_OCCLUSION].value := 1;
-  material.maps[MATERIAL_MAP_ROUGHNESS].value := 0.25;
-  material.maps[MATERIAL_MAP_METALNESS].value := 0.75;
+  // Initialize transforms for instanced spheres
+  SetLength(Transforms, GRID_SIZE * GRID_SIZE);
+  for x := -50 to 49 do
+  begin
+    for z := -50 to 49 do
+    begin
+      index := (z + 50) * GRID_SIZE + (x + 50);
+      Transforms[index] := MatrixTranslate(x, 0, z);
+    end;
+  end;
 
-  camera.Create(Vector3Create(0, 2, 2), Vector3Create(0, 0, 0), Vector3Create(0, 1, 0), 60, 0);
+  // Create 100 omni lights in a 10x10 grid
+  for x := -5 to 4 do
+  begin
+    for z := -5 to 4 do
+    begin
+      index := (z + 5) * 10 + (x + 5);
+      Lights[index] := R3D_CreateLight(R3D_LIGHT_OMNI);
 
-  GetMem(transforms, 100 * 100 * SizeOf(TMatrix));
+      LightPos := Vector3Create(x * 10, 10, z * 10);
+      R3D_SetLightPosition(Lights[index], LightPos);
 
-   for x := -50 to 49 do
-   begin
-     for z := -50 to 49 do
-      begin
-        index := (z + 50) * 100 + (x + 50);
-        transforms[index] := MatrixTranslate(x , 0, z );
-      end;
-     end;
+      LightColor := ColorFromHSV(index / LIGHT_COUNT * 360, 1.0, 1.0);
+      R3D_SetLightColor(Lights[index], LightColor);
 
-   for x := -5 to 4 do
-   begin
-     for z := -5 to 4 do
-     begin
-       index := (z + 5) * 10 + (x + 5);
-       lights[index] := R3D_CreateLight(R3D_LIGHT_OMNI);
-       R3D_SetLightPosition(lights[index], Vector3Create ( x * 10, 10, z * 10 ));
-       R3D_SetLightColor(lights[index], ColorFromHSV(index / 100 * 360, 1.0, 1.0));
-       R3D_SetLightRange(lights[index], 20.0);
-       R3D_SetLightActive(lights[index], true);
-     end;
-   end;
-  DisableCursor();
+      R3D_SetLightRange(Lights[index], 20.0);
+      R3D_SetLightActive(Lights[index], True);
+    end;
+  end;
 
+  Result := '[r3d] - Many lights example';
 end;
 
-procedure TRayApplication.Update;
+procedure Update(delta: Single);
 begin
-  UpdateCamera(@camera, CAMERA_ORBITAL);
+  UpdateCamera(@Camera, CAMERA_ORBITAL);
 end;
 
-procedure TRayApplication.Draw;
-var i: integer;
+procedure Draw;
+var
+  i: Integer;
 begin
-  R3D_Begin(camera);
-      R3D_DrawModel(plane, Vector3Create( 0, -0.5, 0 ), 1.0);
-      R3D_DrawMeshInstanced(sphere, material, transforms, 100 * 100);
+  R3D_Begin(Camera);
+    // Draw plane slightly below origin
+    R3D_DrawMesh(@Plane, @Material, MatrixTranslate(0, -0.5, 0));
+    // Draw 10,000 instanced spheres
+    R3D_DrawMeshInstanced(@Sphere, @Material, @Transforms[0], GRID_SIZE * GRID_SIZE);
   R3D_End();
 
-  DrawFPS(10, 10);
-
-  if (IsKeyDown(KEY_SPACE)) then
+  // Draw light shapes when SPACE is pressed
+  if IsKeyDown(KEY_SPACE) then
   begin
-   BeginMode3D(camera);
-     for i :=0 to 99 do //(int i = 0; i < 100; i++) {
-       R3D_DrawLightShape(lights[i]);
-   EndMode3D();
+    BeginMode3D(Camera);
+    for i := 0 to LIGHT_COUNT - 1 do
+    begin
+      R3D_DrawLightShape(Lights[i]);
+    end;
+    EndMode3D();
   end;
-     DrawFPS(10, 10);
 
-
-    DrawText('Press SPACE to show the lights', 10, GetScreenHeight() - 34, 24, BLACK);
+  // Draw UI
+  DrawFPS(10, 10);
+  DrawText('Press SPACE to show the lights', 10, GetScreenHeight - 34, 24, BLACK);
 end;
 
-procedure TRayApplication.Close;
+procedure Close;
 begin
-  UnloadModel(plane);
-  UnloadMesh(sphere);
-  UnloadMaterial(material);
-  FreeMem(transforms);
+  R3D_UnloadMesh(@Plane);
+  R3D_UnloadMesh(@Sphere);
   R3D_Close();
 end;
 
-destructor TRayApplication.Destroy;
 begin
-  Close;
-  CloseWindow(); // Close window and OpenGL context
+  InitWindow(800, 600, 'Many Lights Example');
+  Init();
 
-  // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
-  TraceLog(LOG_INFO, 'your first window is close and destroy');
+  while not WindowShouldClose() do
+  begin
+    Update(GetFrameTime());
+    BeginDrawing();
+      ClearBackground(RAYWHITE);
+      Draw();
+    EndDrawing();
+  end;
 
-  inherited Destroy;
-end;
-
-var
-  Application: TRayApplication;
-begin
-  Application:=TRayApplication.Create(nil);
-  Application.Title:=AppTitle;
-  Application.Run;
-  Application.Free;
+  Close();
+  CloseWindow();
 end.
 

@@ -9,7 +9,7 @@
         <MainUnitHasScaledStatement Value="False"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="r3d_instanced"/>
+      <Title Value="animationexample"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -30,7 +30,7 @@
     </RequiredPackages>
     <Units>
       <Unit>
-        <Filename Value="r3d_instanced.lpr"/>
+        <Filename Value="animationexample.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
@@ -38,7 +38,7 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="../../../../binary/r3d_instanced"/>
+      <Filename Value="../../../../binary/animationexample"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -51,7 +51,8 @@
       </Debugging>
     </Linking>
     <Other>
-      <CustomOptions Value="-k&quot;-rpath=$ORIGIN/dll&quot;"/>
+      <CustomOptions Value="-Xr
+-k&quot;-rpath=$ORIGIN/dll&quot;"/>
     </Other>
   </CompilerOptions>
   <Debugging>

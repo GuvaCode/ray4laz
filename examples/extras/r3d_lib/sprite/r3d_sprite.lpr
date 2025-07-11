@@ -1,138 +1,108 @@
 program r3d_sprite;
-
 {$mode objfpc}{$H+}
 
 uses
-{$IFDEF LINUX} cthreads,{$ENDIF}
- Classes, SysUtils, CustApp, raylib, math, r3d;
+  cthreads,
+  Classes, SysUtils, CustApp, raylib, r3d, raymath, math;
 
-type
-  { TRayApplication }
-  TRayApplication = class(TCustomApplication)
-  protected
-    procedure DoRun; override;
-  private
-    plane: TModel;
-    camera: TCamera;
-    texture: TTexture2d;
-    sprite: TR3D_Sprite;
-    birdDirX: Single;
-    birdPos: TVector3;
-  public
-    constructor Create(TheOwner: TComponent); override;
-    destructor Destroy; override;
-    procedure Init;
-    procedure Update(delta: Single);
-    procedure Draw;
-    procedure Close;
-  end;
+var
+  Camera: TCamera3D;
+  Plane: TR3D_Mesh;
+  Material: TR3D_Material;
+  Texture: TTexture2D;
+  Sprite: TR3D_Sprite;
+  BirdPos: TVector3;
+  BirdDirX: Single = 1.0;
 
-  const AppTitle = '[r3d] - sprite example';
-
-{ TRayApplication }
-
-constructor TRayApplication.Create(TheOwner: TComponent);
+function Init: PChar;
+var
+  Light: TR3D_Light;
+  LightPos, LightTarget: TVector3;
 begin
-  inherited Create(TheOwner);
-
-  birdDirX := 1.0;
-  birdPos.Create(0,0.5,0);
-
-  InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags
-  Init;
-
-end;
-
-procedure TRayApplication.DoRun;
-begin
-
-  while (not WindowShouldClose) do // Detect window close button or ESC key
-  begin
-    // Update your variables here
-    Update(GetFrameTime);
-    // Draw
-    BeginDrawing();
-      Draw;
-    EndDrawing();
-  end;
-
-  // Stop program loop
-  Terminate;
-end;
-
-destructor TRayApplication.Destroy;
-begin
-  Close;
-  CloseWindow(); // Close window and OpenGL context
-
-  // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
-  TraceLog(LOG_INFO, 'your first window is close and destroy');
-
-  inherited Destroy;
-end;
-
-procedure TRayApplication.Init;
-var light: TR3D_Light;
-begin
-  R3D_Init(GetScreenWidth(), GetScreenHeight(), 0);
+  R3D_Init(GetScreenWidth, GetScreenHeight, 0);
   SetTargetFPS(60);
 
-  plane := LoadModelFromMesh(GenMeshPlane(1000, 1000, 1, 1));
-  plane.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1;
-  plane.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value := 1;
-  plane.materials[0].maps[MATERIAL_MAP_METALNESS].value := 0;
+  // Create plane mesh and material
+  Plane := R3D_GenMeshPlane(1000, 1000, 1, 1, True);
+  Material := R3D_GetDefaultMaterial();
 
-  texture := LoadTexture('resources/spritesheet.png');
-  sprite := R3D_LoadSprite(texture, 4, 1);
+  // Load sprite texture and create sprite
+  Texture := LoadTexture('resources/spritesheet.png');
+  Sprite := R3D_LoadSprite(Texture, 4, 1);
 
-  camera := Camera3DCreate(Vector3Create(0,2,5), Vector3Create(0,0,0), Vector3Create(0,1,0), 60,0  );
+  // Setup camera
+  Camera.position := Vector3Create(0, 2, 5);
+  Camera.target := Vector3Create(0, 0, 0);
+  Camera.up := Vector3Create(0, 1, 0);
+  Camera.fovy := 60;
 
-  light := R3D_CreateLight(R3D_LIGHT_SPOT);
+  // Create spotlight
+  Light := R3D_CreateLight(R3D_LIGHT_SPOT);
+  LightPos := Vector3Create(0, 10, 10);
+  LightTarget := Vector3Create(0, 0, 0);
+  R3D_LightLookAt(Light, LightPos, LightTarget);
+  R3D_SetLightActive(Light, True);
 
-  R3D_LightLookAt(light,  Vector3Create( 0, 10, 10 ), Vector3Create(0, 0, 0));
-  R3D_SetLightActive(light, true);
+  // Initialize bird position
+  BirdPos := Vector3Create(0, 0.5, 0);
 
+  Result := '[r3d] - Sprite example';
 end;
 
-procedure TRayApplication.Update(delta: Single);
-var birdPosPrev: TVector3;
+procedure Update(delta: Single);
+var
+  BirdPosPrev: TVector3;
 begin
-  R3D_UpdateSprite(@sprite, 10 * delta);
+  // Update sprite animation
+  R3D_UpdateSprite(@Sprite, 10 * delta);
 
-  birdPosPrev := birdPos;
+  // Update bird position
+  BirdPosPrev := BirdPos;
+  BirdPos.x := 2.0 * Sin(GetTime());
+  BirdPos.y := 1.0 + Cos(GetTime() * 4.0) * 0.5;
 
-  birdPos.x := 2.0 * sin(GetTime());
-  birdPos.y := 1.0 + cos(GetTime() * 4.0) * 0.5;
-  birdDirX := IfThen(birdPos.x - birdPosPrev.x >= 0, 1, -1);
+  // Update bird direction
+  if BirdPos.x - BirdPosPrev.x >= 0 then
+    BirdDirX := 1.0
+  else
+    BirdDirX := -1.0;
 end;
 
-procedure TRayApplication.Draw;
+procedure Draw;
+var
+  BirdScale: TVector2;
 begin
-  R3D_Begin(camera);
+  R3D_Begin(Camera);
+    // Draw ground plane
+    R3D_DrawMesh(@Plane, @Material, MatrixTranslate(0, -0.5, 0));
 
-  R3D_ApplyBillboardMode(R3D_BILLBOARD_DISABLED);
-  R3D_DrawModel(plane, Vector3Create ( 0, -0.5, 0 ), 1.0);
-
-  R3D_ApplyBillboardMode(R3D_BILLBOARD_Y_AXIS);
-  R3D_DrawSpriteEx(sprite, birdPos, Vector2Create ( birdDirX, 1.0 ), 0.0);
-
+    // Draw sprite with current bird direction
+    BirdScale := Vector2Create(BirdDirX, 1.0);
+    R3D_DrawSpriteEx(@Sprite, BirdPos, BirdScale, 0.0);
   R3D_End();
 end;
 
-procedure TRayApplication.Close;
+procedure Close;
 begin
-  R3D_UnloadSprite(sprite);
-  UnloadTexture(texture);
-  UnloadModel(plane);
+  R3D_UnloadSprite(@Sprite);
+  R3D_UnloadMesh(@Plane);
+  UnloadTexture(Texture);
   R3D_Close();
 end;
 
-var
-  Application: TRayApplication;
 begin
-  Application:=TRayApplication.Create(nil);
-  Application.Title:=AppTitle;
-  Application.Run;
-  Application.Free;
-end.
+  InitWindow(800, 600, 'Sprite Example');
+  Init();
 
+  while not WindowShouldClose() do
+  begin
+    Update(GetFrameTime());
+    BeginDrawing();
+      ClearBackground(BLACK);
+      Draw();
+    EndDrawing();
+  end;
+
+  Close();
+  CloseWindow();
+end.

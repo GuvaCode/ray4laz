@@ -4,7 +4,7 @@ program basic;
 
 uses
  cthreads,
- Classes, SysUtils, CustApp, raylib, r3d, raymath;
+ Classes, SysUtils, CustApp, raylib, r3d, raymath, process;
 
 type
   { TRayApplication }
@@ -27,10 +27,14 @@ type
   const AppTitle = '[r3d] - basic example';
 
 { TRayApplication }
+ var
+  mProcess: TProcess;
 
 constructor TRayApplication.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
+
+
 
   InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags
   Init;

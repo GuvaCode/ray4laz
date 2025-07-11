@@ -1,14 +1,18 @@
 program BloomExample;
 
+{$mode objfpc}{$H+}
+
 uses
- {$IFDEF LINUX} cthreads,{$ENDIF} raylib, rlgl, r3d, math;
+  cthreads,
+  Classes, SysUtils, CustApp, raylib, r3d, raymath;
 
 var
-  Cube: TModel;
+  Cube: TR3D_Mesh;
+  Material: TR3D_Material;
   Camera: TCamera3D;
   HueCube: Single = 0.0;
 
-function GetBloomModeName(): PChar;
+function GetBloomModeName: PChar;
 begin
   case R3D_GetBloomMode() of
     R3D_BLOOM_DISABLED: Result := 'Disabled';
@@ -20,44 +24,28 @@ begin
   end;
 end;
 
-procedure UpdateCubeColor;
-var
-  Color: TColor;
-begin
-  Color := ColorFromHSV(HueCube, 1.0, 1.0);
-  R3D_SetMaterialAlbedo(@Cube.materials[0], nil, Color);
-  R3D_SetMaterialOcclusion(@Cube.materials[0], nil, 1.0);
-  R3D_SetMaterialEmission(@Cube.materials[0], nil, Color, 1.0);
-end;
-
 function Init: PChar;
 begin
-  R3D_Init(GetScreenWidth(), GetScreenHeight(), 0);
+  R3D_Init(800, 600, 0);
   SetTargetFPS(60);
 
   R3D_SetTonemapMode(R3D_TONEMAP_ACES);
   R3D_SetBloomMode(R3D_BLOOM_MIX);
   R3D_SetBackgroundColor(BLACK);
 
-  Cube := LoadModelFromMesh(GenMeshCube(1.0, 1.0, 1.0));
+  Cube := R3D_GenMeshCube(1.0, 1.0, 1.0, True);
+  Material := R3D_GetDefaultMaterial();
 
-  UpdateCubeColor();
+  Material.emission.color := ColorFromHSV(HueCube, 1.0, 1.0);
+  Material.emission.energy := 1.0;
+  Material.albedo.color := BLACK;
 
   Camera.position := Vector3Create(0, 3.5, 5);
   Camera.target := Vector3Create(0, 0, 0);
   Camera.up := Vector3Create(0, 1, 0);
   Camera.fovy := 60;
 
-  Result := '[r3d] - bloom example';
-end;
-
-function Wrap(Value, Min, Max: Single): Single;
-var
-  Range: Single;
-begin
-  Range := Max - Min;
-  if Range = 0 then Exit(Min); // Avoid division by zero
-  Result := Value - Range * Floor((Value - Min) / Range);
+  Result := '[r3d] - Bloom example';
 end;
 
 procedure Update(delta: Single);
@@ -66,12 +54,11 @@ var
 begin
   UpdateCamera(@Camera, CAMERA_ORBITAL);
 
-  HueDir := Integer(IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) -
-            Integer(IsMouseButtonDown(MOUSE_BUTTON_LEFT));
+  HueDir := Integer(IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) - Integer(IsMouseButtonDown(MOUSE_BUTTON_LEFT));
   if HueDir <> 0 then
   begin
     HueCube := Wrap(HueCube + HueDir * 90.0 * delta, 0, 360);
-    UpdateCubeColor();
+    Material.emission.color := ColorFromHSV(HueCube, 1.0, 1.0);
   end;
 
   IntensityDir := Integer(IsKeyPressedRepeat(KEY_RIGHT) or IsKeyPressed(KEY_RIGHT)) -
@@ -102,7 +89,7 @@ var
   InfoLen: Integer;
 begin
   R3D_Begin(Camera);
-    R3D_DrawModel(Cube, Vector3Create(0, 0, 0), 1.0);
+    R3D_DrawMesh(@Cube, @Material, MatrixIdentity());
   R3D_End();
 
   R3D_DrawBufferEmission(10, 10, 100, 100);
@@ -123,13 +110,14 @@ end;
 
 procedure Close;
 begin
-  UnloadModel(Cube);
+  R3D_UnloadMesh(@Cube);
   R3D_Close();
 end;
 
 begin
-  InitWindow(800, 600, 'bloom'); // for window settings, look at example - window flags
+  InitWindow(800, 600, 'Bloom Example');
   Init();
+
   while not WindowShouldClose() do
   begin
     Update(GetFrameTime());
@@ -138,5 +126,7 @@ begin
       Draw();
     EndDrawing();
   end;
+
   Close();
+  CloseWindow();
 end.

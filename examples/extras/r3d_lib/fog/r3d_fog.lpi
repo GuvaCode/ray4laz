@@ -42,6 +42,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <Libraries Value="../../../../binary/dll"/>
       <UnitOutputDirectory Value="../../../../temp/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -49,6 +50,9 @@
         <DebugInfoType Value="dsDwarf3"/>
       </Debugging>
     </Linking>
+    <Other>
+      <CustomOptions Value="-k&quot;-rpath=$ORIGIN/dll&quot;"/>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions>

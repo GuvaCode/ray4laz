@@ -9,7 +9,7 @@
         <MainUnitHasScaledStatement Value="False"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="animationexample"/>
+      <Title Value="r3d_pbr"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -30,7 +30,7 @@
     </RequiredPackages>
     <Units>
       <Unit>
-        <Filename Value="animationexample.lpr"/>
+        <Filename Value="r3d_pbr.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
@@ -38,11 +38,11 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="../../../../binary/animationexample"/>
+      <Filename Value="../../../../binary/r3d_pbr"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <Libraries Value=".;../../../../binary"/>
+      <Libraries Value="../../../../binary/dll"/>
       <UnitOutputDirectory Value="../../../../temp/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -51,7 +51,7 @@
       </Debugging>
     </Linking>
     <Other>
-      <CustomOptions Value="-k&quot;-rpath=$ORIGIN&quot;"/>
+      <CustomOptions Value="-k&quot;-rpath=$ORIGIN/dll&quot;"/>
     </Other>
   </CompilerOptions>
   <Debugging>

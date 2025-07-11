@@ -1,144 +1,99 @@
 program r3d_directional;
-
 {$mode objfpc}{$H+}
 
 uses
-{$IFDEF LINUX} cthreads,{$ENDIF}
- Classes, SysUtils, CustApp, raylib, raymath, r3d;
+  cthreads,
+  Classes, SysUtils, CustApp, raylib, r3d, raymath;
 
-type
-  { TRayApplication }
-  TRayApplication = class(TCustomApplication)
-  protected
-    procedure DoRun; override;
-  private
-    plane: TModel;
-    sphere: TMesh;
-    material: TMaterial;
-    camera: TCamera3D;
-    transforms: PMatrix;
-    procedure Init;
-    procedure Update;
-    procedure Draw;
-    procedure Close;
-  public
-    constructor Create(TheOwner: TComponent); override;
-    destructor Destroy; override;
-  end;
+var
+  Plane: TR3D_Mesh;
+  Sphere: TR3D_Mesh;
+  Material: TR3D_Material;
+  Camera: TCamera3D;
+  Transforms: array of TMatrix;
+  Light: TR3D_Light;
 
-  const AppTitle = '[r3d] - directional example';
-
-{ TRayApplication }
-
-constructor TRayApplication.Create(TheOwner: TComponent);
+function Init: PChar;
+var
+  x, z, index: Integer;
+  LightDir: TVector3;
 begin
-  inherited Create(TheOwner);
-
-  InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags
-  Init;
-
-end;
-
-procedure TRayApplication.DoRun;
-begin
-
-  while (not WindowShouldClose) do // Detect window close button or ESC key
-  begin
-    // Update your variables here
-      Update;
-    // Draw
-    BeginDrawing();
-      Draw;
-    EndDrawing();
-  end;
-
-  // Stop program loop
-  Terminate;
-end;
-
-procedure TRayApplication.Init;
-var x, z, index: integer;
-   light: TR3D_Light;
-
-begin
-  R3D_Init(GetScreenWidth(), GetScreenHeight(), 0);
+  R3D_Init(GetScreenWidth, GetScreenHeight, 0);
   SetTargetFPS(60);
 
-  plane := LoadModelFromMesh(GenMeshPlane(1000, 1000, 1, 1));
-  plane.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1;
-  plane.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value := 1;
-  plane.materials[0].maps[MATERIAL_MAP_METALNESS].value := 0;
+  Plane := R3D_GenMeshPlane(1000, 1000, 1, 1, True);
+  Sphere := R3D_GenMeshSphere(0.35, 16, 16, True);
+  Material := R3D_GetDefaultMaterial();
 
-  sphere := GenMeshSphere(0.35, 16, 16);
+  Camera.position := Vector3Create(0, 2, 2);
+  Camera.target := Vector3Create(0, 0, 0);
+  Camera.up := Vector3Create(0, 1, 0);
+  Camera.fovy := 60;
 
-  material := LoadMaterialDefault();
-  material.maps[MATERIAL_MAP_OCCLUSION].value := 1;
-  material.maps[MATERIAL_MAP_ROUGHNESS].value := 0.25;
-  material.maps[MATERIAL_MAP_METALNESS].value := 0.75;
-
-  camera.Create(Vector3Create(0, 2, 2), Vector3Create(0, 0, 0), Vector3Create(0, 1, 0), 60, 0);
-  GetMem(transforms, 100 * 100 * SizeOf(TMatrix));
+  // Initialize transforms array
+  SetLength(Transforms, 100 * 100);
 
   for x := -50 to 49 do
   begin
     for z := -50 to 49 do
-     begin
-       index := (z + 50) * 100 + (x + 50);
-       transforms[index] := MatrixTranslate(x * 2, 0, z * 2);
-     end;
+    begin
+      index := (z + 50) * 100 + (x + 50);
+      Transforms[index] := MatrixTranslate(x * 2, 0, z * 2);
     end;
+  end;
 
-   light := R3D_CreateLight(R3D_LIGHT_DIR);
+  // Create and configure directional light
+  Light := R3D_CreateLight(R3D_LIGHT_DIR);
+  LightDir := Vector3Create(0, -1, -1);
 
-   R3D_SetLightDirection(light, Vector3Create( 0, -1, -1 ));
-   R3D_SetShadowUpdateMode(light, R3D_SHADOW_UPDATE_MANUAL);
-   R3D_SetShadowBias(light, 0.005);
-   R3D_EnableShadow(light, 4096);
-   R3D_SetLightActive(light, true);
-   DisableCursor();
+  R3D_SetLightDirection(Light, LightDir);
+  R3D_SetShadowUpdateMode(Light, R3D_SHADOW_UPDATE_MANUAL);
+  R3D_SetShadowBias(Light, 0.005);
+  R3D_EnableShadow(Light, 4096);
+  R3D_SetLightActive(Light, True);
+
+  DisableCursor();
+
+  Result := '[r3d] - Directional light example';
 end;
 
-procedure TRayApplication.Update;
+procedure Update(delta: Single);
 begin
-  UpdateCamera(@camera, CAMERA_FREE);
+  UpdateCamera(@Camera, CAMERA_FREE);
 end;
 
-procedure TRayApplication.Draw;
+procedure Draw;
 begin
-  R3D_Begin(camera);
-      R3D_DrawModel(plane, Vector3Create( 0, -0.5, 0 ), 1.0);
-      R3D_DrawMeshInstanced(sphere, material, transforms, 100 * 100);
+  R3D_Begin(Camera);
+    R3D_DrawMesh(@Plane, @Material, MatrixTranslate(0, -0.5, 0));
+    R3D_DrawMeshInstanced(@Sphere, @Material, @Transforms[0], 100 * 100);
   R3D_End();
 
   DrawFPS(10, 10);
 end;
 
-procedure TRayApplication.Close;
+procedure Close;
 begin
-
-  UnloadModel(plane);
-  UnloadMesh(sphere);
-
-  UnloadMaterial(material);
-  FreeMem(transforms);
+  R3D_UnloadMesh(@Plane);
+  R3D_UnloadMesh(@Sphere);
+  R3D_UnloadMaterial(@Material);
   R3D_Close();
-
 end;
 
-destructor TRayApplication.Destroy;
 begin
-  Close;
-  CloseWindow(); // Close window and OpenGL context
+  InitWindow(800, 600, 'Directional Light Example');
+  Init();
 
-  inherited Destroy;
-end;
+  while not WindowShouldClose() do
+  begin
+    Update(GetFrameTime());
+    BeginDrawing();
+      ClearBackground(BLACK);
+      Draw();
+    EndDrawing();
+  end;
 
-var
-  Application: TRayApplication;
-begin
-  Application:=TRayApplication.Create(nil);
-  Application.Title:=AppTitle;
-  Application.Run;
-  Application.Free;
+  Close();
+  CloseWindow();
 end.
 

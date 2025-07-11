@@ -1,140 +1,112 @@
 program r3d_transparency;
-
 {$mode objfpc}{$H+}
 
 uses
-{$IFDEF LINUX} cthreads,{$ENDIF}
- Classes, SysUtils, CustApp, raylib, r3d;
+  cthreads,
+  Classes, SysUtils, CustApp, raylib, r3d, raymath;
 
-type
-  { TRayApplication }
-  TRayApplication = class(TCustomApplication)
-  protected
-    procedure DoRun; override;
-  private
-    cube, plane, sphere: TModel;
-    camera: TCamera;
-  public
-    constructor Create(TheOwner: TComponent); override;
-    destructor Destroy; override;
-    procedure Init;
-    procedure Update;
-    procedure Draw;
-    procedure Close;
-  end;
+var
+  Cube: TR3D_Model;
+  Plane: TR3D_Model;
+  Sphere: TR3D_Model;
+  Camera: TCamera3D;
 
-  const AppTitle = '[r3d] - transparency example';
-
-{ TRayApplication }
-
-constructor TRayApplication.Create(TheOwner: TComponent);
+function Init: PChar;
+var
+  Mesh: TR3D_Mesh;
+  Light: TR3D_Light;
+  LightPos, LightTarget: TVector3;
+  CubeColor: TColor;
 begin
-  inherited Create(TheOwner);
-
-  InitWindow(800, 600, AppTitle); // for window settings, look at example - window flags
-  Init;
-
-end;
-
-procedure TRayApplication.DoRun;
-begin
-
-  while (not WindowShouldClose) do // Detect window close button or ESC key
-  begin
-    // Update your variables here
-    Update;
-    // Draw
-    BeginDrawing();
-      Draw;
-    EndDrawing();
-  end;
-
-  // Stop program loop
-  Terminate;
-end;
-
-destructor TRayApplication.Destroy;
-begin
-  Close;
-  CloseWindow(); // Close window and OpenGL context
-
-  // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
-  TraceLog(LOG_INFO, 'your first window is close and destroy');
-
-  inherited Destroy;
-end;
-
-procedure TRayApplication.Init;
-var light: TR3D_Light;
-begin
-  R3D_Init(GetScreenWidth(), GetScreenHeight(), 0);
+  R3D_Init(GetScreenWidth, GetScreenHeight, 0);
   SetTargetFPS(60);
 
-  // NOTE: This mode is already the default one, but the call is made here for example purposes.
-  //       In this mode, R3D will attempt to detect when to perform deferred or forward rendering
-  //       automatically based on the alpha of the albedo color or the format of the albedo texture.
+  // --- Load cube model ---
+  Mesh := R3D_GenMeshCube(1, 1, 1, True);
+  Cube := R3D_LoadModelFromMesh(@Mesh);
 
-  R3D_ApplyRenderMode(R3D_RENDER_AUTO_DETECT);
+  CubeColor := ColorCreate(100, 100, 255, 100);
+  Cube.materials[0].albedo.color := CubeColor;
+  Cube.materials[0].orm.occlusion := 1.0;
+  Cube.materials[0].orm.roughness := 0.2;
+  Cube.materials[0].orm.metalness := 0.2;
+  Cube.materials[0].blendMode := R3D_BLEND_ALPHA;
+  Cube.materials[0].shadowCastMode := R3D_SHADOW_CAST_DISABLED;
 
-  cube := LoadModelFromMesh(GenMeshCube(1, 1, 1));
-  cube.materials[0].maps[MATERIAL_MAP_ALBEDO].color := ColorCreate( 100, 100, 255, 100 );
-  cube.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1.0;
-  cube.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value := 0.2;
-  cube.materials[0].maps[MATERIAL_MAP_METALNESS].value := 0.2;
+  // --- Load plane model ---
+  Mesh := R3D_GenMeshPlane(1000, 1000, 1, 1, True);
+  Plane := R3D_LoadModelFromMesh(@Mesh);
 
-  plane := LoadModelFromMesh(GenMeshPlane(1000, 1000, 1, 1));
-  plane.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1.0;
-  plane.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value := 1.0;
-  plane.materials[0].maps[MATERIAL_MAP_METALNESS].value := 0.0;
+  Plane.materials[0].orm.occlusion := 1.0;
+  Plane.materials[0].orm.roughness := 1.0;
+  Plane.materials[0].orm.metalness := 0.0;
 
-  sphere := LoadModelFromMesh(GenMeshSphere(0.5, 64, 64));
-  sphere.materials[0].maps[MATERIAL_MAP_OCCLUSION].value := 1.0;
-  sphere.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value := 0.25;
-  sphere.materials[0].maps[MATERIAL_MAP_METALNESS].value := 0.75;
+  // --- Load sphere model ---
+  Mesh := R3D_GenMeshSphere(0.5, 64, 64, True);
+  Sphere := R3D_LoadModelFromMesh(@Mesh);
 
-  camera.Create(Vector3Create(0, 2, 2), Vector3Create(0, 0, 0), Vector3Create(0, 1, 0), 60, 0);
+  Sphere.materials[0].orm.occlusion := 1.0;
+  Sphere.materials[0].orm.roughness := 0.25;
+  Sphere.materials[0].orm.metalness := 0.75;
 
-  light := R3D_CreateLight(R3D_LIGHT_SPOT);
+  // --- Configure the camera ---
+  Camera.position := Vector3Create(0, 2, 2);
+  Camera.target := Vector3Create(0, 0, 0);
+  Camera.up := Vector3Create(0, 1, 0);
+  Camera.fovy := 60;
 
+  // --- Configure lighting ---
+  Light := R3D_CreateLight(R3D_LIGHT_SPOT);
+  LightPos := Vector3Create(0, 10, 5);
+  LightTarget := Vector3Create(0, 0, 0);
 
-  R3D_LightLookAt(light, Vector3Create ( 0, 10, 5 ), Vector3Create ( 0,0,0 ));
-  R3D_SetLightActive(light, true);
-  R3D_EnableShadow(light, 4096);
+  R3D_LightLookAt(Light, LightPos, LightTarget);
+  R3D_SetLightActive(Light, True);
+  R3D_EnableShadow(Light, 4096);
+
+  Result := '[r3d] - Transparency example';
 end;
 
-procedure TRayApplication.Update;
+procedure Update(delta: Single);
 begin
-  UpdateCamera(@camera, CAMERA_ORBITAL);
+  UpdateCamera(@Camera, CAMERA_ORBITAL);
 end;
 
-procedure TRayApplication.Draw;
+procedure Draw;
 begin
-  R3D_Begin(camera);
-    R3D_ApplyShadowCastMode(R3D_SHADOW_CAST_FRONT_FACES);
+  R3D_Begin(Camera);
+    // Draw ground plane slightly below origin
+    R3D_DrawModel(@Plane, Vector3Create(0, -0.5, 0), 1.0);
 
-    R3D_DrawModel(plane, Vector3Create ( 0, -0.5, 0 ), 1.0);
-    R3D_DrawModel(sphere, Vector3Create ( 0,0,0) , 1.0);
+    // Draw metallic sphere at origin
+    R3D_DrawModel(@Sphere, Vector3Create(0, 0, 0), 1.0);
 
-    R3D_ApplyShadowCastMode(R3D_SHADOW_CAST_DISABLED);
-
-    R3D_DrawModel(cube, Vector3Create ( 0,0,0 ), 1.0);
+    // Draw transparent cube at origin
+    R3D_DrawModel(@Cube, Vector3Create(0, 0, 0), 1.0);
   R3D_End();
-  DrawFps(10,10);
 end;
 
-procedure TRayApplication.Close;
+procedure Close;
 begin
-  UnloadModel(plane);
-  UnloadModel(sphere);
+  R3D_UnloadModel(@Plane, False);
+  R3D_UnloadModel(@Sphere, False);
+  R3D_UnloadModel(@Cube, False);
   R3D_Close();
 end;
 
-var
-  Application: TRayApplication;
 begin
-  Application:=TRayApplication.Create(nil);
-  Application.Title:=AppTitle;
-  Application.Run;
-  Application.Free;
-end.
+  InitWindow(800, 600, 'Transparency Example');
+  Init();
 
+  while not WindowShouldClose() do
+  begin
+    Update(GetFrameTime());
+    BeginDrawing();
+      ClearBackground(BLACK);
+      Draw();
+    EndDrawing();
+  end;
+
+  Close();
+  CloseWindow();
+end.
