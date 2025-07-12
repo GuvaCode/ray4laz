@@ -1087,6 +1087,26 @@ function R3D_GetModelAnimation(animations: PR3D_ModelAnimation; animCount: Integ
  *)
 procedure R3D_ListModelAnimations(animations: PR3D_ModelAnimation; animCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_ListModelAnimations';
 
+(*
+ * @brief Sets the scaling factor applied to models on loading.
+ *
+ * The functions sets the scaling factor to be used when loading models. This value
+ * is only applied to models loaded after this value is set.
+ *
+ * @value Scaling factor to be used (i.e. 0.01 for meters to centimeters).
+ *)
+procedure R3D_SetModelImportScale(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetModelImportScale';
+
+(*
+ * @brief Gets the scaling factor applied to models on loading.
+ *
+ * This function retrieves the scaling factor applied to models when loaded.
+ *
+ * @return The percentage value used to scaled loaded models.
+ *)
+function R3D_GetModelImportScale(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetModelImportScale';
+
+
 // --------------------------------------------
 // LIGHTING: Lights Config Functions
 // --------------------------------------------

@@ -45,6 +45,7 @@ echo " -------------------------- "
 echo " "
 
 cmake .. \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
     -DBUILD_SHARED_LIBS=ON \
     -DRAYLIB_MODULE_RAYGUI=ON \
     -DR3D_BUILD_EXAMPLES=OFF \
@@ -53,28 +54,11 @@ cmake .. \
 
 cmake --build .
 
-cp libr3d.so ../../../libs/x86_64-linux/r3d/libr3d.so.1.0.0
+cp libr3d.so ../../../libs/x86_64-linux/r3d/libr3d.so
 # Переходим в директорию с библиотеками для создания символических ссылок
-cd ../../../libs/x86_64-linux/r3d/
-ln -s libr3d.so.1.0.0 libr3d.so.100
-ln -s libr3d.so.100 libr3d.so
-# Возвращаемся обратно в директорию сборки
-cd - > /dev/null
+cp -P external/assimp/bin/libassimp.so* ../../../libs/x86_64-linux/r3d/
+cp -P external/raylib/raylib/libraylib.so* ../../../libs/x86_64-linux/r3d/
 
-cp external/assimp/bin/libassimp.so.6.0.2 ../../../libs/x86_64-linux/r3d/libassimp.so.6.0.2
-# Переходим в директорию с библиотеками для создания символических ссылок
-cd ../../../libs/x86_64-linux/r3d/
-ln -s libassimp.so.6.0.2 libassimp.so.6
-ln -s libassimp.so.6 libassimp.so
-# Возвращаемся обратно в директорию сборки
-cd - > /dev/null
-
-cp external/raylib/raylib/libraylib.so.5.5.0 ../../../libs/x86_64-linux/r3d/libraylib.so.5.5.0
-# Аналогично для raylib
-cd ../../../libs/x86_64-linux/r3d/
-ln -s libraylib.so.5.5.0 libraylib.so.550
-ln -s libraylib.so.550 libraylib.so
-cd - > /dev/null
 
 rm -rf *
 echo " "
@@ -84,6 +68,7 @@ echo " -------------------------- "
 echo " "
 
 cmake .. \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
     -DBUILD_SHARED_LIBS=ON \
     -DRAYLIB_MODULE_RAYGUI=ON \
     -DR3D_BUILD_EXAMPLES=OFF \
@@ -95,22 +80,9 @@ cmake .. \
 cmake --build .
 
 cp libr3d.so ../../../libs/x86_32-linux/r3d/libr3d.so
-
-cp external/assimp/bin/libassimp.so.6.0.2 ../../../libs/x86_32-linux/r3d/libassimp.so.6.0.2
-# Переходим в директорию с библиотеками для создания символических ссылок
-cd ../../../libs/x86_32-linux/r3d/
-ln -s libassimp.so.6.0.2 libassimp.so.6
-ln -s libassimp.so.6 libassimp.so
-# Возвращаемся обратно в директорию сборки
-cd - > /dev/null
-
-cp external/raylib/raylib/libraylib.so.5.5.0 ../../../libs/x86_32-linux/r3d/libraylib.so.5.5.0
-# Аналогично для raylib
-cd ../../../libs/x86_32-linux/r3d/
-ln -s libraylib.so.5.5.0 libraylib.so.550
-ln -s libraylib.so.550 libraylib.so
-cd - > /dev/null
-
+# Копируем, сохраняя структуру ссылок (рекомендуется)
+cp -P external/assimp/bin/libassimp.so* ../../../libs/x86_32-linux/r3d/
+cp -P external/raylib/raylib/libraylib.so* ../../../libs/x86_32-linux/r3d/
 
 rm -rf *
 echo " "
@@ -121,6 +93,7 @@ echo " "
 
 cmake .. \
     -DCMAKE_TOOLCHAIN_FILE=mingw-w64-x86_64.cmake \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
     -DBUILD_SHARED_LIBS=ON \
     -DRAYLIB_MODULE_RAYGUI=ON \
     -DR3D_BUILD_EXAMPLES=OFF \
@@ -141,6 +114,7 @@ echo " "
 
 cmake .. \
     -DCMAKE_TOOLCHAIN_FILE=mingw-w32-x86_64.cmake \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
     -DBUILD_SHARED_LIBS=ON \
     -DRAYLIB_MODULE_RAYGUI=ON \
     -DR3D_BUILD_EXAMPLES=OFF \

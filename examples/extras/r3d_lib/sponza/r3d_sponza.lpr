@@ -2,7 +2,7 @@ program r3d_sponza;
 {$mode objfpc}{$H+}
 
 uses
-  cthreads,
+  {$IFDEF UNIX} cthreads,{$ENDIF}
   Classes, SysUtils, CustApp, raylib, r3d, raymath, rlgl, math;
 
 var
@@ -25,7 +25,7 @@ begin
   R3D_SetSSAORadius(4.0);
   R3D_SetBloomMode(R3D_BLOOM_MIX);
   R3D_SetAmbientColor(GRAY);
-
+  R3D_SetModelImportScale(0.01);
   // Load models
   Sponza := R3D_LoadModel('resources/sponza.glb');
   Skybox := R3D_LoadSkybox('resources/sky/skybox3.png', CUBEMAP_LAYOUT_AUTO_DETECT);

@@ -2,7 +2,7 @@ program r3d_car;
 {$mode objfpc}{$H+}
 
 uses
-  cthreads,
+  {$IFDEF UNIX} cthreads,{$ENDIF}
   Classes, SysUtils, CustApp, raylib, r3d, raymath;
 
 var
@@ -12,6 +12,8 @@ var
   Skybox: TR3D_Skybox;
   Camera: TCamera3D;
   ShowSkybox: Boolean = True;
+
+
 
 function Init: PChar;
 var
@@ -36,6 +38,7 @@ begin
   R3D_SetBloomMode(R3D_BLOOM_MIX);
   R3D_SetTonemapMode(R3D_TONEMAP_ACES);
 
+  R3D_SetModelImportScale(0.01);
   // Load assets
   Model := R3D_LoadModel('resources/pbr/car.glb');
   Ground := R3D_GenMeshPlane(100.0, 100.0, 1, 1, True);

@@ -76,6 +76,8 @@
       </Item1>
     </RequiredPkgs>
     <UsageOptions>
+      <CustomOptions Value="
+"/>
       <LibraryPath Value="../libs/$(TargetCPU)-$(TargetOS)"/>
       <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>

@@ -4,7 +4,7 @@ program r3d_pbr;
 {$mode objfpc}{$H+}
 
 uses
-  cthreads,
+  {$IFDEF UNIX} cthreads,{$ENDIF}
   Classes, SysUtils, CustApp, raylib, r3d, raymath, math;
 
 var
@@ -31,7 +31,7 @@ begin
   R3D_SetTonemapMode(R3D_TONEMAP_ACES);
   R3D_SetTonemapExposure(0.75);
   R3D_SetTonemapWhite(1.25);
-
+  R3D_SetModelImportScale(0.01);
   // Load musket model
   Model := R3D_LoadModel('resources/pbr/musket.glb');
 

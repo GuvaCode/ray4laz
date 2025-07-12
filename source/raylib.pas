@@ -2388,8 +2388,8 @@ uses
     {$linklib dl}
     {$linklib pthread}
     {$linklib libraylib.a}
-  {$endif}
-{$endif}
+  {$ENDIF}
+{$ENDIF}
 
 function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay;
 begin

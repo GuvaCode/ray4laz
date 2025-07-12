@@ -25,6 +25,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="LCL"/>
+      </Item>
+      <Item>
         <PackageName Value="ray4laz"/>
       </Item>
     </RequiredPackages>
@@ -42,7 +45,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <Libraries Value="../../../../binary/dll"/>
+      <Libraries Value="../../../../binary;."/>
       <UnitOutputDirectory Value="../../../../temp/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -51,7 +54,7 @@
       </Debugging>
     </Linking>
     <Other>
-      <CustomOptions Value="-k&quot;-rpath=$ORIGIN/dll&quot;"/>
+      <CustomOptions Value="-k&quot;-rpath=$ORIGIN&quot;"/>
     </Other>
   </CompilerOptions>
   <Debugging>

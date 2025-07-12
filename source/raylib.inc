@@ -1,12 +1,9 @@
 // Configuration file for raylib
 
-//
-//{$DEFINE USE_R3D}
-
-
 {$IFDEF LINUX}
   {$IFNDEF RAY_DYNAMIC}
-    {.$DEFINE RAY_STATIC}
+    {$DEFINE RAY_STATIC}
+    // for r3d used only dynamic libs
   {$ENDIF}
 {$IFEND}
 

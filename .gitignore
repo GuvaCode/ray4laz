@@ -19,7 +19,8 @@ build/raylib-gizmo/
 build/raylib/
 build/raygui/
 build/r3d/
-
+build/assimp/
+build/raylib-media/
 
 # macos
 .DS_Store
