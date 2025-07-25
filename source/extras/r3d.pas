@@ -23,16 +23,15 @@ unit r3d;
 
 
 {$mode objfpc}{$H+}
-{$modeSwitch advancedRecords}
-{$packrecords c}
-{$ALIGN 8}
-{$MINENUMSIZE 4}
+
+
 
 // Include configuration file
-{$DEFINE USE_R3D}
 {$I raylib.inc}
 
-
+{$IFDEF RAY_STATIC}
+   {$Warning At the moment, it is possible to use only a dynamic library.}
+{$ENDIF}
 
 interface
 
@@ -62,11 +61,11 @@ const
   R3D_FLAG_STENCIL_TEST          = R3D_Flags(1 shl 3); // Performs a stencil test on each rendering pass affecting geometry
   R3D_FLAG_DEPTH_PREPASS         = R3D_Flags(1 shl 4); // Performs a depth pre-pass before forward rendering, improving desktop GPU performance but unnecessary on mobile
   R3D_FLAG_8_BIT_NORMALS         = R3D_Flags(1 shl 5); // Use 8-bit precision for the normals buffer (deferred); default is 16-bit float
-  R3D_FLAG_FORCE_FORWARD         = R3D_Flags(1 shl 6); // Used to force forward rendering for opaque objects, useful for tile-based devices
+  R3D_FLAG_FORCE_FORWARD         = R3D_Flags(1 shl 6); // Used to force forward rendering for opaque objects, useful for tile-based devices. Be careful, this flag should not be set when rendering, or you may get incorrect sorting of draw calls.
   R3D_FLAG_NO_FRUSTUM_CULLING    = R3D_Flags(1 shl 7); // Disables internal frustum culling. Manual culling is allowed, but may break shadow visibility if objects casting shadows are skipped.
-  R3D_FLAG_TRANSPARENT_SORTING   = R3D_Flags(1 shl 8); // Back-to-front sorting of transparent objects for correct blending of non-discarded fragments.
-  R3D_FLAG_OPAQUE_SORTING        = R3D_Flags(1 shl 9); // Front-to-back sorting of opaque objects to optimize depth testing at the cost of additional sorting.
-  R3D_FLAG_LOW_PRECISION_BUFFERS = R3D_Flags(1 shl 10); // Use 32-bit HDR formats like R11G11B10F for intermediate color buffers instead of full 16-bit floats. Saves memory and bandwidth. */
+  R3D_FLAG_TRANSPARENT_SORTING   = R3D_Flags(1 shl 8); // Back-to-front sorting of transparent objects for correct blending of non-discarded fragments. Be careful, in 'force forward' mode this flag will also sort opaque objects in 'near-to-far' but in the same sorting pass.
+  R3D_FLAG_OPAQUE_SORTING        = R3D_Flags(1 shl 9); // Front-to-back sorting of opaque objects to optimize depth testing at the cost of additional sorting. Please note, in 'force forward' mode this flag has no effect, see transparent sorting.
+  R3D_FLAG_LOW_PRECISION_BUFFERS = R3D_Flags(1 shl 10); // Use 32-bit HDR formats like R11G11B10F for intermediate color buffers instead of full 16-bit floats. Saves memory and bandwidth.
  
 type (* Blend modes for rendering.                                                                     *)
      (* Defines common blending modes used in 3D rendering to combine source and destination colors.   *)
@@ -1093,19 +1092,9 @@ procedure R3D_ListModelAnimations(animations: PR3D_ModelAnimation; animCount: In
  * The functions sets the scaling factor to be used when loading models. This value
  * is only applied to models loaded after this value is set.
  *
- * @value Scaling factor to be used (i.e. 0.01 for meters to centimeters).
+ * @param value Scaling factor to be used (i.e. 0.01 for meters to centimeters).
  *)
 procedure R3D_SetModelImportScale(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetModelImportScale';
-
-(*
- * @brief Gets the scaling factor applied to models on loading.
- *
- * This function retrieves the scaling factor applied to models when loaded.
- *
- * @return The percentage value used to scaled loaded models.
- *)
-function R3D_GetModelImportScale(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetModelImportScale';
-
 
 // --------------------------------------------
 // LIGHTING: Lights Config Functions
@@ -2292,16 +2281,40 @@ function R3D_GetSaturation: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{
 function R3D_LoadSkybox(fileName: PChar; layout: TCubemapLayout): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkybox';
 
 (*
- * @brief Loads a skybox from a high dynamic range (HDR) image.
+ * @brief Loads a skybox from an image in memory.
  *
- * This function loads a skybox from an HDR image and converts it into a cubemap.
- * The size parameter determines the resolution of the generated cubemap.
+ * This function loads a skybox cubemap from an image already loaded in memory,
+ * using a specified cubemap layout to map the six faces.
  *
- * @param fileName The path to the HDR image file.
- * @param size The resolution of the cubemap (e.g., 512, 1024).
+ * @param image The source image in memory.
+ * @param layout The cubemap layout format.
  * @return The loaded skybox object.
  *)
-function R3D_LoadSkyboxHDR(fileName: PChar; size: Integer): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkyboxHDR';
+function R3D_LoadSkyboxFromMemory(image: TImage; layout: TCubemapLayout): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkyboxFromMemory';
+
+(*
+ * @brief Loads a skybox from a panorama texture file.
+ *
+ * This function loads a skybox from a panorama (equirectangular) texture file,
+ * and converts it into a cubemap with the specified resolution.
+ *
+ * @param fileName The path to the panorama texture file.
+ * @param size The resolution of the generated cubemap (e.g., 512, 1024).
+ * @return The loaded skybox object.
+ *)
+function R3D_LoadSkyboxPanorama(const fileName: Pchar; size: Integer): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkyboxPanorama';
+
+(*
+ * @brief Loads a skybox from a panorama image in memory.
+ *
+ * This function loads a skybox from a panorama (equirectangular) image already loaded in memory,
+ * and converts it into a cubemap with the specified resolution.
+ *
+ * @param image The panorama image in memory.
+ * @param size The resolution of the generated cubemap (e.g., 512, 1024).
+ * @return The loaded skybox object.
+ *)
+function R3D_LoadSkyboxPanoramaFromMemory(image: TImage; size: Integer): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkyboxPanoramaFromMemory';
 
 (*
  * @brief Unloads a skybox and frees its resources.
@@ -2643,6 +2656,8 @@ procedure R3D_DrawBufferBloom(x, y, w, h: Single); cdecl; external {$IFNDEF RAY_
 
 
 implementation
+
+
 
 end.
 

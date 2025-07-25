@@ -14,9 +14,10 @@ interface
 const
   cDllName =
              {$IFDEF WINDOWS} 'libraylib.dll'; {$IFEND}
-             {$IFDEF LINUX} 'libraylib.so'; {$IFEND}
-             {$IFDEF DARWIN} 'libraylib.dylib'; {$IFEND}
-             {$IFDEF HAIKU} 'libraylib.so'; {$IFEND}
+             {$IFDEF UNIX}
+             {$IFDEF DARWIN} 'libraylib.dylib';
+             {$ELSE} 'libraylib.so'; {$IFEND}  // for Linux, FreeBSD, NetBSD, OpenBSD, DragonFly, Haiku
+             {$IFEND}
 {$ENDIF}
 
 
@@ -1779,9 +1780,9 @@ procedure UnloadTexture(texture: TTexture2D); cdecl; external {$IFNDEF RAY_STATI
 function IsRenderTextureValid(target: TRenderTexture2D): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsRenderTextureValid';
 {Unload render texture from GPU memory (VRAM)}
 procedure UnloadRenderTexture(target: TRenderTexture2D); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadRenderTexture';
-{Update GPU texture with new data}
+{Update GPU texture with new data (pixels should be able to fill texture)}
 procedure UpdateTexture(texture: TTexture2D; const pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateTexture';
-{Update GPU texture rectangle with new data}
+{Update GPU texture rectangle with new data (pixels and rec should fit in texture)}
 procedure UpdateTextureRec(texture: TTexture2D; rec: TRectangle; const pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateTextureRec';
 
 (* Texture configuration functions *)
@@ -2186,7 +2187,7 @@ function LoadSoundFromWave(wave: TWave): TSound; cdecl; external {$IFNDEF RAY_ST
 function LoadSoundAlias(source: TSound): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSoundAlias';
 {Checks if a sound is valid (data loaded and buffers initialized)}
 function IsSoundValid(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsSoundValid';
-{Update sound buffer with new data}
+{Update sound buffer with new data (data and frame count should fit in sound)}
 procedure UpdateSound(sound: TSound; const data: Pointer; sampleCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateSound';
 {Unload wave data}
 procedure UnloadWave(wave: TWave); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadWave';

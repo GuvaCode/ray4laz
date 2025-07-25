@@ -1,20 +1,13 @@
 #!/bin/bash
 
-rm -f ../libs/x86_64-linux/r3d/libr3d*
-rm -f ../libs/x86_64-linux/r3d/libraylib*
-rm -f ../libs/x86_64-linux/r3d/libassimp*
-
-rm -f ../libs/x86_32-linux/r3d/libr3d*
-rm -f ../libs/x86_32-linux/r3d/libraylib*
-rm -f ../libs/x86_32-linux/r3d/libassimp*
-
-rm -f ../libs/x86_64-win64/r3d/libr3d*
-rm -f ../libs/x86_64-win64/r3d/libraylib*
-rm -f ../libs/x86_64-win64/r3d/libassimp*
-
-rm -f ../libs/i386-win32/r3d/libassimp*
-rm -f ../libs/i386-win32/r3d/libr3d*
-rm -f ../libs/i386-win32/r3d/libraylib*
+rm -f ../libs/x86_64-linux/libr3d*
+rm -f ../libs/x86_64-linux/libassimp*
+rm -f ../libs/x86_32-linux/libr3d*
+rm -f ../libs/x86_32-linux/libassimp*
+rm -f ../libs/x86_64-win64/libr3d*
+rm -f ../libs/x86_64-win64/libassimp*
+rm -f ../libs/i386-win32/libr3d*
+rm -f ../libs/i386-win32/libassimp*
 
 git clone https://github.com/Bigfoot71/r3d
 cd r3d/external
@@ -54,10 +47,10 @@ cmake .. \
 
 cmake --build .
 
-cp libr3d.so ../../../libs/x86_64-linux/r3d/libr3d.so
+cp libr3d.so ../../../libs/x86_64-linux/libr3d.so
 # Переходим в директорию с библиотеками для создания символических ссылок
-cp -P external/assimp/bin/libassimp.so* ../../../libs/x86_64-linux/r3d/
-cp -P external/raylib/raylib/libraylib.so* ../../../libs/x86_64-linux/r3d/
+cp -P external/assimp/bin/libassimp.so* ../../../libs/x86_64-linux/
+
 
 
 rm -rf *
@@ -79,10 +72,10 @@ cmake .. \
 
 cmake --build .
 
-cp libr3d.so ../../../libs/x86_32-linux/r3d/libr3d.so
+cp libr3d.so ../../../libs/x86_32-linux/libr3d.so
 # Копируем, сохраняя структуру ссылок (рекомендуется)
-cp -P external/assimp/bin/libassimp.so* ../../../libs/x86_32-linux/r3d/
-cp -P external/raylib/raylib/libraylib.so* ../../../libs/x86_32-linux/r3d/
+cp -P external/assimp/bin/libassimp.so* ../../../libs/x86_32-linux/
+
 
 rm -rf *
 echo " "
@@ -101,9 +94,9 @@ cmake .. \
     -DR3D_ASSIMP_VENDORED=ON 
 
 cmake --build .
-cp libr3d.dll ../../../libs/x86_64-win64/r3d/libr3d.dll
-cp external/assimp/bin/libassimp-6.dll ../../../libs/x86_64-win64/r3d/libassimp-6.dll
-cp external/raylib/raylib/libraylib.dll ../../../libs/x86_64-win64/r3d/libraylib.dll
+cp libr3d.dll ../../../libs/x86_64-win64/libr3d.dll
+cp external/assimp/bin/libassimp-6.dll ../../../libs/x86_64-win64/libassimp-6.dll
+#cp external/raylib/raylib/libraylib.dll ../../../libs/x86_64-win64/libraylib.dll
 
 rm -rf *
 echo " "
@@ -122,9 +115,9 @@ cmake .. \
     -DR3D_ASSIMP_VENDORED=ON 
 
 cmake --build .
-cp libr3d.dll ../../../libs/i386-win32/r3d/libr3d.dll
-cp external/assimp/bin/libassimp-6.dll ../../../libs/i386-win32/r3d/libassimp-6.dll
-cp external/raylib/raylib/libraylib.dll ../../../libs/i386-win32/r3d/libraylib.dll
+cp libr3d.dll ../../../libs/i386-win32/libr3d.dll
+cp external/assimp/bin/libassimp-6.dll ../../../libs/i386-win32/libassimp-6.dll
+#cp external/raylib/raylib/libraylib.dll ../../../libs/i386-win32/libraylib.dll
 
 cd ../../
 

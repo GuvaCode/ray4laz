@@ -66,10 +66,10 @@ typedef unsigned int R3D_Flags;
 #define R3D_FLAG_STENCIL_TEST           (1 << 3)    /**< Performs a stencil test on each rendering pass affecting geometry */
 #define R3D_FLAG_DEPTH_PREPASS          (1 << 4)    /**< Performs a depth pre-pass before forward rendering, improving desktop GPU performance but unnecessary on mobile */
 #define R3D_FLAG_8_BIT_NORMALS          (1 << 5)    /**< Use 8-bit precision for the normals buffer (deferred); default is 16-bit float */
-#define R3D_FLAG_FORCE_FORWARD          (1 << 6)    /**< Used to force forward rendering for opaque objects, useful for tile-based devices */
+#define R3D_FLAG_FORCE_FORWARD          (1 << 6)    /**< Used to force forward rendering for opaque objects, useful for tile-based devices. Be careful, this flag should not be set when rendering, or you may get incorrect sorting of draw calls. */
 #define R3D_FLAG_NO_FRUSTUM_CULLING     (1 << 7)    /**< Disables internal frustum culling. Manual culling is allowed, but may break shadow visibility if objects casting shadows are skipped. */
-#define R3D_FLAG_TRANSPARENT_SORTING    (1 << 8)    /**< Back-to-front sorting of transparent objects for correct blending of non-discarded fragments. */
-#define R3D_FLAG_OPAQUE_SORTING         (1 << 9)    /**< Front-to-back sorting of opaque objects to optimize depth testing at the cost of additional sorting. */
+#define R3D_FLAG_TRANSPARENT_SORTING    (1 << 8)    /**< Back-to-front sorting of transparent objects for correct blending of non-discarded fragments. Be careful, in 'force forward' mode this flag will also sort opaque objects in 'near-to-far' but in the same sorting pass. */
+#define R3D_FLAG_OPAQUE_SORTING         (1 << 9)    /**< Front-to-back sorting of opaque objects to optimize depth testing at the cost of additional sorting. Please note, in 'force forward' mode this flag has no effect, see transparent sorting. */
 #define R3D_FLAG_LOW_PRECISION_BUFFERS  (1 << 10)   /**< Use 32-bit HDR formats like R11G11B10F for intermediate color buffers instead of full 16-bit floats. Saves memory and bandwidth. */
 
 /**
@@ -1418,18 +1418,9 @@ R3DAPI void R3D_ListModelAnimations(R3D_ModelAnimation* animations, int animCoun
  * The functions sets the scaling factor to be used when loading models. This value
  * is only applied to models loaded after this value is set.
  *
- * @value Scaling factor to be used (i.e. 0.01 for meters to centimeters).
+ * @param value Scaling factor to be used (i.e. 0.01 for meters to centimeters).
  */
 R3DAPI void R3D_SetModelImportScale(float value);
-
-/**
- * @brief Gets the scaling factor applied to models on loading.
- *
- * This function retrieves the scaling factor applied to models when loaded.
- *
- * @return The percentage value used to scaled loaded models.
- */
-R3DAPI float R3D_GetModelImportScale(void);
 
 
 
@@ -2631,7 +2622,7 @@ R3DAPI float R3D_GetSaturation(void);
 /**
  * @brief Loads a skybox from a texture file.
  *
- * This function loads a skybox from a texture file using a specified cubemap layout.
+ * This function loads a skybox cubemap from a texture file using a specified cubemap layout.
  * The layout defines how the six faces of the cubemap are arranged within the texture.
  *
  * @param fileName The path to the texture file.
@@ -2641,16 +2632,40 @@ R3DAPI float R3D_GetSaturation(void);
 R3DAPI R3D_Skybox R3D_LoadSkybox(const char* fileName, CubemapLayout layout);
 
 /**
- * @brief Loads a skybox from a high dynamic range (HDR) image.
+ * @brief Loads a skybox from an image in memory.
  *
- * This function loads a skybox from an HDR image and converts it into a cubemap.
- * The size parameter determines the resolution of the generated cubemap.
+ * This function loads a skybox cubemap from an image already loaded in memory,
+ * using a specified cubemap layout to map the six faces.
  *
- * @param fileName The path to the HDR image file.
- * @param size The resolution of the cubemap (e.g., 512, 1024).
+ * @param image The source image in memory.
+ * @param layout The cubemap layout format.
  * @return The loaded skybox object.
  */
-R3DAPI R3D_Skybox R3D_LoadSkyboxHDR(const char* fileName, int size);
+R3DAPI R3D_Skybox R3D_LoadSkyboxFromMemory(Image image, CubemapLayout layout);
+
+/**
+ * @brief Loads a skybox from a panorama texture file.
+ *
+ * This function loads a skybox from a panorama (equirectangular) texture file,
+ * and converts it into a cubemap with the specified resolution.
+ *
+ * @param fileName The path to the panorama texture file.
+ * @param size The resolution of the generated cubemap (e.g., 512, 1024).
+ * @return The loaded skybox object.
+ */
+R3DAPI R3D_Skybox R3D_LoadSkyboxPanorama(const char* fileName, int size);
+
+/**
+ * @brief Loads a skybox from a panorama image in memory.
+ *
+ * This function loads a skybox from a panorama (equirectangular) image already loaded in memory,
+ * and converts it into a cubemap with the specified resolution.
+ *
+ * @param image The panorama image in memory.
+ * @param size The resolution of the generated cubemap (e.g., 512, 1024).
+ * @return The loaded skybox object.
+ */
+R3DAPI R3D_Skybox R3D_LoadSkyboxPanoramaFromMemory(Image image, int size);
 
 /**
  * @brief Unloads a skybox and frees its resources.
