@@ -1914,23 +1914,23 @@ procedure R3D_SetSSAOBias(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3
 function R3D_GetSSAOBias: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSAOBias';
 
 (*
- * @brief Sets the number of iterations for SSAO effect.
+ * @brief Sets the number of blur iterations for the SSAO effect.
  *
- * This function sets the number of iterations (or samples) used to calculate the
- * SSAO effect. A higher value will result in a more accurate and smoother effect,
- * but may also be more performance-intensive.
+ * This function sets the number of blur iterations applied to the SSAO effect.
+ * By default, one iteration is performed, using a total of 12 samples for the
+ * Gaussian blur. Increasing the number of iterations results in a smoother
+ * ambient occlusion but may impact performance.
  *
- * @param value The number of iterations for SSAO.
+ * @param value The number of blur iterations for SSAO.
  *)
 procedure R3D_SetSSAOIterations(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSAOIterations';
 
 (*
- * @brief Gets the current number of SSAO iterations.
+ * @brief Gets the current number of blur iterations for the SSAO effect.
  *
- * This function retrieves the current number of iterations (or samples) used to
- * calculate the SSAO effect.
+ * This function retrieves the current number of blur iterations applied to the SSAO effect.
  *
- * @return The number of SSAO iterations.
+ * @return The number of blur iterations for SSAO.
  *)
 function R3D_GetSSAOIterations: Integer; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSAOIterations';
 

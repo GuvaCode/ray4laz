@@ -2257,23 +2257,23 @@ R3DAPI void R3D_SetSSAOBias(float value);
 R3DAPI float R3D_GetSSAOBias(void);
 
 /**
- * @brief Sets the number of iterations for SSAO effect.
+ * @brief Sets the number of blur iterations for the SSAO effect.
  *
- * This function sets the number of iterations (or samples) used to calculate the
- * SSAO effect. A higher value will result in a more accurate and smoother effect,
- * but may also be more performance-intensive.
+ * This function sets the number of blur iterations applied to the SSAO effect.
+ * By default, one iteration is performed, using a total of 12 samples for the
+ * Gaussian blur. Increasing the number of iterations results in a smoother
+ * ambient occlusion but may impact performance.
  *
- * @param value The number of iterations for SSAO.
+ * @param value The number of blur iterations for SSAO.
  */
 R3DAPI void R3D_SetSSAOIterations(int value);
 
 /**
- * @brief Gets the current number of SSAO iterations.
+ * @brief Gets the current number of blur iterations for the SSAO effect.
  *
- * This function retrieves the current number of iterations (or samples) used to
- * calculate the SSAO effect.
+ * This function retrieves the current number of blur iterations applied to the SSAO effect.
  *
- * @return The number of SSAO iterations.
+ * @return The number of blur iterations for SSAO.
  */
 R3DAPI int R3D_GetSSAOIterations(void);
 
