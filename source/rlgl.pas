@@ -648,6 +648,8 @@ procedure rlglInit(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}
 procedure rlglClose; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlglClose';
 {Load OpenGL extensions (loader function required)}
 procedure rlLoadExtensions(loader: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadExtensions';
+{Get OpenGL procedure address}
+procedure rlGetProcAddress(const procName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetProcAddress';
 {Get current OpenGL version}
 function rlGetVersion: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetVersion';
 {Set current framebuffer width}

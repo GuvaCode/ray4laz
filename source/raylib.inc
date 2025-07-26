@@ -2,7 +2,7 @@
 
 {$IFDEF LINUX}
   {$IFNDEF RAY_DYNAMIC}
-    {.$DEFINE RAY_STATIC}
+    {$DEFINE RAY_STATIC}
     // for r3d, it is possible to use only a dynamic library.
   {$ENDIF}
 {$IFEND}
