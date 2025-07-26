@@ -78,10 +78,10 @@ rm -f ../../../libs/x86_64-linux/libraylib*
 rm -f ../../../libs/x86_32-linux/libraylib*
 rm -f ../../../libs/x86_64-win64/libraylib*
 rm -f ../../../libs/i386-win32/libraylib*
-cd ../../
+#cd ../../
 echo ""
-read -p "Build shader compiler  (y/n)?" answer
-case ${answer:0:1} in y|Y )
+
+
 make clean
 rm -f ../tool/shader_compiler_linux32
 rm -f ../tool/shader_compiler_linux64
@@ -134,17 +134,6 @@ make -f compiler_windows OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw
 cp shader_compiler.exe ../../../tool/shader_compiler_windows32.exe
 rm shader_compiler.exe
 
-make clean
-    ;;
-    * )
-        echo skiping
-        echo -e "\e[0"
-
-    ;;
-esac
-        echo -e "\e[0m"  
-
-clear
 
 
 cd raylib/src

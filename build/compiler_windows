@@ -1,0 +1,25 @@
+
+# Компилятор
+CC = gcc
+
+# Флаги компиляции
+CFLAGS = -Wall -Wextra -std=c99
+
+# Флаги линковки (для Raylib)
+LDFLAGS = -L. -lraylib -lopengl32 -lgdi32 -lwinmm -luser32 -lshell32
+
+# Имя исполняемого файла
+TARGET = shader_compiler
+
+# Исходные файлы
+SRC = shader_compiler.c
+
+all: $(TARGET)
+
+$(TARGET): $(SRC)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(LDFLAGS)
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: all clean
