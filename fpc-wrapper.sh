@@ -29,6 +29,11 @@ then
 	PLATFORM="x86_64-openbsd"
 fi
 
+if [[ `uname` == "NetBSD" ]] && [[ `uname -m` -eq "x86_64" ]];
+then
+	PLATFORM="x86_64-netbsd"
+fi
+
 echo "PLATFORM=" $PLATFORM
 	
 
