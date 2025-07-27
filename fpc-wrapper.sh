@@ -19,6 +19,10 @@ then
 	PLATFORM="x86_64-linux"
 fi
 
+if [[ `uname` == "FreeBSD" ]] && [[ `uname -m` -eq "x86_64" ]];
+then
+	PLATFORM="x86_64-freebsd"
+fi
 
 if [[ `uname` == "OpenBSD" ]] && [[ `uname -m` -eq "x86_64" ]];
 then
