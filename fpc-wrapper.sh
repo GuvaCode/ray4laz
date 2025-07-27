@@ -19,7 +19,7 @@ then
 	PLATFORM="x86_64-linux"
 fi
 
-BASE_FLAGS="-MObjFPC -Scghi -Cg -l -vewnhibq"
+BASE_FLAGS="-MObjFPC -Scghi -Cg -l -B -vewnhibq"
 INCLUDE_FLAGS="-Fl$HERE/libs/$PLATFORM -Fu$HERE/source -Fu$HERE/headers"
 
 fpc $BASE_FLAGS $INCLUDE_FLAGS $*
