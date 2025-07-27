@@ -14,10 +14,19 @@ HERE=$(readlink -f $(dirname $0))
 
 PLATFORM="x86_32-linux";
 
-if [[ `uname -m` -eq "x86_64" ]]
+if [[ `uname` == "Linux" ]] && [[ `uname -m` -eq "x86_64" ]];
 then
 	PLATFORM="x86_64-linux"
 fi
+
+
+if [[ `uname` == "OpenBSD" ]] && [[ `uname -m` -eq "x86_64" ]];
+then
+	PLATFORM="x86_64-openbsd"
+fi
+
+echo "PLATFORM=" $PLATFORM
+	
 
 BASE_FLAGS="-MObjFPC -Scghi -Cg -l -B -vewnhibq"
 INCLUDE_FLAGS="-Fl$HERE/libs/$PLATFORM -Fu$HERE/source -Fu$HERE/headers"
