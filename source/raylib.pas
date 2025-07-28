@@ -2382,7 +2382,7 @@ implementation
 uses
   Math, raymath;
 
-{$IFDEF linux}
+{$IFDEF UNIX}
   {$IFDEF RAY_STATIC}
     {$linklib c}
     {$linklib m}
