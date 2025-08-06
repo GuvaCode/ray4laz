@@ -341,15 +341,3 @@ begin
   CloseWindow(); // Close window and OpenGL context
   //---------------------------------------------------------------------------------------------
 end.
-
-
-{ TEnvItem }
-
-{constructor TEnvItem.Create(Rect: TRectangle; Blocking: Integer; Color: TColor);
-begin
-
-end;}
-
-
-end.
-
