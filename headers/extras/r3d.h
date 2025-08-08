@@ -256,6 +256,16 @@ typedef struct R3D_Material {
     R3D_ShadowCastMode shadowCastMode;    /**< Shadow casting mode for the object. */
     R3D_BillboardMode billboardMode;      /**< Billboard mode applied to the object. */
 
+    Vector2 uvOffset;                     /**< UV offset applied to the texture coordinates.
+                                           *  For models, this can be set manually.
+                                           *  For sprites, this value is overridden automatically.
+                                           */
+
+    Vector2 uvScale;                      /**< UV scale factor applied to the texture coordinates.
+                                           *  For models, this can be set manually.
+                                           *  For sprites, this value is overridden automatically.
+                                           */
+
     float alphaCutoff;          /**< Alpha threshold below which fragments are discarded. */
 
 } R3D_Material;
@@ -647,11 +657,11 @@ R3DAPI void R3D_DrawMeshInstancedEx(const R3D_Mesh* mesh, const R3D_Material* ma
  *                     If colors are embedded in a struct, set to the size of the struct or the actual byte offset between elements.
  * @param instanceCount The number of instances to render. Must be greater than 0.
  */
-void R3D_DrawMeshInstancedPro(const R3D_Mesh* mesh, const R3D_Material* material,
-                              const BoundingBox* globalAabb, Matrix globalTransform,
-                              const Matrix* instanceTransforms, int transformsStride,
-                              const Color* instanceColors, int colorsStride,
-                              int instanceCount);
+R3DAPI void R3D_DrawMeshInstancedPro(const R3D_Mesh* mesh, const R3D_Material* material,
+                                     const BoundingBox* globalAabb, Matrix globalTransform,
+                                     const Matrix* instanceTransforms, int transformsStride,
+                                     const Color* instanceColors, int colorsStride,
+                                     int instanceCount);
 
 /**
  * @brief Draws a model at a specified position and scale.
@@ -690,6 +700,58 @@ R3DAPI void R3D_DrawModelEx(const R3D_Model* model, Vector3 position, Vector3 ro
  * @param transform A transformation matrix that defines how to position, rotate, and scale the model.
  */
 R3DAPI void R3D_DrawModelPro(const R3D_Model* model, Matrix transform);
+
+/**
+ * @brief Draws a model with instancing support.
+ * 
+ * This function renders a model multiple times with different transformation matrices 
+ * for each instance.
+ * 
+ * @param model A pointer to the model to render. Cannot be NULL.
+ * @param instanceTransforms Array of transformation matrices for each instance. Cannot be NULL.
+ * @param instanceCount The number of instances to render. Must be greater than 0.
+ */
+R3DAPI void R3D_DrawModelInstanced(const R3D_Model* model, const Matrix* instanceTransforms, int instanceCount);
+
+/**
+ * @brief Draws a model with instancing support and different colors per instance.
+ * 
+ * This function renders a model multiple times with different transformation matrices 
+ * and different colors for each instance.
+ * 
+ * @param model A pointer to the model to render. Cannot be NULL.
+ * @param instanceTransforms Array of transformation matrices for each instance. Cannot be NULL.
+ * @param instanceColors Array of colors for each instance. Can be NULL if no per-instance colors are needed.
+ * @param instanceCount The number of instances to render. Must be greater than 0.
+ */
+R3DAPI void R3D_DrawModelInstancedEx(const R3D_Model* model, const Matrix* instanceTransforms, const Color* instanceColors, int instanceCount);
+
+/**
+ * @brief Draws a model with instancing support, a global transformation, and different colors per instance.
+ * 
+ * This function renders a model multiple times using instancing, with a global transformation
+ * applied to all instances, and individual transformation matrices and colors for each instance.
+ * Each instance can have its own position, rotation, scale, and color while sharing the same model.
+ * 
+ * @param model A pointer to the model to render. Cannot be NULL.
+ * @param globalAabb Optional bounding box encompassing all instances, in local space. Used for frustum culling.
+ *                   Can be NULL to disable culling. Will be transformed by the global matrix if necessary.
+ * @param globalTransform The global transformation matrix applied to all instances.
+ * @param instanceTransforms Pointer to an array of transformation matrices for each instance, allowing unique transformations. Cannot be NULL.
+ * @param transformsStride The stride (in bytes) between consecutive transformation matrices in the array.
+ *                         Set to 0 if the matrices are tightly packed (stride equals sizeof(Matrix)).
+ *                         If matrices are embedded in a struct, set to the size of the struct or the actual byte offset between elements.
+ * @param instanceColors Pointer to an array of colors for each instance, allowing unique colors. Can be NULL if no per-instance colors are needed.
+ * @param colorsStride The stride (in bytes) between consecutive colors in the array.
+ *                     Set to 0 if the colors are tightly packed (stride equals sizeof(Color)).
+ *                     If colors are embedded in a struct, set to the size of the struct or the actual byte offset between elements.
+ * @param instanceCount The number of instances to render. Must be greater than 0.
+ */
+R3DAPI void R3D_DrawModelInstancedPro(const R3D_Model* model,
+                                      const BoundingBox* globalAabb, Matrix globalTransform,
+                                      const Matrix* instanceTransforms, int transformsStride,
+                                      const Color* instanceColors, int colorsStride,
+                                      int instanceCount);
 
 /**
  * @brief Draws a sprite at a specified position.
@@ -1039,227 +1101,6 @@ R3DAPI bool R3D_UpdateMesh(R3D_Mesh* mesh);
  */
 R3DAPI void R3D_UpdateMeshBoundingBox(R3D_Mesh* mesh);
 
-/**
- * @brief Generate a polygon mesh with specified number of sides.
- *
- * Creates a regular polygon mesh centered at the origin in the XY plane.
- * The polygon is generated with vertices evenly distributed around a circle.
- *
- * @param sides Number of sides for the polygon (minimum 3).
- * @param radius Radius of the circumscribed circle.
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated polygon mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshPoly(int sides, float radius, bool upload);
-
-/**
- * @brief Generate a plane mesh with specified dimensions and resolution.
- *
- * Creates a flat plane mesh in the XZ plane, centered at the origin.
- * The mesh can be subdivided for higher resolution or displacement mapping.
- *
- * @param width Width of the plane along the X axis.
- * @param length Length of the plane along the Z axis.
- * @param resX Number of subdivisions along the X axis.
- * @param resZ Number of subdivisions along the Z axis.
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated plane mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshPlane(float width, float length, int resX, int resZ, bool upload);
-
-/**
- * @brief Generate a cube mesh with specified dimensions.
- *
- * Creates a cube mesh centered at the origin with the specified width, height, and length.
- * Each face consists of two triangles with proper normals and texture coordinates.
- *
- * @param width Width of the cube along the X axis.
- * @param height Height of the cube along the Y axis.
- * @param length Length of the cube along the Z axis.
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated cube mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshCube(float width, float height, float length, bool upload);
-
-/**
- * @brief Generate a sphere mesh with specified parameters.
- *
- * Creates a UV sphere mesh centered at the origin using latitude-longitude subdivision.
- * Higher ring and slice counts produce smoother spheres but with more vertices.
- *
- * @param radius Radius of the sphere.
- * @param rings Number of horizontal rings (latitude divisions).
- * @param slices Number of vertical slices (longitude divisions).
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated sphere mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshSphere(float radius, int rings, int slices, bool upload);
-
-/**
- * @brief Generate a hemisphere mesh with specified parameters.
- *
- * Creates a half-sphere mesh (dome) centered at the origin, extending upward in the Y axis.
- * Uses the same UV sphere generation technique as R3D_GenMeshSphere but only the upper half.
- *
- * @param radius Radius of the hemisphere.
- * @param rings Number of horizontal rings (latitude divisions).
- * @param slices Number of vertical slices (longitude divisions).
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated hemisphere mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshHemiSphere(float radius, int rings, int slices, bool upload);
-
-/**
- * @brief Generate a cylinder mesh with specified parameters.
- *
- * Creates a cylinder mesh centered at the origin, extending along the Y axis.
- * The cylinder includes both top and bottom caps and smooth side surfaces.
- *
- * @param radius Radius of the cylinder base.
- * @param height Height of the cylinder along the Y axis.
- * @param slices Number of radial subdivisions around the cylinder.
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated cylinder mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshCylinder(float radius, float height, int slices, bool upload);
-
-/**
- * @brief Generate a cone mesh with specified parameters.
- *
- * Creates a cone mesh with its base centered at the origin and apex pointing upward along the Y axis.
- * The cone includes a circular base and smooth tapered sides.
- *
- * @param radius Radius of the cone base.
- * @param height Height of the cone along the Y axis.
- * @param slices Number of radial subdivisions around the cone base.
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated cone mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshCone(float radius, float height, int slices, bool upload);
-
-/**
- * @brief Generate a torus mesh with specified parameters.
- *
- * Creates a torus (donut shape) mesh centered at the origin in the XZ plane.
- * The torus is defined by a major radius (distance from center to tube center)
- * and a minor radius (tube thickness).
- *
- * @param radius Major radius of the torus (distance from center to tube center).
- * @param size Minor radius of the torus (tube thickness/radius).
- * @param radSeg Number of segments around the major radius.
- * @param sides Number of sides around the tube cross-section.
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated torus mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshTorus(float radius, float size, int radSeg, int sides, bool upload);
-
-/**
- * @brief Generate a trefoil knot mesh with specified parameters.
- *
- * Creates a trefoil knot mesh, which is a mathematical knot shape.
- * Similar to a torus but with a twisted, knotted topology.
- *
- * @param radius Major radius of the knot.
- * @param size Minor radius (tube thickness) of the knot.
- * @param radSeg Number of segments around the major radius.
- * @param sides Number of sides around the tube cross-section.
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated trefoil knot mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshKnot(float radius, float size, int radSeg, int sides, bool upload);
-
-/**
- * @brief Generate a terrain mesh from a heightmap image.
- *
- * Creates a terrain mesh by interpreting the brightness values of a heightmap image
- * as height values. The resulting mesh represents a 3D terrain surface.
- *
- * @param heightmap Image containing height data (grayscale values represent elevation).
- * @param size 3D vector defining the terrain dimensions (width, max height, depth).
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated heightmap terrain mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshHeightmap(Image heightmap, Vector3 size, bool upload);
-
-/**
- * @brief Generate a voxel-style mesh from a cubicmap image.
- *
- * Creates a mesh composed of cubes based on a cubicmap image, where each pixel
- * represents the presence or absence of a cube at that position. Useful for
- * creating voxel-based or block-based geometry.
- *
- * @param cubicmap Image where pixel values determine cube placement.
- * @param cubeSize 3D vector defining the size of each individual cube.
- * @param upload If true, automatically uploads the mesh to GPU memory.
- *
- * @return Generated cubicmap mesh structure.
- */
-R3DAPI R3D_Mesh R3D_GenMeshCubicmap(Image cubicmap, Vector3 cubeSize, bool upload);
-
-/**
- * @brief Free mesh data from both RAM and VRAM.
- *
- * Releases all memory associated with a mesh, including vertex data in RAM
- * and GPU buffers (VAO, VBO, EBO) if the mesh was uploaded to VRAM.
- * After calling this function, the mesh should not be used.
- *
- * @param mesh Pointer to the mesh structure to be freed.
- */
-R3DAPI void R3D_UnloadMesh(const R3D_Mesh* mesh);
-
-/**
- * @brief Upload a mesh to GPU memory.
- *
- * This function uploads a mesh's vertex and (optional) index data to the GPU.
- * It creates and configures a VAO, VBO, and optionally an EBO if indices are provided.
- * All vertex attributes are interleaved in a single VBO.
- *
- * This function must only be called once per mesh. For updates, use R3D_UpdateMesh().
- *
- * @param mesh Pointer to the mesh structure containing vertex and index data.
- * @param dynamic If true, allocates buffers with GL_DYNAMIC_DRAW for later updates.
- * If false, uses GL_STATIC_DRAW for optimized static meshes.
- *
- * @return true if upload succeeded, false on error (e.g. invalid input or already uploaded).
- */
-R3DAPI bool R3D_UploadMesh(R3D_Mesh* mesh, bool dynamic);
-
-/**
- * @brief Update an already uploaded mesh on the GPU.
- *
- * This function updates the GPU-side data of a mesh previously uploaded with R3D_UploadMesh().
- * It replaces the vertex buffer contents using glBufferSubData.
- * If index data is present, it also updates or creates the index buffer (EBO).
- *
- * This function assumes the mesh was uploaded with the `dynamic` flag set to true.
- *
- * @param mesh Pointer to the mesh structure with updated vertex and/or index data.
- *
- * @return true if update succeeded, false on error (e.g. mesh not uploaded or invalid data).
- */
-R3DAPI bool R3D_UpdateMesh(R3D_Mesh* mesh);
-
-/**
- * @brief Recalculate the bounding box of a mesh.
- *
- * Computes and updates the axis-aligned bounding box (AABB) of the mesh
- * by examining all vertex positions. This is useful after mesh deformation
- * or when the bounding box needs to be refreshed.
- *
- * @param mesh Pointer to the mesh structure whose bounding box will be updated.
- */
-R3DAPI void R3D_UpdateMeshBoundingBox(R3D_Mesh* mesh);
-
 
 
 // --------------------------------------------
@@ -1379,6 +1220,22 @@ R3DAPI void R3D_UpdateModelBoundingBox(R3D_Model* model, bool updateMeshBounding
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  */
 R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* fileName, int* animCount, int targetFrameRate);
+
+/**
+ * @brief Loads model animations from memory data in a supported format (e.g., GLTF, IQM).
+ *
+ * This function parses animation data from the given memory buffer and returns an array
+ * of R3D_ModelAnimation structs. The caller is responsible for freeing the returned data
+ * using R3D_UnloadModelAnimations().
+ *
+ * @param fileType File format hint (e.g., "gltf", "iqm", ".gltf"). The leading dot is optional.
+ * @param data Pointer to the model data in memory.
+ * @param size Size of the data buffer in bytes.
+ * @param animCount Pointer to an integer that will receive the number of animations loaded.
+ * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
+ * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
+ */
+R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimationsFromMemory(const char* fileType, const void* data, unsigned int size, int* animCount, int targetFrameRate);
 
 /**
  * @brief Frees memory allocated for model animations.
@@ -2189,6 +2046,32 @@ R3DAPI void R3D_SetSkyboxRotation(float pitch, float yaw, float roll);
  * @return A vector containing the current pitch, yaw, and roll of the skybox.
  */
 R3DAPI Vector3 R3D_GetSkyboxRotation(void);
+
+/**
+ * @brief Sets the intensity scaling values used for the environment's skybox.
+ *
+ * This function controls the intensity of both the rendered skybox as well as
+ * the light that is generated from the skybox.
+ *
+ * @param background The intensity of the skybox rendered as the background.
+ *                   A value of 0.0 will disable rendering the skybox but
+ *                   allow any generated lighting to still be applied.
+ * @param ambient The intensity of ambient light produced by the skybox.
+ * @param reflection The intensity of reflections of the skybox in reflective materials.
+ */
+R3DAPI void R3D_SetSkyboxIntensity(float background, float ambient, float reflection);
+
+/**
+ * @brief Gets the intensity scaling values used for the environment's skybox.
+ *
+ * This function returns the intensity values for the rendered skybox as well
+ * the light that is generated from the skybox.
+ *
+ * @param background Pointer to store the intensity value for the rendered skybox.
+ * @param ambient Pointer to store the intensity value for ambient light produced by the skybox.
+ * @param reflection Pointer to store the intensity value for reflections from the skybox.
+ */
+R3DAPI void R3D_GetSkyboxIntensity(float* background, float* ambient, float* reflection);
 
 
 
