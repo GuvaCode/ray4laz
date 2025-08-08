@@ -95,8 +95,12 @@ cmake .. \
 
 cmake --build .
 cp libr3d.dll ../../../libs/x86_64-win64/libr3d.dll
-cp external/assimp/bin/libassimp-6.dll ../../../libs/x86_64-win64/libassimp-6.dll
-#cp external/raylib/raylib/libraylib.dll ../../../libs/x86_64-win64/libraylib.dll
+#cp external/assimp/bin/libassimp-6.dll ../../../libs/x86_64-win64/libassimp-6.dll
+
+wget https://github.com/assimp/assimp/releases/download/v6.0.2/windows-x64-v6.0.2.zip
+unzip windows-x64-v6.0.2.zip 
+cp Release/assimp-vc143-mt.dll ../../../libs/x86_64-win64/libassimp-6.dll
+
 
 rm -rf *
 echo " "
@@ -116,13 +120,18 @@ cmake .. \
 
 cmake --build .
 cp libr3d.dll ../../../libs/i386-win32/libr3d.dll
-cp external/assimp/bin/libassimp-6.dll ../../../libs/i386-win32/libassimp-6.dll
+#cp external/assimp/bin/libassimp-6.dll ../../../libs/i386-win32/libassimp-6.dll
 #cp external/raylib/raylib/libraylib.dll ../../../libs/i386-win32/libraylib.dll
+
+wget https://github.com/assimp/assimp/releases/download/v6.0.2/windows-x86-v6.0.2.zip
+unzip windows-x86-v6.0.2.zip
+cp Release/assimp-vc143-mt.dll ../../../libs/x86_64-win64/libassimp-6.dll
+
 
 cd ../../
 
-
-
+#https://github.com/assimp/assimp/releases/download/v6.0.2/windows-x64-v6.0.2.zip
+#https://github.com/assimp/assimp/releases/download/v6.0.2/windows-x86-v6.0.2.zip
 
 
 

@@ -225,6 +225,11 @@ type (* Represents a material with textures, parameters, and rendering modes. *)
     cullMode:       R3D_CullMode;       // Face culling mode used for the material.
     shadowCastMode: R3D_ShadowCastMode; // Shadow casting mode for the object.
     billboardMode:  R3D_BillboardMode;  // Billboard mode applied to the object.
+    uvOffset:       TVector2;           // UV offset applied to the texture coordinates. For models, this can be set manually.
+                                        // For sprites, this value is overridden automatically.
+    uvScale:        TVector2;           // UV scale factor applied to the texture coordinates.
+                                        // For models, this can be set manually.
+                                        // For sprites, this value is overridden automatically.
     alphaCutoff:    Single;             // Alpha threshold below which fragments are discarded.
   end;
 
@@ -594,6 +599,58 @@ procedure R3D_DrawModelEx(model: PR3D_Model; position, rotationAxis: TVector3; r
  * @param transform A transformation matrix that defines how to position, rotate, and scale the model.
  *)
 procedure R3D_DrawModelPro(model: PR3D_Model; transform: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawModelPro';
+
+(*
+ * @brief Draws a model with instancing support.
+ *
+ * This function renders a model multiple times with different transformation matrices
+ * for each instance.
+ *
+ * @param model A pointer to the model to render. Cannot be NULL.
+ * @param instanceTransforms Array of transformation matrices for each instance. Cannot be NULL.
+ * @param instanceCount The number of instances to render. Must be greater than 0.
+ *)
+procedure R3D_DrawModelInstanced(const model: PR3D_Model; const instanceTransforms: PMatrix; instanceCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawModelInstanced';
+
+(*
+ * @brief Draws a model with instancing support and different colors per instance.
+ *
+ * This function renders a model multiple times with different transformation matrices
+ * and different colors for each instance.
+ *
+ * @param model A pointer to the model to render. Cannot be NULL.
+ * @param instanceTransforms Array of transformation matrices for each instance. Cannot be NULL.
+ * @param instanceColors Array of colors for each instance. Can be NULL if no per-instance colors are needed.
+ * @param instanceCount The number of instances to render. Must be greater than 0.
+ *)
+procedure R3D_DrawModelInstancedEx(const model: PR3D_Model; const instanceTransforms: PMatrix; const instanceColors: PColorB; instanceCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawModelInstancedEx';
+
+(*
+ * @brief Draws a model with instancing support, a global transformation, and different colors per instance.
+ *
+ * This function renders a model multiple times using instancing, with a global transformation
+ * applied to all instances, and individual transformation matrices and colors for each instance.
+ * Each instance can have its own position, rotation, scale, and color while sharing the same model.
+ *
+ * @param model A pointer to the model to render. Cannot be NULL.
+ * @param globalAabb Optional bounding box encompassing all instances, in local space. Used for frustum culling.
+ *                   Can be NULL to disable culling. Will be transformed by the global matrix if necessary.
+ * @param globalTransform The global transformation matrix applied to all instances.
+ * @param instanceTransforms Pointer to an array of transformation matrices for each instance, allowing unique transformations. Cannot be NULL.
+ * @param transformsStride The stride (in bytes) between consecutive transformation matrices in the array.
+ *                         Set to 0 if the matrices are tightly packed (stride equals sizeof(Matrix)).
+ *                         If matrices are embedded in a struct, set to the size of the struct or the actual byte offset between elements.
+ * @param instanceColors Pointer to an array of colors for each instance, allowing unique colors. Can be NULL if no per-instance colors are needed.
+ * @param colorsStride The stride (in bytes) between consecutive colors in the array.
+ *                     Set to 0 if the colors are tightly packed (stride equals sizeof(Color)).
+ *                     If colors are embedded in a struct, set to the size of the struct or the actual byte offset between elements.
+ * @param instanceCount The number of instances to render. Must be greater than 0.
+ *)
+procedure R3D_DrawModelInstancedPro(const model: PR3D_Model;
+                                      const globalAabb: PBoundingBox; globalTransform: TMatrix;
+                                      const instanceTransforms: PMatrix; transformsStride: Integer;
+                                      const instanceColors: PColorB; colorsStride: Integer;
+                                      instanceCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_DrawModelInstancedPro';
 
 (*
  * @brief Draws a sprite at a specified position.
@@ -1053,6 +1110,22 @@ procedure R3D_UpdateModelBoundingBox(model: PR3D_Model; updateMeshBoundingBoxes:
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  *)
 function R3D_LoadModelAnimations(fileName: PChar; animCount: PInteger; targetFrameRate: Integer): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimations';
+
+(*
+ * @brief Loads model animations from memory data in a supported format (e.g., GLTF, IQM).
+ *
+ * This function parses animation data from the given memory buffer and returns an array
+ * of R3D_ModelAnimation structs. The caller is responsible for freeing the returned data
+ * using R3D_UnloadModelAnimations().
+ *
+ * @param fileType File format hint (e.g., "gltf", "iqm", ".gltf"). The leading dot is optional.
+ * @param data Pointer to the model data in memory.
+ * @param size Size of the data buffer in bytes.
+ * @param animCount Pointer to an integer that will receive the number of animations loaded.
+ * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
+ * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
+ *)
+function R3D_LoadModelAnimationsFromMemory(const fileType: PChar; const data: Pointer; size: Cardinal; animCount: PInteger; targetFrameRate: integer): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimationsFromMemory';
 
 (*
  * @brief Frees memory allocated for model animations.
@@ -1848,6 +1921,33 @@ procedure R3D_SetSkyboxRotation(pitch, yaw, roll: Single); cdecl; external {$IFN
  * @return A vector containing the current pitch, yaw, and roll of the skybox.
  *)
 function R3D_GetSkyboxRotation: TVector3; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSkyboxRotation';
+
+(*
+ * @brief Sets the intensity scaling values used for the environment's skybox.
+ *
+ * This function controls the intensity of both the rendered skybox as well as
+ * the light that is generated from the skybox.
+ *
+ * @param background The intensity of the skybox rendered as the background.
+ *                   A value of 0.0 will disable rendering the skybox but
+ *                   allow any generated lighting to still be applied.
+ * @param ambient The intensity of ambient light produced by the skybox.
+ * @param reflection The intensity of reflections of the skybox in reflective materials.
+ *)
+procedure R3D_SetSkyboxIntensity(background: Single; ambient: Single; reflection: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSkyboxIntensity';
+
+(*
+ * @brief Gets the intensity scaling values used for the environment's skybox.
+ *
+ * This function returns the intensity values for the rendered skybox as well
+ * the light that is generated from the skybox.
+ *
+ * @param background Pointer to store the intensity value for the rendered skybox.
+ * @param ambient Pointer to store the intensity value for ambient light produced by the skybox.
+ * @param reflection Pointer to store the intensity value for reflections from the skybox.
+ *)
+procedure R3D_GetSkyboxIntensity(background: PSingle; ambient: PSingle; reflection: PSingle); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSkyboxIntensity';
+
 
 // --------------------------------------------
 // ENVIRONMENT: SSAO Config Functions
