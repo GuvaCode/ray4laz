@@ -165,8 +165,8 @@ begin
   SynMarkup.IgnoreKeywords := False;
 
   ErrorMarkUp := TSynEditMarkupHighlightAll(ResultEditor.MarkupByClass[TSynEditMarkupHighlightAll]);
-  ErrorMarkUp.MarkupInfo.FrameStyle:= slsWaved;
-  ErrorMarkUp.MarkupInfo.FrameEdges := sfeBottom;
+  // ErrorMarkUp.MarkupInfo.FrameStyle:= slsWaved;
+  // ErrorMarkUp.MarkupInfo.FrameEdges := sfeBottom;
   ErrorMarkUp.MarkupInfo.FrameColor := clRED;
 
   actNew.Caption := rsNewShader;

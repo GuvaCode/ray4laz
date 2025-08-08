@@ -539,6 +539,9 @@ function GuiLoadIcons(const fileName: PChar; loadIconsName: Boolean): PPChar; cd
 procedure GuiDrawIcon(iconId, posX, posY, pixelSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiDrawIcon';  // Draw icon using pixel size at specified position
 {$ENDIF}
 
+// Utility functions
+function GuiGetTextWidth(const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGetTextWidth'; // Get text width considering gui style and icon size (if required)
+
 // Controls
 //------------------------------------------------------------------------------
 

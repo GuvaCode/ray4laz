@@ -1946,11 +1946,11 @@ function TextReplace(const text: PChar; const replace, by: PChar): PChar; cdecl;
 function TextInsert(const text, insert: PChar; position: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextInsert';
 {Join text strings with delimiter}
 function TextJoin(textList: PPChar; count: Integer; const delimiter: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextJoin';
-{Split text into multiple strings}
+{Split text into multiple strings, using MAX_TEXTSPLIT_COUNT static strings}
 function TextSplit(const text: PChar; delimiter: Char; count: PInteger): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSplit';
 {Append text at specific position and move cursor!}
 procedure TextAppend(text: PChar; const append: PChar; position: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextAppend';
-{Find first text occurrence within a string}
+{Find first text occurrence within a string, -1 if not found}
 function TextFindIndex(const text, find: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFindIndex';
 {Get upper case version of provided string}
 function TextToUpper(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToUpper';

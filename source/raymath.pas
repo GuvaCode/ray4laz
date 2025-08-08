@@ -102,7 +102,7 @@ function Vector2CrossProduct(v1, v2: TVector2): Single; cdecl; external {$IFNDEF
 function Vector2Distance(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Distance';
 { Calculate square distance between two vectors }
 function Vector2DistanceSqr(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2DistanceSqr';
-{ Calculate angle from two vectors in X-axis }
+{ Calculate the signed angle from v1 to v2, relative to the origin (0, 0) }
 function Vector2Angle(v1, v2 : TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Angle';
 { Calculate angle defined by a two vectors line }
 function Vector2LineAngle(start, end_: TVector2): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2LineAngle';
