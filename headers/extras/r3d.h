@@ -179,7 +179,15 @@ typedef enum R3D_Tonemap {
     R3D_TONEMAP_COUNT     ///< Number of tone mapping modes (used internally)
 } R3D_Tonemap;
 
-
+/**
+ * @brief Depth of field effect modes.
+ *
+ * Controls how depth of field is applied to the scene, affecting the focus and blur of objects.
+ */
+typedef enum R3D_Dof {
+    R3D_DOF_DISABLED, ///< Depth of field effect is disabled.
+    R3D_DOF_ENABLED,  ///< Depth of field effect is enabled.
+} R3D_Dof;
 
 // --------------------------------------------
 //                   TYPES
@@ -458,6 +466,11 @@ typedef struct R3D_ParticleSystem {
 extern "C" {
 #endif // __cplusplus
 
+/**
+ * @defgroup Core Core Functions
+ * @{
+ */
+
 // --------------------------------------------
 // CORE: Init And Config Functions
 // --------------------------------------------
@@ -570,8 +583,6 @@ R3DAPI void R3D_SetSceneBounds(BoundingBox sceneBounds);
  * @param filter The texture filtering mode to be applied by default.
  */
 R3DAPI void R3D_SetTextureFilter(TextureFilter filter);
-
-
 
 // --------------------------------------------
 // CORE: Drawing Functions
@@ -874,7 +885,12 @@ R3DAPI void R3D_DrawParticleSystem(const R3D_ParticleSystem* system, const R3D_M
  */
 R3DAPI void R3D_DrawParticleSystemEx(const R3D_ParticleSystem* system, const R3D_Mesh* mesh, const R3D_Material* material, Matrix transform);
 
+/** @} */ // end of Core
 
+/**
+ * @defgroup Model Model Functions
+ * @{
+ */
 
 // --------------------------------------------
 // MODEL: Mesh Functions
@@ -1101,8 +1117,6 @@ R3DAPI bool R3D_UpdateMesh(R3D_Mesh* mesh);
  */
 R3DAPI void R3D_UpdateMeshBoundingBox(R3D_Mesh* mesh);
 
-
-
 // --------------------------------------------
 // MODEL: Material Functions
 // --------------------------------------------
@@ -1130,8 +1144,6 @@ R3DAPI R3D_Material R3D_GetDefaultMaterial(void);
  * @param material Pointer to the material structure to be unloaded.
  */
 R3DAPI void R3D_UnloadMaterial(const R3D_Material* material);
-
-
 
 // --------------------------------------------
 // MODEL: Model Functions
@@ -1279,7 +1291,12 @@ R3DAPI void R3D_ListModelAnimations(R3D_ModelAnimation* animations, int animCoun
  */
 R3DAPI void R3D_SetModelImportScale(float value);
 
+/** @} */ // end of Model
 
+/**
+ * @defgroup Lighting Lighting Functions
+ * @{
+ */
 
 // --------------------------------------------
 // LIGHTING: Lights Config Functions
@@ -1605,8 +1622,6 @@ R3DAPI float R3D_GetLightOuterCutOff(R3D_Light id);
  */
 R3DAPI void R3D_SetLightOuterCutOff(R3D_Light id, float degrees);
 
-
-
 // --------------------------------------------
 // LIGHTING: Shadow Config Functions
 // --------------------------------------------
@@ -1757,12 +1772,9 @@ R3DAPI float R3D_GetShadowBias(R3D_Light id);
  */
 R3DAPI void R3D_SetShadowBias(R3D_Light id, float value);
 
-
-
 // --------------------------------------------
 // LIGHTING: Light Helper Functions
 // --------------------------------------------
-
 
 /**
  * @brief Returns the bounding box encompassing the light's area of influence.
@@ -1796,7 +1808,12 @@ R3DAPI BoundingBox R3D_GetLightBoundingBox(R3D_Light light);
  */
 R3DAPI void R3D_DrawLightShape(R3D_Light id);
 
+/** @} */ // end of Lighting
 
+/**
+ * @defgroup Particles Particle Functions
+ * @{
+ */
 
 // --------------------------------------------
 // PARTICLES: Particle System Functions
@@ -1860,10 +1877,15 @@ R3DAPI void R3D_UpdateParticleSystem(R3D_ParticleSystem* system, float deltaTime
  */
 R3DAPI void R3D_CalculateParticleSystemBoundingBox(R3D_ParticleSystem* system);
 
+/** @} */ // end of Particles
 
+/**
+ * @defgroup Sprites Sprite Functions
+ * @{
+ */
 
 // --------------------------------------------
-// CURVES: Interpolation Curves Functions
+// SPRITE: Sprite Functions
 // --------------------------------------------
 
 /**
@@ -1925,7 +1947,13 @@ R3DAPI void R3D_UpdateSprite(R3D_Sprite* sprite, float speed);
  */
 R3DAPI void R3D_UpdateSpriteEx(R3D_Sprite* sprite, int firstFrame, int lastFrame, float speed);
 
+/** @} */ // end of Sprites
 
+/**
+ * @defgroup Curves Curve Functions
+ * @brief The interpolation curves defined in this module are used in the context of particle systems.
+ * @{
+ */
 
 // --------------------------------------------
 // CURVES: Interpolation Curves Functions
@@ -1980,7 +2008,13 @@ R3DAPI bool R3D_AddKeyframe(R3D_InterpolationCurve* curve, float time, float val
  */
 R3DAPI float R3D_EvaluateCurve(R3D_InterpolationCurve curve, float time);
 
+/** @} */ // end of Curves
 
+/**
+ * @defgroup Environment Environment Functions
+ * @brief Mainly defines post process control.
+ * @{
+ */
 
 // --------------------------------------------
 // ENVIRONMENT: Background And Ambient
@@ -2073,8 +2107,6 @@ R3DAPI void R3D_SetSkyboxIntensity(float background, float ambient, float reflec
  */
 R3DAPI void R3D_GetSkyboxIntensity(float* background, float* ambient, float* reflection);
 
-
-
 // --------------------------------------------
 // ENVIRONMENT: SSAO Config Functions
 // --------------------------------------------
@@ -2159,8 +2191,6 @@ R3DAPI void R3D_SetSSAOIterations(int value);
  * @return The number of blur iterations for SSAO.
  */
 R3DAPI int R3D_GetSSAOIterations(void);
-
-
 
 // --------------------------------------------
 // ENVIRONMENT: Bloom Config Functions
@@ -2369,8 +2399,6 @@ R3DAPI void R3D_SetFogDensity(float value);
  */
 R3DAPI float R3D_GetFogDensity(void);
 
-
-
 // --------------------------------------------
 // ENVIRONMENT: Tonemap Config Functions
 // --------------------------------------------
@@ -2433,8 +2461,6 @@ R3DAPI void R3D_SetTonemapWhite(float value);
  */
 R3DAPI float R3D_GetTonemapWhite(void);
 
-
-
 // --------------------------------------------
 // ENVIRONMENT: Color Adjustment Functions
 // --------------------------------------------
@@ -2496,7 +2522,102 @@ R3DAPI void R3D_SetSaturation(float value);
  */
 R3DAPI float R3D_GetSaturation(void);
 
+// --------------------------------------------
+// ENVIRONMENT: Depth of Field (DoF) Functions
+// --------------------------------------------
 
+/**
+ * @brief Enables or disables the depth of field post-process.
+ *
+ * @param mode The depth of field mode to set.
+ */
+R3DAPI void R3D_SetDofMode(R3D_Dof mode);
+
+/**
+ * @brief Gets the current depth of field mode.
+ *
+ * @return The current depth of field mode.
+ */
+R3DAPI R3D_Dof R3D_GetDofMode(void);
+
+/**
+ * @brief Sets the focus point in world space.
+ *
+ * This function defines the distance (in meters) from the camera where
+ * objects will be in perfect focus. Objects closer or farther will be blurred.
+ *
+ * @param value The focus point distance in meters.
+ */
+R3DAPI void R3D_SetDofFocusPoint(float value);
+
+/**
+ * @brief Gets the current focus point.
+ *
+ * @return The focus point distance in meters.
+ */
+R3DAPI float R3D_GetDofFocusPoint(void);
+
+/**
+ * @brief Sets the focus scale.
+ *
+ * This function controls how shallow the depth of field effect is.
+ * Lower values create a shallower depth of field with more blur,
+ * while higher values create a deeper depth of field with less blur.
+ *
+ * @param value The focus scale value.
+ */
+R3DAPI void R3D_SetDofFocusScale(float value);
+
+/**
+ * @brief Gets the current focus scale.
+ *
+ * @return The current focus scale value.
+ */
+R3DAPI float R3D_GetDofFocusScale(void);
+
+/**
+ * @brief Sets the maximum blur size.
+ *
+ * This function controls the maximum amount of blur applied to out-of-focus
+ * areas. This value is similar to the lens aperture size, larger values
+ * create more pronounced blur effects.
+ *
+ * @param value The maximum blur size value.
+ */
+R3DAPI void R3D_SetDofMaxBlurSize(float value);
+
+/**
+ * @brief Gets the current maximum blur size.
+ *
+ * @return The current maximum blur size value.
+ */
+R3DAPI float R3D_GetDofMaxBlurSize(void);
+
+/**
+ * @brief Enables or disables depth-of-field debug mode.
+ *
+ * In debug mode, the scene uses color coding:
+ * - Green: near blur
+ * - Black: sharp areas
+ * - Blue: far blur
+ *
+ * @param enabled true to enable, false to disable.
+ */
+R3DAPI void R3D_SetDofDebugMode(bool enabled);
+
+/**
+ * @brief Gets the current debug mode state.
+ *
+ * @return True if debug mode is enabled, false otherwise.
+ */
+R3DAPI bool R3D_GetDofDebugMode(void);
+
+/** @} */ // end of Environment
+
+/**
+ * @defgroup Skybox Skybox Functions
+ * @{
+ */
 
 // --------------------------------------------
 // SKYBOX: Skybox Loading Functions
@@ -2560,7 +2681,13 @@ R3DAPI R3D_Skybox R3D_LoadSkyboxPanoramaFromMemory(Image image, int size);
  */
 R3DAPI void R3D_UnloadSkybox(R3D_Skybox sky);
 
+/** @} */ // end of Skybox
 
+/**
+ * @defgroup Culling Culling Functions
+ * @brief Defines manual culling functions, note that r3d has also an automatic culling system.
+ * @{
+ */
 
 // --------------------------------------------
 // CULLING: Frustum Test Functions
@@ -2691,7 +2818,13 @@ R3DAPI bool R3D_IsSphereInFrustumBoundingBox(Vector3 position, float radius);
  */
 R3DAPI bool R3D_IsAABBInFrustumBoundingBox(BoundingBox aabb);
 
+/** @} */ // end of Culling
 
+/**
+ * @defgroup Utils Utility Functions
+ * @brief Defines some utility functions, including access to internal data, useful for adding additional effects.
+ * @{
+ */
 
 // --------------------------------------------
 // UTILS: Default Texture Retrieval Functions
@@ -2723,8 +2856,6 @@ R3DAPI Texture2D R3D_GetBlackTexture(void);
  * @return A neutral normal texture.
  */
 R3DAPI Texture2D R3D_GetNormalTexture(void);
-
-
 
 // --------------------------------------------
 // UTILS: Render Texture Retrieval Functions
@@ -2762,8 +2893,6 @@ R3DAPI Texture2D R3D_GetBufferNormal(void);
  * @return The final depth buffer texture.
  */
 R3DAPI Texture2D R3D_GetBufferDepth(void);
-
-
 
 // --------------------------------------------
 // UTILS: Camera Matrices Retrieval Functions
@@ -2808,8 +2937,6 @@ R3DAPI Matrix R3D_GetMatrixProjection(void);
  * @return The current inverse projection matrix.
  */
 R3DAPI Matrix R3D_GetMatrixInvProjection(void);
-
-
 
 // --------------------------------------------
 // UTILS: Debug Buffer Rendering Functions
@@ -2896,6 +3023,8 @@ R3DAPI void R3D_DrawBufferSSAO(float x, float y, float w, float h);
  * @param h Height of the drawn buffer.
  */
 R3DAPI void R3D_DrawBufferBloom(float x, float y, float w, float h);
+
+/** @} */ // end of Utils
 
 #ifdef __cplusplus
 }

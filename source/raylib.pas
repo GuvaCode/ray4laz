@@ -1226,7 +1226,7 @@ function SaveFileText(const fileName, text: PChar): Boolean; cdecl; external {$I
 function FileExists(const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileExists';
 {Check if a directory path exists}
 function DirectoryExists(const dirPath: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DirectoryExists';
-{Check file extension (including point: .png, .wav)}
+{recommended include point: .png, .wav}
 function IsFileExtension(const fileName, ext: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileExtension';
 {Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)}
 function GetFileLength(const fileName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileLength';
@@ -1857,7 +1857,7 @@ function GetFontDefault: TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$EN
 {Load font from file into GPU memory (VRAM)}
 function LoadFont(const fileName: PChar): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFont';
 {Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set, font size is provided in pixels height}
-function LoadFontEx(const fileName: Pchar; fontSize: Integer; codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
+function LoadFontEx(const fileName: PChar; fontSize: Integer; codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
 {Load font from Image (XNA style)}
 function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromImage';
 {Load font from memory buffer, fileType refers to extension: i.e. '.ttf'}

@@ -151,6 +151,14 @@ type (* Tone mapping modes.                                                     
     R3D_TONEMAP_AGX          = R3D_Tonemap(4); // AGX tone mapping, a modern technique designed to preserve both highlight and shadow details for HDR rendering.
     R3D_TONEMAP_COUNT        = R3D_Tonemap(5); // Number of tone mapping modes (used internally)
 
+
+  type (* Depth of field effect modes.                                                                  *)
+       (* Controls how depth of field is applied to the scene, affecting the focus and blur of objects. *)
+  R3D_Dof = Integer;
+  const
+    R3D_DOF_DISABLED = R3D_Dof(0); // Depth of field effect is disabled.
+    R3D_DOF_ENABLED  = R3D_Dof(1); // Depth of field effect is enabled.
+
 {$ENDREGION}
 
 // --------------------------------------------
@@ -2363,6 +2371,97 @@ procedure R3D_SetSaturation(value: Single); cdecl; external {$IFNDEF RAY_STATIC}
  * @return The current saturation value.
  *)
 function R3D_GetSaturation: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSaturation';
+
+// --------------------------------------------
+// ENVIRONMENT: Depth of Field (DoF) Functions
+// --------------------------------------------
+
+(*
+ * @brief Enables or disables the depth of field post-process.
+ *
+ * @param mode The depth of field mode to set.
+ *)
+procedure R3D_SetDofMode(mode: R3D_Dof); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofMode';
+
+(*
+ * @brief Gets the current depth of field mode.
+ *
+ * @return The current depth of field mode.
+ *)
+function R3D_GetDofMode: R3D_Dof; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofMode';
+
+(*
+ * @brief Sets the focus point in world space.
+ *
+ * This function defines the distance (in meters) from the camera where
+ * objects will be in perfect focus. Objects closer or farther will be blurred.
+ *
+ * @param value The focus point distance in meters.
+ *)
+procedure R3D_SetDofFocusPoint(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofFocusPoint';
+
+(*
+ * @brief Gets the current focus point.
+ *
+ * @return The focus point distance in meters.
+ *)
+function R3D_GetDofFocusPoint: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofFocusPoint';
+
+(*
+ * @brief Sets the focus scale.
+ *
+ * This function controls how shallow the depth of field effect is.
+ * Lower values create a shallower depth of field with more blur,
+ * while higher values create a deeper depth of field with less blur.
+ *
+ * @param value The focus scale value.
+ *)
+procedure R3D_SetDofFocusScale(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofFocusScale';
+
+(*
+ * @brief Gets the current focus scale.
+ *
+ * @return The current focus scale value.
+ *)
+function R3D_GetDofFocusScale: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofFocusScale';
+
+(*
+ * @brief Sets the maximum blur size.
+ *
+ * This function controls the maximum amount of blur applied to out-of-focus
+ * areas. This value is similar to the lens aperture size, larger values
+ * create more pronounced blur effects.
+ *
+ * @param value The maximum blur size value.
+ *)
+procedure R3D_SetDofMaxBlurSize(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofMaxBlurSize';
+
+(*
+ * @brief Gets the current maximum blur size.
+ *
+ * @return The current maximum blur size value.
+ *)
+function R3D_GetDofMaxBlurSize: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofMaxBlurSize';
+
+(*
+ * @brief Enables or disables depth-of-field debug mode.
+ *
+ * In debug mode, the scene uses color coding:
+ * - Green: near blur
+ * - Black: sharp areas
+ * - Blue: far blur
+ *
+ * @param enabled true to enable, false to disable.
+ *)
+procedure R3D_SetDofDebugMode(enabled: Boolean); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofDebugMode';
+
+(*
+ * @brief Gets the current debug mode state.
+ *
+ * @return True if debug mode is enabled, false otherwise.
+ *)
+function R3D_GetDofDebugMode: Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofDebugMode';
+
 
 // --------------------------------------------
 // SKYBOX: Skybox Loading Functions

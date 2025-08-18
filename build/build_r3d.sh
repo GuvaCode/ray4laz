@@ -43,7 +43,8 @@ cmake .. \
     -DRAYLIB_MODULE_RAYGUI=ON \
     -DR3D_BUILD_EXAMPLES=OFF \
     -DR3D_RAYLIB_VENDORED=ON \
-    -DR3D_ASSIMP_VENDORED=ON
+    -DR3D_ASSIMP_VENDORED=ON \
+    -DR3D_BUILD_DOCS=OFF 
 
 cmake --build .
 
@@ -68,7 +69,8 @@ cmake .. \
     -DR3D_RAYLIB_VENDORED=ON \
     -DR3D_ASSIMP_VENDORED=ON \
     -DCMAKE_CXX_FLAGS="-m32 -L/usr/lib32" \
-    -DCMAKE_C_FLAGS="-m32 -L/usr/lib32"
+    -DCMAKE_C_FLAGS="-m32 -L/usr/lib32" \
+    -DR3D_BUILD_DOCS=OFF 
 
 cmake --build .
 
@@ -91,7 +93,8 @@ cmake .. \
     -DRAYLIB_MODULE_RAYGUI=ON \
     -DR3D_BUILD_EXAMPLES=OFF \
     -DR3D_RAYLIB_VENDORED=ON \
-    -DR3D_ASSIMP_VENDORED=ON 
+    -DR3D_ASSIMP_VENDORED=ON \
+    -DR3D_BUILD_DOCS=OFF 
 
 cmake --build .
 cp libr3d.dll ../../../libs/x86_64-win64/libr3d.dll
@@ -116,7 +119,8 @@ cmake .. \
     -DRAYLIB_MODULE_RAYGUI=ON \
     -DR3D_BUILD_EXAMPLES=OFF \
     -DR3D_RAYLIB_VENDORED=ON \
-    -DR3D_ASSIMP_VENDORED=ON 
+    -DR3D_ASSIMP_VENDORED=ON \
+    -DR3D_BUILD_DOCS=OFF 
 
 cmake --build .
 cp libr3d.dll ../../../libs/i386-win32/libr3d.dll
