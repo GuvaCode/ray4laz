@@ -1,57 +1,69 @@
-program r3d_sponza;
+program r3d_Sponza;
 {$mode objfpc}{$H+}
 
 uses
   {$IFDEF UNIX} cthreads,{$ENDIF}
-  Classes, SysUtils, CustApp, raylib, r3d, raymath, rlgl, math;
+  Classes, SysUtils, raylib, rlgl, r3d, raymath;
 
 var
   Sponza: TR3D_Model;
   Skybox: TR3D_Skybox;
   Camera: TCamera3D;
   Lights: array[0..1] of TR3D_Light;
-  SkyEnabled: Boolean = False;
+  Sky: Boolean = False;
+
+const
+  RESOURCES_PATH = 'resources/';
 
 function Init: PChar;
 var
   i: Integer;
-  LightPos: TVector3;
 begin
-  R3D_Init(GetScreenWidth, GetScreenHeight, 0);
+  R3D_Init(GetScreenWidth(), GetScreenHeight(), 0);
   SetTargetFPS(60);
 
-  // Configure rendering effects
+  // Configure default post process settings
   R3D_SetSSAO(True);
   R3D_SetSSAORadius(4.0);
   R3D_SetBloomMode(R3D_BLOOM_MIX);
-  R3D_SetAmbientColor(GRAY);
-  R3D_SetModelImportScale(0.01);
-  // Load models
-  Sponza := R3D_LoadModel('resources/sponza.glb');
-  Skybox := R3D_LoadSkybox('resources/sky/skybox3.png', CUBEMAP_LAYOUT_AUTO_DETECT);
 
-  // Set scene bounds based on model AABB
+  // Set default ambient color (when no skybox is activated)
+  R3D_SetAmbientColor(GRAY);
+
+  // Load Sponza scene
+  Sponza := R3D_LoadModel(PChar(RESOURCES_PATH + 'sponza.glb'));
+
+  // Load skybox (disabled by default)
+  Skybox := R3D_LoadSkybox(PChar(RESOURCES_PATH + 'sky/skybox3.png'), CUBEMAP_LAYOUT_AUTO_DETECT);
+  //R3D_EnableSkybox(Skybox);
+
+  // Set scene bounds, useful if you use directional lights
   R3D_SetSceneBounds(Sponza.aabb);
 
-  // Create two omni lights
+  // Configure lights
   for i := 0 to 1 do
   begin
     Lights[i] := R3D_CreateLight(R3D_LIGHT_OMNI);
-    LightPos := Vector3Create(IfThen(i = 0, 10, -10), 20, 0);
 
-    R3D_SetLightPosition(Lights[i], LightPos);
+    if i = 0 then
+      R3D_SetLightPosition(Lights[i], Vector3Create(10, 20, 0))
+    else
+      R3D_SetLightPosition(Lights[i], Vector3Create(-10, 20, 0));
+
     R3D_SetLightActive(Lights[i], True);
     R3D_SetLightEnergy(Lights[i], 1.0);
     R3D_SetShadowUpdateMode(Lights[i], R3D_SHADOW_UPDATE_MANUAL);
     R3D_EnableShadow(Lights[i], 4096);
   end;
 
-  // Setup camera
+  // Configure camera
   Camera.position := Vector3Create(0, 0, 0);
   Camera.target := Vector3Create(0, 0, -1);
   Camera.up := Vector3Create(0, 1, 0);
   Camera.fovy := 60;
+  Camera.projection := CAMERA_PERSPECTIVE;
 
+  // Ready to go!
   DisableCursor();
 
   Result := '[r3d] - Sponza example';
@@ -59,22 +71,36 @@ end;
 
 procedure Update(delta: Single);
 var
-  CurrentTonemap: R3D_Tonemap;
+  Tonemap: R3D_Tonemap;
 begin
+  // Update the camera via raylib's functions
   UpdateCamera(@Camera, CAMERA_FREE);
 
-  // Toggle skybox with T key
-  if IsKeyPressed(KEY_T) then
+  // Skybox toggling
+  if IsKeyPressed(KEY_ZERO) then
   begin
-    SkyEnabled := not SkyEnabled;
-    if SkyEnabled then
-      R3D_EnableSkybox(Skybox)
+    if Sky then
+      R3D_DisableSkybox()
     else
-      R3D_DisableSkybox();
+      R3D_EnableSkybox(Skybox);
+    Sky := not Sky;
   end;
 
-  // Toggle FXAA with F key
-  if IsKeyPressed(KEY_F) then
+  // SSAO toggling
+  if IsKeyPressed(KEY_ONE) then
+    R3D_SetSSAO(not R3D_GetSSAO());
+
+  // Fog toggling
+  if IsKeyPressed(KEY_TWO) then
+  begin
+    if R3D_GetFogMode() = R3D_FOG_DISABLED then
+      R3D_SetFogMode(R3D_FOG_EXP)
+    else
+      R3D_SetFogMode(R3D_FOG_DISABLED);
+  end;
+
+  // FXAA toggling
+  if IsKeyPressed(KEY_THREE) then
   begin
     if R3D_HasState(R3D_FLAG_FXAA) then
       R3D_ClearState(R3D_FLAG_FXAA)
@@ -82,53 +108,58 @@ begin
       R3D_SetState(R3D_FLAG_FXAA);
   end;
 
-  // Toggle SSAO with O key
-  if IsKeyPressed(KEY_O) then
-    R3D_SetSSAO(not R3D_GetSSAO());
-
-  // Cycle tonemap modes with mouse buttons
+  // Tonemapping setter
   if IsMouseButtonPressed(MOUSE_BUTTON_LEFT) then
   begin
-    CurrentTonemap := R3D_GetTonemapMode();
-    R3D_SetTonemapMode((CurrentTonemap + R3D_TONEMAP_COUNT - 1) mod R3D_TONEMAP_COUNT);
+    Tonemap := R3D_GetTonemapMode();
+    R3D_SetTonemapMode((Tonemap + R3D_TONEMAP_COUNT - 1) mod R3D_TONEMAP_COUNT);
   end;
 
   if IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) then
   begin
-    CurrentTonemap := R3D_GetTonemapMode();
-    R3D_SetTonemapMode((CurrentTonemap + 1) mod R3D_TONEMAP_COUNT);
+    Tonemap := R3D_GetTonemapMode();
+    R3D_SetTonemapMode((Tonemap + 1) mod R3D_TONEMAP_COUNT);
   end;
 end;
 
 procedure Draw;
 var
   Tonemap: R3D_Tonemap;
-  TonemapText: string;
-  TextWidth: Integer;
+  Text: String;
 begin
+  // Render R3D scene
   R3D_Begin(Camera);
     R3D_DrawModel(@Sponza, Vector3Create(0, 0, 0), 1.0);
   R3D_End();
 
-  // Draw light positions
+  // 'Standard' raylib rendering to show where are the lights
   BeginMode3D(Camera);
     DrawSphere(R3D_GetLightPosition(Lights[0]), 0.5, WHITE);
     DrawSphere(R3D_GetLightPosition(Lights[1]), 0.5, WHITE);
   EndMode3D();
 
-  // Display current tonemap mode
+  // Indicates which tonemapping is used
   Tonemap := R3D_GetTonemapMode();
+
   case Tonemap of
-    R3D_TONEMAP_LINEAR: TonemapText := '< TONEMAP LINEAR >';
-    R3D_TONEMAP_REINHARD: TonemapText := '< TONEMAP REINHARD >';
-    R3D_TONEMAP_FILMIC: TonemapText := '< TONEMAP FILMIC >';
-    R3D_TONEMAP_ACES: TonemapText := '< TONEMAP ACES >';
-    R3D_TONEMAP_AGX: TonemapText := '< TONEMAP AGX >';
+    R3D_TONEMAP_LINEAR:
+      Text := '< TONEMAP LINEAR >';
+    R3D_TONEMAP_REINHARD:
+      Text := '< TONEMAP REINHARD >';
+    R3D_TONEMAP_FILMIC:
+      Text := '< TONEMAP FILMIC >';
+    R3D_TONEMAP_ACES:
+      Text := '< TONEMAP ACES >';
+    R3D_TONEMAP_AGX:
+      Text := '< TONEMAP AGX >';
+    else
+      Text := '';
   end;
 
-  TextWidth := MeasureText(PChar(TonemapText), 20);
-  DrawText(PChar(TonemapText), GetScreenWidth - TextWidth - 10, 10, 20, LIME);
+  if Text <> '' then
+    DrawText(PChar(Text), GetScreenWidth() - MeasureText(PChar(Text), 20) - 10, 10, 20, LIME);
 
+  // I think we understand what's going on here
   DrawFPS(10, 10);
 end;
 

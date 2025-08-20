@@ -32,6 +32,7 @@
       <Unit>
         <Filename Value="r3d_sponza.lpr"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="r3d_Sponza"/>
       </Unit>
     </Units>
   </ProjectOptions>
@@ -56,7 +57,9 @@
       </Debugging>
     </Linking>
     <Other>
-      <CustomOptions Value="-k&quot;-rpath=$ORIGIN/dll&quot;"/>
+      <CustomOptions Value="-Xr
+ -k&quot;-rpath=../libs/$(TargetCPU)-$(TargetOS)&quot;
+ -k-lassimp"/>
     </Other>
   </CompilerOptions>
   <Debugging>
