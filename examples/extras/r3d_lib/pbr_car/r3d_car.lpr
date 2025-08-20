@@ -1,9 +1,9 @@
-program r3d_car;
+program pbr_car;
 {$mode objfpc}{$H+}
 
 uses
   {$IFDEF UNIX} cthreads,{$ENDIF}
-  Classes, SysUtils, CustApp, raylib, r3d, raymath;
+  Classes, SysUtils, raylib, r3d, raymath;
 
 var
   Model: TR3D_Model;
@@ -12,20 +12,19 @@ var
   Skybox: TR3D_Skybox;
   Camera: TCamera3D;
   ShowSkybox: Boolean = True;
+const
+  RESOURCES_PATH = 'resources/';
 
-
-
-function Init: PChar;
+procedure Init;
 var
   Flags: R3D_Flags;
   Light: TR3D_Light;
-  LightDir: TVector3;
-  GroundColor: TColor;
   SceneMin, SceneMax: TVector3;
 begin
+  InitWindow(800,600, '[r3d] - PBR car example');
   // Initialize with FXAA and transparent sorting
   Flags := R3D_FLAG_TRANSPARENT_SORTING or R3D_FLAG_FXAA;
-  R3D_Init(GetScreenWidth, GetScreenHeight, Flags);
+  R3D_Init(GetScreenWidth(), GetScreenHeight(), Flags);
   SetTargetFPS(60);
   DisableCursor();
 
@@ -37,19 +36,21 @@ begin
   R3D_SetBloomIntensity(0.1);
   R3D_SetBloomMode(R3D_BLOOM_MIX);
   R3D_SetTonemapMode(R3D_TONEMAP_ACES);
+  R3D_SetSSR(True);
 
-  R3D_SetModelImportScale(0.01);
   // Load assets
-  Model := R3D_LoadModel('resources/pbr/car.glb');
-  Ground := R3D_GenMeshPlane(100.0, 100.0, 1, 1, True);
+  R3D_SetModelImportScale(0.01);
+  Model := R3D_LoadModel(PChar(RESOURCES_PATH + 'pbr/car.glb'));
+  Ground := R3D_GenMeshPlane(10.0, 10.0, 1, 1, True);
 
   // Configure ground material
   GroundMat := R3D_GetDefaultMaterial();
-  GroundColor := ColorCreate(0, 31, 7, 255);
-  GroundMat.albedo.color := GroundColor;
+  GroundMat.albedo.color := ColorCreate(31, 31, 31, 255);
+  GroundMat.orm.roughness := 0.0;
+  GroundMat.orm.metalness := 0.5;
 
   // Setup skybox
-  Skybox := R3D_LoadSkybox('resources/sky/skybox3.png', CUBEMAP_LAYOUT_AUTO_DETECT);
+  Skybox := R3D_LoadSkybox(PChar(RESOURCES_PATH + 'sky/skybox3.png'), CUBEMAP_LAYOUT_AUTO_DETECT);
   R3D_EnableSkybox(Skybox);
 
   // Configure camera
@@ -57,6 +58,7 @@ begin
   Camera.target := Vector3Create(0, 0, 0);
   Camera.up := Vector3Create(0, 1, 0);
   Camera.fovy := 60;
+  Camera.projection := CAMERA_PERSPECTIVE;
 
   // Set scene bounds
   SceneMin := Vector3Create(-10, -10, -10);
@@ -65,12 +67,11 @@ begin
 
   // Create directional light with shadows
   Light := R3D_CreateLight(R3D_LIGHT_DIR);
-  LightDir := Vector3Create(-1, -1, -1);
-  R3D_SetLightDirection(Light, LightDir);
+  R3D_SetLightDirection(Light, Vector3Create(-1, -1, -1));
   R3D_EnableShadow(Light, 4096);
   R3D_SetLightActive(Light, True);
 
-  Result := '[r3d] - PBR car example';
+
 end;
 
 procedure Update(delta: Single);
@@ -95,20 +96,18 @@ end;
 procedure Draw;
 var
   GroundTransform: TMatrix;
-  ModelTransform: TMatrix;
 begin
   R3D_Begin(Camera);
     // Draw ground plane slightly below origin
     GroundTransform := MatrixTranslate(0.0, -0.4, 0.0);
     R3D_DrawMesh(@Ground, @GroundMat, GroundTransform);
 
-    // Draw car model rotated -90 degrees around X axis
-    ModelTransform := MatrixRotateX(-90.0 * DEG2RAD);
-    R3D_DrawModelPro(@Model, ModelTransform);
+    // Draw car model
+    R3D_DrawModel(@Model, Vector3Create(0,0,0), 1.0);
   R3D_End();
 
   // Draw credits
-  DrawText('Model made by MaximePages', 10, GetScreenHeight - 30, 20, WHITE);
+  DrawText( 'Model made by MaximePages', 10, 580, 10, RAYWHITE);
 end;
 
 procedure Close;
@@ -119,7 +118,7 @@ begin
 end;
 
 begin
-  InitWindow(800, 600, 'PBR Car Example');
+
   Init();
 
   while not WindowShouldClose() do

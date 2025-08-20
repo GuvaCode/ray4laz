@@ -1,37 +1,38 @@
-program emission;
-{$mode objfpc}{$H+}
+program Emission;
 
 uses
-  cthreads,
-  Classes, SysUtils, CustApp, raylib, r3d, raymath;
+  SysUtils, Math,
+  raylib, rlgl, raymath, r3d;
 
 var
-  Model: TR3D_Model;
-  Plane: TR3D_Mesh;
-  Material: TR3D_Material;
-  Camera: TCamera3D;
-  Light: TR3D_Light;
-  RotModel: Single = 0.0;
+  model: TR3D_Model;
+  plane: TR3D_Mesh;
+  material: TR3D_Material;
+  camera: TCamera3D;
+  light: TR3D_Light;
+  rotModel: Single = 0.0;
+  Name: PChar;
+const
+  RESOURCES_PATH = 'resources/';
 
 procedure ToggleLight;
 begin
-  if R3D_IsLightActive(Light) then
+  if R3D_IsLightActive(light) then
   begin
-    R3D_SetLightActive(Light, False);
+    R3D_SetLightActive(light, False);
     R3D_SetAmbientColor(BLACK);
   end
   else
   begin
-    R3D_SetLightActive(Light, True);
+    R3D_SetLightActive(light, True);
     R3D_SetAmbientColor(DARKGRAY);
   end;
 end;
 
-function Init: PChar;
-var
-  LightPos, LightTarget: TVector3;
+procedure Init;
 begin
-  R3D_Init(GetScreenWidth, GetScreenHeight, 0);
+  InitWindow(800,600, '[r3d] - Emission example');
+  R3D_Init(GetScreenWidth(), GetScreenHeight(), 0);
   SetTargetFPS(60);
 
   R3D_SetBackgroundColor(BLACK);
@@ -46,72 +47,64 @@ begin
   R3D_SetBloomIntensity(0.2);
   R3D_SetBloomThreshold(0.6);
 
-  Model := R3D_LoadModel('resources/emission.glb');
+  R3D_SetModelImportScale(0.01);
 
-  Plane := R3D_GenMeshPlane(1000, 1000, 1, 1, True);
-  Material := R3D_GetDefaultMaterial();
+  model := R3D_LoadModel(PChar(RESOURCES_PATH + 'emission.glb'));
 
-  Camera.position := Vector3Create(-1.0, 1.75, 1.75);
-  Camera.target := Vector3Create(0, 0.5, 0);
-  Camera.up := Vector3Create(0, 1, 0);
-  Camera.fovy := 60;
+  plane := R3D_GenMeshPlane(1000, 1000, 1, 1, True);
+  material := R3D_GetDefaultMaterial();
 
-  Light := R3D_CreateLight(R3D_LIGHT_SPOT);
-  LightPos := Vector3Create(0, 10, 5);
-  LightTarget := Vector3Create(0, 0, 0);
+  camera.position := Vector3Create(-1.0, 1.75, 1.75);
+  camera.target := Vector3Create(0, 0.5, 0);
+  camera.up := Vector3Create(0, 1, 0);
+  camera.fovy := 60;
+  camera.projection := CAMERA_PERSPECTIVE;
 
-  R3D_LightLookAt(Light, LightPos, LightTarget);
-  R3D_SetLightOuterCutOff(Light, 45.0);
-  R3D_SetLightInnerCutOff(Light, 22.5);
-  R3D_EnableShadow(Light, 4096);
-  R3D_SetLightActive(Light, True);
+  light := R3D_CreateLight(R3D_LIGHT_SPOT);
+  R3D_LightLookAt(light, Vector3Create(0, 10, 5), Vector3Create(0,0,0));
+  R3D_SetLightOuterCutOff(light, 45.0);
+  R3D_SetLightInnerCutOff(light, 22.5);
+  R3D_EnableShadow(light, 4096);
+  R3D_SetLightActive(light, True);
 
-  Result := '[r3d] - Emission example';
+
 end;
 
 procedure Update(delta: Single);
 var
-  MouseDelta: TVector2;
+  mouseDelta: TVector2;
 begin
   if IsKeyPressed(KEY_SPACE) then
     ToggleLight();
 
   if IsMouseButtonDown(MOUSE_LEFT_BUTTON) then
   begin
-    MouseDelta := GetMouseDelta();
-    Camera.position.y := Clamp(Camera.position.y + 0.01 * MouseDelta.y, 0.25, 2.5);
-    RotModel := RotModel + MouseDelta.x;
+    mouseDelta := GetMouseDelta();
+    camera.position.y := Clamp(camera.position.y + 0.01 * mouseDelta.y, 0.25, 2.5);
+    rotModel := rotModel + 0.01 * mouseDelta.x;
   end;
 end;
 
 procedure Draw;
-var
-  ModelPos, ModelAxis: TVector3;
-  ModelScale: TVector3;
 begin
-  R3D_Begin(Camera);
-    R3D_DrawMesh(@Plane, @Material, MatrixIdentity());
-
-    ModelPos := Vector3Create(0, 0, 0);
-    ModelAxis := Vector3Create(0, 1, 0);
-    ModelScale := Vector3Create(10.0, 10.0, 10.0);
-    R3D_DrawModelEx(@Model, ModelPos, ModelAxis, RotModel, ModelScale);
+  R3D_Begin(camera);
+    R3D_DrawMesh(@plane, @material, MatrixIdentity());
+    R3D_DrawModelEx(@model, Vector3Create(0,0,0), Vector3Create(0, 1, 0), rotModel, Vector3Create(10.0, 10.0, 10.0));
   R3D_End();
 
   DrawText('Press SPACE to toggle the light', 10, 10, 20, LIME);
-  DrawText('Model by har15204405', 10, GetScreenHeight - 30, 20, LIME);
+  DrawText('Model by har15204405',10, 580, 10, RAYWHITE);
 end;
 
 procedure Close;
 begin
-  R3D_UnloadModel(@Model, True);
-  R3D_UnloadMesh(@Plane);
+  R3D_UnloadModel(@model, True);
+  R3D_UnloadMesh(@plane);
   R3D_Close();
 end;
 
 begin
-  InitWindow(800, 600, 'Emission Example');
-  Init();
+  Init;
 
   while not WindowShouldClose() do
   begin
@@ -121,7 +114,5 @@ begin
       Draw();
     EndDrawing();
   end;
-
   Close();
-  CloseWindow();
 end.

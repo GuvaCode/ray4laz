@@ -224,6 +224,8 @@ typedef struct R3D_Mesh {
     unsigned int vao;       /**< Vertex Array Object (GPU handle). */
 
     Matrix* boneMatrices;   /**< Cached animation matrices for all passes. */
+    int boneCount;          /**< Number of bones (and matrices) that affect the mesh. */
+
     BoundingBox aabb;       /**< Axis-Aligned Bounding Box in local space. */
 
 } R3D_Mesh;
@@ -2299,6 +2301,143 @@ R3DAPI void R3D_SetBloomSoftThreshold(float value);
  * @return The current bloom brightness threshold's softness.
  */
 R3DAPI float R3D_GetBloomSoftThreshold(void);
+
+// --------------------------------------------
+// ENVIRONMENT: SSR Config Functions
+// --------------------------------------------
+
+/**
+ * @brief Enable or disable Screen Space Reflections (SSR).
+ *
+ * @param enabled Set to true to enable SSR, false to disable it.
+ *
+ * By default, SSR is disabled.
+ */
+R3DAPI void R3D_SetSSR(bool enabled);
+
+/**
+ * @brief Check whether Screen Space Reflections (SSR) are enabled.
+ *
+ * @return true if SSR is enabled, false otherwise.
+ */
+R3DAPI bool R3D_GetSSR(void);
+
+/**
+ * @brief Set the maximum number of ray-marching steps for SSR.
+ *
+ * @param maxRaySteps The maximum number of steps taken while marching
+ *        along the reflection ray. Higher values improve accuracy but
+ *        increase GPU cost.
+ *
+ * Default: 64
+ */
+R3DAPI void R3D_SetSSRMaxRaySteps(int maxRaySteps);
+
+/**
+ * @brief Get the maximum number of ray-marching steps for SSR.
+ *
+ * @return The maximum ray-marching steps.
+ */
+R3DAPI int R3D_GetSSRMaxRaySteps(void);
+
+/**
+ * @brief Set the number of refinement steps for the binary search phase.
+ *
+ * @param binarySearchSteps The number of iterations used to refine
+ *        the ray-surface intersection point after a hit is detected.
+ *        More steps yield a more precise intersection.
+ *
+ * Default: 8
+ */
+R3DAPI void R3D_SetSSRBinarySearchSteps(int binarySearchSteps);
+
+/**
+ * @brief Get the number of refinement steps for the binary search phase.
+ *
+ * @return The number of binary search steps.
+ */
+R3DAPI int R3D_GetSSRBinarySearchSteps(void);
+
+/**
+ * @brief Set the maximum ray marching distance in view space units.
+ *
+ * @param rayMarchLength The maximum distance a reflection ray can travel.
+ *        Larger values allow longer reflections but may cause artifacts.
+ *
+ * Default: 8.0
+ */
+R3DAPI void R3D_SetSSRRayMarchLength(float rayMarchLength);
+
+/**
+ * @brief Get the maximum ray marching distance.
+ *
+ * @return The maximum ray marching distance.
+ */
+R3DAPI float R3D_GetSSRRayMarchLength(void);
+
+/**
+ * @brief Set the SSR depth thickness tolerance.
+ *
+ * @param depthThickness The maximum depth difference allowed between
+ *        the ray position and the scene depth to consider a valid hit.
+ *        Larger values increase tolerance but can cause ghosting.
+ *
+ * Default: 0.2
+ */
+R3DAPI void R3D_SetSSRDepthThickness(float depthThickness);
+
+/**
+ * @brief Get the SSR depth thickness tolerance.
+ *
+ * @return The depth thickness value.
+ */
+R3DAPI float R3D_GetSSRDepthThickness(void);
+
+/**
+ * @brief Set the SSR depth tolerance.
+ *
+ * @param depthTolerance The negative margin allowed when comparing the
+ *        ray position against the scene depth. This prevents false negatives
+ *        due to floating-point errors or slight inconsistencies in depth
+ *        reconstruction.
+ *
+ * In practice, a hit is accepted if:
+ *    -depthTolerance <= depthDiff < depthThickness
+ *
+ * Smaller values increase strictness but may cause missed intersections,
+ * while larger values reduce artifacts but can introduce ghosting.
+ *
+ * Default: 0.005
+ */
+R3DAPI void R3D_SetSSRDepthTolerance(float depthTolerance);
+
+/**
+ * @brief Get the SSR depth tolerance.
+ *
+ * @return The depth tolerance value.
+ */
+R3DAPI float R3D_GetSSRDepthTolerance(void);
+
+/**
+ * @brief Set the fade range near the screen edges to reduce artifacts.
+ *
+ * @param start Normalized distance from the screen center where edge fading begins (0.0–1.0).
+ * @param end   Normalized distance where fading is complete (0.0–1.0).
+ *
+ * Pixels outside this range will have their reflections gradually
+ * faded out to avoid hard cutoffs near the borders.
+ *
+ * Default: start = 0.7, end = 1.0
+ */
+R3DAPI void R3D_SetSSRScreenEdgeFade(float start, float end);
+
+/**
+ * @brief Get the screen edge fade range.
+ *
+ * @param start Pointer to receive the fade start value.
+ * @param end   Pointer to receive the fade end value.
+ */
+R3DAPI void R3D_GetSSRScreenEdgeFade(float* start, float* end);
 
 // --------------------------------------------
 // ENVIRONMENT: Fog Config Functions

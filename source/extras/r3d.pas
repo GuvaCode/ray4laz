@@ -191,6 +191,7 @@ type (* Represents a mesh with its geometry data and GPU buffers. *)
     ebo:          Cardinal;     // Element Buffer Object (GPU handle).
     vao:          Cardinal;     // Vertex Array Object (GPU handle).
     boneMatrices: PMatrix;      // Cached animation matrices for all passes.
+    boneCount:    Integer;      // Number of bones (and matrices) that affect the mesh.
     aabb:         TBoundingBox; // Axis-Aligned Bounding Box in local space.
   end;
 
@@ -2149,6 +2150,143 @@ procedure R3D_SetBloomSoftThreshold(value: Single); cdecl; external {$IFNDEF RAY
  * @return The current bloom brightness threshold's softness.
  *)
 function R3D_GetBloomSoftThreshold: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomSoftThreshold';
+
+// --------------------------------------------
+// ENVIRONMENT: SSR Config Functions
+// --------------------------------------------
+
+(*
+ * @brief Enable or disable Screen Space Reflections (SSR).
+ *
+ * @param enabled Set to true to enable SSR, false to disable it.
+ *
+ * By default, SSR is disabled.
+ *)
+procedure R3D_SetSSR(enabled: Boolean); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSR';
+
+(*
+ * @brief Check whether Screen Space Reflections (SSR) are enabled.
+ *
+ * @return true if SSR is enabled, false otherwise.
+ *)
+function R3D_GetSSR: Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSR';
+
+(*
+ * @brief Set the maximum number of ray-marching steps for SSR.
+ *
+ * @param maxRaySteps The maximum number of steps taken while marching
+ *        along the reflection ray. Higher values improve accuracy but
+ *        increase GPU cost.
+ *
+ * Default: 64
+ *)
+procedure R3D_SetSSRMaxRaySteps(maxRaySteps: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSRMaxRaySteps';
+
+(*
+ * @brief Get the maximum number of ray-marching steps for SSR.
+ *
+ * @return The maximum ray-marching steps.
+ *)
+function R3D_GetSSRMaxRaySteps: Integer; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSRMaxRaySteps';
+
+(*
+ * @brief Set the number of refinement steps for the binary search phase.
+ *
+ * @param binarySearchSteps The number of iterations used to refine
+ *        the ray-surface intersection point after a hit is detected.
+ *        More steps yield a more precise intersection.
+ *
+ * Default: 8
+ *)
+procedure R3D_SetSSRBinarySearchSteps(binarySearchSteps: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSRBinarySearchSteps';
+
+(*
+ * @brief Get the number of refinement steps for the binary search phase.
+ *
+ * @return The number of binary search steps.
+ *)
+function R3D_GetSSRBinarySearchSteps: Integer; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSRBinarySearchSteps';
+
+(*
+ * @brief Set the maximum ray marching distance in view space units.
+ *
+ * @param rayMarchLength The maximum distance a reflection ray can travel.
+ *        Larger values allow longer reflections but may cause artifacts.
+ *
+ * Default: 8.0
+ *)
+procedure R3D_SetSSRRayMarchLength(rayMarchLength: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSRRayMarchLength';
+
+(*
+ * @brief Get the maximum ray marching distance.
+ *
+ * @return The maximum ray marching distance.
+ *)
+function R3D_GetSSRRayMarchLength: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSRRayMarchLength';
+
+(*
+ * @brief Set the SSR depth thickness tolerance.
+ *
+ * @param depthThickness The maximum depth difference allowed between
+ *        the ray position and the scene depth to consider a valid hit.
+ *        Larger values increase tolerance but can cause ghosting.
+ *
+ * Default: 0.2
+ *)
+procedure R3D_SetSSRDepthThickness(depthThickness: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSRDepthThickness';
+
+(*
+ * @brief Get the SSR depth thickness tolerance.
+ *
+ * @return The depth thickness value.
+ *)
+function R3D_GetSSRDepthThickness: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSRDepthThickness';
+
+(*
+ * @brief Set the SSR depth tolerance.
+ *
+ * @param depthTolerance The negative margin allowed when comparing the
+ *        ray position against the scene depth. This prevents false negatives
+ *        due to floating-point errors or slight inconsistencies in depth
+ *        reconstruction.
+ *
+ * In practice, a hit is accepted if:
+ *    -depthTolerance <= depthDiff < depthThickness
+ *
+ * Smaller values increase strictness but may cause missed intersections,
+ * while larger values reduce artifacts but can introduce ghosting.
+ *
+ * Default: 0.005
+ *)
+procedure R3D_SetSSRDepthTolerance(depthTolerance: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSRDepthTolerance';
+
+(*
+ * @brief Get the SSR depth tolerance.
+ *
+ * @return The depth tolerance value.
+ *)
+function R3D_GetSSRDepthTolerance: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSRDepthTolerance';
+
+(*
+ * @brief Set the fade range near the screen edges to reduce artifacts.
+ *
+ * @param start Normalized distance from the screen center where edge fading begins (0.0–1.0).
+ * @param end   Normalized distance where fading is complete (0.0–1.0).
+ *
+ * Pixels outside this range will have their reflections gradually
+ * faded out to avoid hard cutoffs near the borders.
+ *
+ * Default: start = 0.7, end = 1.0
+ *)
+procedure R3D_SetSSRScreenEdgeFade(start, _end: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSRScreenEdgeFade';
+
+(*
+ * @brief Get the screen edge fade range.
+ *
+ * @param start Pointer to receive the fade start value.
+ * @param end   Pointer to receive the fade end value.
+ *)
+procedure R3D_GetSSRScreenEdgeFade(start, _end: PSingle); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSRScreenEdgeFade';
 
 // --------------------------------------------
 // ENVIRONMENT: Fog Config Functions
