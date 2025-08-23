@@ -1631,26 +1631,34 @@ function R3D_GetShadowSoftness(id: TR3D_Light): Single; cdecl; external {$IFNDEF
 procedure R3D_SetShadowSoftness(id: TR3D_Light; softness: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetShadowSoftness';
 
 (*
- * @brief Gets the shadow bias of a light.
- *
- * This function retrieves the shadow bias value for the specified light. The shadow bias helps prevent shadow artifacts,
- * such as shadow acne, by slightly offsetting the depth comparisons used in shadow mapping.
- *
- * @param id The ID of the light.
- * @return The shadow bias value.
+ * @brief Gets the shadow depth bias value.
  *)
-function R3D_GetShadowBias(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetShadowBias';
+function R3D_GetShadowDepthBias(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetShadowDepthBias';
 
 (*
- * @brief Sets the shadow bias of a light.
+ * @brief Sets the shadow depth bias value.
  *
- * This function sets the shadow bias value for the specified light. Adjusting the shadow bias can help avoid shadow
- * artifacts such as shadow acne by modifying the depth comparisons used in shadow mapping.
- *
- * @param id The ID of the light.
- * @param value The shadow bias value to set.
+ * A higher bias helps reduce "shadow acne" artifacts
+ * (shadows flickering or appearing misaligned on surfaces).
+ * Be careful: too large values may cause shadows to look detached
+ * or floating away from objects.
  *)
-procedure R3D_SetShadowBias(id: TR3D_Light; value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetShadowBias';
+procedure R3D_SetShadowDepthBias(id: TR3D_Light; value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetShadowDepthBias';
+
+(*
+ * @brief Gets the shadow slope bias value.
+ *)
+function R3D_GetShadowSlopeBias(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetShadowSlopeBias';
+
+(*
+ * @brief Sets the shadow slope bias value.
+ *
+ * This bias mainly compensates artifacts on surfaces angled
+ * relative to the light. It helps prevent shadows from
+ * incorrectly appearing or disappearing along object edges.
+ *)
+procedure R3D_SetShadowSlopeBias(id: TR3D_Light; value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetShadowSlopeBias';
+
 
 // --------------------------------------------
 // LIGHTING: Light Helper Functions
@@ -1970,6 +1978,8 @@ procedure R3D_GetSkyboxIntensity(background: PSingle; ambient: PSingle; reflecti
  * are close together or in corners.
  *
  * @param enabled Whether to enable or disable SSAO.
+ *
+ * Default: false
  *)
 procedure R3D_SetSSAO(enabled: Boolean); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSAO';
 
@@ -1988,6 +1998,8 @@ function R3D_GetSSAO: Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDI
  * This function sets the radius used by the SSAO effect to calculate occlusion.
  * A higher value will affect a larger area around each pixel, while a smaller value
  * will create sharper and more localized occlusion.
+ *
+ * Default: 0.5
  *
  * @param value The radius value to set for SSAO.
  *)
@@ -2009,6 +2021,8 @@ function R3D_GetSSAORadius: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{
  * is applied to the scene. A higher value can reduce artifacts, but may also
  * result in less pronounced ambient occlusion.
  *
+ * Default: 0.025
+ *
  * @param value The bias value for SSAO.
  *)
 procedure R3D_SetSSAOBias(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSAOBias';
@@ -2029,6 +2043,8 @@ function R3D_GetSSAOBias: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$E
  * By default, one iteration is performed, using a total of 12 samples for the
  * Gaussian blur. Increasing the number of iterations results in a smoother
  * ambient occlusion but may impact performance.
+ *
+ * Default: 1
  *
  * @param value The number of blur iterations for SSAO.
  *)
@@ -2053,6 +2069,8 @@ function R3D_GetSSAOIterations: Integer; cdecl; external {$IFNDEF RAY_STATIC}r3d
  * This function configures the bloom effect mode, which determines how the bloom
  * effect is applied to the rendered scene.
  *
+ * Default: R3D_BLOOM_DISABLED
+ *
  * @param mode The bloom mode to set.
  *)
 procedure R3D_SetBloomMode(mode: R3D_Bloom); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomMode';
@@ -2071,6 +2089,8 @@ function R3D_GetBloomMode: R3D_Bloom; cdecl; external {$IFNDEF RAY_STATIC}r3dNam
  *
  * This function controls the strength of the bloom effect. Higher values result
  * in a more intense glow effect on bright areas of the scene.
+ *
+ * Default: 0.05
  *
  * @param value The intensity value for bloom.
  *)
@@ -2093,6 +2113,8 @@ function R3D_GetBloomIntensity: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dN
  * objects, creating a softer and more diffuse bloom. A value of 0 disables
  * the filtering effect, preserving sharp bloom highlights.
  *
+ * Default: 0
+ *
  * @param value The radius of the bloom filter (in pixels or arbitrary units depending on implementation).
  *)
 procedure R3D_SetBloomFilterRadius(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomFilterRadius';
@@ -2113,6 +2135,8 @@ function R3D_GetBloomFilterRadius: Integer; cdecl; external {$IFNDEF RAY_STATIC}
  * Controls the brightness cutoff used during the downsampling stage of the
  * bloom effect. If the color channel with the brightest value is below the
  * set threshold the pixel will not be included in the bloom effect.
+ *
+ * Default: 0.0
  *
  * @param value The lowest value to be included the bloom effect (in color value depending on implementation).
  *)
@@ -2135,6 +2159,8 @@ function R3D_GetBloomThreshold: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dN
  * bloom effect. A value of 0 will result in a hard transition between being
  * included or excluded, while larger values will give an increasingly
  * softer transition.
+ *
+ * Default: 0.5
  *
  * @param value The value of of the bloom brightness threshold's softness.
  *)
@@ -2160,7 +2186,7 @@ function R3D_GetBloomSoftThreshold: Single; cdecl; external {$IFNDEF RAY_STATIC}
  *
  * @param enabled Set to true to enable SSR, false to disable it.
  *
- * By default, SSR is disabled.
+ * Default: false
  *)
 procedure R3D_SetSSR(enabled: Boolean); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSR';
 
@@ -2298,7 +2324,7 @@ procedure R3D_GetSSRScreenEdgeFade(start, _end: PSingle); cdecl; external {$IFND
  * This function defines the type of fog effect applied to the scene.
  * Different modes may provide linear, exponential, or volumetric fog effects.
  *
- * @param mode The fog mode to set.
+ * Default: R3D_FOG_DISABLED
  *)
 procedure R3D_SetFogMode(mode: R3D_Fog); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogMode';
 
@@ -2318,6 +2344,8 @@ function R3D_GetFogMode: R3D_Fog; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$E
  * The fog color blends with objects as they are affected by fog.
  *
  * @param color The color to set for the fog.
+ *
+ * Default: WHITE
  *)
 procedure R3D_SetFogColor(color: TColor); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogColor';
 
@@ -2337,6 +2365,7 @@ function R3D_GetFogColor: TColor; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$E
  * Objects closer than this distance will not be affected by fog.
  *
  * @param value The start distance for the fog effect.
+ * Default: 1.0
  *)
 procedure R3D_SetFogStart(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogStart';
 
@@ -2356,6 +2385,7 @@ function R3D_GetFogStart: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$E
  * Objects beyond this distance will be completely covered by fog.
  *
  * @param value The end distance for the fog effect.
+ * Default: 50.0
  *)
 procedure R3D_SetFogEnd(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogEnd';
 
@@ -2375,6 +2405,7 @@ function R3D_GetFogEnd: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$END
  * denser fog, making objects fade out more quickly.
  *
  * @param value The density of the fog (higher values increase fog thickness).
+ * Default: 0.05
  *)
 procedure R3D_SetFogDensity(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogDensity';
 
@@ -2386,6 +2417,129 @@ procedure R3D_SetFogDensity(value: Single); cdecl; external {$IFNDEF RAY_STATIC}
  * @return The current fog density.
  *)
 function R3D_GetFogDensity: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetFogDensity';
+
+(*
+ * @brief Sets how much the fog affects the sky.
+ *
+ * This function controls the influence of fog on the sky color and visibility.
+ * A higher value makes the fog blend more strongly with the sky, reducing its clarity.
+ *
+ * @param value The fog effect on the sky, in the range [0.0f, 1.0f]
+ *              (0 = no effect, 1 = maximum blending).
+ *
+ * Default: 0.5
+ *)
+procedure R3D_SetFogSkyAffect(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetFogSkyAffect';
+
+(*
+ * @brief Gets the current fog effect on the sky.
+ *
+ * This function retrieves the current influence of fog on the sky.
+ *
+ * @return The current fog-sky affect value, in the range [0.0f, 1.0f].
+ *)
+function R3D_GetFogSkyAffect(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetFogSkyAffect';
+
+// --------------------------------------------
+// ENVIRONMENT: Depth of Field (DoF) Functions
+// --------------------------------------------
+
+(*
+ * @brief Enables or disables the depth of field post-process.
+ *
+ * @param mode The depth of field mode to set.
+ *
+ * Default: R3D_DOF_DISABLED
+ *)
+procedure R3D_SetDofMode(mode: R3D_Dof); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofMode';
+
+(*
+ * @brief Gets the current depth of field mode.
+ *
+ * @return The current depth of field mode.
+ *)
+function R3D_GetDofMode():R3D_Dof; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofMode';
+
+(*
+ * @brief Sets the focus point in world space.
+ *
+ * This function defines the distance (in meters) from the camera where
+ * objects will be in perfect focus. Objects closer or farther will be blurred.
+ *
+ * @param value The focus point distance in meters.
+ *
+ * Default: 10.0
+ *)
+procedure R3D_SetDofFocusPoint(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofFocusPoint';
+
+(*
+ * @brief Gets the current focus point.
+ *
+ * @return The focus point distance in meters.
+ *)
+function R3D_GetDofFocusPoint(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofFocusPoint';
+
+(*
+ * @brief Sets the focus scale.
+ *
+ * This function controls how shallow the depth of field effect is.
+ * Lower values create a shallower depth of field with more blur,
+ * while higher values create a deeper depth of field with less blur.
+ *
+ * @param value The focus scale value.
+ *
+ * Default: 1.0
+ *)
+procedure R3D_SetDofFocusScale(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofFocusScale';
+
+(*
+ * @brief Gets the current focus scale.
+ *
+ * @return The current focus scale value.
+ *)
+function R3D_GetDofFocusScale(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofFocusScale';
+
+(*
+ * @brief Sets the maximum blur size.
+ *
+ * This function controls the maximum amount of blur applied to out-of-focus
+ * areas. This value is similar to the lens aperture size, larger values
+ * create more pronounced blur effects.
+ *
+ * @param value The maximum blur size value.
+ *
+ * Default: 20.0
+ *)
+procedure R3D_SetDofMaxBlurSize(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofMaxBlurSize';
+
+(*
+ * @brief Gets the current maximum blur size.
+ *
+ * @return The current maximum blur size value.
+ *)
+function R3D_GetDofMaxBlurSize(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofMaxBlurSize';
+
+(*
+ * @brief Enables or disables depth-of-field debug mode.
+ *
+ * In debug mode, the scene uses color coding:
+ * - Green: near blur
+ * - Black: sharp areas
+ * - Blue: far blur
+ *
+ * @param enabled true to enable, false to disable.
+ *
+ * Default: false
+ *)
+procedure R3D_SetDofDebugMode(enabled: Boolean); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofDebugMode';
+
+(*
+ * @brief Gets the current debug mode state.
+ *
+ * @return True if debug mode is enabled, false otherwise.
+ *)
+function R3D_GetDofDebugMode(): Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofDebugMode';
+
 
 // --------------------------------------------
 // ENVIRONMENT: Tonemap Config Functions
@@ -2399,6 +2553,8 @@ function R3D_GetFogDensity: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{
  * scene appearance.
  *
  * @param mode The tonemap mode to set.
+ *
+ * Default: R3D_TONEMAP_LINEAR
  *)
 procedure R3D_SetTonemapMode(mode: R3D_Tonemap); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetTonemapMode';
 
@@ -2418,6 +2574,8 @@ function R3D_GetTonemapMode: R3D_Tonemap; cdecl; external {$IFNDEF RAY_STATIC}r3
  * the overall brightness of the rendered scene.
  *
  * @param value The exposure value (higher values make the scene brighter).
+ *
+ * Default: 1.0
  *)
 procedure R3D_SetTonemapExposure(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetTonemapExposure';
 
@@ -2437,6 +2595,8 @@ function R3D_GetTonemapExposure: Single; cdecl; external {$IFNDEF RAY_STATIC}r3d
  * areas of the scene are mapped to the final output.
  *
  * @param value The white point value.
+ *
+ * Default: 1.0
  *)
 procedure R3D_SetTonemapWhite(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetTonemapWhite';
 
@@ -2460,6 +2620,8 @@ function R3D_GetTonemapWhite: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dNam
  * Higher values make the image brighter, while lower values darken it.
  *
  * @param value The brightness adjustment value.
+ *
+ * Default: 1.0
  *)
 procedure R3D_SetBrightness(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBrightness';
 
@@ -2479,6 +2641,8 @@ function R3D_GetBrightness: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{
  * Higher values increase the difference between dark and bright areas.
  *
  * @param value The contrast adjustment value.
+ *
+ * Default: 1.0
  *)
 procedure R3D_SetContrast(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetContrast';
 
@@ -2498,6 +2662,8 @@ function R3D_GetContrast: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$E
  * Higher values make colors more vibrant, while lower values desaturate them.
  *
  * @param value The saturation adjustment value.
+ *
+ * Default: 1.0
  *)
 procedure R3D_SetSaturation(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSaturation';
 
@@ -2509,97 +2675,6 @@ procedure R3D_SetSaturation(value: Single); cdecl; external {$IFNDEF RAY_STATIC}
  * @return The current saturation value.
  *)
 function R3D_GetSaturation: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSaturation';
-
-// --------------------------------------------
-// ENVIRONMENT: Depth of Field (DoF) Functions
-// --------------------------------------------
-
-(*
- * @brief Enables or disables the depth of field post-process.
- *
- * @param mode The depth of field mode to set.
- *)
-procedure R3D_SetDofMode(mode: R3D_Dof); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofMode';
-
-(*
- * @brief Gets the current depth of field mode.
- *
- * @return The current depth of field mode.
- *)
-function R3D_GetDofMode: R3D_Dof; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofMode';
-
-(*
- * @brief Sets the focus point in world space.
- *
- * This function defines the distance (in meters) from the camera where
- * objects will be in perfect focus. Objects closer or farther will be blurred.
- *
- * @param value The focus point distance in meters.
- *)
-procedure R3D_SetDofFocusPoint(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofFocusPoint';
-
-(*
- * @brief Gets the current focus point.
- *
- * @return The focus point distance in meters.
- *)
-function R3D_GetDofFocusPoint: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofFocusPoint';
-
-(*
- * @brief Sets the focus scale.
- *
- * This function controls how shallow the depth of field effect is.
- * Lower values create a shallower depth of field with more blur,
- * while higher values create a deeper depth of field with less blur.
- *
- * @param value The focus scale value.
- *)
-procedure R3D_SetDofFocusScale(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofFocusScale';
-
-(*
- * @brief Gets the current focus scale.
- *
- * @return The current focus scale value.
- *)
-function R3D_GetDofFocusScale: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofFocusScale';
-
-(*
- * @brief Sets the maximum blur size.
- *
- * This function controls the maximum amount of blur applied to out-of-focus
- * areas. This value is similar to the lens aperture size, larger values
- * create more pronounced blur effects.
- *
- * @param value The maximum blur size value.
- *)
-procedure R3D_SetDofMaxBlurSize(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofMaxBlurSize';
-
-(*
- * @brief Gets the current maximum blur size.
- *
- * @return The current maximum blur size value.
- *)
-function R3D_GetDofMaxBlurSize: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofMaxBlurSize';
-
-(*
- * @brief Enables or disables depth-of-field debug mode.
- *
- * In debug mode, the scene uses color coding:
- * - Green: near blur
- * - Black: sharp areas
- * - Blue: far blur
- *
- * @param enabled true to enable, false to disable.
- *)
-procedure R3D_SetDofDebugMode(enabled: Boolean); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetDofDebugMode';
-
-(*
- * @brief Gets the current debug mode state.
- *
- * @return True if debug mode is enabled, false otherwise.
- *)
-function R3D_GetDofDebugMode: Boolean; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetDofDebugMode';
-
 
 // --------------------------------------------
 // SKYBOX: Skybox Loading Functions
