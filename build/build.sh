@@ -213,9 +213,12 @@ cp raylib.dll ../../../libs/i386-win32/libraylib.dll
 
 cd ../../
 
-sh build_r3d.sh  
+
 sh build_gizmo.sh 
+
 sh build_media.sh
+
+sh build_r3d.sh  
 
 echo " "
 echo "---------------------------------"

@@ -73,6 +73,42 @@ typedef unsigned int R3D_Flags;
 #define R3D_FLAG_LOW_PRECISION_BUFFERS  (1 << 10)   /**< Use 32-bit HDR formats like R11G11B10F for intermediate color buffers instead of full 16-bit floats. Saves memory and bandwidth. */
 
 /**
+ * @brief Bitfield type used to specify rendering layers for 3D objects.
+ *
+ * This type is used by `R3D_Mesh` and `R3D_Sprite` objects to indicate
+ * which rendering layer(s) they belong to. Active layers are controlled
+ * globally via the functions:
+ * 
+ * - void R3D_EnableLayers(R3D_Layer bitfield);
+ * - void R3D_DisableLayers(R3D_Layer bitfield);
+ *
+ * A mesh or sprite will be rendered if at least one of its assigned layers is active.
+ * Assigning a value of 0 to an object's layer (the default) means the object
+ * will always be rendered on screen.
+ *
+ * For simplicity, 16 layers are defined in this header, but the maximum number
+ * of layers depends on the number of bits in `unsigned int` on the target platform.
+ */
+typedef unsigned int R3D_Layer;
+
+#define R3D_LAYER_01    (1 << 0)
+#define R3D_LAYER_02    (1 << 1)
+#define R3D_LAYER_03    (1 << 2)
+#define R3D_LAYER_04    (1 << 3)
+#define R3D_LAYER_05    (1 << 4)
+#define R3D_LAYER_06    (1 << 5)
+#define R3D_LAYER_07    (1 << 6)
+#define R3D_LAYER_08    (1 << 7)
+#define R3D_LAYER_09    (1 << 8)
+#define R3D_LAYER_10    (1 << 9)
+#define R3D_LAYER_11    (1 << 10)
+#define R3D_LAYER_12    (1 << 11)
+#define R3D_LAYER_13    (1 << 12)
+#define R3D_LAYER_14    (1 << 13)
+#define R3D_LAYER_15    (1 << 14)
+#define R3D_LAYER_16    (1 << 15)
+
+/**
  * @brief Blend modes for rendering.
  *
  * Defines common blending modes used in 3D rendering to combine source and destination colors.
@@ -85,23 +121,29 @@ typedef enum R3D_BlendMode {
     R3D_BLEND_MULTIPLY         ///< Multiply blending: source color is multiplied with the destination, darkening the image.
 } R3D_BlendMode;
 
+/**
+ * @brief Face culling modes for a mesh.
+ *
+ * Specifies which faces of a geometry are discarded during rendering based on their winding order.
+ */
 typedef enum R3D_CullMode {
-    R3D_CULL_NONE,
-    R3D_CULL_BACK,
-    R3D_CULL_FRONT
+    R3D_CULL_NONE,   ///< No culling; all faces are rendered.
+    R3D_CULL_BACK,   ///< Cull back-facing polygons (faces with clockwise winding order).
+    R3D_CULL_FRONT   ///< Cull front-facing polygons (faces with counter-clockwise winding order).
 } R3D_CullMode;
 
 /**
- * @brief Defines the shadow casting mode for objects in the scene.
+ * @brief Shadow casting modes for objects.
  *
- * Determines how an object contributes to shadow mapping, which can affect
- * performance and visual accuracy depending on the rendering technique used.
+ * Controls how an object interacts with the shadow mapping system.
+ * These modes determine whether the object contributes to shadows,
+ * and if so, whether it is also rendered in the main pass.
  */
 typedef enum R3D_ShadowCastMode {
-    R3D_SHADOW_CAST_DISABLED,     ///< The object does not cast shadows.
-    R3D_SHADOW_CAST_FRONT_FACES,  ///< Only front-facing polygons cast shadows.
-    R3D_SHADOW_CAST_BACK_FACES,   ///< Only back-facing polygons cast shadows.
-    R3D_SHADOW_CAST_ALL_FACES     ///< Both front and back-facing polygons cast shadows.
+    R3D_SHADOW_CAST_ON,             ///< The object casts shadows; the faces used are determined by the mesh culling mode.
+    R3D_SHADOW_CAST_DOUBLE_SIDED,   ///< The object casts shadows with both front and back faces, ignoring face culling.
+    R3D_SHADOW_CAST_ONLY,           ///< The object does not render normally, but still contributes to shadow maps.
+    R3D_SHADOW_CAST_DISABLED        ///< The object does not cast shadows at all.
 } R3D_ShadowCastMode;
 
 /**
@@ -189,6 +231,16 @@ typedef enum R3D_Dof {
     R3D_DOF_ENABLED,  ///< Depth of field effect is enabled.
 } R3D_Dof;
 
+/**
+ * @brief Animation Update modes.
+ *
+ * Controls wether to allow external animation matrices
+ */
+
+typedef enum R3D_AnimMode {
+    R3D_ANIM_INTERNAL,         ///< default animation solution
+    R3D_ANIM_CUSTOM,           ///< user supplied matrices 
+} R3D_AnimMode;
 // --------------------------------------------
 //                   TYPES
 // --------------------------------------------
@@ -213,20 +265,25 @@ typedef struct R3D_Vertex {
  */
 typedef struct R3D_Mesh {
 
-    R3D_Vertex* vertices;   /**< Pointer to the array of vertices. */
-    unsigned int* indices;  /**< Pointer to the array of indices. */
+    R3D_Vertex* vertices;                 /**< Pointer to the array of vertices. */
+    unsigned int* indices;                /**< Pointer to the array of indices. */
+                                          
+    int vertexCount;                      /**< Number of vertices. */
+    int indexCount;                       /**< Number of indices. */
+                                          
+    unsigned int vbo;                     /**< Vertex Buffer Object (GPU handle). */
+    unsigned int ebo;                     /**< Element Buffer Object (GPU handle). */
+    unsigned int vao;                     /**< Vertex Array Object (GPU handle). */
+                                          
+    Matrix* boneMatrices;                 /**< Cached animation matrices for all passes. */
+    int boneCount;                        /**< Number of bones (and matrices) that affect the mesh. */
 
-    int vertexCount;        /**< Number of vertices. */
-    int indexCount;         /**< Number of indices. */
+    R3D_ShadowCastMode shadowCastMode;    /**< Shadow casting mode for the mesh. */
 
-    unsigned int vbo;       /**< Vertex Buffer Object (GPU handle). */
-    unsigned int ebo;       /**< Element Buffer Object (GPU handle). */
-    unsigned int vao;       /**< Vertex Array Object (GPU handle). */
+    BoundingBox aabb;                     /**< Axis-Aligned Bounding Box in local space. */
 
-    Matrix* boneMatrices;   /**< Cached animation matrices for all passes. */
-    int boneCount;          /**< Number of bones (and matrices) that affect the mesh. */
-
-    BoundingBox aabb;       /**< Axis-Aligned Bounding Box in local space. */
+    R3D_Layer layers;                     /**< Bitfield indicating the rendering layer(s) this object belongs to. 
+                                               A value of 0 means the object is always rendered. */
 
 } R3D_Mesh;
 
@@ -263,7 +320,6 @@ typedef struct R3D_Material {
     R3D_BlendMode blendMode;              /**< Blend mode used for rendering the material. */
     R3D_CullMode cullMode;                /**< Face culling mode used for the material. */
 
-    R3D_ShadowCastMode shadowCastMode;    /**< Shadow casting mode for the object. */
     R3D_BillboardMode billboardMode;      /**< Billboard mode applied to the object. */
 
     Vector2 uvOffset;                     /**< UV offset applied to the texture coordinates.
@@ -292,8 +348,12 @@ typedef struct R3D_ModelAnimation {
     int frameCount;         /**< Total number of frames in the animation sequence. */
 
     BoneInfo* bones;        /**< Array of bone metadata (name, parent index, etc.) that defines the skeleton hierarchy. */
-    Matrix** framePoses;    /**< 2D array of transformation matrices: [frame][bone].
-                                 Each matrix represents the pose of a bone in a specific frame, typically in local space. */
+
+    union {
+        Matrix** framePoses;            /**< 2D array of transformation matrices: [frame][bone].
+                                             Each matrix represents the pose of a bone in a specific frame, typically in global space. */
+        Transform** frameTransforms;    /**< 2D array of transformation transforms: [frame][bone]. in local space */
+    };
 
     char name[32];          /**< Name identifier for the animation (e.g., "Walk", "Jump", etc.). */
 
@@ -317,6 +377,9 @@ typedef struct R3D_Model {
 
     Matrix* boneOffsets;            /**< Array of offset (inverse bind) matrices, one per bone.
                                          Transforms mesh-space vertices to bone space. Used in skinning. */
+    R3D_AnimMode animationMode;
+    Matrix* boneOverride;            /**< Array of Matrices we'll use if we have it instead of internal calculations, Used in skinning. */
+
     BoneInfo* bones;                /**< Bones information (skeleton). Defines the hierarchy and names of bones. */
     int boneCount;                  /**< Number of bones. */
 
@@ -354,11 +417,14 @@ typedef struct R3D_Skybox {
  * potentially causing undesired visual artifacts for semi-transparent sprites.
  */
 typedef struct R3D_Sprite {
-    R3D_Material material;  ///< The material used for rendering the sprite, including its texture and shading properties.
-    float currentFrame;     ///< The current animation frame, represented as a floating-point value to allow smooth interpolation.
-    Vector2 frameSize;      ///< The size of a single animation frame, in texture coordinates (width and height).
-    int xFrameCount;        ///< The number of frames along the horizontal (X) axis of the texture.
-    int yFrameCount;        ///< The number of frames along the vertical (Y) axis of the texture.
+    R3D_Material material;                 ///< The material used for rendering the sprite, including its texture and shading properties.
+    R3D_ShadowCastMode shadowCastMode;     ///< The shadow casting mode for the sprite.
+    float currentFrame;                    ///< The current animation frame, represented as a floating-point value to allow smooth interpolation.
+    Vector2 frameSize;                     ///< The size of a single animation frame, in texture coordinates (width and height).
+    int xFrameCount;                       ///< The number of frames along the horizontal (X) axis of the texture.
+    int yFrameCount;                       ///< The number of frames along the vertical (Y) axis of the texture.
+    R3D_Layer layers;                      /**< Bitfield indicating the rendering layer(s) this object belongs to. 
+                                                A value of 0 means the object is always rendered. */
 } R3D_Sprite;
 
 /**
@@ -585,6 +651,48 @@ R3DAPI void R3D_SetSceneBounds(BoundingBox sceneBounds);
  * @param filter The texture filtering mode to be applied by default.
  */
 R3DAPI void R3D_SetTextureFilter(TextureFilter filter);
+
+/**
+ * @brief Get the currently active global rendering layers.
+ *
+ * Returns the bitfield representing the currently active layers in the renderer.
+ * By default, the internal active layers are set to 0, which means that any
+ * non-zero layer assigned to an object will NOT be rendered unless explicitly
+ * activated.
+ *
+ * @return R3D_Layer Bitfield of active layers.
+ */
+R3DAPI R3D_Layer R3D_GetActiveLayers(void);
+
+/**
+ * @brief Set the active global rendering layers.
+ *
+ * Replaces the current set of active layers with the given bitfield.
+ *
+ * @param layers Bitfield representing the layers to activate.
+ */
+R3DAPI void R3D_SetActiveLayers(R3D_Layer layers);
+
+/**
+ * @brief Enable one or more layers without affecting other active layers.
+ *
+ * This function sets the bits in the global active layers corresponding to
+ * the bits in the provided bitfield. Layers already active remain active.
+ *
+ * @param bitfield Bitfield representing one or more layers to enable.
+ */
+R3DAPI void R3D_EnableLayers(R3D_Layer bitfield);
+
+/**
+ * @brief Disable one or more layers without affecting other active layers.
+ *
+ * This function clears the bits in the global active layers corresponding to
+ * the bits in the provided bitfield. Layers not included in the bitfield
+ * remain unchanged.
+ *
+ * @param bitfield Bitfield representing one or more layers to disable.
+ */
+R3DAPI void R3D_DisableLayers(R3D_Layer bitfield);
 
 // --------------------------------------------
 // CORE: Drawing Functions
@@ -1231,9 +1339,10 @@ R3DAPI void R3D_UpdateModelBoundingBox(R3D_Model* model, bool updateMeshBounding
  * @param fileName Path to the model file containing animation(s).
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
+ * @param asLocalTransforms result is Local Transforms vs Matrices ( ONLY FOR CUSTOM ANIMATION )
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  */
-R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* fileName, int* animCount, int targetFrameRate);
+R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* fileName, int* animCount, int targetFrameRate, bool asLocalTransforms);
 
 /**
  * @brief Loads model animations from memory data in a supported format (e.g., GLTF, IQM).
@@ -1247,9 +1356,10 @@ R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* fileName, int* an
  * @param size Size of the data buffer in bytes.
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
+ * @param asLocalTransforms result is Local Transforms vs Matrices ( ONLY FOR CUSTOM ANIMATION )
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  */
-R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimationsFromMemory(const char* fileType, const void* data, unsigned int size, int* animCount, int targetFrameRate);
+R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimationsFromMemory(const char* fileType, const void* data, unsigned int size, int* animCount, int targetFrameRate, bool asLocalTransforms);
 
 /**
  * @brief Frees memory allocated for model animations.
@@ -2208,6 +2318,49 @@ R3DAPI void R3D_SetSSAOIterations(int value);
  * @return The number of blur iterations for SSAO.
  */
 R3DAPI int R3D_GetSSAOIterations(void);
+
+/**
+ * @brief Sets the intensity multiplier for the SSAO effect.
+ *
+ * This function sets the the base multiplier used by the SSAO effect.
+ * Higher values will result in darker occlusion.
+ *
+ * @param value The intensity multiplier for SSAO.
+ *
+ * Default: 1.0
+ */
+R3DAPI void R3D_SetSSAOIntensity(float value);
+
+/**
+ * @brief Gets the intensity multiplier for the SSAO effect.
+ *
+ * This function retrieves the intensity multiplier applied to the SSAO effect.
+ *
+ * @return The intensity multiplier for SSAO.
+ */
+R3DAPI float R3D_GetSSAOIntensity(void);
+
+/**
+ * @brief Sets the power factor for the SSAO effect.
+ *
+ * This function sets the exponential distributon applied to the SSAO effect.
+ * Higher values will result in darker occlusion with an increasingly sharper
+ * falloff compared to the SSAO intensity value.
+ *
+ * @param value The power factor for SSAO.
+ *
+ * Default: 1.0
+ */
+R3DAPI void R3D_SetSSAOPower(float value);
+
+/**
+ * @brief Gets the power factor used for the SSAO effect.
+ *
+ * This function retrieves the exponential distributon value applied to the SSAO effect.
+ *
+ * @return The power factor for SSAO.
+ */
+R3DAPI float R3D_GetSSAOPower(void);
 
 // --------------------------------------------
 // ENVIRONMENT: Bloom Config Functions
