@@ -50,7 +50,7 @@ begin
   material.orm.roughness := 0.5;
   material.orm.metalness := 0.5;
 
-  anims := R3D_LoadModelAnimations(PChar(RESOURCES_PATH + 'dancer.glb'), @animCount, 60);
+  anims := R3D_LoadModelAnimations(PChar(RESOURCES_PATH + 'dancer.glb'), @animCount, 60, false);
 
   camera.position := Vector3Create(0, 2.0, 3.5);
   camera.target := Vector3Create(0, 1.0, 1.5);

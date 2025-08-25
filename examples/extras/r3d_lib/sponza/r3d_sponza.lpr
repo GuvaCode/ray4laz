@@ -25,6 +25,9 @@ begin
   // Configure default post process settings
   R3D_SetSSAO(True);
   R3D_SetSSAORadius(4.0);
+  R3D_SetSSAOIntensity(1.25);
+  R3D_SetSSAOPower(1.25);
+
   R3D_SetBloomMode(R3D_BLOOM_MIX);
 
   // Set default ambient color (when no skybox is activated)
