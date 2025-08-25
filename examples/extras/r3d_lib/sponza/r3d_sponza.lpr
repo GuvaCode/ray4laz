@@ -26,12 +26,13 @@ begin
   R3D_SetSSAO(True);
   R3D_SetSSAORadius(4.0);
   R3D_SetSSAOIntensity(1.25);
-  R3D_SetSSAOPower(1.25);
+  R3D_SetSSAOPower(1.5);
 
   R3D_SetBloomMode(R3D_BLOOM_MIX);
 
-  // Set default ambient color (when no skybox is activated)
-  R3D_SetAmbientColor(GRAY);
+   // Set default background and ambient color (when no skybox is activated)
+   R3D_SetBackgroundColor(SKYBLUE);
+   R3D_SetAmbientColor(DARKGRAY);
 
   // Load Sponza scene
   Sponza := R3D_LoadModel(PChar(RESOURCES_PATH + 'sponza.glb'));
@@ -54,16 +55,16 @@ begin
       R3D_SetLightPosition(Lights[i], Vector3Create(-10, 20, 0));
 
     R3D_SetLightActive(Lights[i], True);
-    R3D_SetLightEnergy(Lights[i], 1.0);
+    R3D_SetLightEnergy(Lights[i], 4.0);
     R3D_SetShadowUpdateMode(Lights[i], R3D_SHADOW_UPDATE_MANUAL);
     R3D_EnableShadow(Lights[i], 4096);
   end;
 
   // Configure camera
-  Camera.position := Vector3Create(0, 0, 0);
-  Camera.target := Vector3Create(0, 0, -1);
-  Camera.up := Vector3Create(0, 1, 0);
-  Camera.fovy := 60;
+  Camera.position := Vector3Create(8.0, 1.0, 0.5);
+  Camera.target   := Vector3Create(0.0, 2.0, -2.0);
+  Camera.up       := Vector3Create(0.0, 1.0, 0.0);
+  Camera.fovy     := 60;
   Camera.projection := CAMERA_PERSPECTIVE;
 
   // Ready to go!

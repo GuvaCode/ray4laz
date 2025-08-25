@@ -2222,6 +2222,30 @@ procedure R3D_SetSSAOPower(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r
  *)
 function R3D_GetSSAOPower(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSAOPower';
 
+(*
+ * @brief Controls the influence of SSAO on direct lighting.
+ *
+ * This function sets the amount of direct light attenuation from the SSAO effect.
+ * Values greater than 0.0 will apply the SSAO effect to direct lighting with
+ * increasing intensity at higher values. This is in addition to the typical
+ * application to ambient light only.
+ *
+ * @param value SSAO effect intensity on direct light, in the range [0.0f, 1.0f].
+ *
+ * Default: 0.0
+ *)
+procedure R3D_SetSSAOLightAffect(value: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetSSAOLightAffect';
+
+(*
+ * @brief Gets the current direct lighting effect of SSAO.
+ *
+ * This function retrieves the value used for direct light attenuation from the SSAO effect.
+ *
+ * @return SSAO effect intensity on direct light, in the range [0.0f, 1.0f].
+ *)
+function R3D_GetSSAOLightAffect(): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetSSAOLightAffect';
+
+
 // --------------------------------------------
 // ENVIRONMENT: Bloom Config Functions
 // --------------------------------------------

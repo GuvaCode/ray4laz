@@ -2362,6 +2362,29 @@ R3DAPI void R3D_SetSSAOPower(float value);
  */
 R3DAPI float R3D_GetSSAOPower(void);
 
+/**
+ * @brief Controls the influence of SSAO on direct lighting.
+ *
+ * This function sets the amount of direct light attenuation from the SSAO effect.
+ * Values greater than 0.0 will apply the SSAO effect to direct lighting with
+ * increasing intensity at higher values. This is in addition to the typical
+ * application to ambient light only.
+ *
+ * @param value SSAO effect intensity on direct light, in the range [0.0f, 1.0f].
+ *
+ * Default: 0.0
+ */
+R3DAPI void R3D_SetSSAOLightAffect(float value);
+
+/**
+ * @brief Gets the current direct lighting effect of SSAO.
+ *
+ * This function retrieves the value used for direct light attenuation from the SSAO effect.
+ *
+ * @return SSAO effect intensity on direct light, in the range [0.0f, 1.0f].
+ */
+R3DAPI float R3D_GetSSAOLightAffect(void);
+
 // --------------------------------------------
 // ENVIRONMENT: Bloom Config Functions
 // --------------------------------------------
