@@ -1930,6 +1930,10 @@ function CodepointToUTF8(codepoint: Integer; utf8Size: PInteger): PChar; cdecl; 
 // WARNING 1: Most of these functions use internal static buffers, it's recommended to store returned data on user-side for re-use
 // WARNING 2: Some strings allocate memory internally for the returned strings, those strings must be free by user using MemFree()
 
+{Load text as separate lines ('\n')}
+function LoadTextLines(const text: PChar; count: PInteger): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTextLines';
+{Unload text lines}
+procedure UnloadTextLines(text: PPChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadTextLines';
 {Copy one string to another, returns bytes copied}
 function TextCopy(dst: PChar; const src: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextCopy';
 {Check if two text string are equal}

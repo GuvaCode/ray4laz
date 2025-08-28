@@ -304,12 +304,10 @@ type (* Represents a material with textures, parameters, and rendering modes. *)
   end;
 
 type
-// Объединение для хранения кадров анимации
-  TFrameData = record
-    case Integer of
-      0: (framePoses: ^PMatrix);        // Массив матриц [frame][bone] в глобальном пространстве
-      1: (frameTransforms: ^PTransform); // Массив трансформаций [frame][bone] в локальном пространстве
-  end;
+  PMatrixArray = array of PMatrix;
+  PTransformArray = array of PTransform;
+//  PPMatrix = ^PMatrix;
+//  PPTransform = ^PTransform;
 
 type (* Represents a skeletal animation for a model.                 *)
      (* This structure holds the animation data for a skinned model, *)
@@ -318,9 +316,11 @@ type (* Represents a skeletal animation for a model.                 *)
   TR3D_ModelAnimation = record
     boneCount:  Integer;   // Number of bones in the skeleton affected by this animation.
     frameCount: Integer;   // Total number of frames in the animation sequence.
-    bones:      PBoneInfo; // Array of bone metadata (name, parent index, etc.) that defines the skeleton hierarchy.
-    frameData: TFrameData;  // Данные кадров анимации (матрицы или трансформации)
-    //framePoses: PMatrix;   // 2D array of transformation matrices: [frame][bone]. Each matrix represents the pose of a bone in a specific frame, typically in local space.
+    bones: PBoneInfo; // Array of bone metadata (name, parent index, etc.) that defines the skeleton hierarchy.
+
+    frameGlobalPoses: PMatrixArray;     // 2D array [frame][bone]. Global bone matrices
+    frameLocalPoses:  PTransformArray;  // 2D array [frame][bone]. Local bone transforms
+
     name: array[0..31] of Char; // Name identifier for the animation (e.g., "Walk", "Jump", etc.).
   end;
 
@@ -1234,10 +1234,9 @@ procedure R3D_UpdateModelBoundingBox(model: PR3D_Model; updateMeshBoundingBoxes:
  * @param fileName Path to the model file containing animation(s).
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
- * @param asLocalTransforms result is Local Transforms vs Matrices ( ONLY FOR CUSTOM ANIMATION )
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  *)
-function R3D_LoadModelAnimations(fileName: PChar; animCount: PInteger; targetFrameRate: Integer; asLocalTransforms: Boolean): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimations';
+function R3D_LoadModelAnimations(fileName: PChar; animCount: PInteger; targetFrameRate: Integer): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimations';
 
 (*
  * @brief Loads model animations from memory data in a supported format (e.g., GLTF, IQM).
@@ -1251,10 +1250,9 @@ function R3D_LoadModelAnimations(fileName: PChar; animCount: PInteger; targetFra
  * @param size Size of the data buffer in bytes.
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
- * @param asLocalTransforms result is Local Transforms vs Matrices ( ONLY FOR CUSTOM ANIMATION )
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  *)
-function R3D_LoadModelAnimationsFromMemory(const fileType: PChar; const data: Pointer; size: Cardinal; animCount: PInteger; targetFrameRate: integer; asLocalTransforms: Boolean): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimationsFromMemory';
+function R3D_LoadModelAnimationsFromMemory(const fileType: PChar; const data: Pointer; size: Cardinal; animCount: PInteger; targetFrameRate: integer): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimationsFromMemory';
 
 (*
  * @brief Frees memory allocated for model animations.
@@ -2270,6 +2268,30 @@ procedure R3D_SetBloomMode(mode: R3D_Bloom); cdecl; external {$IFNDEF RAY_STATIC
  * @return The current bloom mode.
  *)
 function R3D_GetBloomMode: R3D_Bloom; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomMode';
+
+(*
+ * @brief Sets the number of mipmap levels used for the bloom effect.
+ *
+ * This function controls how many mipmap level are generated for use in the bloom effect.
+ * More levels will give a smoother and more widely dispersed effect, while less mipmaps
+ * can provide a tighter effect. Setting this value to 0 will result in the maximum
+ * possible amount of levels to be used. Use of this function will rebuild the
+ * mipmaps and may give a one time performance hit.
+ *
+ * @param value The number of mipmap level to be used for the bloom effect.
+ *
+ * Default: 7
+ *)
+procedure R3D_SetBloomLevels(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomLevels';
+
+(*
+ * @brief Gets the current amount of mipmap levels used for the bloom effect.
+ *
+ * This function retrieves the current amount of mipmap levels in use by the bloom effect.
+ *
+ * @return The number of mipmap level currently used for the bloom effect.
+ *)
+function R3D_GetBloomLevels(): Integer; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetBloomLevels';
 
 (*
  * @brief Sets the bloom intensity.

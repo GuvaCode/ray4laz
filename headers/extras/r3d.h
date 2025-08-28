@@ -344,18 +344,15 @@ typedef struct R3D_Material {
  */
 typedef struct R3D_ModelAnimation {
 
-    int boneCount;          /**< Number of bones in the skeleton affected by this animation. */
-    int frameCount;         /**< Total number of frames in the animation sequence. */
+    int boneCount;                  /**< Number of bones in the skeleton affected by this animation. */
+    int frameCount;                 /**< Total number of frames in the animation sequence. */
 
-    BoneInfo* bones;        /**< Array of bone metadata (name, parent index, etc.) that defines the skeleton hierarchy. */
+    BoneInfo* bones;                /**< Array of bone metadata (name, parent index, etc.) defining the skeleton hierarchy. */
 
-    union {
-        Matrix** framePoses;            /**< 2D array of transformation matrices: [frame][bone].
-                                             Each matrix represents the pose of a bone in a specific frame, typically in global space. */
-        Transform** frameTransforms;    /**< 2D array of transformation transforms: [frame][bone]. in local space */
-    };
+    Matrix** frameGlobalPoses;      /**< 2D array [frame][bone]. Global bone matrices (relative to model space). */
+    Transform** frameLocalPoses;    /**< 2D array [frame][bone]. Local bone transforms (TRS relative to parent). */
 
-    char name[32];          /**< Name identifier for the animation (e.g., "Walk", "Jump", etc.). */
+    char name[32];                  /**< Name identifier for the animation (e.g., "Walk", "Jump"). */
 
 } R3D_ModelAnimation;
 
@@ -1339,10 +1336,9 @@ R3DAPI void R3D_UpdateModelBoundingBox(R3D_Model* model, bool updateMeshBounding
  * @param fileName Path to the model file containing animation(s).
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
- * @param asLocalTransforms result is Local Transforms vs Matrices ( ONLY FOR CUSTOM ANIMATION )
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  */
-R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* fileName, int* animCount, int targetFrameRate, bool asLocalTransforms);
+R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* fileName, int* animCount, int targetFrameRate);
 
 /**
  * @brief Loads model animations from memory data in a supported format (e.g., GLTF, IQM).
@@ -1356,10 +1352,9 @@ R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* fileName, int* an
  * @param size Size of the data buffer in bytes.
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
- * @param asLocalTransforms result is Local Transforms vs Matrices ( ONLY FOR CUSTOM ANIMATION )
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  */
-R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimationsFromMemory(const char* fileType, const void* data, unsigned int size, int* animCount, int targetFrameRate, bool asLocalTransforms);
+R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimationsFromMemory(const char* fileType, const void* data, unsigned int size, int* animCount, int targetFrameRate);
 
 /**
  * @brief Frees memory allocated for model animations.
@@ -2409,6 +2404,30 @@ R3DAPI void R3D_SetBloomMode(R3D_Bloom mode);
  * @return The current bloom mode.
  */
 R3DAPI R3D_Bloom R3D_GetBloomMode(void);
+
+/**
+ * @brief Sets the number of mipmap levels used for the bloom effect.
+ *
+ * This function controls how many mipmap level are generated for use in the bloom effect.
+ * More levels will give a smoother and more widely dispersed effect, while less mipmaps
+ * can provide a tighter effect. Setting this value to 0 will result in the maximum
+ * possible amount of levels to be used. Use of this function will rebuild the
+ * mipmaps and may give a one time performance hit.
+ *
+ * @param value The number of mipmap level to be used for the bloom effect.
+ *
+ * Default: 7
+ */
+R3DAPI void R3D_SetBloomLevels(int value);
+
+/**
+ * @brief Gets the current amount of mipmap levels used for the bloom effect.
+ *
+ * This function retrieves the current amount of mipmap levels in use by the bloom effect.
+ *
+ * @return The number of mipmap level currently used for the bloom effect.
+ */
+R3DAPI int R3D_GetBloomLevels(void);
 
 /**
  * @brief Sets the bloom intensity.

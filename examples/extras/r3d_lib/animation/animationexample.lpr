@@ -23,7 +23,7 @@ var
   checked: TImage;
   z, x: Integer;
 begin
-  InitWindow(800, 600, 'Animation Example');
+  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, 'Animation Example');
   R3D_Init(GetScreenWidth(), GetScreenHeight(), R3D_FLAG_FXAA or R3D_FLAG_NO_FRUSTUM_CULLING);
   SetTargetFPS(60);
 
@@ -50,7 +50,7 @@ begin
   material.orm.roughness := 0.5;
   material.orm.metalness := 0.5;
 
-  anims := R3D_LoadModelAnimations(PChar(RESOURCES_PATH + 'dancer.glb'), @animCount, 60, false);
+  anims := R3D_LoadModelAnimations(PChar(RESOURCES_PATH + 'dancer.glb'), @animCount, 60);
 
   camera.position := Vector3Create(0, 2.0, 3.5);
   camera.target := Vector3Create(0, 1.0, 1.5);
