@@ -140,10 +140,15 @@ typedef enum R3D_CullMode {
  * and if so, whether it is also rendered in the main pass.
  */
 typedef enum R3D_ShadowCastMode {
-    R3D_SHADOW_CAST_ON,             ///< The object casts shadows; the faces used are determined by the mesh culling mode.
-    R3D_SHADOW_CAST_DOUBLE_SIDED,   ///< The object casts shadows with both front and back faces, ignoring face culling.
-    R3D_SHADOW_CAST_ONLY,           ///< The object does not render normally, but still contributes to shadow maps.
-    R3D_SHADOW_CAST_DISABLED        ///< The object does not cast shadows at all.
+    R3D_SHADOW_CAST_ON,                 ///< The object casts shadows; the faces used are determined by the material's culling mode.
+    R3D_SHADOW_CAST_ON_DOUBLE_SIDED,    ///< The object casts shadows with both front and back faces, ignoring face culling.
+    R3D_SHADOW_CAST_ON_FRONT_SIDE,      ///< The object casts shadows with only front faces, culling back faces.
+    R3D_SHADOW_CAST_ON_BACK_SIDE,       ///< The object casts shadows with only back faces, culling front faces.
+    R3D_SHADOW_CAST_ONLY,               ///< The object only casts shadows; the faces used are determined by the material's culling mode.
+    R3D_SHADOW_CAST_ONLY_DOUBLE_SIDED,  ///< The object only casts shadows with both front and back faces, ignoring face culling.
+    R3D_SHADOW_CAST_ONLY_FRONT_SIDE,    ///< The object only casts shadows with only front faces, culling back faces.
+    R3D_SHADOW_CAST_ONLY_BACK_SIDE,     ///< The object only casts shadows with only back faces, culling front faces.
+    R3D_SHADOW_CAST_DISABLED            ///< The object does not cast shadows at all.
 } R3D_ShadowCastMode;
 
 /**
@@ -267,14 +272,14 @@ typedef struct R3D_Mesh {
 
     R3D_Vertex* vertices;                 /**< Pointer to the array of vertices. */
     unsigned int* indices;                /**< Pointer to the array of indices. */
-                                          
+
     int vertexCount;                      /**< Number of vertices. */
     int indexCount;                       /**< Number of indices. */
-                                          
+
     unsigned int vbo;                     /**< Vertex Buffer Object (GPU handle). */
     unsigned int ebo;                     /**< Element Buffer Object (GPU handle). */
     unsigned int vao;                     /**< Vertex Array Object (GPU handle). */
-                                          
+
     Matrix* boneMatrices;                 /**< Cached animation matrices for all passes. */
     int boneCount;                        /**< Number of bones (and matrices) that affect the mesh. */
 

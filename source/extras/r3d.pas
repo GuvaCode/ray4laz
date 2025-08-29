@@ -137,10 +137,15 @@ type
 type
   R3D_ShadowCastMode = Integer;
   const
-    R3D_SHADOW_CAST_ON           = R3D_ShadowCastMode(0);  // The object casts shadows; the faces used are determined by the mesh culling mode.
-    R3D_SHADOW_CAST_DOUBLE_SIDED = R3D_ShadowCastMode(1);  // The object casts shadows with both front and back faces, ignoring face culling.
-    R3D_SHADOW_CAST_ONLY         = R3D_ShadowCastMode(2);  // The object does not render normally, but still contributes to shadow maps.
-    R3D_SHADOW_CAST_DISABLED     = R3D_ShadowCastMode(3);  // The object does not cast shadows at all.
+    R3D_SHADOW_CAST_ON                = R3D_ShadowCastMode(0); // The object casts shadows; the faces used are determined by the material's culling mode.
+    R3D_SHADOW_CAST_ON_DOUBLE_SIDED   = R3D_ShadowCastMode(1); // The object casts shadows with both front and back faces, ignoring face culling.
+    R3D_SHADOW_CAST_ON_FRONT_SIDE     = R3D_ShadowCastMode(2); // The object casts shadows with only front faces, culling back faces.
+    R3D_SHADOW_CAST_ON_BACK_SIDE      = R3D_ShadowCastMode(3); // The object casts shadows with only back faces, culling front faces.
+    R3D_SHADOW_CAST_ONLY              = R3D_ShadowCastMode(4); // The object only casts shadows; the faces used are determined by the material's culling mode.
+    R3D_SHADOW_CAST_ONLY_DOUBLE_SIDED = R3D_ShadowCastMode(5); // The object only casts shadows with both front and back faces, ignoring face culling.
+    R3D_SHADOW_CAST_ONLY_FRONT_SIDE   = R3D_ShadowCastMode(6); // The object only casts shadows with only front faces, culling back faces.
+    R3D_SHADOW_CAST_ONLY_BACK_SIDE    = R3D_ShadowCastMode(7); // The object only casts shadows with only back faces, culling front faces.
+    R3D_SHADOW_CAST_DISABLED          = R3D_ShadowCastMode(8); // The object does not cast shadows at all.
 
 type (* Defines billboard modes for 3D objects.                                               *)
      (* This enumeration defines how a 3D object aligns itself relative to the camera.        *)

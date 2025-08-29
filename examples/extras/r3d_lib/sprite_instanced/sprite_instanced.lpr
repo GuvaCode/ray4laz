@@ -39,7 +39,7 @@ begin
   // Load sprite texture (single frame)
   Texture := LoadTexture('resources/tree.png');
   Sprite := R3D_LoadSprite(Texture, 1, 1);
-  Sprite.shadowCastMode := R3D_SHADOW_CAST_DOUBLE_SIDED;
+  Sprite.shadowCastMode := R3D_SHADOW_CAST_ON_DOUBLE_SIDED;
   // Generate random transforms for instances
   for i := 0 to INSTANCE_COUNT - 1 do
   begin
