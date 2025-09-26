@@ -366,7 +366,7 @@ function QuaternionTransform(q : TQuaternion; mat : TMatrix): TQuaternion; cdecl
 function QuaternionEquals(p, q: TQuaternion): longint; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionEquals';
 
 {Decompose a transformation matrix into its rotational, translational and scaling components and remove shear}
-procedure MatrixDecompose(mat: TMatrix; translation: PVector3; rotation: PQuaternion; scale PVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixDecompose';
+procedure MatrixDecompose(mat: TMatrix; translation: PVector3; rotation: PQuaternion; scale: PVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixDecompose';
 
 
 
