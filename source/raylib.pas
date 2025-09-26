@@ -227,7 +227,7 @@ const
        position   : TVector3; // Camera position
        target     : TVector3; // Camera target it looks-at
        up         : TVector3; // Camera up vector (rotation over its axis)
-       fovy       : single;   // Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
+       fovy       : single;   // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane height in world units in orthographic
        projection : Integer;  // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
        procedure Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aProjection: integer = 0);
      end;
@@ -1222,14 +1222,29 @@ function LoadFileText(const fileName: Pchar): Pchar; cdecl; external {$IFNDEF RA
 procedure UnloadFileText(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFileText';
 {Save text data to file (write), string must be '\0' terminated, returns true on success}
 function SaveFileText(const fileName, text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileText';
+// File system functions
+{Rename file (if exists)}
+function FileRename(const fileName, fileRename: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileRename';
+{Remove file (if exists)}
+function FileRemove(const fileName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileRemove';
+{Copy file from one path to another, dstPath created if it doesn't exist}
+function FileCopy(const srcPath, dstPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileCopy';
+{Move file from one directory to another, dstPath created if it doesn't exist}
+function FileMove(const srcPath, dstPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileMove';
+{Replace text in an existing file}
+function FileTextReplace(const fileName, search, replacement: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileTextReplace';
+{Find text in existing file}
+function FileTextFindIndex(const fileName, search: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileTextFindIndex';
 {Check if file exists}
 function FileExists(const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileExists';
 {Check if a directory path exists}
 function DirectoryExists(const dirPath: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DirectoryExists';
-{recommended include point: .png, .wav}
+{Check file extension (recommended include point: .png, .wav)}
 function IsFileExtension(const fileName, ext: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileExtension';
 {Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)}
 function GetFileLength(const fileName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileLength';
+{Get file modification time (last write time)}
+function GetFileModTime(const fileName: PChar): LongInt; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileModTime';
 {Get pointer to extension for a filename string (includes dot: '.png')}
 function GetFileExtension(const fileName: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileExtension';
 {Get pointer to filename for a path string }
@@ -1242,7 +1257,7 @@ function GetDirectoryPath(const filePath: PChar): PChar; cdecl; external {$IFNDE
 function GetPrevDirectoryPath(const dirPath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPrevDirectoryPath';
 {Get current working directory (uses static string)}
 function GetWorkingDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorkingDirectory';
-{Get the directory if the running application (uses static string)}
+{Get the directory of the running application (uses static string)}
 function GetApplicationDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetApplicationDirectory';
 {Create directories (including full path requested), returns 0 on success}
 function MakeDirectory(const dirPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MakeDirectory';
@@ -1264,8 +1279,6 @@ function IsFileDropped: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$E
 function LoadDroppedFiles: TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDroppedFiles';
 {Unload dropped filepaths}
 procedure UnloadDroppedFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadDroppedFiles';
-{Get file modification time (last write time)}
-function GetFileModTime(const fileName: PChar): QWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileModTime';
 
 (* Compression/Encoding functionality *)
 
@@ -1857,15 +1870,15 @@ function GetFontDefault: TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$EN
 {Load font from file into GPU memory (VRAM)}
 function LoadFont(const fileName: PChar): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFont';
 {Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set, font size is provided in pixels height}
-function LoadFontEx(const fileName: PChar; fontSize: Integer; codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
+function LoadFontEx(const fileName: PChar; fontSize: Integer; const codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
 {Load font from Image (XNA style)}
 function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromImage';
 {Load font from memory buffer, fileType refers to extension: i.e. '.ttf'}
-function LoadFontFromMemory(const fileType: PChar; const fileData: PByte; dataSize, fontSize: Integer; codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromMemory';
+function LoadFontFromMemory(const fileType: PChar; const fileData: PByte; dataSize, fontSize: Integer; const codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromMemory';
 {Check if a font is valid (font data loaded, WARNING: GPU texture not checked)}
 function IsFontValid(font: TFont): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFontValid';
 {Load font data for further uses}
-function LoadFontData(const fileData: PByte; dataSize, fontSize: Integer; codepoints: PInteger; codepointCount, _type: Integer): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontData';
+function LoadFontData(const fileData: PByte; dataSize, fontSize: Integer; const codepoints: PInteger; codepointCount, _type: Integer): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontData';
 {Generate image font atlas using chars info}
 function GenImageFontAtlas(const glyphs: PGlyphInfo; glyphRecs: PPRectangle; glyphCount, fontSize, padding, packMethod: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageFontAtlas';
 {Unload font chars info data (RAM)}
@@ -1933,7 +1946,7 @@ function CodepointToUTF8(codepoint: Integer; utf8Size: PInteger): PChar; cdecl; 
 {Load text as separate lines ('\n')}
 function LoadTextLines(const text: PChar; count: PInteger): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTextLines';
 {Unload text lines}
-procedure UnloadTextLines(text: PPChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadTextLines';
+procedure UnloadTextLines(text: PPChar; lineCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadTextLines';
 {Copy one string to another, returns bytes copied}
 function TextCopy(dst: PChar; const src: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextCopy';
 {Check if two text string are equal}
@@ -1944,31 +1957,37 @@ function TextLength(const text: PChar): LongWord; cdecl; external {$IFNDEF RAY_S
 function TextFormat(const text: PChar): PChar; cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFormat';
 {Get a piece of a text string}
 function TextSubtext(const text: PChar; position, length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSubtext';
+{Remove text spaces, concat words}
+function TextRemoveSpaces(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextRemoveSpaces';
+{Get text between two strings}
+function GetTextBetween(const text, beginTag, endTag: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTextBetween';
 {Replace text string (WARNING: memory must be freed!)}
-function TextReplace(const text: PChar; const replace, by: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplace';
+function TextReplace(const text, search, replacement: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplace';
+{Replace text between two specific strings (WARNING: memory must be freed!)}
+function TextReplaceBetween(const text, beginTag, endTag, replacement: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplaceBetween';
 {Insert text in a position (WARNING: memory must be freed!)}
 function TextInsert(const text, insert: PChar; position: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextInsert';
 {Join text strings with delimiter}
 function TextJoin(textList: PPChar; count: Integer; const delimiter: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextJoin';
 {Split text into multiple strings, using MAX_TEXTSPLIT_COUNT static strings}
 function TextSplit(const text: PChar; delimiter: Char; count: PInteger): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSplit';
-{Append text at specific position and move cursor!}
+{Append text at specific position and move cursor}
 procedure TextAppend(text: PChar; const append: PChar; position: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextAppend';
 {Find first text occurrence within a string, -1 if not found}
-function TextFindIndex(const text, find: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFindIndex';
+function TextFindIndex(const text, search: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFindIndex';
 {Get upper case version of provided string}
 function TextToUpper(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToUpper';
 {Get lower case version of provided string}
-function TextToLower(const text: PChar):PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToLower';
+function TextToLower(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToLower';
 {Get Pascal case notation version of provided string}
 function TextToPascal(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToPascal';
 {Get Snake case notation version of provided string}
 function TextToSnake(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToSnake';
 {Get Camel case notation version of provided string}
 function TextToCamel(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToCamel';
-{Get integer value from text (negative values not supported)}
+{Get integer value from text}
 function TextToInteger(const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToInteger';
-{Get float value from text (negative values not supported)}
+{Get float value from text}
 function TextToFloat(const text: PChar): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToFloat';
 
 //------------------------------------------------------------------------------------

@@ -137,11 +137,11 @@ type
 type
   R3D_ShadowCastMode = Integer;
   const
-    R3D_SHADOW_CAST_ON                = R3D_ShadowCastMode(0); // The object casts shadows; the faces used are determined by the material's culling mode.
+    R3D_SHADOW_CAST_ON_AUTO           = R3D_ShadowCastMode(0); // The object casts shadows; the faces used are determined by the material's culling mode.
     R3D_SHADOW_CAST_ON_DOUBLE_SIDED   = R3D_ShadowCastMode(1); // The object casts shadows with both front and back faces, ignoring face culling.
     R3D_SHADOW_CAST_ON_FRONT_SIDE     = R3D_ShadowCastMode(2); // The object casts shadows with only front faces, culling back faces.
     R3D_SHADOW_CAST_ON_BACK_SIDE      = R3D_ShadowCastMode(3); // The object casts shadows with only back faces, culling front faces.
-    R3D_SHADOW_CAST_ONLY              = R3D_ShadowCastMode(4); // The object only casts shadows; the faces used are determined by the material's culling mode.
+    R3D_SHADOW_CAST_ONLY_AUTO         = R3D_ShadowCastMode(4); // The object only casts shadows; the faces used are determined by the material's culling mode.
     R3D_SHADOW_CAST_ONLY_DOUBLE_SIDED = R3D_ShadowCastMode(5); // The object only casts shadows with both front and back faces, ignoring face culling.
     R3D_SHADOW_CAST_ONLY_FRONT_SIDE   = R3D_ShadowCastMode(6); // The object only casts shadows with only front faces, culling back faces.
     R3D_SHADOW_CAST_ONLY_BACK_SIDE    = R3D_ShadowCastMode(7); // The object only casts shadows with only back faces, culling front faces.
@@ -220,8 +220,8 @@ type (* Depth of field effect modes.                                            
 type
   R3D_AnimMode = Integer;
   const
-    R3D_ANIM_INTERNAL = R3D_AnimMode(0);  // default animation solution
-    R3D_ANIM_CUSTOM   = R3D_AnimMode(1);  // user supplied matrices
+    R3D_ANIM_INTERNAL = R3D_AnimMode(0);  // Default animation solution
+    R3D_ANIM_CUSTOM   = R3D_AnimMode(1);  // User supplied matrices via R3D_Model::boneOverride
 
 {$ENDREGION}
 
@@ -518,19 +518,6 @@ procedure R3D_ClearState(flags: R3D_Flags); cdecl; external {$IFNDEF RAY_STATIC}
 procedure R3D_GetResolution(width, height: PInteger); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetResolution';
 
 (*
- * @brief Updates the internal resolution.
- *
- * This function changes the internal resolution of the rendering engine. Note that
- * this process destroys and recreates all framebuffers, which may be a slow operation.
- *
- * @param width The new width for the internal resolution.
- * @param height The new height for the internal resolution.
- *
- * @warning This function may be slow due to the destruction and recreation of framebuffers.
- *)
-procedure R3D_UpdateResolution(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UpdateResolution';
-
-(*
  * @brief Sets a custom render target.
  *
  * This function allows rendering to a custom framebuffer instead of the main one.
@@ -613,14 +600,29 @@ procedure R3D_DisableLayers(bitfield: R3D_Layer); cdecl; external {$IFNDEF RAY_S
 // --------------------------------------------
 
 (*
- * @brief Begins a rendering session for a 3D camera.
- *
- * This function starts a rendering session, preparing the engine to handle subsequent
- * draw calls using the provided camera settings.
- *
- * @param camera The camera to use for rendering the scene.
+* @brief Begins a rendering session for a 3D camera.
+*
+* This function starts a rendering session, preparing the engine to handle subsequent
+* draw calls using the provided camera settings. Rendering output will be directed
+* to the default screen framebuffer.
+*
+* @param camera The camera to use for rendering the scene.
  *)
 procedure R3D_Begin(camera: TCamera3D); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_Begin';
+
+(*
+ * @brief Begins a rendering session for a 3D camera with an optional custom render target.
+ *
+ * This function starts a rendering session, preparing the engine to handle subsequent
+ * draw calls using the provided camera settings. If a render target is provided, rendering
+ * output will be directed to it. If the target is `NULL`, rendering will be performed
+ * directly to the screen framebuffer (same behavior as R3D_Begin).
+ *
+ * @param camera The camera to use for rendering the scene.
+ * @param target Optional pointer to a RenderTexture to render into. Can be NULL to render
+ *               directly to the screen.
+ *)
+procedure R3D_BeginEx(camera: TCamera3D; const target: PRenderTexture); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_BeginEx';
 
 (*
  * @brief Ends the current rendering session.
@@ -1731,25 +1733,28 @@ procedure R3D_SetShadowUpdateFrequency(id: TR3D_Light; msec: Integer); cdecl; ex
 procedure R3D_UpdateShadowMap(id: TR3D_Light); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_UpdateShadowMap';
 
 (*
- * @brief Retrieves the softness factor used to simulate penumbra in shadows.
- *
- * This function returns the current softness factor for the specified light's shadow map.
- * A higher softness value will produce softer shadow edges, simulating a broader penumbra,
- * while a lower value results in sharper shadows.
- *
- * @param id The ID of the light.
- * @return The softness factor currently set for the shadow (typically in the range [0.0, 1.0]).
+* @brief Retrieves the softness radius used to simulate penumbra in shadows.
+*
+* The softness is expressed as a sampling radius in texels within the shadow map.
+*
+* @param id The ID of the light.
+* @return The softness radius in texels currently set for the shadow.
  *)
 function R3D_GetShadowSoftness(id: TR3D_Light): Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_GetShadowSoftness';
 
 (*
- * @brief Sets the softness factor used to simulate penumbra in shadows.
+ * @brief Sets the softness radius used to simulate penumbra in shadows.
  *
  * This function adjusts the softness of the shadow edges for the specified light.
- * Increasing the softness value creates more diffuse, penumbra-like shadows.
+ * The softness value corresponds to a number of texels in the shadow map, independent
+ * of its resolution. Larger values increase the blur radius, resulting in softer,
+ * more diffuse shadows, while smaller values yield sharper shadows.
  *
  * @param id The ID of the light.
- * @param softness The softness factor to apply (typically in the range [0.0, 1.0]).
+ * @param softness The softness radius in texels to apply (must be >= 0).
+ *
+ * @note The softness must be set only after shadows have been enabled for the light,
+ *       since the shadow map resolution must be known before the softness can be applied.
  *)
 procedure R3D_SetShadowSoftness(id: TR3D_Light; softness: Single); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetShadowSoftness';
 

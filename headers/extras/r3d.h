@@ -140,11 +140,11 @@ typedef enum R3D_CullMode {
  * and if so, whether it is also rendered in the main pass.
  */
 typedef enum R3D_ShadowCastMode {
-    R3D_SHADOW_CAST_ON,                 ///< The object casts shadows; the faces used are determined by the material's culling mode.
+    R3D_SHADOW_CAST_ON_AUTO,            ///< The object casts shadows; the faces used are determined by the material's culling mode.
     R3D_SHADOW_CAST_ON_DOUBLE_SIDED,    ///< The object casts shadows with both front and back faces, ignoring face culling.
     R3D_SHADOW_CAST_ON_FRONT_SIDE,      ///< The object casts shadows with only front faces, culling back faces.
     R3D_SHADOW_CAST_ON_BACK_SIDE,       ///< The object casts shadows with only back faces, culling front faces.
-    R3D_SHADOW_CAST_ONLY,               ///< The object only casts shadows; the faces used are determined by the material's culling mode.
+    R3D_SHADOW_CAST_ONLY_AUTO,          ///< The object only casts shadows; the faces used are determined by the material's culling mode.
     R3D_SHADOW_CAST_ONLY_DOUBLE_SIDED,  ///< The object only casts shadows with both front and back faces, ignoring face culling.
     R3D_SHADOW_CAST_ONLY_FRONT_SIDE,    ///< The object only casts shadows with only front faces, culling back faces.
     R3D_SHADOW_CAST_ONLY_BACK_SIDE,     ///< The object only casts shadows with only back faces, culling front faces.
@@ -241,11 +241,11 @@ typedef enum R3D_Dof {
  *
  * Controls wether to allow external animation matrices
  */
-
 typedef enum R3D_AnimMode {
-    R3D_ANIM_INTERNAL,         ///< default animation solution
-    R3D_ANIM_CUSTOM,           ///< user supplied matrices 
+    R3D_ANIM_INTERNAL,         ///< Default animation solution
+    R3D_ANIM_CUSTOM,           ///< User supplied matrices via R3D_Model::boneOverride 
 } R3D_AnimMode;
+
 // --------------------------------------------
 //                   TYPES
 // --------------------------------------------
@@ -380,7 +380,7 @@ typedef struct R3D_Model {
     Matrix* boneOffsets;            /**< Array of offset (inverse bind) matrices, one per bone.
                                          Transforms mesh-space vertices to bone space. Used in skinning. */
     R3D_AnimMode animationMode;
-    Matrix* boneOverride;            /**< Array of Matrices we'll use if we have it instead of internal calculations, Used in skinning. */
+    Matrix* boneOverride;           /**< Array of Matrices we'll use if we have it instead of internal calculations, Used in skinning. */
 
     BoneInfo* bones;                /**< Bones information (skeleton). Defines the hierarchy and names of bones. */
     int boneCount;                  /**< Number of bones. */
@@ -619,16 +619,6 @@ R3DAPI void R3D_GetResolution(int* width, int* height);
 R3DAPI void R3D_UpdateResolution(int width, int height);
 
 /**
- * @brief Sets a custom render target.
- * 
- * This function allows rendering to a custom framebuffer instead of the main one. 
- * Passing `NULL` will revert back to rendering to the main framebuffer.
- * 
- * @param target The custom render target (can be NULL to revert to the default framebuffer).
- */
-R3DAPI void R3D_SetRenderTarget(const RenderTexture* target);
-
-/**
  * @brief Defines the bounds of the scene for directional light calculations.
  * 
  * This function sets the scene bounds used to determine which areas should be illuminated 
@@ -704,11 +694,26 @@ R3DAPI void R3D_DisableLayers(R3D_Layer bitfield);
  * @brief Begins a rendering session for a 3D camera.
  * 
  * This function starts a rendering session, preparing the engine to handle subsequent 
- * draw calls using the provided camera settings.
+ * draw calls using the provided camera settings. Rendering output will be directed 
+ * to the default screen framebuffer.
  * 
  * @param camera The camera to use for rendering the scene.
  */
 R3DAPI void R3D_Begin(Camera3D camera);
+
+/**
+ * @brief Begins a rendering session for a 3D camera with an optional custom render target.
+ * 
+ * This function starts a rendering session, preparing the engine to handle subsequent 
+ * draw calls using the provided camera settings. If a render target is provided, rendering 
+ * output will be directed to it. If the target is `NULL`, rendering will be performed 
+ * directly to the screen framebuffer (same behavior as R3D_Begin).
+ * 
+ * @param camera The camera to use for rendering the scene.
+ * @param target Optional pointer to a RenderTexture to render into. Can be NULL to render 
+ *               directly to the screen.
+ */
+R3DAPI void R3D_BeginEx(Camera3D camera, const RenderTexture* target);
 
 /**
  * @brief Ends the current rendering session.
@@ -1840,25 +1845,28 @@ R3DAPI void R3D_SetShadowUpdateFrequency(R3D_Light id, int msec);
 R3DAPI void R3D_UpdateShadowMap(R3D_Light id);
 
 /**
- * @brief Retrieves the softness factor used to simulate penumbra in shadows.
+ * @brief Retrieves the softness radius used to simulate penumbra in shadows.
  *
- * This function returns the current softness factor for the specified light's shadow map.
- * A higher softness value will produce softer shadow edges, simulating a broader penumbra,
- * while a lower value results in sharper shadows.
+ * The softness is expressed as a sampling radius in texels within the shadow map.
  *
  * @param id The ID of the light.
- * @return The softness factor currently set for the shadow (typically in the range [0.0, 1.0]).
+ * @return The softness radius in texels currently set for the shadow.
  */
 R3DAPI float R3D_GetShadowSoftness(R3D_Light id);
 
 /**
- * @brief Sets the softness factor used to simulate penumbra in shadows.
+ * @brief Sets the softness radius used to simulate penumbra in shadows.
  *
  * This function adjusts the softness of the shadow edges for the specified light.
- * Increasing the softness value creates more diffuse, penumbra-like shadows.
+ * The softness value corresponds to a number of texels in the shadow map, independent
+ * of its resolution. Larger values increase the blur radius, resulting in softer,
+ * more diffuse shadows, while smaller values yield sharper shadows.
  *
  * @param id The ID of the light.
- * @param softness The softness factor to apply (typically in the range [0.0, 1.0]).
+ * @param softness The softness radius in texels to apply (must be >= 0).
+ *
+ * @note The softness must be set only after shadows have been enabled for the light,
+ *       since the shadow map resolution must be known before the softness can be applied.
  */
 R3DAPI void R3D_SetShadowSoftness(R3D_Light id, float softness);
 
