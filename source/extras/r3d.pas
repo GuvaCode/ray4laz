@@ -1179,7 +1179,6 @@ function R3D_LoadModel(filePath: PChar): TR3D_Model; cdecl; external {$IFNDEF RA
  * Loads a 3D model from a memory buffer containing the file data.
  * Useful for loading models from embedded resources or network streams.
  *
- * @param fileType String indicating the file format (e.g., "obj", "fbx", "gltf").
  * @param data Pointer to the memory buffer containing the model data.
  * @param size Size of the data buffer in bytes.
  *
@@ -1188,7 +1187,7 @@ function R3D_LoadModel(filePath: PChar): TR3D_Model; cdecl; external {$IFNDEF RA
  * @note External dependencies (e.g., textures or linked resources) are not supported.
  *       The model data must be fully self-contained. Use embedded formats like .glb to ensure compatibility.
  *)
-function R3D_LoadModelFromMemory(fileType: PChar; data: Pointer; size: Cardinal): TR3D_Model; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelFromMemory';
+function R3D_LoadModelFromMemory(const data: Pointer; size: Cardinal): TR3D_Model; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelFromMemory';
 
 (*
  * @brief Create a model from a single mesh.
@@ -1238,12 +1237,12 @@ procedure R3D_UpdateModelBoundingBox(model: PR3D_Model; updateMeshBoundingBoxes:
  * of R3D_ModelAnimation structs. The caller is responsible for freeing the returned data
  * using R3D_UnloadModelAnimations().
  *
- * @param fileName Path to the model file containing animation(s).
+ * @param filePath Path to the model file containing animation(s).
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  *)
-function R3D_LoadModelAnimations(fileName: PChar; animCount: PInteger; targetFrameRate: Integer): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimations';
+function R3D_LoadModelAnimations(const filePath: PChar; animCount: PInteger; targetFrameRate: Integer): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimations';
 
 (*
  * @brief Loads model animations from memory data in a supported format (e.g., GLTF, IQM).
@@ -1252,14 +1251,13 @@ function R3D_LoadModelAnimations(fileName: PChar; animCount: PInteger; targetFra
  * of R3D_ModelAnimation structs. The caller is responsible for freeing the returned data
  * using R3D_UnloadModelAnimations().
  *
- * @param fileType File format hint (e.g., "gltf", "iqm", ".gltf"). The leading dot is optional.
  * @param data Pointer to the model data in memory.
  * @param size Size of the data buffer in bytes.
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  *)
-function R3D_LoadModelAnimationsFromMemory(const fileType: PChar; const data: Pointer; size: Cardinal; animCount: PInteger; targetFrameRate: integer): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimationsFromMemory';
+function R3D_LoadModelAnimationsFromMemory(const data: Pointer; size: Cardinal; animCount: PInteger; targetFrameRate: integer): PR3D_ModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadModelAnimationsFromMemory';
 
 (*
  * @brief Frees memory allocated for model animations.
@@ -2334,7 +2332,7 @@ function R3D_GetBloomIntensity: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dN
  *
  * Default: 0
  *
- * @param value The radius of the bloom filter (in pixels or arbitrary units depending on implementation).
+ * @param value The radius of the bloom filter (in pixels).
  *)
 procedure R3D_SetBloomFilterRadius(value: Integer); cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_SetBloomFilterRadius';
 
@@ -2905,11 +2903,11 @@ function R3D_GetSaturation: Single; cdecl; external {$IFNDEF RAY_STATIC}r3dName{
  * This function loads a skybox from a texture file using a specified cubemap layout.
  * The layout defines how the six faces of the cubemap are arranged within the texture.
  *
- * @param fileName The path to the texture file.
+ * @param filePath The path to the texture file.
  * @param layout The cubemap layout format.
  * @return The loaded skybox object.
  *)
-function R3D_LoadSkybox(fileName: PChar; layout: TCubemapLayout): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkybox';
+function R3D_LoadSkybox(const filePath: PChar; layout: TCubemapLayout): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkybox';
 
 (*
  * @brief Loads a skybox from an image in memory.
@@ -2929,11 +2927,11 @@ function R3D_LoadSkyboxFromMemory(image: TImage; layout: TCubemapLayout): TR3D_S
  * This function loads a skybox from a panorama (equirectangular) texture file,
  * and converts it into a cubemap with the specified resolution.
  *
- * @param fileName The path to the panorama texture file.
+ * @param filePath The path to the panorama texture file.
  * @param size The resolution of the generated cubemap (e.g., 512, 1024).
  * @return The loaded skybox object.
  *)
-function R3D_LoadSkyboxPanorama(const fileName: Pchar; size: Integer): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkyboxPanorama';
+function R3D_LoadSkyboxPanorama(const filePath: Pchar; size: Integer): TR3D_Skybox; cdecl; external {$IFNDEF RAY_STATIC}r3dName{$ENDIF} name 'R3D_LoadSkyboxPanorama';
 
 (*
  * @brief Loads a skybox from a panorama image in memory.
