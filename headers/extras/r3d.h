@@ -64,13 +64,11 @@ typedef unsigned int R3D_Flags;
 #define R3D_FLAG_BLIT_LINEAR            (1 << 1)    /**< Uses linear filtering when blitting the final image */
 #define R3D_FLAG_ASPECT_KEEP            (1 << 2)    /**< Maintains the aspect ratio of the internal resolution when blitting the final image */
 #define R3D_FLAG_STENCIL_TEST           (1 << 3)    /**< Performs a stencil test on each rendering pass affecting geometry */
-#define R3D_FLAG_DEPTH_PREPASS          (1 << 4)    /**< Performs a depth pre-pass before forward rendering, improving desktop GPU performance but unnecessary on mobile */
-#define R3D_FLAG_8_BIT_NORMALS          (1 << 5)    /**< Use 8-bit precision for the normals buffer (deferred); default is 16-bit float */
-#define R3D_FLAG_FORCE_FORWARD          (1 << 6)    /**< Used to force forward rendering for opaque objects, useful for tile-based devices. Be careful, this flag should not be set when rendering, or you may get incorrect sorting of draw calls. */
-#define R3D_FLAG_NO_FRUSTUM_CULLING     (1 << 7)    /**< Disables internal frustum culling. Manual culling is allowed, but may break shadow visibility if objects casting shadows are skipped. */
-#define R3D_FLAG_TRANSPARENT_SORTING    (1 << 8)    /**< Back-to-front sorting of transparent objects for correct blending of non-discarded fragments. Be careful, in 'force forward' mode this flag will also sort opaque objects in 'near-to-far' but in the same sorting pass. */
-#define R3D_FLAG_OPAQUE_SORTING         (1 << 9)    /**< Front-to-back sorting of opaque objects to optimize depth testing at the cost of additional sorting. Please note, in 'force forward' mode this flag has no effect, see transparent sorting. */
-#define R3D_FLAG_LOW_PRECISION_BUFFERS  (1 << 10)   /**< Use 32-bit HDR formats like R11G11B10F for intermediate color buffers instead of full 16-bit floats. Saves memory and bandwidth. */
+#define R3D_FLAG_8_BIT_NORMALS          (1 << 4)    /**< Use 8-bit precision for the normals buffer (deferred); default is 16-bit float */
+#define R3D_FLAG_NO_FRUSTUM_CULLING     (1 << 5)    /**< Disables internal frustum culling. Manual culling is allowed, but may break shadow visibility if objects casting shadows are skipped. */
+#define R3D_FLAG_TRANSPARENT_SORTING    (1 << 6)    /**< Back-to-front sorting of transparent objects for correct blending of non-discarded fragments. Be careful, in 'force forward' mode this flag will also sort opaque objects in 'near-to-far' but in the same sorting pass. */
+#define R3D_FLAG_OPAQUE_SORTING         (1 << 7)    /**< Front-to-back sorting of opaque objects to optimize depth testing at the cost of additional sorting. Please note, in 'force forward' mode this flag has no effect, see transparent sorting. */
+#define R3D_FLAG_LOW_PRECISION_BUFFERS  (1 << 8)    /**< Use 32-bit HDR formats like R11G11B10F for intermediate color buffers instead of full 16-bit floats. Saves memory and bandwidth. */
 
 /**
  * @brief Bitfield type used to specify rendering layers for 3D objects.
@@ -1284,7 +1282,6 @@ R3DAPI R3D_Model R3D_LoadModel(const char* filePath);
  * Loads a 3D model from a memory buffer containing the file data.
  * Useful for loading models from embedded resources or network streams.
  *
- * @param fileType String indicating the file format (e.g., "obj", "fbx", "gltf").
  * @param data Pointer to the memory buffer containing the model data.
  * @param size Size of the data buffer in bytes.
  *
@@ -1293,7 +1290,7 @@ R3DAPI R3D_Model R3D_LoadModel(const char* filePath);
  * @note External dependencies (e.g., textures or linked resources) are not supported.
  *       The model data must be fully self-contained. Use embedded formats like .glb to ensure compatibility.
  */
-R3DAPI R3D_Model R3D_LoadModelFromMemory(const char* fileType, const void* data, unsigned int size);
+R3DAPI R3D_Model R3D_LoadModelFromMemory(const void* data, unsigned int size);
 
 /**
  * @brief Create a model from a single mesh.
@@ -1343,12 +1340,12 @@ R3DAPI void R3D_UpdateModelBoundingBox(R3D_Model* model, bool updateMeshBounding
  * of R3D_ModelAnimation structs. The caller is responsible for freeing the returned data
  * using R3D_UnloadModelAnimations().
  *
- * @param fileName Path to the model file containing animation(s).
+ * @param filePath Path to the model file containing animation(s).
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  */
-R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* fileName, int* animCount, int targetFrameRate);
+R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* filePath, int* animCount, int targetFrameRate);
 
 /**
  * @brief Loads model animations from memory data in a supported format (e.g., GLTF, IQM).
@@ -1357,14 +1354,13 @@ R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimations(const char* fileName, int* an
  * of R3D_ModelAnimation structs. The caller is responsible for freeing the returned data
  * using R3D_UnloadModelAnimations().
  *
- * @param fileType File format hint (e.g., "gltf", "iqm", ".gltf"). The leading dot is optional.
  * @param data Pointer to the model data in memory.
  * @param size Size of the data buffer in bytes.
  * @param animCount Pointer to an integer that will receive the number of animations loaded.
  * @param targetFrameRate Desired frame rate (FPS) to sample the animation at. For example, 30 or 60.
  * @return Pointer to a dynamically allocated array of R3D_ModelAnimation. NULL on failure.
  */
-R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimationsFromMemory(const char* fileType, const void* data, unsigned int size, int* animCount, int targetFrameRate);
+R3DAPI R3D_ModelAnimation* R3D_LoadModelAnimationsFromMemory(const void* data, unsigned int size, int* animCount, int targetFrameRate);
 
 /**
  * @brief Frees memory allocated for model animations.
@@ -2471,11 +2467,11 @@ R3DAPI float R3D_GetBloomIntensity(void);
  * objects, creating a softer and more diffuse bloom. A value of 0 disables 
  * the filtering effect, preserving sharp bloom highlights.
  *
- * @param value The radius of the bloom filter (in pixels or arbitrary units depending on implementation).
+ * @param value The radius of the bloom filter (in pixels).
  *
  * Default: 0
  */
- R3DAPI void R3D_SetBloomFilterRadius(int value);
+R3DAPI void R3D_SetBloomFilterRadius(int value);
 
  /**
   * @brief Gets the current bloom filter radius.
@@ -2485,7 +2481,7 @@ R3DAPI float R3D_GetBloomIntensity(void);
   *
   * @return The current bloom filter radius.
   */
- R3DAPI int R3D_GetBloomFilterRadius(void);
+R3DAPI int R3D_GetBloomFilterRadius(void);
 
 /**
  * @brief Sets the bloom brightness threshold.
@@ -3055,11 +3051,11 @@ R3DAPI float R3D_GetSaturation(void);
  * This function loads a skybox cubemap from a texture file using a specified cubemap layout.
  * The layout defines how the six faces of the cubemap are arranged within the texture.
  *
- * @param fileName The path to the texture file.
+ * @param filePath The path to the texture file.
  * @param layout The cubemap layout format.
  * @return The loaded skybox object.
  */
-R3DAPI R3D_Skybox R3D_LoadSkybox(const char* fileName, CubemapLayout layout);
+R3DAPI R3D_Skybox R3D_LoadSkybox(const char* filePath, CubemapLayout layout);
 
 /**
  * @brief Loads a skybox from an image in memory.
@@ -3079,11 +3075,11 @@ R3DAPI R3D_Skybox R3D_LoadSkyboxFromMemory(Image image, CubemapLayout layout);
  * This function loads a skybox from a panorama (equirectangular) texture file,
  * and converts it into a cubemap with the specified resolution.
  *
- * @param fileName The path to the panorama texture file.
+ * @param filePath The path to the panorama texture file.
  * @param size The resolution of the generated cubemap (e.g., 512, 1024).
  * @return The loaded skybox object.
  */
-R3DAPI R3D_Skybox R3D_LoadSkyboxPanorama(const char* fileName, int size);
+R3DAPI R3D_Skybox R3D_LoadSkyboxPanorama(const char* filePath, int size);
 
 /**
  * @brief Loads a skybox from a panorama image in memory.

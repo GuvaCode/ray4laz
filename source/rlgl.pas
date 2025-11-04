@@ -605,6 +605,10 @@ procedure rlScissor(x, y, width, height: Integer); cdecl; external {$IFNDEF RAY_
 procedure rlEnablePointMode(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnablePointMode';
 {Disable point mode}
 procedure rlDisablePointMode(); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisablePointMode';
+{Set the point drawing size}
+procedure rlSetPointSize(size: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetPointSize';
+{Get the point drawing size}
+function rlGetPointSize(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetPointSize';
 {Enable wire mode}
 procedure rlEnableWireMode; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableWireMode';
 {Disable wire mode}
@@ -752,7 +756,13 @@ procedure rlFramebufferAttach(fboId, texId: LongWord; attachType: TrlFramebuffer
 {Verify framebuffer is complete}
 function rlFramebufferComplete(id: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlFramebufferComplete';
 {Delete framebuffer from GPU}
-procedure rlUnloadFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadFramebuffer';
+
+//procedure rlUnloadFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadFramebuffer';
+//#if defined(GRAPHICS_API_OPENGL_11_SOFTWARE)
+//RLAPI void rlCopyFramebuffer(int x, int y, int width, int height, int format, void *pixels); // Copy framebuffer pixel data to internal buffer
+//RLAPI void rlResizeFramebuffer(int width, int height);                    // Resize internal framebuffer
+//#endif
+
 
 (* Shaders management *)
 
@@ -764,9 +774,9 @@ function rlCompileShader(shaderCode: PChar; type_: Integer): LongWord; cdecl; ex
 function rlLoadShaderProgram(vShaderId, fShaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderProgram';
 {Unload shader program}
 procedure rlUnloadShaderProgram(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadShaderProgram';
-{Get shader location uniform}
+{Get shader location uniform, requires shader program id}
 function rlGetLocationUniform(shaderId: LongWord; uniformName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationUniform';
-{Get shader location attribute}
+{Get shader location attribute, requires shader program id}
 function rlGetLocationAttrib(shaderId: LongWord; attribName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationAttrib';
 {Set shader value uniform}
 procedure rlSetUniform(locIndex: Integer; value: Pointer; uniformType: TrlShaderUniformDataType; count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniform';

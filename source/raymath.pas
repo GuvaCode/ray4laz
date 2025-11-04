@@ -364,11 +364,10 @@ function QuaternionToEuler(q : TQuaternion): TVector3; cdecl; external {$IFNDEF 
 function QuaternionTransform(q : TQuaternion; mat : TMatrix): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionTransform';
 { Check whether two given quaternions are almost equal }
 function QuaternionEquals(p, q: TQuaternion): longint; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionEquals';
-
-{Decompose a transformation matrix into its rotational, translational and scaling components and remove shear}
+{ Compose a transformation matrix from rotational, translational and scaling components }
+function MatrixCompose(translation: TVector3; rotation: TQuaternion, scale: TVector3): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixCompose';
+{ Decompose a transformation matrix into its rotational, translational and scaling components and remove shear }
 procedure MatrixDecompose(mat: TMatrix; translation: PVector3; rotation: PQuaternion; scale: PVector3); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixDecompose';
-
-
 
 // Custom Misc Functions
 function fMinf(a, b: Single):single;

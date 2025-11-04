@@ -1296,6 +1296,8 @@ function ComputeCRC32(data: PChar; dataSize: Integer): LongWord; cdecl; external
 function ComputeMD5(data: PChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeMD5';
 {Compute SHA1 hash code, returns static int[5] (20 bytes)}
 function ComputeSHA1(data: PChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA1';
+{Compute SHA256 hash code, returns static int[8] (32 bytes)}
+function ComputeSHA256(data: PChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA256';
 
 (* Automation events functionality *)
 
@@ -1472,6 +1474,8 @@ procedure DrawLineEx(startPos, endPos: TVector2; thick: Single; color: TColorB);
 procedure DrawLineStrip(const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineStrip';
 {Draw line segment cubic-bezier in-out interpolation}
 procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezier';
+{Draw a dashed line}
+procedure DrawLineDashed(startPos, endPos: TVector2; dashSize, spaceSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineDashed';
 {Draw a color-filled circle}
 procedure DrawCircle(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircle';
 {Draw a piece of a circle}
