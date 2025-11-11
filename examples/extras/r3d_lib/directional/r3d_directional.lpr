@@ -48,7 +48,7 @@ begin
 
   R3D_SetLightDirection(Light, LightDir);
   R3D_SetShadowUpdateMode(Light, R3D_SHADOW_UPDATE_MANUAL);
-  R3D_SetShadowBias(Light, 0.005);
+  //R3D_SetShadowBias(Light, 0.005);
   R3D_EnableShadow(Light, 4096);
   R3D_SetLightActive(Light, True);
 

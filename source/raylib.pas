@@ -2419,6 +2419,31 @@ uses
   {$ENDIF}
 {$ENDIF}
 
+{$IFDEF MSWINDOWS}
+  {$IFDEF RAY_STATIC}
+
+        {$linklib libraylib.a}
+        {$linklib mingwex}
+        {$linklib mingw32}
+        {$linklib gcc}
+        {$LinkLib oleaut32}
+        {$LinkLib setupapi}
+        {$LinkLib imm32}
+        {$LinkLib version}
+        {$LinkLib winmm}
+        {$LinkLib gdi32}
+        {$LinkLib ole32}
+        {$linklib msvcrt}
+        {$linklib kernel32}
+        {$linklib advapi32}
+        {$linklib user32}
+        {$linklib shell32}
+
+  {$ENDIF}
+{$ENDIF}
+
+
+
 function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay;
 begin
   Result := GetScreenToWorldRay(mousePosition,camera);
