@@ -2421,24 +2421,17 @@ uses
 
 {$IFDEF MSWINDOWS}
   {$IFDEF RAY_STATIC}
+    {$linklib libraylib.a}
+    {$linklib libwinmm.a}
+    {$linklib libuser32.a}
+    {$linklib libmingwex.a}
+    {$linklib libmingw32.a}
+    {$linklib libgcc.a}
+    {$linklib libgdi32.a}
+    {$linklib libmsvcrt.a}
+    {$linklib libkernel32.a}
 
-        {$linklib libraylib.a}
-        {$linklib mingwex}
-        {$linklib mingw32}
-        {$linklib gcc}
-        {$LinkLib oleaut32}
-        {$LinkLib setupapi}
-        {$LinkLib imm32}
-        {$LinkLib version}
-        {$LinkLib winmm}
-        {$LinkLib gdi32}
-        {$LinkLib ole32}
-        {$linklib msvcrt}
-        {$linklib kernel32}
-        {$linklib advapi32}
-        {$linklib user32}
-        {$linklib shell32}
-
+    {$linklib libshell32.a}
   {$ENDIF}
 {$ENDIF}
 

@@ -78,7 +78,9 @@
     <UsageOptions>
       <CustomOptions Value="
 "/>
+      <IncludePath Value="C:/Project/ray4laz/libs/x86_64-win64"/>
       <LibraryPath Value="../libs/$(TargetCPU)-$(TargetOS)"/>
+      <ObjectPath Value="C:/Project/ray4laz/libs/x86_64-win64"/>
       <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>
