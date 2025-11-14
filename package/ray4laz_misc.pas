@@ -33,16 +33,16 @@ procedure Register;
    rsRlTools        = 'ray4laz tools ..';
    rsCompilePkg     = 'Compilation package ray4laz';
    rsCopyLibs       = 'Copy libraries to the executable folder';
-   rsCopyDll1       = 'Copy raylib.dll';
-   rsCopyDll2       = 'Copy r3d.dll';
-   rsCopyDll3       = 'Copy raygizmo.dll';
-   rsCopyDll4       = 'Copy raymedia.dll';
+//   rsCopyDll1       = 'Copy raylib.dll';
+//   rsCopyDll2       = 'Copy r3d.dll';
+//   rsCopyDll3       = 'Copy raygizmo.dll';
+//   rsCopyDll4       = 'Copy raymedia.dll';
    rsOnlyWin        = 'Only for windows.';
    rsOpenConfig     = 'Open configuration file';
    rsCopyTrue       = 'Copy successful';
    rsCopyFalse      = 'Copy error';
-   rsDownloadFFmpeg = 'Download the necessary ffmpeg libraries';
-   rsSSL            = 'Copy OpenSSL to Lazarus directory';
+//   rsDownloadFFmpeg = 'Download the necessary ffmpeg libraries';
+//   rsSSL            = 'Copy OpenSSL to Lazarus directory';
    srToy            = 'Shadertoy converter';
 
 implementation
@@ -169,34 +169,42 @@ begin
  IDEMessagesWindow.AddCustomMessage(mluError, rsCopyFalse);
 end;
 
+{
 procedure CopyRaylibToProject(Sender: Tobject);
 const
   dllFile = 'libraylib.dll';
 begin
  CopyByName(dllFile);
 end;
+}
 
+{
 procedure CopyR3DToProject(Sender: Tobject);
 const
   dllFile = 'libr3d.dll';
 begin
  CopyByName(dllFile);
 end;
+}
 
+{
 procedure CopyGizmoToProject(Sender: Tobject);
 const
   dllFile = 'libraygizmo.dll';
 begin
  CopyByName(dllFile);
 end;
+}
 
+{
 procedure CopyMediaToProject(Sender: Tobject);
 const
   dllFile = 'libraymedia.dll';
 begin
  CopyByName(dllFile);
 end;
-
+}
+{
 procedure CopySSl(dllFile: string);
 var Src, Dst : string;
 begin
@@ -207,13 +215,14 @@ begin
    IDEMessagesWindow.AddCustomMessage(mluHint, rsCopyTrue, dllFile, 0,0) else
    IDEMessagesWindow.AddCustomMessage(mluError, rsCopyFalse);
 end;
-
-
+}
+{
 procedure CopySSlAll(Sender: TObject);
 begin
   CopySSl('ssleay32.dll');
   CopySSl('libeay32.dll');
 end;
+}
 
 procedure CompileRay4laz(Sender: TObject);
 var Pkg: TIDEPackage;
@@ -229,7 +238,7 @@ begin
   if LazarusIDE.DoOpenEditorFile(GetRay4lazDir + 'source' +
   PathDelim + 'raylib.inc',-1,-1,[ofAddToRecent])<>mrOk then exit;
 end;
-
+{
 procedure DownloadFFmpeg(Sender: TObject);
 begin
  try
@@ -295,6 +304,7 @@ begin
    end;
 
 end;
+}
 
 procedure ShowShaderToy(Sender: TObject);
 begin
@@ -320,6 +330,7 @@ begin
  RegisterIDEMenuCommand(SectionToolMenu, 'Sep1','-',nil,nil);
  RegisterIDEMenuCommand(SectionToolMenu, 'OpenSetting', rsOpenConfig, nil, @ShowSettingFile,nil, 'menu_build_file');
 
+ {
  SectionTool:= RegisterIDESubMenu(SectionToolMenu,'rltoolSub',rsCopyLibs,nil ,nil,'pkg_lrs');
  RegisterIDEMenuCommand(SectionTool, 'Sep2','-',nil,nil);
  RegisterIDEMenuCommand(SectionTool, 'CopyDll1', rsCopyDll1, nil, @CopyRaylibToProject,nil, 'pkg_lrs');
@@ -329,6 +340,7 @@ begin
  RegisterIDEMenuCommand(SectionTool, 'CopyDll4', rsCopyDll4, nil, @CopyMediaToProject,nil, 'pkg_lrs');
  RegisterIDEMenuCommand(SectionTool, 'DownloadLibs', rsDownloadFFmpeg , nil, @DownloadFFmpeg,nil, 'menu_exporthtml');
  RegisterIDEMenuCommand(SectionTool, 'DownloadLibs1', rsSSL , nil, @CopySSlAll,nil, 'pkg_lrs');
+ }
 
  RegisterIDEMenuCommand(SectionToolMenu, 'Sep4','-',nil,nil);
  RegisterIDEMenuCommand(SectionToolMenu, 'ShowCheatsheet', rsHelpCheat , nil, @RayFunction, nil, 'ce_interface');
@@ -361,10 +373,12 @@ end;
 procedure TEventClass.DoSomething(Sender: TObject);
 begin
  SectionRayMenu.Visible:=RayUsed;
+  {
   if (GetTargetOS = 'win64') or (GetTargetOS = 'win32') then
   begin
     SectionTool.Visible := true;
   end else SectionTool.Visible := false;
+  }
 end;
 
 initialization

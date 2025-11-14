@@ -3,7 +3,9 @@ raylib ver 5.6-dev
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
-{$mode objfpc}{$H+}{$modeswitch advancedrecords}
+{$mode objfpc}{$H+}
+{$modeswitch advancedrecords}
+
 unit raylib;
 // Include configuration file
 {$I raylib.inc}
@@ -44,35 +46,8 @@ const
   PColor = PColorB;
 
 const
-  // Some Basic Colors
-  // NOTE: Custom raylib color palette for amazing visuals on WHITE background
-  LIGHTGRAY:      TColorB = (r: 200; g: 200; b: 200; a: 255); // Light Gray
-  GRAY:           TColorB = (r: 130; g: 130; b: 130; a: 255); // Gray
-  DARKGRAY:       TColorB = (r: 80; g: 80; b: 80; a: 255);    // Dark Gray
-  YELLOW:         TColorB = (r: 253; g: 249; b: 0; a: 255);   // Yellow
-  GOLD:           TColorB = (r: 255; g: 203; b: 0; a: 255);   // Gold
-  ORANGE:         TColorB = (r: 255; g: 161; b: 0; a: 255);   // Orange
-  PINK:           TColorB = (r: 255; g: 109; b: 194; a: 255); // Pink
-  RED:            TColorB = (r: 230; g: 41; b: 55; a: 255);   // Red
-  MAROON:         TColorB = (r: 190; g: 33; b: 55; a: 255);   // Maroon
-  GREEN:          TColorB = (r: 0; g: 228; b: 48; a: 255);    // Green
-  LIME:           TColorB = (r: 0; g: 158; b: 47; a: 255);    // Lime
-  DARKGREEN:      TColorB = (r: 0; g: 117; b: 44; a: 255);    // Dark Green
-  SKYBLUE:        TColorB = (r: 102; g: 191; b: 255; a: 255); // Sky Blue
-  BLUE:           TColorB = (r: 0; g: 121; b: 241; a: 255);   // Blue
-  DARKBLUE:       TColorB = (r: 0; g: 82; b: 172; a: 255);    // Dark Blue
-  PURPLE:         TColorB = (r: 200; g: 122; b: 255; a: 255); // Purple
-  VIOLET:         TColorB = (r: 135; g: 60; b: 190; a: 255);  // Violet
-  DARKPURPLE:     TColorB = (r: 112; g: 31; b: 126; a: 255);  // Dark Purple
-  BEIGE:          TColorB = (r: 211; g: 176; b: 131; a: 255); // Beige
-  BROWN:          TColorB = (r: 127; g: 106; b: 79; a: 255);  // Brown
-  DARKBROWN:      TColorB = (r: 76; g: 63; b: 47; a: 255);    // Dark beown
-  WHITE:          TColorB = (r: 255; g: 255; b: 255; a: 255); // White
-  BLACK:          TColorB = (r: 0; g: 0; b: 0; a: 255);       // Black
-  BLANK:          TColorB = (r: 0; g: 0; b: 0; a: 0);         // Black(Transparent)
-  MAGENTA:        TColorB = (r: 255; g: 0; b: 255; a: 255);   // Magenta
-  RAYWHITE:       TColorB = (r: 245; g: 245; b: 245; a: 255); // My own White (raylib logo)
-
+  // A list of some basic colors
+  {$include colors.inc}
 
    type
     (* Vector2, 2 components *)
@@ -80,9 +55,9 @@ const
      TVector2 = record
          x : single; // Vector x component
          y : single; // Vector y component
-        // {$IFDEF ADVANCEDRECORDS}
+         //{$IFDEF ADVANCEDRECORDS}
          procedure Create(aX, aY: single);
-        // {$ENDIF}
+         //{$ENDIF}
        end;
      TVector2Data = array[0..1] of Single;
 
@@ -238,11 +213,15 @@ const
 
      (* Camera2D, defines position/orientation in 2d space *)
      PCamera2D = ^TCamera2D;
+
+     { TCamera2D }
+
      TCamera2D = record
          offset   : TVector2; // Camera offset (displacement from target)
          target   : TVector2; // Camera target (rotation and zoom origin)
          rotation : single;   // Camera rotation in degrees
          zoom     : single;   // Camera zoom (scaling), should be 1.0f by default
+         procedure Create(aOffset, aTarget: TVector2; aRotation, aZoom: single);
        end;
 
      (* Mesh, vertex data and vao/vbo *)
@@ -2356,6 +2335,10 @@ procedure RectangleSet(aRect: PRectangle; aX: Single; aY: Single; aWidth: Single
 function BoundingBoxCreate(aMin, aMax: TVector3): TBoundingBox;
 procedure BoundingBoxSet(aBoundingBox: PBoundingBox; aMin, aMax: TVector3);
 
+
+function Camera2DCreate(aOffset, aTarget: TVector2; aRotation, aZoom: single): TCamera2D;
+procedure Camera2DSet(aCam: PCamera2D; aOffset, aTarget: TVector2; aRotation, aZoom: single);
+
 function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aProjection: Integer): TCamera3D;
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer);
 
@@ -2382,6 +2365,7 @@ operator * (a, b: TVector3): TVector3; overload; inline;
 operator * (a: TVector3; b: Single): TVector3; overload; inline;
 operator / (a, b: TVector3): TVector3; inline;
 operator = (a, b: TVector3): Boolean; inline;
+
 
 { TVector4 operators }
 operator := (a: TVector4Data): TVector4; inline;
@@ -2430,7 +2414,6 @@ uses
     {$linklib libgdi32.a}
     {$linklib libmsvcrt.a}
     {$linklib libkernel32.a}
-
     {$linklib libshell32.a}
   {$ENDIF}
 {$ENDIF}
@@ -2442,26 +2425,26 @@ begin
   Result := GetScreenToWorldRay(mousePosition,camera);
 end;
 
-function Vector2Create(aX: single; aY: single): TVector2;
+function Vector2Create(aX: Single; aY: Single): TVector2;
 begin
   Result.x := aX;
   Result.y := aY;
 end;
 
-procedure Vector2Set(aVec: PVector2; aX: single; aY: single);
+procedure Vector2Set(aVec: PVector2; aX: Single; aY: Single);
 begin
   aVec^.x := aX;
   aVec^.y := aY;
 end;
 
-function Vector3Create(aX: single; aY: single; aZ: single): TVector3;
+function Vector3Create(aX: Single; aY: Single; aZ: Single): TVector3;
 begin
   Result.x := aX;
   Result.y := aY;
   Result.z := aZ;
 end;
 
-procedure Vector3Set(aVec: PVector3; aX: single; aY: single; aZ: single);
+procedure Vector3Set(aVec: PVector3; aX: Single; aY: Single; aZ: Single);
 begin
   aVec^.x := aX;
   aVec^.y := aY;
@@ -2505,7 +2488,7 @@ begin
 end;
 
 
-function ColorCreate(aR: byte; aG: byte; aB: byte; aA: byte): TColorB;
+function ColorCreate(aR: Byte; aG: Byte; aB: Byte; aA: Byte): TColorB;
 begin
   Result.r := aR;
   Result.g := aG;
@@ -2513,7 +2496,7 @@ begin
   Result.a := aA;
 end;
 
-procedure ColorSet(aColor: PColorB; aR: byte; aG: byte; aB: byte; aA: byte);
+procedure ColorSet(aColor: PColorB; aR: Byte; aG: Byte; aB: Byte; aA: Byte);
 begin
   aColor^.r := aR;
   aColor^.g := aG;
@@ -2549,7 +2532,26 @@ begin
   aBoundingBox^.max := aMax;
 end;
 
-function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: single; aProjection: integer): TCamera3D;
+function Camera2DCreate(aOffset, aTarget: TVector2; aRotation, aZoom: single
+  ): TCamera2D;
+begin
+  Result.offset := aOffset;
+  Result.target := aTarget;
+  Result.rotation := aRotation;
+  Result.zoom := aZoom;
+end;
+
+procedure Camera2DSet(aCam: PCamera2D; aOffset, aTarget: TVector2; aRotation,
+  aZoom: single);
+begin
+  aCam^.offset := aOffset;
+  aCam^.target := aTarget;
+  aCam^.rotation := aRotation;
+  aCam^.zoom := aZoom;
+end;
+
+function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single;
+  aProjection: Integer): TCamera3D;
 begin
   Result.position := aPosition;
   Result.target := aTarget;
@@ -2558,7 +2560,8 @@ begin
   Result.projection := aProjection;
 end;
 
-procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: single; aType: integer);
+procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3;
+  aFOVY: Single; aType: Integer);
 begin
   aCam^.position := aPosition;
   aCam^.target := aTarget;
@@ -2613,6 +2616,14 @@ procedure TCamera3D.Create(aPosition, aTarget, aUp: TVector3; aFOVY: single; aPr
 begin
  self := Camera3DCreate(aPosition, aTarget, aUp, aFOVY, aProjection);
 end;
+
+{ TCamera2D }
+
+procedure TCamera2D.Create(aOffset, aTarget: TVector2; aRotation, aZoom: single);
+begin
+ self := Camera2DCreate(aOffset, aTarget, aRotation, aZoom);
+end;
+
 
 { TBoundingBox }
 

@@ -3,25 +3,26 @@
 {$IFDEF LINUX}
   {$IFNDEF RAY_DYNAMIC}
     {$DEFINE RAY_STATIC}
-    // for r3d, it is possible to use only a dynamic library.
   {$ENDIF}
 {$IFEND}
-
-{$IFDEF openbsd}
-{$UNDEF RAY_STATIC}
-{$DEFINE RAY_DYNAMIC}
-{$ENDIF}
-
-{$IFDEF freebsd}
-{$UNDEF RAY_DYNAMIC}
-{$DEFINE RAY_STATIC}
-{$ENDIF}
 
 {$IFDEF WINDOWS}
   {$IFNDEF RAY_DYNAMIC}
     {$DEFINE RAY_STATIC}
   {$ENDIF}
 {$IFEND}
+
+{$IFDEF openbsd}
+  {$UNDEF RAY_STATIC}
+  {$DEFINE RAY_DYNAMIC}
+{$ENDIF}
+
+{$IFDEF freebsd}
+  {$UNDEF RAY_DYNAMIC}
+  {$DEFINE RAY_STATIC}
+{$ENDIF}
+
+
 
 {$IFDEF DARWIN}
   {$IFNDEF RAY_DYNAMIC}

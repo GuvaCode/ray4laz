@@ -31,7 +31,7 @@
   3. This notice may not be removed or altered from any source distribution.
 "/>
     <Version Major="5" Minor="6" Release="2"/>
-    <Files Count="9">
+    <Files Count="7">
       <Item1>
         <Filename Value="../source/raylib.pas"/>
         <UnitName Value="raylib"/>
@@ -45,29 +45,21 @@
         <UnitName Value="rlgl"/>
       </Item3>
       <Item4>
-        <Filename Value="../source/extras/raygui.pas"/>
-        <UnitName Value="raygui"/>
-      </Item4>
-      <Item5>
         <Filename Value="../source/extras/reasings.pas"/>
         <UnitName Value="reasings"/>
-      </Item5>
-      <Item6>
-        <Filename Value="../source/extras/raymedia.pas"/>
-        <UnitName Value="raymedia"/>
-      </Item6>
-      <Item7>
-        <Filename Value="../source/extras/raygizmo.pas"/>
-        <UnitName Value="raygizmo"/>
-      </Item7>
-      <Item8>
-        <Filename Value="../source/extras/r3d.pas"/>
-        <UnitName Value="r3d"/>
-      </Item8>
-      <Item9>
+      </Item4>
+      <Item5>
         <Filename Value="../source/raylib.inc"/>
         <Type Value="Include"/>
-      </Item9>
+      </Item5>
+      <Item6>
+        <Filename Value="../source/extras/raygizmo.pas"/>
+        <UnitName Value="raygizmo"/>
+      </Item6>
+      <Item7>
+        <Filename Value="../source/extras/raygui.pas"/>
+        <UnitName Value="raygui"/>
+      </Item7>
     </Files>
     <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="1">
@@ -78,9 +70,7 @@
     <UsageOptions>
       <CustomOptions Value="
 "/>
-      <IncludePath Value="C:/Project/ray4laz/libs/x86_64-win64"/>
       <LibraryPath Value="../libs/$(TargetCPU)-$(TargetOS)"/>
-      <ObjectPath Value="C:/Project/ray4laz/libs/x86_64-win64"/>
       <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>

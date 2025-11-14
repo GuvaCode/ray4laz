@@ -64,9 +64,9 @@ begin
 
   Source:='program Project' + IntToStr(AProject.FileCount) + ';' + LineEnding +
   {$IFDEF WINDOWS}
-  LineEnding +
-  {$IFDEF CPU32}'//note: copy the raylib.dll file from the ''ray4laz/libs/x86_32-windows'' folder to your project folder.' + {$ENDIF}
-  {$IFDEF CPU64}'//note: copy the raylib.dll file from the ''ray4laz/libs/x86_64-windows'' folder to your project folder.' + {$ENDIF}
+  //LineEnding +
+  //{$IFDEF CPU32}'//note: copy the raylib.dll file from the ''ray4laz/libs/x86_32-windows'' folder to your project folder.' + {$ENDIF}
+  //{$IFDEF CPU64}'//note: copy the raylib.dll file from the ''ray4laz/libs/x86_64-windows'' folder to your project folder.' + {$ENDIF}
   {$ENDIF}
    LineEnding +
     '{$mode objfpc}{$H+}' + LineEnding +

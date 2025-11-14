@@ -5,22 +5,6 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 msgid "Compilation package ray4laz"
 msgstr ""
 
-#: ray4laz_misc.rscopydll1
-msgid "Copy raylib.dll"
-msgstr ""
-
-#: ray4laz_misc.rscopydll2
-msgid "Copy r3d.dll"
-msgstr ""
-
-#: ray4laz_misc.rscopydll3
-msgid "Copy raygizmo.dll"
-msgstr ""
-
-#: ray4laz_misc.rscopydll4
-msgid "Copy raymedia.dll"
-msgstr ""
-
 #: ray4laz_misc.rscopyfalse
 msgid "Copy error"
 msgstr ""
@@ -31,10 +15,6 @@ msgstr ""
 
 #: ray4laz_misc.rscopytrue
 msgid "Copy successful"
-msgstr ""
-
-#: ray4laz_misc.rsdownloadffmpeg
-msgid "Download the necessary ffmpeg libraries"
 msgstr ""
 
 #: ray4laz_misc.rshelpcheat
@@ -63,10 +43,6 @@ msgstr ""
 
 #: ray4laz_misc.rsrltools
 msgid "ray4laz tools .."
-msgstr ""
-
-#: ray4laz_misc.rsssl
-msgid "Copy OpenSSL to Lazarus directory"
 msgstr ""
 
 #: ray4laz_misc.srtoy
