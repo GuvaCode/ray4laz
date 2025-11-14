@@ -40,8 +40,7 @@ echo -e "${NC}"
 case ${answer:0:1} in y|Y )
 rm -rvf raylib
 rm -rvf raylib-gizmo
-rm -rvf r3d
-rm -rvf raylib-media
+rm -rvf raygui
     ;;
     * )
         echo skiping
@@ -58,8 +57,8 @@ mkdir ../libs/x86_64-linux
 mkdir ../libs/x86_64-win64
 
 
+echo -e "${GREEN}Download raylib master branch${NC}"
 
-echo "Download raylib master branch"
 git clone https://github.com/raysan5/raylib.git
 
 #rm -f raygui.h
@@ -94,7 +93,7 @@ rm -f ../tool/shader_compiler_linux64
 rm -f ../tool/shader_compiler_windows64.exe
 echo " "
 echo "-------------------------------"
-echo "Build shader compiler linux-x64"
+echo -e "${YELLOW}Build shader compiler linux-x64${NC}"
 echo "-------------------------------"
 echo " "
 make PLATFORM=PLATFORM_DESKTOP 
@@ -106,7 +105,7 @@ rm shader_compiler
 make clean
 echo " "
 echo "---------------------------------"
-echo "Build shader compiler windows-x64"
+echo -e "${YELLOW}Build shader compiler windows-x64${NC}"
 echo "---------------------------------"
 echo " "
 make PLATFORM=PLATFORM_DESKTOP OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
@@ -127,7 +126,7 @@ clear
 
 echo " "
 echo "---------------------------------"
-echo "Build x86_64_LINUX statics" 
+echo -e "${YELLOW}Build x86_64_LINUX statics${NC}"
 echo "---------------------------------"
 echo " "
 make clean
@@ -138,7 +137,7 @@ cp libraylib.a ../../../libs/x86_64-linux/libraylib.a
 
 echo " "
 echo "---------------------------------"
-echo "Build x64 Windows statics" 
+echo -e "${YELLOW}Build x64 Windows statics${NC}"
 echo "---------------------------------"
 echo " "
 make clean
@@ -153,15 +152,30 @@ cp libraylib.a ../../../libs/x86_64-win64/libraylib.a
 
 cd ../../
 
-#sh build_gizmo.sh 
+
+sh build_gizmo.sh 
  
 
 echo " "
 echo "---------------------------------"
-echo "All done." 
+echo -e "${GREEN}All done.${NC}"
 echo "---------------------------------"
 echo " "
-read -p "" 
+echo -e "${RED}"
+read -p "Clean download library (y/n)?" answer
+echo -e "${NC}"
+case ${answer:0:1} in y|Y )
+rm -rvf raylib
+rm -rvf raylib-gizmo
+rm -rvf raygui
+    ;;
+    * )
+        echo skiping
+        echo -e "\e[0"
+
+    ;;
+esac
+        echo -e "\e[0m"  
 
 
 
