@@ -46,7 +46,7 @@ procedure Register;
    srToy            = 'Shadertoy converter';
 
 implementation
-uses HttpDownloader, uShaderTool, IDEWindowIntf, IDEExternToolIntf, IDEMsgIntf,
+uses uShaderTool, IDEWindowIntf, IDEExternToolIntf, IDEMsgIntf,
   LazIDEIntf, ProjectIntf, SrcEditorIntf, MacroIntf;
 
 function RayUsed: boolean;

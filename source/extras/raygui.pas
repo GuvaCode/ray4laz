@@ -1,6 +1,6 @@
 {********************************************************************************************
 *                                                                                           *
-*    5.0-dev (2025)    Current dev version...                                               *
+*    4.5-dev (2025)    Current dev version...                                               *
 *                                                                                           *
 *   DESCRIPTION:                                                                            *
 *                                                                                           *
@@ -19,6 +19,8 @@ unit raygui;
 {$MINENUMSIZE 4}
 // Include configuration file
 {$I ../raylib.inc}
+{.$DEFINE RAYGUI_NO_RICONS}
+//   Avoid including embedded ricons data (256 icons, 16x16 pixels, 1-bit per pixel, 2KB)
 
 interface
 
