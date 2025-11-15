@@ -1,15 +1,43 @@
-program audio_spatial_sound;
+(*******************************************************************************************
+*
+*   raylib [audio] example - sound positioning
+*
+*   Example complexity rating: [★★☆☆] 2/4
+*
+*   Example originally created with raylib 5.5, last time updated with raylib 5.5
+*
+*   Example contributed by Le Juez Victor (@Bigfoot71) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2025 Le Juez Victor (@Bigfoot71)
+*   Pascal translation (c) 2025 Vadim Gunko(@GuvaCode)
+*
+********************************************************************************************)
+
+program audio_sound_positioning;
+
+{$mode objfpc}{$H+}
 
 uses
-  {$IFDEF LINUX} cthreads,{$ENDIF} raylib, raymath, math;
-
+  Math,
+  raylib,
+  raymath;
 //------------------------------------------------------------------------------------
-// Sound positioning procedure
+// Module Functions Definition
 //------------------------------------------------------------------------------------
-procedure SetSoundPosition(listener: TCamera; sound: TSound; position: TVector3; maxDist: Single);
+// Set sound 3d position
+procedure SetSoundPosition(listener: TCamera; sound_: TSound; position: TVector3; maxDist: Single);
 var
-  direction, normalizedDirection, forward, right: TVector3;
-  distance, attenuation, dotProduct, pan: Single;
+  direction: TVector3;
+  distance: Single;
+  attenuation: Single;
+  normalizedDirection: TVector3;
+  forward: TVector3;
+  right: TVector3;
+  dotProduct: Single;
+  pan: Single;
 begin
   // Calculate direction vector and distance between listener and sound source
   direction := Vector3Subtract(position, listener.position);
@@ -20,13 +48,9 @@ begin
   attenuation := Clamp(attenuation, 0.0, 1.0);
 
   // Calculate normalized vectors for spatial positioning
-  if distance > 0 then
-    normalizedDirection := Vector3Normalize(direction)
-  else
-    normalizedDirection := Vector3Create(0, 0, 0);
-
+  normalizedDirection := Vector3Normalize(direction);
   forward := Vector3Normalize(Vector3Subtract(listener.target, listener.position));
-  right := Vector3Normalize(Vector3CrossProduct(forward, listener.up));
+  right := Vector3Normalize(Vector3CrossProduct(listener.up, forward));
 
   // Reduce volume for sounds behind the listener
   dotProduct := Vector3DotProduct(forward, normalizedDirection);
@@ -37,14 +61,15 @@ begin
   pan := 0.5 + 0.5 * Vector3DotProduct(normalizedDirection, right);
 
   // Apply final sound properties
-  SetSoundVolume(sound, attenuation);
-  SetSoundPan(sound, pan);
+  SetSoundVolume(sound_, attenuation);
+  SetSoundPan(sound_, pan);
 end;
 
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
 var
+  screenWidth, screenHeight: Integer;
   sound: TSound;
   camera: TCamera;
   th: Single;
@@ -52,11 +77,12 @@ var
 begin
   // Initialization
   //--------------------------------------------------------------------------------------
-  InitWindow(800, 600, 'Quick Spatial Sound');
-  InitAudioDevice();
+  screenWidth := 800;
+  screenHeight := 450;
 
-  SetTargetFPS(60);
-  DisableCursor();
+  InitWindow(screenWidth, screenHeight, 'raylib [audio] example - sound positioning');
+
+  InitAudioDevice();
 
   sound := LoadSound('resources/coin.wav');
 
@@ -65,6 +91,10 @@ begin
   camera.up := Vector3Create(0, 1, 0);
   camera.fovy := 60;
   camera.projection := CAMERA_PERSPECTIVE;
+
+  DisableCursor();
+
+  SetTargetFPS(60);
   //--------------------------------------------------------------------------------------
 
   // Main game loop
@@ -81,18 +111,20 @@ begin
     spherePos.z := 5.0 * Sin(th);
 
     SetSoundPosition(camera, sound, spherePos, 20.0);
-    if not IsSoundPlaying(sound) then PlaySound(sound);
-    //----------------------------------------------------------------------------------
+    if not IsSoundPlaying(sound) then
+      PlaySound(sound);
 
     // Draw
     //----------------------------------------------------------------------------------
     BeginDrawing();
-      ClearBackground(BLACK);
+
+      ClearBackground(RAYWHITE);
 
       BeginMode3D(camera);
         DrawGrid(10, 2);
         DrawSphere(spherePos, 0.5, RED);
       EndMode3D();
+
     EndDrawing();
     //----------------------------------------------------------------------------------
   end;
@@ -100,6 +132,11 @@ begin
   // De-Initialization
   //--------------------------------------------------------------------------------------
   UnloadSound(sound);
-  CloseAudioDevice();
-  CloseWindow();
+  CloseAudioDevice();     // Close audio device
+
+  CloseWindow();          // Close window and OpenGL context
+  //--------------------------------------------------------------------------------------
 end.
+
+
+

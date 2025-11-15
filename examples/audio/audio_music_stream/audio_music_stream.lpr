@@ -1,89 +1,110 @@
-{*******************************************************************************************
+(*******************************************************************************************
 *
-*   raylib [audio] example - Music playing (streaming)
+*   raylib [audio] example - music stream
 *
-*   This example has been created using raylib 1.3 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*   Example complexity rating: [★☆☆☆] 1/4
 *
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
-*   Pascal conversion (c) 2021 Gunko Vadim (@guvacode)
+*   Example originally created with raylib 1.3, last time updated with raylib 4.2
 *
-********************************************************************************************}
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2015-2025 Ramon Santamaria (@raysan5)
+*   Pascal conversion (c) 2021-2025 Gunko Vadim (@guvacode)
+*
+********************************************************************************************)
 program audio_music_stream;
 
 {$mode objfpc}{$H+}
 
-uses raylib;
+uses
+  raylib;
 
-const
- screenWidth = 800;
- screenHeight = 450;
-
+//------------------------------------------------------------------------------------
+// Program main entry point
+//------------------------------------------------------------------------------------
 var
-  music:TMusic;
-  pause:boolean;
-  timePlayed:single;
-
+  screenWidth, screenHeight: Integer;
+  music: TMusic;
+  timePlayed: Single;
+  pause: Boolean;
 begin
+  // Initialization
+  //--------------------------------------------------------------------------------------
+  screenWidth := 800;
+  screenHeight := 450;
 
- InitWindow(screenWidth, screenHeight, 'raylib [audio] example - music playing (streaming)');
+  InitWindow(screenWidth, screenHeight, 'raylib [audio] example - music stream');
 
- InitAudioDevice();              // Initialize audio device
+  InitAudioDevice();              // Initialize audio device
 
- music := LoadMusicStream(PChar(GetApplicationDirectory + 'resources/country.mp3'));
+  music := LoadMusicStream('resources/country.mp3');
 
- PlayMusicStream(music);
+  PlayMusicStream(music);
 
- timePlayed := 0.0;
- pause := false;
+  timePlayed := 0.0;             // Time played normalized [0.0..1.0]
+  pause := false;                // Music playing paused
 
- SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+  SetTargetFPS(30);               // Set our game to run at 30 frames-per-second
+  //--------------------------------------------------------------------------------------
 
- // Main game loop
- while not WindowShouldClose() do // Detect window close button or ESC key
- begin
-   // Update
-   UpdateMusicStream(music);   // Update music buffer with new stream data
+  // Main game loop
+  while not WindowShouldClose() do    // Detect window close button or ESC key
+  begin
+    // Update
+    //----------------------------------------------------------------------------------
+    UpdateMusicStream(music);   // Update music buffer with new stream data
 
-   // Restart music playing (stop and play)
-   if IsKeyPressed(KEY_SPACE) then
-     begin
-       StopMusicStream(music);
-       PlayMusicStream(music);
-     end;
+    // Restart music playing (stop and play)
+    if IsKeyPressed(KEY_SPACE) then
+    begin
+      StopMusicStream(music);
+      PlayMusicStream(music);
+    end;
 
-   // Pause/Resume music playing
-   if IsKeyPressed(KEY_P) then
-        begin
-          pause := not pause;
-          if pause then PauseMusicStream(music)
-            else ResumeMusicStream(music);
-        end;
+    // Pause/Resume music playing
+    if IsKeyPressed(KEY_P) then
+    begin
+      pause := not pause;
 
-   // Get timePlayed scaled to bar dimensions (400 pixels)
-   timePlayed := GetMusicTimePlayed(music)/GetMusicTimeLength(music)*400;
+      if pause then
+        PauseMusicStream(music)
+      else
+        ResumeMusicStream(music);
+    end;
 
-   if (timePlayed > 400) then StopMusicStream(music);
+    // Get normalized time played for current music stream
+    timePlayed := GetMusicTimePlayed(music) / GetMusicTimeLength(music);
 
-   // Draw
-   BeginDrawing();
+    if timePlayed > 1.0 then
+      timePlayed := 1.0;   // Make sure time played is no longer than music
+    //----------------------------------------------------------------------------------
 
-     ClearBackground(RAYWHITE);
+    // Draw
+    //----------------------------------------------------------------------------------
+    BeginDrawing();
 
-     DrawText('MUSIC SHOULD BE PLAYING!', 255, 150, 20, LIGHTGRAY);
+      ClearBackground(RAYWHITE);
 
-     DrawRectangle(200, 200, 400, 12, LIGHTGRAY);
-     DrawRectangle(200, 200, round(timePlayed), 12, MAROON);
-     DrawRectangleLines(200, 200, 400, 12, GRAY);
+      DrawText('MUSIC SHOULD BE PLAYING!', 255, 150, 20, LIGHTGRAY);
 
-     DrawText('PRESS SPACE TO RESTART MUSIC', 215, 250, 20, LIGHTGRAY);
-     DrawText('PRESS P TO PAUSE/RESUME MUSIC', 208, 280, 20, LIGHTGRAY);
+      DrawRectangle(200, 200, 400, 12, LIGHTGRAY);
+      DrawRectangle(200, 200, Trunc(timePlayed * 400.0), 12, MAROON);
+      DrawRectangleLines(200, 200, 400, 12, GRAY);
 
-   EndDrawing();
- end;
- // De-Initialization
- UnloadMusicStream(music);   // Unload music stream buffers from RAM
- CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
- CloseWindow();              // Close window and OpenGL context
+      DrawText('PRESS SPACE TO RESTART MUSIC', 215, 250, 20, LIGHTGRAY);
+      DrawText('PRESS P TO PAUSE/RESUME MUSIC', 208, 280, 20, LIGHTGRAY);
+
+    EndDrawing();
+    //----------------------------------------------------------------------------------
+  end;
+
+  // De-Initialization
+  //--------------------------------------------------------------------------------------
+  UnloadMusicStream(music);   // Unload music stream buffers from RAM
+
+  CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
+
+  CloseWindow();              // Close window and OpenGL context
+  //--------------------------------------------------------------------------------------
 end.
-
