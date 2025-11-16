@@ -102,7 +102,9 @@ begin
   AProject.MainFile.SetSourceText(Source);
   AProject.LazCompilerOptions.UnitOutputDirectory := 'lib' + PathDelim + '$(TargetCPU)-$(TargetOS)';// + PathDelim+ 'ray4laz_dsgn';
   AProject.LazCompilerOptions.TargetFilename:= 'game';
-
+  {$IFDEF WINDOWS}
+  AProject.LazCompilerOptions.Win32GraphicApp := True;
+  {$ENDIF}
   {$IFDEF DARWIN}
   Aproject.LazCompilerOptions.PassLinkerOptions := True;
   {$IFDEF CPUAARCH64}

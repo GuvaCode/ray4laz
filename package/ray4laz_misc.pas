@@ -121,7 +121,8 @@ begin
      Editor.CutToClipboard;
      Editor.ReplaceText(editor.CursorTextXY,editor.CursorTextXY,Txt);
   end;
-  if not Assigned(ColorDialog) then ColorDialog.Free;
+  //if not Assigned(ColorDialog) then
+  ColorDialog.Free;
 end;
 
 function MyGetProjectTargetFile: string;
@@ -371,14 +372,20 @@ begin
 end;
 
 procedure TEventClass.DoSomething(Sender: TObject);
+var
+  Project: TLazProject;
+  CurrentBuildMode: TLazProjectBuildMode;
+  BuildModeName: string;
 begin
- SectionRayMenu.Visible:=RayUsed;
-  {
-  if (GetTargetOS = 'win64') or (GetTargetOS = 'win32') then
-  begin
-    SectionTool.Visible := true;
-  end else SectionTool.Visible := false;
-  }
+  SectionRayMenu.Visible := RayUsed;
+  { todo-авто включение
+  Project := LazarusIDE.ActiveProject;
+  if Project = nil then Exit;
+
+  // Получаем текущий активный режим сборки
+  BuildModeName := Project.ActiveBuildModeID;
+  writeln(BuildModeName);
+ }
 end;
 
 initialization
