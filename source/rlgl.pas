@@ -27,8 +27,8 @@
 *
 *   LICENSE: zlib/libpng
 *
-*   Copyright (c) 2014-2023 Ramon Santamaria (@raysan5)
-*   Pascal header 2022-2023 Gunko Vadim (@guvacode)
+*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
+*   Pascal header 2022-2025 Gunko Vadim (@guvacode)
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
 *   will the authors be held liable for any damages arising from the use of this software.
@@ -527,7 +527,7 @@ procedure rlDisableVertexBufferElement; cdecl; external {$IFNDEF RAY_STATIC}cDll
 procedure rlEnableVertexAttribute(index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableVertexAttribute';
 {Disable vertex attribute index}
 procedure rlDisableVertexAttribute(index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableVertexAttribute';
-{$if defined(GRAPHICS_API_OPENGL_11)}
+{$ifdef GRAPHICS_API_OPENGL_11}
 {Enable attribute state pointer}
 procedure rlEnableStatePointer(vertexAttribType: Integer; buffer: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableStatePointer';
 {Disable attribute state pointer}
@@ -752,17 +752,18 @@ function rlReadScreenPixels(width, height: Integer): PByte; cdecl; external {$IF
 {Load an empty framebuffer}
 function rlLoadFramebuffer(): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadFramebuffer';
 {Attach texture/renderbuffer to a framebuffer}
-procedure rlFramebufferAttach(fboId, texId: LongWord; attachType: TrlFramebufferAttachType; texType: TrlFramebufferAttachTextureType; mipLevel: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlFramebufferAttach';
+procedure rlFramebufferAttach(fboId, texId: LongWord; attachType, texType, mipLevel: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlFramebufferAttach';
 {Verify framebuffer is complete}
 function rlFramebufferComplete(id: LongWord): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlFramebufferComplete';
 {Delete framebuffer from GPU}
+procedure rlUnloadFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadFramebuffer';
 
-//procedure rlUnloadFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadFramebuffer';
-//#if defined(GRAPHICS_API_OPENGL_11_SOFTWARE)
-//RLAPI void rlCopyFramebuffer(int x, int y, int width, int height, int format, void *pixels); // Copy framebuffer pixel data to internal buffer
-//RLAPI void rlResizeFramebuffer(int width, int height);                    // Resize internal framebuffer
-//#endif
+// WARNING: Copy and resize framebuffer functionality only defined for software backend
 
+{Copy framebuffer pixel data to internal buffer}
+procedure rlCopyFramebuffer(x, y, width, height, format: Integer; pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCopyFramebuffer';
+{Resize internal framebuffer}
+procedure rlResizeFramebuffer(width, height: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlResizeFramebuffer';
 
 (* Shaders management *)
 

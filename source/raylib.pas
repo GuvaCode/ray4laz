@@ -6,6 +6,8 @@ Pascal header by Gunko Vadim (@guvacode)
 {$mode objfpc}{$H+}
 {$modeswitch advancedrecords}
 
+
+
 unit raylib;
 // Include configuration file
 {$I raylib.inc}
@@ -2222,7 +2224,7 @@ function IsSoundPlaying(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_ST
 procedure SetSoundVolume(sound: TSound; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSoundVolume';
 {Set pitch for a sound (1.0 is base level)}
 procedure SetSoundPitch(sound: TSound; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSoundPitch';
-{Set pan for a sound (0.5 is center)}
+{Set pan for a sound (-1.0 left, 0.0 center, 1.0 right)}
 procedure SetSoundPan(sound: TSound; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSoundPan';
 {Copy a wave to a new wave}
 function WaveCopy(wave: TWave): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaveCopy';
@@ -2263,7 +2265,7 @@ procedure SeekMusicStream(music: TMusic; position: Single); cdecl; external {$IF
 procedure SetMusicVolume(music: TMusic; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMusicVolume';
 {Set pitch for a music (1.0 is base level)}
 procedure SetMusicPitch(music: TMusic; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMusicPitch';
-{Set pan for a music (0.5 = center)}
+{Set pan for a music (-1.0 left, 0.0 center, 1.0 right}
 procedure SetMusicPan(music: TMusic; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetMusicPan';
 {Get music time length (in seconds)}
 function GetMusicTimeLength(music: TMusic): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMusicTimeLength';
@@ -2399,13 +2401,21 @@ uses
     {$linklib m}
     {$linklib dl}
     {$linklib pthread}
-    {$linklib libraylib.a}
+      {$IFDEF DRAW_MEM_BUFFER}
+        {$linklib libraylib_membuffer.a}
+      {$ELSE}
+        {$linklib libraylib.a}
+      {$ENDIF}
   {$ENDIF}
 {$ENDIF}
 
 {$IFDEF MSWINDOWS}
   {$IFDEF RAY_STATIC}
-    {$linklib libraylib.a}
+      {$IFDEF DRAW_MEM_BUFFER}
+        {$linklib libraylib_membuffer.a}
+      {$ELSE}
+        {$linklib libraylib.a}
+      {$ENDIF}
     {$linklib libwinmm.a}
     {$linklib libuser32.a}
     {$linklib libmingwex.a}
