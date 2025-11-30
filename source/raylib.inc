@@ -34,7 +34,7 @@
   {$ENDIF}
 {$IFEND}
 
-{$DEFINE DRAW_MEM_BUFFER} // Warning CPU render
+{.$DEFINE DRAW_MEM_BUFFER} // Warning CPU render
 
 {$IFDEF DRAW_MEM_BUFFER}
   {$define GRAPHICS_API_OPENGL_11}
