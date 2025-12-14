@@ -219,10 +219,10 @@ const
      { TCamera2D }
 
      TCamera2D = record
-         offset   : TVector2; // Camera offset (displacement from target)
-         target   : TVector2; // Camera target (rotation and zoom origin)
-         rotation : single;   // Camera rotation in degrees
-         zoom     : single;   // Camera zoom (scaling), should be 1.0f by default
+         offset   : TVector2; // Camera offset (screen space offset from window origin)
+         target   : TVector2; // Camera target (world space target point that is mapped to screen space offset)
+         rotation : single;   // Camera rotation in degrees (pivots around target)
+         zoom     : single;   // Camera zoom (scaling around target), must not be set to 0, set to 1.0f for no scale
          procedure Create(aOffset, aTarget: TVector2; aRotation, aZoom: single);
        end;
 
@@ -1243,7 +1243,7 @@ function GetApplicationDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDl
 {Create directories (including full path requested), returns 0 on success}
 function MakeDirectory(const dirPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MakeDirectory';
 {Change working directory, return true on success}
-function ChangeDirectory(const dir: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ChangeDirectory';
+function ChangeDirectory(const dirPath: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ChangeDirectory';
 {Check if a given path is a file or a directory}
 function IsPathFile(const path: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsPathFile';
 {Check if fileName is valid for the platform/OS}
@@ -2195,7 +2195,7 @@ function LoadSoundFromWave(wave: TWave): TSound; cdecl; external {$IFNDEF RAY_ST
 function LoadSoundAlias(source: TSound): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSoundAlias';
 {Checks if a sound is valid (data loaded and buffers initialized)}
 function IsSoundValid(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsSoundValid';
-{Update sound buffer with new data (data and frame count should fit in sound)}
+{Update sound buffer with new data (default data format: 32 bit float, stereo)}
 procedure UpdateSound(sound: TSound; const data: Pointer; sampleCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateSound';
 {Unload wave data}
 procedure UnloadWave(wave: TWave); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadWave';

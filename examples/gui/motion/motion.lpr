@@ -49,8 +49,7 @@ type
 { TRayApplication }
 
 constructor TRayApplication.Create(TheOwner: TComponent);
-var
-  i: Integer;
+
 begin
   inherited Create(TheOwner);
 

@@ -34,7 +34,8 @@ const
   RAYGUI_VERSION = '4.5-dev';
   SCROLLBAR_LEFT_SIDE = 0;
   SCROLLBAR_RIGHT_SIDE = 1;
-
+  RAYGUI_WINDOWBOX_STATUSBAR_HEIGHT =  24;
+  RAYGUI_WINDOWBOX_CLOSEBUTTON_HEIGHT = 18;
 //----------------------------------------------------------------------------------
 // Icons enumeration
 //----------------------------------------------------------------------------------
@@ -276,22 +277,22 @@ const
   ICON_SLICING = TGuiIconName(231);
   ICON_MANUAL_CONTROL = TGuiIconName(232);
   ICON_COLLISION = TGuiIconName(233);
-  ICON_234 = TGuiIconName(234);
-  ICON_235 = TGuiIconName(235);
-  ICON_236 = TGuiIconName(236);
-  ICON_237 = TGuiIconName(237);
-  ICON_238 = TGuiIconName(238);
-  ICON_239 = TGuiIconName(239);
-  ICON_240 = TGuiIconName(240);
-  ICON_241 = TGuiIconName(241);
-  ICON_242 = TGuiIconName(242);
-  ICON_243 = TGuiIconName(243);
-  ICON_244 = TGuiIconName(244);
-  ICON_245 = TGuiIconName(245);
-  ICON_246 = TGuiIconName(246);
-  ICON_247 = TGuiIconName(247);
-  ICON_248 = TGuiIconName(248);
-  ICON_249 = TGuiIconName(249);
+  ICON_CIRCLE_ADD = TGuiIconName(234);
+  ICON_CIRCLE_ADD_FILL = TGuiIconName(235);
+  ICON_CIRCLE_WARNING = TGuiIconName(236);
+  ICON_CIRCLE_WARNING_FILL = TGuiIconName(237);
+  ICON_BOX_MORE = TGuiIconName(238);
+  ICON_BOX_MORE_FILL = TGuiIconName(239);
+  ICON_BOX_MINUS = TGuiIconName(240);
+  ICON_BOX_MINUS_FILL = TGuiIconName(241);
+  ICON_UNION = TGuiIconName(242);
+  ICON_INTERSECTION = TGuiIconName(243);
+  ICON_DIFFERENCE = TGuiIconName(244);
+  ICON_SPHERE = TGuiIconName(245);
+  ICON_CYLINDER = TGuiIconName(246);
+  ICON_CONE = TGuiIconName(247);
+  ICON_ELLIPSOID = TGuiIconName(248);
+  ICON_CAPSULE = TGuiIconName(249);
   ICON_250 = TGuiIconName(250);
   ICON_251 = TGuiIconName(251);
   ICON_252 = TGuiIconName(252);
