@@ -139,7 +139,7 @@ begin
   cube := GenMeshCube(1.0, 1.0, 1.0);
   skybox := LoadModelFromMesh(cube);
 
-  useHDR := false;
+  useHDR := true;
 
   // Load skybox shader and set required locations
   // NOTE: Some locations are automatically set at shader loading

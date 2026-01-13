@@ -31,26 +31,26 @@
   3. This notice may not be removed or altered from any source distribution.
 "/>
     <Version Major="5" Minor="6" Release="2"/>
-    <Files Count="7">
+    <Files Count="8">
       <Item1>
-        <Filename Value="../source/raylib.pas"/>
-        <UnitName Value="raylib"/>
-      </Item1>
-      <Item2>
-        <Filename Value="../source/raymath.pas"/>
-        <UnitName Value="raymath"/>
-      </Item2>
-      <Item3>
-        <Filename Value="../source/rlgl.pas"/>
-        <UnitName Value="rlgl"/>
-      </Item3>
-      <Item4>
-        <Filename Value="../source/extras/reasings.pas"/>
-        <UnitName Value="reasings"/>
-      </Item4>
-      <Item5>
         <Filename Value="../source/raylib.inc"/>
         <Type Value="Include"/>
+      </Item1>
+      <Item2>
+        <Filename Value="../source/raylib.pas"/>
+        <UnitName Value="raylib"/>
+      </Item2>
+      <Item3>
+        <Filename Value="../source/raymath.pas"/>
+        <UnitName Value="raymath"/>
+      </Item3>
+      <Item4>
+        <Filename Value="../source/rlgl.pas"/>
+        <UnitName Value="rlgl"/>
+      </Item4>
+      <Item5>
+        <Filename Value="../source/extras/reasings.pas"/>
+        <UnitName Value="reasings"/>
       </Item5>
       <Item6>
         <Filename Value="../source/extras/raygizmo.pas"/>
@@ -60,6 +60,10 @@
         <Filename Value="../source/extras/raygui.pas"/>
         <UnitName Value="raygui"/>
       </Item7>
+      <Item8>
+        <Filename Value="../source/extras/rcamera.pas"/>
+        <UnitName Value="rcamera"/>
+      </Item8>
     </Files>
     <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="1">

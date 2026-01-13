@@ -316,7 +316,7 @@
 *
 *   LICENSE: zlib/libpng
 *
-*   Copyright (c) 2014-2025 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2014-2026 Ramon Santamaria (@raysan5)
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
 *   will the authors be held liable for any damages arising from the use of this software.
@@ -369,9 +369,9 @@
 // NOTE: Avoiding those calls, also avoids const strings memory usage
 #define RAYGUI_SUPPORT_LOG_INFO
 #if defined(RAYGUI_SUPPORT_LOG_INFO)
-  #define RAYGUI_LOG(...)           printf(__VA_ARGS__)
+    #define RAYGUI_LOG(...)     printf(__VA_ARGS__)
 #else
-  #define RAYGUI_LOG(...)
+    #define RAYGUI_LOG(...)
 #endif
 
 //----------------------------------------------------------------------------------
@@ -4231,7 +4231,7 @@ int GuiTextInputBox(Rectangle bounds, const char *title, const char *message, co
 // Grid control
 // NOTE: Returns grid mouse-hover selected cell
 // About drawing lines at subpixel spacing, simple put, not easy solution:
-// Ref: https://stackoverflow.com/questions/4435450/2d-opengl-drawing-lines-that-dont-exactly-fit-pixel-raster
+// REF: https://stackoverflow.com/questions/4435450/2d-opengl-drawing-lines-that-dont-exactly-fit-pixel-raster
 int GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs, Vector2 *mouseCell)
 {
     // Grid lines alpha amount

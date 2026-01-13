@@ -9,7 +9,6 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 
-
 echo -e "${GREEN}raylib build scripts ${NC}"
 echo -e "${YELLOW}"
 read -p "Installing dependencies...(y/n)?" answer
@@ -60,6 +59,13 @@ mkdir ../libs/x86_64-win64
 echo -e "${GREEN}Download raylib master branch${NC}"
 
 git clone https://github.com/raysan5/raylib.git
+
+
+# Раскомментировать поддержку HDR в config.h
+echo -e "${YELLOW}Enabling HDR file format support${NC}"
+sed -i 's|//#define SUPPORT_FILEFORMAT_HDR|#define SUPPORT_FILEFORMAT_HDR|g' raylib/src/config.h
+
+
 
 #rm -f raygui.h
 #wget https://raw.githubusercontent.com/raysan5/raygui/refs/heads/master/src/raygui.h 

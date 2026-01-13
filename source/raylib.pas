@@ -1155,6 +1155,10 @@ procedure TakeScreenshot(const fileName: PChar); cdecl; external {$IFNDEF RAY_ST
 procedure SetConfigFlags(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetConfigFlags';
 {Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)}
 procedure TraceLog(logLevel: TTraceLogLevel;const text: PChar); cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TraceLog';
+
+// NOTE: Following functions implemented in module [utils]
+//------------------------------------------------------------------
+
 {Set the current threshold (minimum) log level}
 procedure SetTraceLogLevel(logLevel: TTraceLogLevel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTraceLogLevel';
 {Internal memory allocator}
@@ -1178,14 +1182,6 @@ type
 
 { Set custom trace log }
 procedure SetTraceLogCallback(callback: TTraceLogCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTraceLogCallback';
-{ Set custom file binary data loader }
-procedure SetLoadFileDataCallback(callback: TLoadFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetLoadFileDataCallback';
-{ Set custom file binary data saver }
-procedure SetSaveFileDataCallback(callback: TSaveFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSaveFileDataCallback';
-{ Set custom file text data loader }
-procedure SetLoadFileTextCallback(callback: TLoadFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetLoadFileTextCallback';
-{ Set custom file text data saver }
-procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSaveFileTextCallback';
 
 (* Files management functions *)
 
@@ -1203,6 +1199,16 @@ function LoadFileText(const fileName: Pchar): Pchar; cdecl; external {$IFNDEF RA
 procedure UnloadFileText(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFileText';
 {Save text data to file (write), string must be '\0' terminated, returns true on success}
 function SaveFileText(const fileName, text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileText';
+
+{ Set custom file binary data loader }
+procedure SetLoadFileDataCallback(callback: TLoadFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetLoadFileDataCallback';
+{ Set custom file binary data saver }
+procedure SetSaveFileDataCallback(callback: TSaveFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSaveFileDataCallback';
+{ Set custom file text data loader }
+procedure SetLoadFileTextCallback(callback: TLoadFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetLoadFileTextCallback';
+{ Set custom file text data saver }
+procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSaveFileTextCallback';
+
 // File system functions
 {Rename file (if exists)}
 function FileRename(const fileName, fileRename: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileRename';
