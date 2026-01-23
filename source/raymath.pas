@@ -212,6 +212,7 @@ function Vector3Max(v1, v2 : TVector3): TVector3; cdecl; external {$IFNDEF RAY_S
 { Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c) }
 function Vector3Barycenter(p, a, b, c : TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Barycenter';
 { Projects a Vector3 from screen space into object space }
+// NOTE: We are avoiding calling other raymath functions despite available
 function Vector3Unproject(source:TVector3; projection:TMatrix; view:TMatrix):TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Unproject';
 { Returns Vector3 as float array }
 function Vector3ToFloatV(v : TVector3): TFloat3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3ToFloatV';

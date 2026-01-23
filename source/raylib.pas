@@ -417,7 +417,6 @@ const
      (* File path list *)
      PFilePathList = ^TFilePathList;
      TFilePathList = record
-       capacity  : LongWord; // Filepaths max entries
        count     : LongWord; // Filepaths entries count
        paths     : PPChar;   // Filepaths entries
      end;
@@ -1266,6 +1265,10 @@ function IsFileDropped: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$E
 function LoadDroppedFiles: TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDroppedFiles';
 {Unload dropped filepaths}
 procedure UnloadDroppedFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadDroppedFiles';
+{Get the file count in a directory}
+function GetDirectoryFileCount(const dirPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetDirectoryFileCount';
+{Get the file count in a directory with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result}
+function GetDirectoryFileCountEx(const basePath: PChar; const filter: PChar; scanSubdirs: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetDirectoryFileCountEx';
 
 (* Compression/Encoding functionality *)
 
