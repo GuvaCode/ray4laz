@@ -1,13 +1,11 @@
 #!/bin/bash
 
-
 # Цвета для вывода
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-
 
 echo -e "${GREEN}raylib build scripts ${NC}"
 echo -e "${YELLOW}"
@@ -20,16 +18,13 @@ sudo apt-get install -y mingw-w64-x86-64-dev
 
 sudo apt-get install -y unzip
 sudo apt-get install -y gcc-mingw-w64-x86-64     
-
-# sudo apt-get install -y clang llvm bmake binutils-x86-64-kfreebsd-gnu binutils-x86-64-kfreebsd-gnu 
     ;;
     * )
         echo skiping
         echo -e "\e[0"
-
     ;;
 esac
-        echo -e "\e[0m"  
+echo -e "\e[0m"  
 
 clear
 
@@ -44,47 +39,47 @@ rm -rvf raygui
     * )
         echo skiping
         echo -e "\e[0"
-
     ;;
 esac
-        echo -e "\e[0m"  
+echo -e "\e[0m"  
 
 clear
 
-mkdir ../libs
-mkdir ../libs/x86_64-linux
-mkdir ../libs/x86_64-win64
-
+mkdir -p ../libs
+mkdir -p ../libs/x86_64-linux
+mkdir -p ../libs/x86_64-win64
 
 echo -e "${GREEN}Download raylib master branch${NC}"
 
 git clone https://github.com/raysan5/raylib.git
 
-
 # Раскомментировать поддержку HDR в config.h
 echo -e "${YELLOW}Enabling HDR file format support${NC}"
 sed -i 's|//#define SUPPORT_FILEFORMAT_HDR|#define SUPPORT_FILEFORMAT_HDR|g' raylib/src/config.h
 
-
-
-#rm -f raygui.h
-#wget https://raw.githubusercontent.com/raysan5/raygui/refs/heads/master/src/raygui.h 
-#cp raygui.h raylib/src
+# Скачиваем raygui
 git clone https://github.com/raysan5/raygui.git
-cp raygui/src/raygui.h raygui/src/raygui.c
 
+# Определяем путь к raygui (аналогично Makefile)
+RAYGUI_PATH="../../raygui/src"
+
+# Создаем raygui.c файл для сборки
+echo "#define RAYGUI_IMPLEMENTATION" > raylib/src/raygui.c
+echo "#include \"$RAYGUI_PATH/raygui.h\"" >> raylib/src/raygui.c
+
+# Копируем только raygui.h
+cp raygui/src/raygui.h raylib/src/
 
 # compiler shader
 cp ../headers/extras/shader_compiler.c raylib/src
 cp compiler_linux raylib/src
 cp compiler_windows raylib/src
 
-
 cd raylib/src
 
 rm -f ../../../libs/x86_64-linux/libraylib*
 rm -f ../../../libs/x86_64-win64/libraylib*
-#cd ../../
+
 echo ""
 
 clear
@@ -122,13 +117,11 @@ rm shader_compiler.exe
     * )
         echo skiping
         echo -e "\e[0"
-
     ;;
 esac
-        echo -e "\e[0m"  
+echo -e "\e[0m"  
 
 clear
-
 
 echo " "
 echo "---------------------------------"
@@ -137,15 +130,12 @@ echo "---------------------------------"
 echo " "
 make clean
 
-
 make PLATFORM=PLATFORM_MEMORY GRAPHICS=GRAPHICS_API_OPENGL_11_SOFTWARE RAYLIB_MODULE_RAYGUI=TRUE
 cp libraylib.a ../../../libs/x86_64-linux/libraylib_membuffer.a
 
 make clean
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE 
 cp libraylib.a ../../../libs/x86_64-linux/libraylib.a
-
-
 
 echo " "
 echo "---------------------------------"
@@ -157,28 +147,49 @@ make clean
 x86_64-w64-mingw32-windres raylib.rc -o raylib.rc.data
 x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 
-cp ../../raygui/src/raygui.h raygui.c
+# Используем RAYLIB_MODULE_RAYGUI_PATH вместо прямых путей
+RAYLIB_MODULE_RAYGUI_PATH="../../raygui/src"
+# Обновляем raygui.c с правильным путем
+echo "#define RAYGUI_IMPLEMENTATION" > raygui.c
+echo "#include \"$RAYLIB_MODULE_RAYGUI_PATH/raygui.h\"" >> raygui.c
+cp $RAYLIB_MODULE_RAYGUI_PATH/raygui.h .
+
 make PLATFORM=PLATFORM_MEMORY GRAPHICS=GRAPHICS_API_OPENGL_11_SOFTWARE RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
-
 cp libraylib.a ../../../libs/x86_64-win64/libraylib_membuffer.a
-
 
 make clean
 x86_64-w64-mingw32-windres raylib.rc -o raylib.rc.data
 x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
 
-cp ../../raygui/src/raygui.h raygui.c
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
+# Используем RAYLIB_MODULE_RAYGUI_PATH вместо прямых путей
+echo "#define RAYGUI_IMPLEMENTATION" > raygui.c
+echo "#include \"$RAYLIB_MODULE_RAYGUI_PATH/raygui.h\"" >> raygui.c
+cp $RAYLIB_MODULE_RAYGUI_PATH/raygui.h .
 
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
 cp libraylib.a ../../../libs/x86_64-win64/libraylib.a
 
+echo " "
+echo "---------------------------------"
+echo -e "${YELLOW}Build x64 Windows dynamic${NC}"
+echo "---------------------------------"
+echo " "
 
+make clean
+x86_64-w64-mingw32-windres raylib.rc -o raylib.rc.data
+x86_64-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
+
+# Используем RAYLIB_MODULE_RAYGUI_PATH вместо прямых путей
+echo "#define RAYGUI_IMPLEMENTATION" > raygui.c
+echo "#include \"$RAYLIB_MODULE_RAYGUI_PATH/raygui.h\"" >> raygui.c
+cp $RAYLIB_MODULE_RAYGUI_PATH/raygui.h .
+
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
+cp raylib.dll ../../../libs/x86_64-win64/libraylib.dll
 
 cd ../../
 
-
 sh build_gizmo.sh 
- 
 
 echo " "
 echo "---------------------------------"
@@ -196,16 +207,6 @@ rm -rvf raygui
     * )
         echo skiping
         echo -e "\e[0"
-
     ;;
 esac
-        echo -e "\e[0m"  
-
-
-
-
-
-
-
-
-
+echo -e "\e[0m"
