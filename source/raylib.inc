@@ -1,5 +1,8 @@
-// Configuration file for raylib
 
+// Uncomment when using r3d in Windows system
+{.$DEFINE USED_R3D}
+
+// Configuration file for raylib
 {$IFDEF LINUX}
   {$IFNDEF RAY_DYNAMIC}
     {$DEFINE RAY_STATIC}
@@ -7,6 +10,9 @@
 {$IFEND}
 
 {$IFDEF WINDOWS}
+  {$IFDEF USED_R3D}
+    {$DEFINE RAY_DYNAMIC}
+  {$ENDIF}
   {$IFNDEF RAY_DYNAMIC}
     {$DEFINE RAY_STATIC}
   {$ENDIF}
