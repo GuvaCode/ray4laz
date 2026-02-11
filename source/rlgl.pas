@@ -653,7 +653,7 @@ procedure rlglClose; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name '
 {Load OpenGL extensions (loader function required)}
 procedure rlLoadExtensions(loader: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadExtensions';
 {Get OpenGL procedure address}
-procedure rlGetProcAddress(const procName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetProcAddress';
+procedure rlGetProcAddress(const procName: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetProcAddress';
 {Get current OpenGL version}
 function rlGetVersion: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetVersion';
 {Set current framebuffer width}
@@ -736,7 +736,7 @@ procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height: Integer
 {Get OpenGL internal formats}
 procedure rlGetGlTextureFormats(format: TrlPixelFormat; glInternalFormat, glFormat, glType: PLongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetGlTextureFormats';
 {Get name string for pixel format}
-function rlGetPixelFormatName(format: TrlPixelFormat): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetPixelFormatName';
+function rlGetPixelFormatName(format: TrlPixelFormat): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetPixelFormatName';
 {Unload texture from GPU memory}
 procedure rlUnloadTexture(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadTexture';
 {Generate mipmap data for selected texture}
@@ -768,17 +768,17 @@ procedure rlResizeFramebuffer(width, height: Pointer); cdecl; external {$IFNDEF 
 (* Shaders management *)
 
 {Load shader from code strings}
-function rlLoadShaderCode(vsCode, fsCode: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderCode';
+function rlLoadShaderCode(vsCode, fsCode: PAnsiChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderCode';
 {Compile custom shader and return shader id (type: GL_VERTEX_SHADER,GL_FRAGMENT_SHADER)}
-function rlCompileShader(shaderCode: PChar; type_: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCompileShader';
+function rlCompileShader(shaderCode: PAnsiChar; type_: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCompileShader';
 {Load custom shader program}
 function rlLoadShaderProgram(vShaderId, fShaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderProgram';
 {Unload shader program}
 procedure rlUnloadShaderProgram(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadShaderProgram';
 {Get shader location uniform, requires shader program id}
-function rlGetLocationUniform(shaderId: LongWord; uniformName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationUniform';
+function rlGetLocationUniform(shaderId: LongWord; uniformName: PAnsiChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationUniform';
 {Get shader location attribute, requires shader program id}
-function rlGetLocationAttrib(shaderId: LongWord; attribName: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationAttrib';
+function rlGetLocationAttrib(shaderId: LongWord; attribName: PAnsiChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationAttrib';
 {Set shader value uniform}
 procedure rlSetUniform(locIndex: Integer; value: Pointer; uniformType: TrlShaderUniformDataType; count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniform';
 {Set shader value matrix}

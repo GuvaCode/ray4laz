@@ -1,6 +1,9 @@
+{.$DEFINE RAY_DYNAMIC}
 
-// Uncomment when using r3d in Windows system
-{.$DEFINE USED_R3D}
+// FPC < 3.3.1 -> динамическая линковка
+{$IF DEFINED(FPC_FULLVERSION) AND (FPC_FULLVERSION < 30301)}
+  {$DEFINE RAY_DYNAMIC}
+{$ENDIF}
 
 // Configuration file for raylib
 {$IFDEF LINUX}
@@ -10,14 +13,11 @@
 {$IFEND}
 
 {$IFDEF MSWINDOWS}
-  {$IFDEF USED_R3D}
-    {$DEFINE RAY_DYNAMIC}
-  {$ENDIF}
   {$IFNDEF RAY_DYNAMIC}
     {$IFDEF FPC}
-      {$DEFINE RAY_STATIC}
+      {$DEFINE RAY_STATIC}  // FPC и не динамика - статика
     {$ELSE}
-       //..
+      {$DEFINE RAY_DYNAMIC} // Delphi - динамика
     {$ENDIF}
   {$ENDIF}
 {$IFEND}
@@ -57,6 +57,3 @@
 {$ENDIF}
 {$ALIGN 8}
 {$MINENUMSIZE 4}
-
-
-

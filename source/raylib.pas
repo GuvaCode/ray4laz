@@ -295,7 +295,7 @@ const
      (* Bone, skeletal animation bone *)
      PBoneInfo = ^TBoneInfo;
      TBoneInfo = record
-         name    : array[0..31] of Char; // Bone name
+         name    : array[0..31] of AnsiChar; // Bone name
          parent  : Integer;              // Bone parent
        end;
 
@@ -321,7 +321,7 @@ const
          frameCount : Integer;     // Number of animation frames
          bones : PBoneInfo;        // Bones information (skeleton)
          framePoses : PPTransform; // Poses array by frame
-         name : array[0..31] of Char; // Animation name
+         name : array[0..31] of AnsiChar; // Animation name
        end;
 
       (* Ray, ray for raycasting *)
@@ -427,7 +427,7 @@ const
      PFilePathList = ^TFilePathList;
      TFilePathList = record
        count     : LongWord; // Filepaths entries count
-       paths     : PPChar;   // Filepaths entries
+       paths     : PPAnsiChar;   // Filepaths entries
      end;
 
      (* Automation event *)
@@ -917,7 +917,7 @@ const
 (* Window-related function *)
 
 {Initialize window and OpenGL context}
-procedure InitWindow(width, height: Integer; const title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'InitWindow';
+procedure InitWindow(width, height: Integer; const title: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'InitWindow';
 {Close window and unload OpenGL context}
 procedure CloseWindow; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CloseWindow';
 {Check if KEY_ESCAPE pressed or Close icon pressed}
@@ -957,7 +957,7 @@ procedure SetWindowIcon(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDll
 {Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)}
 procedure SetWindowIcons(images: PImage; count: integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowIcons';
 {Set title for window}
-procedure SetWindowTitle(const title: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowTitle';
+procedure SetWindowTitle(const title: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowTitle';
 {Set window position on screen}
 procedure SetWindowPosition(x, y: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetWindowPosition';
 {Set monitor for the current window}
@@ -1003,11 +1003,11 @@ function GetWindowPosition: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllNa
 {Get window scale DPI factor}
 function GetWindowScaleDPI: TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWindowScaleDPI';
 {Get the human-readable, UTF-8 encoded name of the specified monitor}
-function GetMonitorName(monitor: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorName';
+function GetMonitorName(monitor: Integer): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetMonitorName';
 {Set clipboard text content}
-procedure SetClipboardText(const text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetClipboardText';
+procedure SetClipboardText(const text: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetClipboardText';
 {Get clipboard text content}
-function GetClipboardText: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetClipboardText';
+function GetClipboardText: PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetClipboardText';
 {Get clipboard image content}
 function GetClipboardImage: TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetClipboardImage';
 {Enable waiting for events on EndDrawing(), no automatic event polling}
@@ -1078,15 +1078,15 @@ procedure UnloadVrStereoConfig(config: TVrStereoConfig); cdecl; external {$IFNDE
 // NOTE: Shader functionality is not available on OpenGL 1.1
 
 {Load shader from files and bind default locations}
-function LoadShader(const vsFileName, fsFileName: PChar): TShader; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadShader';
+function LoadShader(const vsFileName, fsFileName: PAnsiChar): TShader; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadShader';
 {Load shader from code strings and bind default locations}
-function LoadShaderFromMemory(const vsCode, fsCode: PChar): TShader; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadShaderFromMemory';
+function LoadShaderFromMemory(const vsCode, fsCode: PAnsiChar): TShader; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadShaderFromMemory';
 {Check if a shader is valid (loaded on GPU)}
 function IsShaderValid(shader: TShader): Boolean; cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsShaderValid';
 {Get shader uniform location}
-function GetShaderLocation(shader: TShader; const uniformName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShaderLocation';
+function GetShaderLocation(shader: TShader; const uniformName: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShaderLocation';
 {Get shader attribute location}
-function GetShaderLocationAttrib(shader:TShader; const  attribName:PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShaderLocationAttrib';
+function GetShaderLocationAttrib(shader:TShader; const  attribName:PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShaderLocationAttrib';
 {Set shader uniform value}
 procedure SetShaderValue(shader: TShader; locIndex: Integer; const value: Pointer; uniformType: TShaderUniformDataType); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShaderValue';
 {Set shader uniform value vector}
@@ -1158,11 +1158,11 @@ function GetRandomValue(min, max: Integer): Integer; cdecl; external {$IFNDEF RA
 (* Misc. functions *)
 
 {Takes a screenshot of current screen (filename extension defines format)}
-procedure TakeScreenshot(const fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TakeScreenshot';
+procedure TakeScreenshot(const fileName: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TakeScreenshot';
 {Setup init configuration flags (view FLAGS)}
 procedure SetConfigFlags(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetConfigFlags';
 {Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)}
-procedure TraceLog(logLevel: TTraceLogLevel;const text: PChar); cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TraceLog';
+procedure TraceLog(logLevel: TTraceLogLevel;const text: PAnsiChar); cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TraceLog';
 
 // NOTE: Following functions implemented in module [utils]
 //------------------------------------------------------------------
@@ -1176,17 +1176,17 @@ function MemRealloc(ptr: Pointer; size: LongWord): Pointer; cdecl; external {$IF
 {Internal memory free}
 procedure MemFree(ptr: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MemFree';
 {Open URL with default system browser (if available)}
-procedure OpenURL(const url: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'OpenURL';
+procedure OpenURL(const url: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'OpenURL';
 
 (* Set custom callbacks *)
 (* Callbacks to hook some internal functions *)
 // WARNING: Callbacks setup is intended for advanced users
 type
-  TTraceLogCallback = procedure(logLevel: TTraceLogLevel; const Text: PChar; Args: Pointer); cdecl varargs;
-  TLoadFileDataCallback = function(const fileName: PChar; dataSize: PInteger): PChar; cdecl;
-  TSaveFileDataCallback = function(const fileName: PChar; data: Pointer; dataSize: Integer): Boolean; cdecl;
-  TLoadFileTextCallback = function(const fileName: PChar): PChar; cdecl;
-  TSaveFileTextCallback = function(const fileName, text: PChar): Boolean; cdecl;
+  TTraceLogCallback = procedure(logLevel: TTraceLogLevel; const Text: PAnsiChar; Args: Pointer); cdecl varargs;
+  TLoadFileDataCallback = function(const fileName: PAnsiChar; dataSize: PInteger): PAnsiChar; cdecl;
+  TSaveFileDataCallback = function(const fileName: PAnsiChar; data: Pointer; dataSize: Integer): Boolean; cdecl;
+  TLoadFileTextCallback = function(const fileName: PAnsiChar): PAnsiChar; cdecl;
+  TSaveFileTextCallback = function(const fileName, text: PAnsiChar): Boolean; cdecl;
 
 { Set custom trace log }
 procedure SetTraceLogCallback(callback: TTraceLogCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTraceLogCallback';
@@ -1194,19 +1194,19 @@ procedure SetTraceLogCallback(callback: TTraceLogCallback); cdecl; external {$IF
 (* Files management functions *)
 
 {Load file data as byte array (read)}
-function LoadFileData(const fileName: PChar; dataSize: PInteger): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFileData';
+function LoadFileData(const fileName: PAnsiChar; dataSize: PInteger): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFileData';
 {Unload file data allocated by LoadFileData()}
 procedure UnloadFileData(data: PByte); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFileData';
 {Save data to file from byte array (write), returns true on success}
-function SaveFileData(const fileName: PChar; data: Pointer; dataSize: integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileData';
+function SaveFileData(const fileName: PAnsiChar; data: Pointer; dataSize: integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileData';
 {Export data to code (.h), returns true on success}
-function ExportDataAsCode(const data: PChar; dataSize: integer; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportDataAsCode';
+function ExportDataAsCode(const data: PAnsiChar; dataSize: integer; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportDataAsCode';
 {Load text data from file (read), returns a '\0' terminated string}
-function LoadFileText(const fileName: Pchar): Pchar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFileText';
+function LoadFileText(const fileName: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFileText';
 {Unload file text data allocated by LoadFileText()}
-procedure UnloadFileText(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFileText';
+procedure UnloadFileText(text: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFileText';
 {Save text data to file (write), string must be '\0' terminated, returns true on success}
-function SaveFileText(const fileName, text: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileText';
+function SaveFileText(const fileName, text: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileText';
 
 { Set custom file binary data loader }
 procedure SetLoadFileDataCallback(callback: TLoadFileDataCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetLoadFileDataCallback';
@@ -1219,53 +1219,53 @@ procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; exter
 
 // File system functions
 {Rename file (if exists)}
-function FileRename(const fileName, fileRename: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileRename';
+function FileRename(const fileName, fileRename: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileRename';
 {Remove file (if exists)}
-function FileRemove(const fileName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileRemove';
+function FileRemove(const fileName: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileRemove';
 {Copy file from one path to another, dstPath created if it doesn't exist}
-function FileCopy(const srcPath, dstPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileCopy';
+function FileCopy(const srcPath, dstPath: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileCopy';
 {Move file from one directory to another, dstPath created if it doesn't exist}
-function FileMove(const srcPath, dstPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileMove';
+function FileMove(const srcPath, dstPath: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileMove';
 {Replace text in an existing file}
-function FileTextReplace(const fileName, search, replacement: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileTextReplace';
+function FileTextReplace(const fileName, search, replacement: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileTextReplace';
 {Find text in existing file}
-function FileTextFindIndex(const fileName, search: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileTextFindIndex';
+function FileTextFindIndex(const fileName, search: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileTextFindIndex';
 {Check if file exists}
-function FileExists(const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileExists';
+function FileExists(const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileExists';
 {Check if a directory path exists}
-function DirectoryExists(const dirPath: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DirectoryExists';
+function DirectoryExists(const dirPath: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DirectoryExists';
 {Check file extension (recommended include point: .png, .wav)}
-function IsFileExtension(const fileName, ext: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileExtension';
+function IsFileExtension(const fileName, ext: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileExtension';
 {Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)}
-function GetFileLength(const fileName: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileLength';
+function GetFileLength(const fileName: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileLength';
 {Get file modification time (last write time)}
-function GetFileModTime(const fileName: PChar): LongInt; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileModTime';
+function GetFileModTime(const fileName: PAnsiChar): LongInt; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileModTime';
 {Get pointer to extension for a filename string (includes dot: '.png')}
-function GetFileExtension(const fileName: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileExtension';
+function GetFileExtension(const fileName: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileExtension';
 {Get pointer to filename for a path string }
-function GetFileName(const filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileName';
+function GetFileName(const filePath: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileName';
 {Get filename string without extension (uses static string)}
-function GetFileNameWithoutExt(const filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileNameWithoutExt';
+function GetFileNameWithoutExt(const filePath: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFileNameWithoutExt';
 {Get full path for a given fileName with path (uses static string)}
-function GetDirectoryPath(const filePath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetDirectoryPath';
+function GetDirectoryPath(const filePath: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetDirectoryPath';
 {Get previous directory path for a given path (uses static string)}
-function GetPrevDirectoryPath(const dirPath: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPrevDirectoryPath';
+function GetPrevDirectoryPath(const dirPath: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPrevDirectoryPath';
 {Get current working directory (uses static string)}
-function GetWorkingDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorkingDirectory';
+function GetWorkingDirectory: PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorkingDirectory';
 {Get the directory of the running application (uses static string)}
-function GetApplicationDirectory: PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetApplicationDirectory';
+function GetApplicationDirectory: PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetApplicationDirectory';
 {Create directories (including full path requested), returns 0 on success}
-function MakeDirectory(const dirPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MakeDirectory';
+function MakeDirectory(const dirPath: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MakeDirectory';
 {Change working directory, return true on success}
-function ChangeDirectory(const dirPath: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ChangeDirectory';
+function ChangeDirectory(const dirPath: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ChangeDirectory';
 {Check if a given path is a file or a directory}
-function IsPathFile(const path: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsPathFile';
+function IsPathFile(const path: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsPathFile';
 {Check if fileName is valid for the platform/OS}
-function IsFileNameValid(const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileNameValid';
+function IsFileNameValid(const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileNameValid';
 {Load directory filepaths}
-function LoadDirectoryFiles(const dirPath: PChar): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFiles';
+function LoadDirectoryFiles(const dirPath: PAnsiChar): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFiles';
 {Load directory filepaths with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result}
-function LoadDirectoryFilesEx(const basePath, filter: PChar; scanSubdirs: Boolean): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFilesEx';
+function LoadDirectoryFilesEx(const basePath, filter: PAnsiChar; scanSubdirs: Boolean): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFilesEx';
 {Unload filepaths}
 procedure UnloadDirectoryFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadDirectoryFiles';
 {Check if a file has been dropped into window}
@@ -1275,9 +1275,9 @@ function LoadDroppedFiles: TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cD
 {Unload dropped filepaths}
 procedure UnloadDroppedFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadDroppedFiles';
 {Get the file count in a directory}
-function GetDirectoryFileCount(const dirPath: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetDirectoryFileCount';
+function GetDirectoryFileCount(const dirPath: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetDirectoryFileCount';
 {Get the file count in a directory with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result}
-function GetDirectoryFileCountEx(const basePath: PChar; const filter: PChar; scanSubdirs: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetDirectoryFileCountEx';
+function GetDirectoryFileCountEx(const basePath: PAnsiChar; const filter: PAnsiChar; scanSubdirs: Boolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetDirectoryFileCountEx';
 
 (* Compression/Encoding functionality *)
 
@@ -1286,26 +1286,26 @@ function CompressData(const data: PByte; dataSize: Integer; compDataSize: PInteg
 {Decompress data (DEFLATE algorithm), memory must be MemFree()}
 function DecompressData(const compData: PByte; compDataSize: Integer; dataSize: PInteger): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecompressData';
 {Encode data to Base64 string (includes NULL terminator), memory must be MemFree()}
-function EncodeDataBase64(const data: PByte; dataSize: Integer; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EncodeDataBase64';
+function EncodeDataBase64(const data: PByte; dataSize: Integer; outputSize: PInteger): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EncodeDataBase64';
 {Decode Base64 string (expected NULL terminated), memory must be MemFree()}
-function DecodeDataBase64(const text: PChar; outputSize: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
+function DecodeDataBase64(const text: PAnsiChar; outputSize: PInteger): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
 {Compute CRC32 hash code}
-function ComputeCRC32(data: PChar; dataSize: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeCRC32';
+function ComputeCRC32(data: PAnsiChar; dataSize: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeCRC32';
 {Compute MD5 hash code, returns static int[4] (16 bytes)}
-function ComputeMD5(data: PChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeMD5';
+function ComputeMD5(data: PAnsiChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeMD5';
 {Compute SHA1 hash code, returns static int[5] (20 bytes)}
-function ComputeSHA1(data: PChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA1';
+function ComputeSHA1(data: PAnsiChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA1';
 {Compute SHA256 hash code, returns static int[8] (32 bytes)}
-function ComputeSHA256(data: PChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA256';
+function ComputeSHA256(data: PAnsiChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA256';
 
 (* Automation events functionality *)
 
 {Load automation events list from file, NULL for empty list, capacity = MAX_AUTOMATION_EVENTS}
-function LoadAutomationEventList(const fileName: PChar): TAutomationEventList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadAutomationEventList';
+function LoadAutomationEventList(const fileName: PAnsiChar): TAutomationEventList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadAutomationEventList';
 {Unload automation events list from file}
 procedure UnloadAutomationEventList(list: TAutomationEventList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadAutomationEventList';
 {Export automation events list as text file}
-function ExportAutomationEventList(list: TAutomationEventList; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportAutomationEventList';
+function ExportAutomationEventList(list: TAutomationEventList; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportAutomationEventList';
 {Set automation event list to record to}
 procedure SetAutomationEventList(list: PAutomationEventList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAutomationEventList';
 {Set automation event internal base frame to start recording}
@@ -1338,7 +1338,7 @@ function GetKeyPressed: TKeyboardKey; cdecl; external {$IFNDEF RAY_STATIC}cDllNa
 {Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty}
 function GetCharPressed: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCharPressed';
 {Get name of a QWERTY key on the current keyboard layout (eg returns string 'q' for KEY_A on an AZERTY keyboard)}
-function GetKeyName(key: Integer): PChar;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetKeyName';
+function GetKeyName(key: Integer): PAnsiChar;cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetKeyName';
 {Set a custom key to exit program (default is ESC)}
 procedure SetExitKey(key: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetExitKey';
 
@@ -1347,7 +1347,7 @@ procedure SetExitKey(key: TKeyboardKey); cdecl; external {$IFNDEF RAY_STATIC}cDl
 {Check if a gamepad is available}
 function IsGamepadAvailable(gamepad: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGamepadAvailable';
 {Get gamepad internal name id}
-function GetGamepadName(gamepad: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadName';
+function GetGamepadName(gamepad: Integer): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadName';
 {Check if a gamepad button has been pressed once}
 function IsGamepadButtonPressed(gamepad: Integer; button: TGamepadButton): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsGamepadButtonPressed';
 {Check if a gamepad button is being pressed}
@@ -1363,7 +1363,7 @@ function GetGamepadAxisCount(gamepad: Integer): Integer; cdecl; external {$IFNDE
 {Get movement value for a gamepad axis}
 function GetGamepadAxisMovement(gamepad: Integer; axis: TGamepadAxis): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGamepadAxisMovement';
 {Set internal gamepad mappings (SDL_GameControllerDB)}
-function SetGamepadMappings(const mappings: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadMappings';
+function SetGamepadMappings(const mappings: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadMappings';
 {Set gamepad vibration for both motors (duration in seconds)}
 procedure SetGamepadVibration(gamepad: Integer; leftMotor, rightMotor, duration: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetGamepadVibration';
 
@@ -1609,15 +1609,15 @@ function GetCollisionRec(rec1, rec2: TRectangle): TRectangle; cdecl; external {$
 // NOTE: This functions do not require GPU access
 
 {Load image from file into CPU memory (RAM)}
-function LoadImage(const fileName: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImage';
+function LoadImage(const fileName: PAnsiChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImage';
 {Load image from RAW file data}
-function LoadImageRaw(const fileName: PChar; width, height, format: TPixelFormat; headerSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageRaw';
+function LoadImageRaw(const fileName: PAnsiChar; width, height, format: TPixelFormat; headerSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageRaw';
 {Load image sequence from file (frames appended to image.data)}
-function LoadImageAnim(const fileName: PChar; frames: PInteger):TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageAnim';
+function LoadImageAnim(const fileName: PAnsiChar; frames: PInteger):TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageAnim';
 {Load image sequence from memory buffer}
-function LoadImageAnimFromMemory(const fileType: PChar; fileData: PChar; dataSize: Integer; frames: PInteger): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageAnimFromMemory';
+function LoadImageAnimFromMemory(const fileType: PAnsiChar; fileData: PAnsiChar; dataSize: Integer; frames: PInteger): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageAnimFromMemory';
 {Load image from memory buffer, fileType refers to extension: i.e. '.png'}
-function LoadImageFromMemory(const fileType: PChar; const fileData: PByte; dataSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageFromMemory';
+function LoadImageFromMemory(const fileType: PAnsiChar; const fileData: PByte; dataSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageFromMemory';
 {Load image from GPU texture data}
 function LoadImageFromTexture(texture: TTexture2D): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadImageFromTexture';
 {Load image from screen buffer and (screenshot)}
@@ -1627,11 +1627,11 @@ function IsImageValid(image: TImage): Boolean; cdecl; external {$IFNDEF RAY_STAT
 {Unload image from CPU memory (RAM)}
 procedure UnloadImage(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadImage';
 {Export image data to file, returns true on success}
-function ExportImage(image: TImage; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImage';
+function ExportImage(image: TImage; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImage';
 {Export image to memory buffer}
-function ExportImageToMemory(image: TImage; const fileType: PChar; fileSize: PInteger): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageToMemory';
+function ExportImageToMemory(image: TImage; const fileType: PAnsiChar; fileSize: PInteger): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageToMemory';
 {Export image as code file defining an array of bytes, returns true on success  }
-function ExportImageAsCode(image: TImage; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageAsCode';
+function ExportImageAsCode(image: TImage; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageAsCode';
 
 (* Image generation functions *)
 
@@ -1652,7 +1652,7 @@ function GenImagePerlinNoise(width, height, offsetX, offsetY: Integer; scale: Si
 {Generate image: cellular algorithm, bigger tileSize means bigger cells}
 function GenImageCellular(width, height, tileSize: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageCellular';
 {Generate image: grayscale image from text data}
-function GenImageText(width, height: Integer; const text: PChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageText';
+function GenImageText(width, height: Integer; const text: PAnsiChar): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageText';
 
 (* Image manipulation functions *)
 
@@ -1663,9 +1663,9 @@ function ImageFromImage(image: TImage; rec: TRectangle): TImage; cdecl; external
 {Create an image from a selected channel of another image (GRAYSCALE)}
 function ImageFromChannel(image: TImage; selectedChannel: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFromChannel';
 {Create an image from text (default font)}
-function ImageText(const text: PChar; fontSize: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageText';
+function ImageText(const text: PAnsiChar; fontSize: Integer; color: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageText';
 {Create an image from text (custom sprite font)}
-function ImageTextEx(font: TFont; const text: PChar; fontSize, spacing: Single; tint: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageTextEx';
+function ImageTextEx(font: TFont; const text: PAnsiChar; fontSize, spacing: Single; tint: TColorB): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageTextEx';
 {Convert image data to desired format}
 procedure ImageFormat(image: PImage; newFormat: TPixelFormat); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageFormat';
 {Convert image to POT (power-of-two)}
@@ -1773,15 +1773,15 @@ procedure ImageDrawTriangleStrip(dst: PImage; const points: PVector2; pointCount
 {Draw a source image within a destination image (tint applied to source)}
 procedure ImageDraw(dst: PImage; src: TImage; srcRec, dstRec: TRectangle; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDraw';
 {Draw text (using default font) within an image (destination)}
-procedure ImageDrawText(dst: PImage; const text: PChar; posX, posY, fontSize: Integer; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawText';
+procedure ImageDrawText(dst: PImage; const text: PAnsiChar; posX, posY, fontSize: Integer; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawText';
 {Draw text (custom sprite font) within an image (destination)}
-procedure ImageDrawTextEx(dst: PImage; font: TFont; const text: PChar; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTextEx';
+procedure ImageDrawTextEx(dst: PImage; font: TFont; const text: PAnsiChar; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTextEx';
 
 (* Texture loading functions *)
 // NOTE: These functions require GPU access
 
 {Load texture from file into GPU memory (VRAM)}
-function LoadTexture(const fileName: PChar): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTexture';
+function LoadTexture(const fileName: PAnsiChar): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTexture';
 {Load texture from image data}
 function LoadTextureFromImage(image: TImage): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTextureFromImage';
 {Load cubemap from image, multiple image cubemap layouts supported}
@@ -1871,13 +1871,13 @@ function GetPixelDataSize(width, height: Integer; format: TPixelFormat): Integer
 {Get the default Font}
 function GetFontDefault: TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetFontDefault';
 {Load font from file into GPU memory (VRAM)}
-function LoadFont(const fileName: PChar): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFont';
+function LoadFont(const fileName: PAnsiChar): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFont';
 {Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set, font size is provided in pixels height}
-function LoadFontEx(const fileName: PChar; fontSize: Integer; const codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
+function LoadFontEx(const fileName: PAnsiChar; fontSize: Integer; const codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontEx';
 {Load font from Image (XNA style)}
 function LoadFontFromImage(image: TImage; key: TColorB; firstChar: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromImage';
 {Load font from memory buffer, fileType refers to extension: i.e. '.ttf'}
-function LoadFontFromMemory(const fileType: PChar; const fileData: PByte; dataSize, fontSize: Integer; const codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromMemory';
+function LoadFontFromMemory(const fileType: PAnsiChar; const fileData: PByte; dataSize, fontSize: Integer; const codepoints: PInteger; codepointCount: Integer): TFont; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontFromMemory';
 {Check if a font is valid (font data loaded, WARNING: GPU texture not checked)}
 function IsFontValid(font: TFont): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFontValid';
 {Load font data for further uses}
@@ -1889,18 +1889,18 @@ procedure UnloadFontData(glyphs: PGlyphInfo; glyphCount: Integer); cdecl; extern
 {Unload Font from GPU memory (VRAM)}
 procedure UnloadFont(font: TFont); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFont';
 {Export font as code file, returns true on success}
-procedure ExportFontAsCode(font: TFont; const fileName: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportFontAsCode';
+procedure ExportFontAsCode(font: TFont; const fileName: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportFontAsCode';
 
 (* Text drawing functions *)
 
 {Draw current FPS}
 procedure DrawFPS(posX, posY: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawFPS';
 {Draw text (using default font)}
-procedure DrawText(const text: PChar; posX, posY, fontSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawText';
+procedure DrawText(const text: PAnsiChar; posX, posY, fontSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawText';
 {Draw text using font and additional parameters}
-procedure DrawTextEx(font: TFont; const text: PChar; position: TVector2; fontSize, spacing: Single; tint:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextEx';
+procedure DrawTextEx(font: TFont; const text: PAnsiChar; position: TVector2; fontSize, spacing: Single; tint:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextEx';
 {Draw text using Font and pro parameters (rotation)}
-procedure DrawTextPro(font: TFont; const text: PChar; position, origin: TVector2; rotation, fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextPro';
+procedure DrawTextPro(font: TFont; const text: PAnsiChar; position, origin: TVector2; rotation, fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextPro';
 {Draw one character (codepoint)}
 procedure DrawTextCodepoint(font: TFont; codepoint: Integer; position: TVector2; fontSize: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextCodepoint';
 {Draw multiple character (codepoint)}
@@ -1911,9 +1911,9 @@ procedure DrawTextCodepoints(font: TFont; const codepoints: PInteger; codepointC
 {Set vertical line spacing when drawing with line-breaks}
 procedure SetTextLineSpacing(spacing: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetTextLineSpacing';
 {Measure string width for default font}
-function MeasureText(const text: PChar; fontSize: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureText';
+function MeasureText(const text: PAnsiChar; fontSize: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureText';
 {Measure string size for Font}
-function MeasureTextEx(font: TFont; const text: PChar; fontSize, spacing: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureTextEx';
+function MeasureTextEx(font: TFont; const text: PAnsiChar; fontSize, spacing: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureTextEx';
 {Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found}
 function GetGlyphIndex(font: TFont; codepoint: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGlyphIndex';
 {Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found}
@@ -1924,74 +1924,74 @@ function GetGlyphAtlasRec(font: TFont; codepoint: Integer): TRectangle; cdecl; e
 (* Text codepoints management functions (unicode characters) *)
 
 {Load UTF-8 text encoded from codepoints array}
-function LoadUTF8(const codepoints: PInteger; length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadUTF8';
+function LoadUTF8(const codepoints: PInteger; length: Integer): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadUTF8';
 {Unload UTF-8 text encoded from codepoints array}
-procedure UnloadUTF8(text: PChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadUTF8';
+procedure UnloadUTF8(text: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadUTF8';
 {Load all codepoints from a UTF-8 text string, codepoints count returned by parameter}
-function LoadCodepoints(const text: PChar; count: PInteger): PInteger; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadCodepoints';
+function LoadCodepoints(const text: PAnsiChar; count: PInteger): PInteger; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadCodepoints';
 {Unload codepoints data from memory}
 procedure UnloadCodepoints(codepoints: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadCodepoints';
 {Get total number of codepoints in a UTF-8 encoded string}
-function GetCodepointCount(const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepointCount';
+function GetCodepointCount(const text: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepointCount';
 {Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
-function GetCodepoint(const text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepoint';
+function GetCodepoint(const text: PAnsiChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepoint';
 {Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
-function GetCodepointNext(const text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepointNext';
+function GetCodepointNext(const text: PAnsiChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepointNext';
 {Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure}
-function GetCodepointPrevious(const text: PChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepointPrevious';
+function GetCodepointPrevious(const text: PAnsiChar; codepointSize: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetCodepointPrevious';
 {Encode one codepoint into UTF-8 byte array (array length returned as parameter)}
-function CodepointToUTF8(codepoint: Integer; utf8Size: PInteger): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CodepointToUTF8';
+function CodepointToUTF8(codepoint: Integer; utf8Size: PInteger): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'CodepointToUTF8';
 
 (* Text strings management functions (no UTF-8 strings, only byte chars) *)
 // WARNING 1: Most of these functions use internal static buffers, it's recommended to store returned data on user-side for re-use
 // WARNING 2: Some strings allocate memory internally for the returned strings, those strings must be free by user using MemFree()
 
 {Load text as separate lines ('\n')}
-function LoadTextLines(const text: PChar; count: PInteger): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTextLines';
+function LoadTextLines(const text: PAnsiChar; count: PInteger): PPAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTextLines';
 {Unload text lines}
-procedure UnloadTextLines(text: PPChar; lineCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadTextLines';
+procedure UnloadTextLines(text: PPAnsiChar; lineCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadTextLines';
 {Copy one string to another, returns bytes copied}
-function TextCopy(dst: PChar; const src: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextCopy';
+function TextCopy(dst: PAnsiChar; const src: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextCopy';
 {Check if two text string are equal}
-function TextIsEqual(const text1, text2: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextIsEqual';
+function TextIsEqual(const text1, text2: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextIsEqual';
 {Get text length, checks for '\0' ending}
-function TextLength(const text: PChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextLength';
+function TextLength(const text: PAnsiChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextLength';
 {Text formatting with variables (sprintf() style)}
-function TextFormat(const text: PChar): PChar; cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFormat';
+function TextFormat(const text: PAnsiChar): PAnsiChar; cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFormat';
 {Get a piece of a text string}
-function TextSubtext(const text: PChar; position, length: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSubtext';
+function TextSubtext(const text: PAnsiChar; position, length: Integer): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSubtext';
 {Remove text spaces, concat words}
-function TextRemoveSpaces(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextRemoveSpaces';
+function TextRemoveSpaces(const text: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextRemoveSpaces';
 {Get text between two strings}
-function GetTextBetween(const text, beginTag, endTag: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTextBetween';
+function GetTextBetween(const text, beginTag, endTag: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTextBetween';
 {Replace text string (WARNING: memory must be freed!)}
-function TextReplace(const text, search, replacement: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplace';
+function TextReplace(const text, search, replacement: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplace';
 {Replace text between two specific strings (WARNING: memory must be freed!)}
-function TextReplaceBetween(const text, beginTag, endTag, replacement: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplaceBetween';
+function TextReplaceBetween(const text, beginTag, endTag, replacement: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplaceBetween';
 {Insert text in a position (WARNING: memory must be freed!)}
-function TextInsert(const text, insert: PChar; position: Integer): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextInsert';
+function TextInsert(const text, insert: PAnsiChar; position: Integer): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextInsert';
 {Join text strings with delimiter}
-function TextJoin(textList: PPChar; count: Integer; const delimiter: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextJoin';
+function TextJoin(textList: PPAnsiChar; count: Integer; const delimiter: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextJoin';
 {Split text into multiple strings, using MAX_TEXTSPLIT_COUNT static strings}
-function TextSplit(const text: PChar; delimiter: Char; count: PInteger): PPChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSplit';
+function TextSplit(const text: PAnsiChar; delimiter: Char; count: PInteger): PPAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSplit';
 {Append text at specific position and move cursor}
-procedure TextAppend(text: PChar; const append: PChar; position: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextAppend';
+procedure TextAppend(text: PAnsiChar; const append: PAnsiChar; position: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextAppend';
 {Find first text occurrence within a string, -1 if not found}
-function TextFindIndex(const text, search: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFindIndex';
+function TextFindIndex(const text, search: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextFindIndex';
 {Get upper case version of provided string}
-function TextToUpper(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToUpper';
+function TextToUpper(const text: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToUpper';
 {Get lower case version of provided string}
-function TextToLower(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToLower';
+function TextToLower(const text: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToLower';
 {Get Pascal case notation version of provided string}
-function TextToPascal(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToPascal';
+function TextToPascal(const text: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToPascal';
 {Get Snake case notation version of provided string}
-function TextToSnake(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToSnake';
+function TextToSnake(const text: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToSnake';
 {Get Camel case notation version of provided string}
-function TextToCamel(const text: PChar): PChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToCamel';
+function TextToCamel(const text: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToCamel';
 {Get integer value from text}
-function TextToInteger(const text: PChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToInteger';
+function TextToInteger(const text: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToInteger';
 {Get float value from text}
-function TextToFloat(const text: PChar): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToFloat';
+function TextToFloat(const text: PAnsiChar): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextToFloat';
 
 //------------------------------------------------------------------------------------
 // Basic 3d Shapes Drawing Functions (Module: models)
@@ -2049,7 +2049,7 @@ procedure DrawGrid(slices: Integer; spacing: Single); cdecl; external {$IFNDEF R
 (* Model management functions *)
 
 {Load model from files (meshes and materials)}
-function LoadModel(const fileName: PChar): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModel';
+function LoadModel(const fileName: PAnsiChar): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModel';
 {Load model from generated mesh (default material)}
 function LoadModelFromMesh(mesh: TMesh): TModel; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModelFromMesh';
 {Check if a model is valid (loaded in GPU, VAO/VBOs)}
@@ -2099,9 +2099,9 @@ function GetMeshBoundingBox(mesh: TMesh): TBoundingBox; cdecl; external {$IFNDEF
 {Compute mesh tangents}
 procedure GenMeshTangents(mesh: PMesh); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenMeshTangents';
 {Export mesh data to file, returns true on success}
-function ExportMesh(mesh: TMesh; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportMesh';
+function ExportMesh(mesh: TMesh; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportMesh';
 {Export mesh as code file (.h) defining multiple arrays of vertex attributes}
-function ExportMeshAsCode(mesh: TMesh; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportMeshAsCode';
+function ExportMeshAsCode(mesh: TMesh; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportMeshAsCode';
 
 (* Mesh generation functions *)
 
@@ -2131,7 +2131,7 @@ function GenMeshCubicmap(cubicmap: TImage; cubeSize: TVector3): TMesh; cdecl; ex
 (* Material loading/unloading functions *)
 
 {Load materials from model file}
-function LoadMaterials(const fileName: PChar; materialCount: PInteger): PMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMaterials';
+function LoadMaterials(const fileName: PAnsiChar; materialCount: PInteger): PMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMaterials';
 {Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)}
 function LoadMaterialDefault: TMaterial; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMaterialDefault';
 {Check if a material is valid (shader assigned, map textures loaded in GPU)}
@@ -2146,7 +2146,7 @@ procedure SetModelMeshMaterial(model: PModel; meshId, materialId: Integer); cdec
 (* Model animations loading/unloading functions *)
 
 {Load model animations from file}
-function LoadModelAnimations(fileName: PChar; animCount: PInteger): PModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModelAnimations';
+function LoadModelAnimations(fileName: PAnsiChar; animCount: PInteger): PModelAnimation; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadModelAnimations';
 {Update model animation pose (CPU)}
 procedure UpdateModelAnimation(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimation';
 {Update model animation mesh bone matrices (GPU skinning)}
@@ -2200,13 +2200,13 @@ function GetMasterVolume(): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName
 (* Wave/Sound loading/unloading functions *)
 
 {Load wave data from file}
-function LoadWave(const fileName: PChar): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWave';
+function LoadWave(const fileName: PAnsiChar): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWave';
 {Load wave from memory buffer, fileType refers to extension: i.e. '.wav' }
-function LoadWaveFromMemory(const fileType: PChar; const fileData: PByte; dataSize: Integer): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWaveFromMemory';
+function LoadWaveFromMemory(const fileType: PAnsiChar; const fileData: PByte; dataSize: Integer): TWave; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadWaveFromMemory';
 {Checks if wave data is valid (data loaded and parameters)}
 function IsWaveValid(wave: TWave): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsWaveValid';
 {Load sound from file}
-function LoadSound(const fileName: PChar): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSound';
+function LoadSound(const fileName: PAnsiChar): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSound';
 {Load sound from wave data}
 function LoadSoundFromWave(wave: TWave): TSound; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadSoundFromWave';
 {Create a new sound that shares the same sample data as the source sound, does not own the sound data}
@@ -2222,9 +2222,9 @@ procedure UnloadSound(sound: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllNa
 {Unload a sound alias (does not deallocate sample data)}
 procedure UnloadSoundAlias(alias: TSound); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadSoundAlias';
 {Export wave data to file, returns true on success}
-function ExportWave(wave: TWave; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportWave';
+function ExportWave(wave: TWave; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportWave';
 {Export wave sample data to code (.h), returns true on success}
-function ExportWaveAsCode(wave: TWave; const fileName: PChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportWaveAsCode';
+function ExportWaveAsCode(wave: TWave; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportWaveAsCode';
 
 (* Wave/Sound management functions *)
 
@@ -2258,9 +2258,9 @@ procedure UnloadWaveSamples(samples: PSingle); cdecl; external {$IFNDEF RAY_STAT
 (* Music management functions *)
 
 {Load music stream from file}
-function LoadMusicStream(const fileName: PChar): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMusicStream';
+function LoadMusicStream(const fileName: PAnsiChar): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMusicStream';
 {Load music stream from data}
-function LoadMusicStreamFromMemory(const fileType: PChar; const data: PByte; dataSize: Integer): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMusicStreamFromMemory';
+function LoadMusicStreamFromMemory(const fileType: PAnsiChar; const data: PByte; dataSize: Integer): TMusic; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadMusicStreamFromMemory';
 {Checks if a music stream is valid (context and buffers initialized)}
 function IsMusicValid(music: TMusic): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsMusicValid';
 {Unload music stream}
