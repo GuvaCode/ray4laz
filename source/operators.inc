@@ -1,4 +1,3 @@
-(*
 { TVector2 operators }
 
 operator := (a: TVector2Data): TVector2;
@@ -190,4 +189,4 @@ end;
 operator = (a, b: TColorB): Boolean;
 begin
   Result := (a.r = b.r) and (a.g = b.g) and (a.b = b.b) and (a.a = b.a);
-end;      *)
+end;
