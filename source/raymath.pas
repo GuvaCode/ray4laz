@@ -37,8 +37,8 @@
 
 unit raymath;
 
-{$mode objfpc}{$H+}
-{$packrecords c}
+//{$mode objfpc}{$H+}
+//{$packrecords c}
 {$ALIGN 8}
 {$MINENUMSIZE 4}
 // Include configuration file
