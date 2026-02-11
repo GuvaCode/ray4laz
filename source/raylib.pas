@@ -3,8 +3,13 @@ raylib ver 5.6-dev
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
-{$mode objfpc}{$H+}
-{$modeswitch advancedrecords}
+
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+  {$modeswitch advancedrecords}
+{$ELSE}
+  {$DEFINE DELPHI}
+{$ENDIF}
 
 
 
@@ -17,7 +22,7 @@ interface
 {$IFNDEF RAY_STATIC}
 const
   cDllName =
-             {$IFDEF WINDOWS} 'libraylib.dll'; {$IFEND}
+             {$IFDEF MSWINDOWS} 'libraylib.dll'; {$IFEND}
              {$IFDEF UNIX}
              {$IFDEF DARWIN} 'libraylib.dylib';
              {$ELSE} 'libraylib.so'; {$IFEND}  // for Linux, FreeBSD, NetBSD, OpenBSD, DragonFly, Haiku
@@ -39,7 +44,11 @@ const
    PColorB = ^TColorB;
    TColorB = record
      r,g,b,a : byte; // Color value
+     {$IFDEF FPC}
      class operator = (aColor, bColor: TColorB): Boolean;
+     {$ELSE}
+     class operator Equal(aColor, bColor: TColorB): Boolean;
+     {$ENDIF}
      procedure Create(aR: Byte; aG: Byte; aB: Byte; aA: Byte);
    end;
    TColorBData = array[0..3] of Byte;
@@ -2353,6 +2362,7 @@ procedure Camera2DSet(aCam: PCamera2D; aOffset, aTarget: TVector2; aRotation, aZ
 function Camera3DCreate(aPosition, aTarget, aUp: TVector3; aFOVY: Single; aProjection: Integer): TCamera3D;
 procedure Camera3DSet(aCam: PCamera3D; aPosition, aTarget, aUp: TVector3; aFOVY: Single; aType: Integer);
 
+{$IFDEF FPC}
 { TVector2 operators }
 operator := (a: TVector2Data): TVector2; inline;
 operator + (a, b: TVector2): TVector2; overload; inline;
@@ -2399,6 +2409,7 @@ operator = (a, b: TMatrix): Boolean; inline;
 { TColorB operators }
 operator := (a: TColorBData): TColorB; inline;
 operator = (a, b: TColorB): Boolean; inline;
+{$ENDIF}
 
 implementation
 uses
@@ -2591,10 +2602,17 @@ end;
 
 { TColorB }
 
+{$IFDEF FPC}
 class operator TColorB.=(aColor, bColor: TColorB): Boolean;
 begin
   Result := (aColor.R = bColor.R) and (aColor.G = bColor.G) and (aColor.B = bColor.B);
 end;
+{$ELSE}
+class operator TColorB.Equal(aColor, bColor: TColorB): Boolean;
+begin
+  Result := (aColor.R = bColor.R) and (aColor.G = bColor.G) and (aColor.B = bColor.B);
+end;
+{$ENDIF}
 
 procedure TColorB.Create(aR: Byte; aG: Byte; aB: Byte; aA: Byte);
 begin

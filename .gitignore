@@ -43,3 +43,9 @@ templates/standard_game/
 
 # GNU+Linux
 # *.so
+*~
+*.exe
+*.dcu
+*/__recovery/*
+*.local
+*.rsm
