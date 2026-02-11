@@ -2669,7 +2669,9 @@ begin
   self := BoundingBoxCreate(aMin, aMax);
 end;
 
-{$include operators.inc}
+{$IFDEF FPC}
+  {$include operators.inc}
+{$ENDIF}
 
 initialization
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision]);
