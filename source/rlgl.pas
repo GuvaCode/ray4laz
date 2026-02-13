@@ -50,8 +50,14 @@
 
 unit rlgl;
 
-{$mode objfpc}{$H+}
-{$packrecords c}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+  {$modeswitch advancedrecords}
+  {$packrecords c}
+{$ELSE}
+  {$DEFINE DELPHI}
+{$ENDIF}
+
 {$ALIGN 8}
 {$MINENUMSIZE 4}
 // Include configuration file
