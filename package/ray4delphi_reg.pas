@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, ToolsAPI, DesignIntf, DesignEditors,
   Vcl.Forms, PlatformAPI, Vcl.Menus, Vcl.ActnList, Vcl.Graphics,
-  Vcl.Dialogs, System.UITypes;
+  Vcl.Dialogs, System.UITypes, Vcl.FileCtrl;
 
 type
   { Базовый класс для создателей проектов raylib }
@@ -175,9 +175,8 @@ var
   SimpleWizardIndex: Integer = -1;
   CustomWizardIndex: Integer = -1;
   ShaderToysWizardIndex: Integer = -1;
-
-  { Категория для галереи Welcome Page }
   GalleryCategory: IOTAGalleryCategory = nil;
+  ProjectDirectorySelected: string = '';  // Глобальная переменная для хранения выбранной директории
 
 { Вспомогательные функции }
 function GetActiveProjectGroup: IOTAProjectGroup;
@@ -202,28 +201,88 @@ begin
   end;
 end;
 
-function GenerateUniqueProjectName(const BaseName: string): string;
+function GetCurrentProjectDirectory: string;
 var
   ProjectGroup: IOTAProjectGroup;
+  ActiveProject: IOTAProject;
+  ModuleServices: IOTAModuleServices;
+begin
+  Result := GetCurrentDir;
+
+  if Supports(BorlandIDEServices, IOTAModuleServices, ModuleServices) then
+  begin
+    // Сначала пытаемся получить активный проект
+    ActiveProject := ModuleServices.GetActiveProject;
+    if ActiveProject <> nil then
+    begin
+      Result := ExtractFilePath(ActiveProject.FileName);
+      if Result <> '' then
+        Exit;
+    end;
+
+    // Если нет активного проекта, ищем проект группу
+    ProjectGroup := GetActiveProjectGroup;
+    if (ProjectGroup <> nil) and (ProjectGroup.FileName <> '') then
+    begin
+      Result := ExtractFilePath(ProjectGroup.FileName);
+      if Result <> '' then
+        Exit;
+    end;
+  end;
+end;
+
+function SelectProjectDirectory: string;
+var
+  Dialog: TFileOpenDialog;
+begin
+  // Если директория уже выбрана, возвращаем её без показа диалога
+  if ProjectDirectorySelected <> '' then
+  begin
+    Result := ProjectDirectorySelected;
+    Exit;
+  end;
+
+  Result := '';
+
+  Dialog := TFileOpenDialog.Create(nil);
+  try
+    Dialog.Title := 'Select directory for new raylib project';
+    Dialog.Options := Dialog.Options + [fdoPickFolders, fdoPathMustExist, fdoForceFileSystem];
+    Dialog.DefaultFolder := GetCurrentProjectDirectory;
+
+    if Dialog.Execute then
+    begin
+      if Dialog.Files.Count > 0 then
+      begin
+        Result := Dialog.Files[0];
+        ProjectDirectorySelected := Result; // Сохраняем выбранную директорию
+      end;
+    end;
+  finally
+    Dialog.Free;
+  end;
+
+  // Если пользователь отменил выбор, используем текущую директорию проекта
+  if Result = '' then
+  begin
+    Result := GetCurrentProjectDirectory;
+    ProjectDirectorySelected := Result;
+    (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+      'Ray4Delphi: No directory selected, using current project directory');
+  end;
+end;
+
+function GenerateUniqueProjectName(const BaseName: string): string;
+var
   ProjectDir: string;
   i: Integer;
   ProjectFileName: string;
-  ExistingProjects: TArray<string>;
   IsUnique: Boolean;
 begin
   Result := '';
 
-
-  ProjectGroup := ProjectGroup;
-  if Assigned(ProjectGroup) then
-  begin
-    ProjectDir := ExtractFilePath(ProjectGroup.FileName);
-    if ProjectDir = '' then
-      ProjectDir := GetCurrentDir;
-  end
-  else
-    ProjectDir := GetCurrentDir;
-
+  // Показываем диалог выбора папки только один раз
+  ProjectDir := SelectProjectDirectory;
   ProjectDir := IncludeTrailingPathDelimiter(ProjectDir);
 
   i := 1;
@@ -231,36 +290,31 @@ begin
   begin
     ProjectFileName := ProjectDir + BaseName + IntToStr(i) + '.dpr';
 
-    { Проверяем уникальность имени }
+    // Проверяем уникальность имени
     IsUnique := True;
 
-    { Проверяем существование файла на диске }
+    // Проверяем существование файла на диске
     if TFile.Exists(ProjectFileName) then
-      IsUnique := False
-    else
-    begin
-      { Проверяем, не используется ли это имя в открытых проектах }
-      for var ExistingFile in ExistingProjects do
-      begin
-        if CompareText(ExistingFile, ProjectFileName) = 0 then
-        begin
-          IsUnique := False;
-          Break;
-        end;
-      end;
-    end;
+      IsUnique := False;
 
     if IsUnique then
       Result := ProjectFileName
     else
       Inc(i);
 
-    { Предотвращаем бесконечный цикл }
+    // Предотвращаем бесконечный цикл
     if i > 1000 then
     begin
       Result := ProjectDir + BaseName + IntToStr(Random(1000)) + '.dpr';
       Break;
     end;
+  end;
+
+  // Показываем сообщение о том, куда сохраняется проект (только один раз)
+  if ProjectDirectorySelected <> '' then
+  begin
+    (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+      Format('Ray4Delphi: Creating project in: %s', [ProjectDir]));
   end;
 end;
 
@@ -350,140 +404,21 @@ end;
 
 { Получение пути к raylib }
 function TRayBaseProjectCreator.GetRaylibPath: string;
-var
-  Registry: TRegistry;
-  PossiblePaths: TArray<string>;
-  Path: string;
-  PackageServices: IOTAPackageServices;
-  I: Integer;
-  PackageInfo: IOTAPackageInfo;
-  PackagePath: string;
 begin
   Result := '';
 
-  { Вариант 1: Получаем путь из пакета Ray4Delphi через PackageServices }
-  if Supports(BorlandIDEServices, IOTAPackageServices, PackageServices) then
-  begin
-    for I := 0 to PackageServices.PackageCount - 1 do
-    begin
-      PackageInfo := PackageServices.Package[I];
-      if PackageInfo <> nil then
-      begin
-        { Проверяем, что это наш пакет Ray4Delphi }
-        if (Pos('ray4delphi', LowerCase(PackageInfo.GetName)) > 0) or
-           (Pos('ray4delphi', LowerCase(PackageInfo.GetFileName)) > 0) then
-        begin
-          { Получаем путь к папке с пакетом }
-          PackagePath := ExtractFilePath(PackageInfo.GetFileName);
-
-          { Для отладки - показываем найденный путь }
-          (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
-            'Ray4Delphi: Found package at ' + PackagePath);
-
-          { Формируем путь к исходникам: ..\source относительно папки пакета }
-          Result := IncludeTrailingPathDelimiter(
-            ExtractFilePath(ExcludeTrailingPathDelimiter(PackagePath))) + 'source';
-
-          { Проверяем существует ли папка source }
-          if DirectoryExists(Result) then
-          begin
-            (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
-              'Ray4Delphi: Found source at ' + Result);
-            Exit;
-          end
-          else
-          begin
-            { Если source не найден, пробуем другие варианты }
-            Result := '';
-          end;
-        end;
-      end;
-    end;
-  end;
-
-  { Вариант 2: Ищем через ModuleServices как запасной вариант }
-  if Result = '' then
-  begin
-    var ModuleServices: IOTAModuleServices;
-    if Supports(BorlandIDEServices, IOTAModuleServices, ModuleServices) then
-    begin
-      for var j := 0 to ModuleServices.ModuleCount - 1 do
-      begin
-        if Supports(ModuleServices.Modules[j], IOTAPackageInfo, PackageInfo) then
-        begin
-          if (Pos('ray4delphi', LowerCase(PackageInfo.GetName)) > 0) or
-             (Pos('ray4delphi', LowerCase(PackageInfo.GetFileName)) > 0) then
-          begin
-            PackagePath := ExtractFilePath(PackageInfo.GetFileName);
-            Result := IncludeTrailingPathDelimiter(
-              ExtractFilePath(ExcludeTrailingPathDelimiter(PackagePath))) + 'source';
-
-            if DirectoryExists(Result) then
-              Exit
-            else
-              Result := '';
-          end;
-        end;
-      end;
-    end;
-  end;
-
   { Вариант 3: Проверяем переменную окружения RAYLIB_PATH }
-  Result := GetEnvironmentVariable('RAYLIB_PATH');
+  Result := GetEnvironmentVariable('RAY4LAZ_PATH');
   if (Result <> '') and DirectoryExists(Result) then
   begin
-    Result := IncludeTrailingPathDelimiter(Result) + 'src';
+    Result := IncludeTrailingPathDelimiter(Result) + 'source';
     if DirectoryExists(Result) then
       Exit;
   end;
 
-  { Вариант 4: Проверяем типичные места установки }
-  PossiblePaths := TArray<string>.Create(
-    'C:\raylib\src',
-    'C:\Program Files\raylib\src',
-    'C:\Program Files (x86)\raylib\src',
-    'C:\Dev\raylib\src',
-    'C:\Projects\raylib\src',
-    'D:\raylib\src',
-    ExtractFilePath(ParamStr(0)) + 'raylib\src'
-  );
-
-  for Path in PossiblePaths do
-  begin
-    if DirectoryExists(Path) then
-    begin
-      Result := Path;
-      Exit;
-    end;
-  end;
-
-  { Вариант 5: Ищем в реестре (для установленных версий) }
-  Registry := TRegistry.Create;
-  try
-    Registry.RootKey := HKEY_LOCAL_MACHINE;
-    if Registry.OpenKeyReadOnly('SOFTWARE\raylib') or
-       Registry.OpenKeyReadOnly('SOFTWARE\Wow6432Node\raylib') then
-    begin
-      Result := Registry.ReadString('InstallDir');
-      Registry.CloseKey;
-      if (Result <> '') and DirectoryExists(Result) then
-      begin
-        Result := IncludeTrailingPathDelimiter(Result) + 'src';
-        if DirectoryExists(Result) then
-          Exit;
-      end;
-    end;
-  finally
-    Registry.Free;
-  end;
-
-  { Если ничего не нашли, используем путь по умолчанию }
-  Result := 'C:\Project\ray4laz\source'; // Путь по умолчанию
-
   { Сообщаем пользователю, что используется путь по умолчанию }
   (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
-    'Ray4Delphi: Using default source path ' + Result +
-    '. Please ensure raylib source files are there or set RAYLIB_PATH environment variable.');
+  'Please ensure raylib source files are there or set RAY4LAZ_PATH environment variable.');
 end;
 
 { Установка опций проекта и переключение на Release }
@@ -517,22 +452,12 @@ begin
       Config := ProjectOptionsConfig.Configurations[I];
       if Config <> nil then
       begin
-     // ;
-        //ProjectOptions.Values['UnitDir'] := RaylibPath;
         { Проверяем имя конфигурации }
-      //  if CompareText(Config.Name, '') = 0 then
-      //  begin
+        if CompareText(Config.Name, 'Release') = 0 then
+        begin
           ReleaseConfig := Config;
-       //   Break;
-       // end;
-
-         ProjectOptionsConfig.ActiveConfiguration := ReleaseConfig;
-      (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
-        'Ray4Delphi: Switched to Release configuration');
-
-       ProjectOptions.Values['UnitDir'] := RaylibPath;
-
-
+          Break;
+        end;
       end;
     end;
 
@@ -543,6 +468,8 @@ begin
       (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
         'Ray4Delphi: Switched to Release configuration');
 
+      // Убедимся, что путь к raylib установлен и в активной конфигурации
+      ProjectOptions.Values['UnitDir'] := RaylibPath;
     end
     else
     begin
@@ -558,8 +485,7 @@ end;
 
 function TRaySimpleProjectCreator.GetProjectFileName: string;
 begin
-//  Result := GenerateUniqueProjectName('raylib_game', self.GetProjectFileName);
-   Result := GenerateUniqueProjectName('raylib_game');
+  Result := GenerateUniqueProjectName('raylib_game');
 end;
 
 function TRaySimpleProjectCreator.GetProjectSource: string;
@@ -739,6 +665,9 @@ var
   ModuleServices: IOTAModuleServices;
   Creator: TRaySimpleProjectCreator;
 begin
+  // Сбрасываем сохраненную директорию перед созданием нового проекта
+  ProjectDirectorySelected := '';
+
   Creator := TRaySimpleProjectCreator.Create('', TRayPlatformAlias.GetPlatformName);
   ModuleServices := BorlandIDEServices as IOTAModuleServices;
 
@@ -864,6 +793,9 @@ var
   ModuleServices: IOTAModuleServices;
   Creator: TRayCustomAppProjectCreator;
 begin
+  // Сбрасываем сохраненную директорию перед созданием нового проекта
+  ProjectDirectorySelected := '';
+
   Creator := TRayCustomAppProjectCreator.Create('', TRayPlatformAlias.GetPlatformName);
   ModuleServices := BorlandIDEServices as IOTAModuleServices;
 
@@ -1027,15 +959,13 @@ end;
 
 procedure TShaderToysMenuWizard.Execute;
 begin
-  { Этот метод вызывается при выборе визарда в меню Help }
-  { Но мы используем свой обработчик OnClick }
+ ///
 end;
 
 { TRayPlatformAlias }
 
 class function TRayPlatformAlias.GetPlatformName: string;
 begin
- //Result := 'Win64';
   {$IFDEF WIN32}
   Result := 'Win32';
   {$ELSE}
@@ -1047,6 +977,7 @@ end;
 
 procedure Register;
 begin
+
   { Регистрируем два пункта для диалога File > New > Other (репозиторий) }
   if SimpleWizardIndex = -1 then
     SimpleWizardIndex := (BorlandIDEServices as IOTAWizardServices).AddWizard(TRaySimpleRepositoryWizard.Create);
@@ -1063,8 +994,8 @@ initialization
   SimpleWizardIndex := -1;
   CustomWizardIndex := -1;
   ShaderToysWizardIndex := -1;
-
   GalleryCategory := nil;
+  ProjectDirectorySelected := '';  // Сбрасываем при старте
 
 finalization
   if SimpleWizardIndex <> -1 then
@@ -1076,6 +1007,6 @@ finalization
   if ShaderToysWizardIndex <> -1 then
     (BorlandIDEServices as IOTAWizardServices).RemoveWizard(ShaderToysWizardIndex);
 
-  { Очищаем ссылку на категорию }
   GalleryCategory := nil;
+  ProjectDirectorySelected := '';  // Сбрасываем при завершении
 end.
