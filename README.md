@@ -86,6 +86,12 @@ building raylib on multiple platforms
  - [CMake Build Options](https://github.com/raysan5/raylib/wiki/CMake-Build-Options)
 
 
+installation in Delphi ide. 
+--------
+You can view the installation for [Delphi in the ray4laz Wiki](https://github.com/GuvaCode/ray4laz/wiki/Delphi-install).
+
+
+
 installation in lazarus ide. 
 --------
 
