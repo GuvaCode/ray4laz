@@ -652,7 +652,7 @@ begin
 
   Project.Save(False,True);
   Project.MarkModified;
-  {$IFDEF WIN64}
+
     Sr := GetRaylibPath + 'libs\x86_64-win64\libraylib.dll';
     Ds := GetCurrentProjectDirectory + 'Win64\Release\' + 'libraylib.dll';
 
@@ -664,9 +664,21 @@ begin
 
     CopyFile(PWideChar(Sr), PWideChar(Ds), True);
 
+    Sr := GetRaylibPath + 'libs\i686-win32\libraylib.dll';
+    Ds := GetCurrentProjectDirectory + 'Win32\Release\' + 'libraylib.dll';
+
+    if not DirectoryExists(GetCurrentProjectDirectory+'Win32') then
+      CreateDir(GetCurrentProjectDirectory+'Win32');
+
+    if not DirectoryExists(GetCurrentProjectDirectory+'Win32\Release') then
+      CreateDir(GetCurrentProjectDirectory+'Win32\Release');
+
+
+    CopyFile(PWideChar(Sr), PWideChar(Ds), True);
+
+
     Project.Show;
-  {$ENDIF}
-  end;
+end;
 
 function TRaySimpleRepositoryWizard.GetAuthor: string;
 begin
@@ -795,7 +807,7 @@ begin
   Project.ProjectOptions.ModifiedState := True;
   Project.Save(False,True);
 
-  {$IFDEF WIN64}
+
   Sr := GetRaylibPath + 'libs\x86_64-win64\libraylib.dll';
   Ds := GetCurrentProjectDirectory + 'Win64\Release\' + 'libraylib.dll';
 
@@ -806,7 +818,18 @@ begin
     CreateDir(GetCurrentProjectDirectory+'Win64\Release');
 
   CopyFile(PWideChar(Sr), PWideChar(Ds), True);
-  {$ENDIF}
+
+  Sr := GetRaylibPath + 'libs\i686-win32\libraylib.dll';
+  Ds := GetCurrentProjectDirectory + 'Win32\Release\' + 'libraylib.dll';
+
+  if not DirectoryExists(GetCurrentProjectDirectory+'Win32') then
+    CreateDir(GetCurrentProjectDirectory+'Win32');
+
+  if not DirectoryExists(GetCurrentProjectDirectory+'Win32\Release') then
+    CreateDir(GetCurrentProjectDirectory+'Win32\Release');
+
+
+  CopyFile(PWideChar(Sr), PWideChar(Ds), True);
 
 
   Project.Show;

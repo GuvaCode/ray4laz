@@ -49,3 +49,4 @@ templates/standard_game/
 */__recovery/*
 *.local
 *.rsm
+!registeringDelphi.exe
