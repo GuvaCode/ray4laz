@@ -1,0 +1,555 @@
+﻿=== GetOptionNames Result ===
+Дата: 14.02.2026 18:58:01
+
+Проект: C:\Users\user\Documents\Embarcadero\Studio\Projects\raylib_custom1.dproj
+Всего опций: 272
+
+Список опций:
+
+1. Align (Kind: 1)
+2. BoolEval (Kind: 1)
+3. Assertions (Kind: 1)
+4. UnitDebugInfo (Kind: 1)
+5. ImportedData (Kind: 1)
+6. LongStrings (Kind: 1)
+7. IOChecks (Kind: 1)
+8. WriteableConst (Kind: 1)
+9. LocalSymbols (Kind: 1)
+10. TypeInfo (Kind: 1)
+11. Optimization (Kind: 1)
+12. OpenStrings (Kind: 1)
+13. OverflowChecks (Kind: 1)
+14. RangeChecks (Kind: 1)
+15. StackChecks (Kind: 1)
+16. TypedAddress (Kind: 1)
+17. SafeDivide (Kind: 1)
+18. VarStringChecks (Kind: 1)
+19. StackFrames (Kind: 1)
+20. ExtendedSyntax (Kind: 1)
+21. ReferenceInfo (Kind: 1)
+22. MinEnumSize (Kind: 1)
+23. DebugInfo (Kind: 3)
+24. RemoteSymbols (Kind: 3)
+25. OutputObj (Kind: 6)
+26. GenHpp (Kind: 3)
+27. HintFlag (Kind: 3)
+28. WarnFlag (Kind: 3)
+29. StackSize (Kind: 1)
+30. MaxStackSize (Kind: 1)
+31. ResourceReserve (Kind: 1)
+32. ImageBase (Kind: 1)
+33. Target (Kind: 3)
+34. MapFile (Kind: 3)
+35. GenDRC (Kind: 3)
+36. GenDOC (Kind: 3)
+37. CompileName (Kind: 18)
+38. Defines (Kind: 18)
+39. OutputDir (Kind: 18)
+40. UnitOutputDir (Kind: 18)
+41. UnitDir (Kind: 18)
+42. ObjDir (Kind: 18)
+43. SrcDir (Kind: 18)
+44. ResDir (Kind: 18)
+45. NamespacePrefix (Kind: 18)
+46. PkgDllDir (Kind: 18)
+47. OptionsString (Kind: 18)
+48. SOName (Kind: 18)
+49. SOPrefix (Kind: 18)
+50. SOPrefixDefined (Kind: 3)
+51. SOSuffix (Kind: 18)
+52. SOVersion (Kind: 18)
+53. DynamicLoader (Kind: 18)
+54. PasCodepage (Kind: 18)
+55. SignAssembly (Kind: 3)
+56. DelaySign (Kind: 3)
+57. KeyFile (Kind: 18)
+58. KeyContainer (Kind: 18)
+59. WarnSymbolDeprecated (Kind: 1)
+60. WarnSymbolLibrary (Kind: 1)
+61. WarnSymbolPlatform (Kind: 1)
+62. WarnSymbolExperimental (Kind: 1)
+63. WarnUnitLibrary (Kind: 1)
+64. WarnUnitPlatform (Kind: 1)
+65. WarnUnitDeprecated (Kind: 1)
+66. WarnUnitExperimental (Kind: 1)
+67. WarnHresultCompat (Kind: 1)
+68. WarnHidingMember (Kind: 1)
+69. WarnHiddenVirtual (Kind: 1)
+70. WarnGarbage (Kind: 1)
+71. WarnBoundsError (Kind: 1)
+72. WarnZeroNilCompat (Kind: 1)
+73. WarnStringConstTrunced (Kind: 1)
+74. WarnForLoopVarVarpar (Kind: 1)
+75. WarnTypedConstVarpar (Kind: 1)
+76. WarnAsgToTypedConst (Kind: 1)
+77. WarnCaseLabelRange (Kind: 1)
+78. WarnForVariable (Kind: 1)
+79. WarnConstructingAbstract (Kind: 1)
+80. WarnComparisonFalse (Kind: 1)
+81. WarnComparisonTrue (Kind: 1)
+82. WarnComparingSignedUnsigned (Kind: 1)
+83. WarnCombiningSignedUnsigned (Kind: 1)
+84. WarnUnsupportedConstruct (Kind: 1)
+85. WarnFileOpen (Kind: 1)
+86. WarnFileOpenUnitsrc (Kind: 1)
+87. WarnBadGlobalSymbol (Kind: 1)
+88. WarnDuplicateCtorDtor (Kind: 1)
+89. WarnInvalidDirective (Kind: 1)
+90. WarnPackageNoLink (Kind: 1)
+91. WarnPackagedThreadvar (Kind: 1)
+92. WarnImplicitImport (Kind: 1)
+93. WarnHppemitIgnored (Kind: 1)
+94. WarnNoRetval (Kind: 1)
+95. WarnUseBeforeDef (Kind: 1)
+96. WarnForLoopVarUndef (Kind: 1)
+97. WarnUnitNameMismatch (Kind: 1)
+98. WarnNoCfgFileFound (Kind: 1)
+99. WarnMessageDirective (Kind: 1)
+100. WarnImplicitVariants (Kind: 1)
+101. WarnUnicodeToLocale (Kind: 1)
+102. WarnLocaleToUnicode (Kind: 1)
+103. WarnImagebaseMultiple (Kind: 1)
+104. WarnSuspiciousTypecast (Kind: 1)
+105. WarnPrivatePropaccessor (Kind: 1)
+106. WarnUnsafeType (Kind: 1)
+107. WarnUnsafeCode (Kind: 1)
+108. WarnUnsafeCast (Kind: 1)
+109. WarnOptionTruncated (Kind: 1)
+110. WarnWideCharReduced (Kind: 1)
+111. WarnDuplicatesIgnored (Kind: 1)
+112. WarnInitSeq (Kind: 1)
+113. WarnLocalPInvoke (Kind: 1)
+114. WarnTypeInfoImplicitlyAdded (Kind: 1)
+115. WarnRLinkWarning (Kind: 1)
+116. WarnImplicitStringCast (Kind: 1)
+117. WarnImplicitStringCastLoss (Kind: 1)
+118. WarnExplicitStringCast (Kind: 1)
+119. WarnExplicitStringCastLoss (Kind: 1)
+120. WarnCvtWCharToAChar (Kind: 1)
+121. WarnCvtNarrowingStringLost (Kind: 1)
+122. WarnCvtACharToWChar (Kind: 1)
+123. WarnCvtWideningStringLost (Kind: 1)
+124. WarnNonPortableTypecast (Kind: 1)
+125. WarnXMLWhitespaceNotAllowed (Kind: 1)
+126. WarnXMLUnknownEntity (Kind: 1)
+127. WarnXMLInvalidNameStart (Kind: 1)
+128. WarnXMLInvalidName (Kind: 1)
+129. WarnXMLExpectedCharacter (Kind: 1)
+130. WarnXMLCREFNoResolve (Kind: 1)
+131. WarnXMLNoParm (Kind: 1)
+132. WarnXMLNoMatchingParm (Kind: 1)
+133. WarnImmutableStrings (Kind: 1)
+134. PkgDcpDir (Kind: 18)
+135. UsePackages (Kind: 3)
+136. Packages (Kind: 18)
+137. UnitAliases (Kind: 18)
+138. ExeDescription (Kind: 18)
+139. ImplicitBuild (Kind: 3)
+140. RuntimeOnly (Kind: 3)
+141. DesigntimeOnly (Kind: 3)
+142. DebugSourcePath (Kind: 18)
+143. ImageDebugInfo (Kind: 3)
+144. HeapSize (Kind: 1)
+145. MaxHeapSize (Kind: 1)
+146. LinkMaxErrors (Kind: 1)
+147. LinkShowMangle (Kind: 3)
+148. LinkGenImportLib (Kind: 3)
+149. LinkGenLib (Kind: 3)
+150. LinkNoStateFiles (Kind: 3)
+151. LinkSubsysMajor (Kind: 1)
+152. LinkSubsysMinor (Kind: 1)
+153. LinkCaseSensitiveLink (Kind: 3)
+154. LinkCalculateChecksum (Kind: 3)
+155. LinkFastTLS (Kind: 3)
+156. LinkReplaceResources (Kind: 3)
+157. LinkUserMajor (Kind: 1)
+158. LinkUserMinor (Kind: 1)
+159. LinkImageComment (Kind: 18)
+160. LinkDelayLoad (Kind: 18)
+161. CppDebugInfo (Kind: 3)
+162. LineNumbers (Kind: 3)
+163. AutoRegVars (Kind: 3)
+164. MergeDupStrs (Kind: 3)
+165. EnableInLines (Kind: 3)
+166. ShowWarnings (Kind: 3)
+167. StdStackFrame (Kind: 3)
+168. TreatEnumsAsInts (Kind: 3)
+169. PCH (Kind: 3)
+170. ShowInfoMsgs (Kind: 3)
+171. ShowExtendedMsgs (Kind: 3)
+172. GenDll (Kind: 3)
+173. GenConsoleApp (Kind: 3)
+174. GenPackage (Kind: 3)
+175. ShowLinkerWarnings (Kind: 3)
+176. LinkDebugVcl (Kind: 3)
+177. InstructionSet (Kind: 3)
+178. Alignment (Kind: 3)
+179. CallingConvention (Kind: 3)
+180. RegisterVars (Kind: 3)
+181. Ansi (Kind: 3)
+182. AutoDep (Kind: 3)
+183. Underscore (Kind: 3)
+184. PICCodeGen (Kind: 3)
+185. FastFloat (Kind: 3)
+186. PentiumFloat (Kind: 3)
+187. NestedComments (Kind: 3)
+188. MFCCompat (Kind: 3)
+189. IdentLen (Kind: 1)
+190. MemberPrecision (Kind: 3)
+191. ForLoops (Kind: 3)
+192. CodeModifiers (Kind: 3)
+193. EnableRTTI (Kind: 3)
+194. EnableExceptions (Kind: 3)
+195. EHLocalInfo (Kind: 3)
+196. EHDtor (Kind: 3)
+197. EHPrologs (Kind: 3)
+198. ZeroBaseClass (Kind: 3)
+199. ZeroClassFunction (Kind: 3)
+200. ForceCppCompile (Kind: 3)
+201. MemberPointer (Kind: 3)
+202. VTables (Kind: 3)
+203. Templates (Kind: 3)
+204. PchPath (Kind: 18)
+205. PchStopAfter (Kind: 18)
+206. UseDynamicRtl (Kind: 3)
+207. MultiThreaded (Kind: 3)
+208. CodeOpt (Kind: 3)
+209. FloatSupport (Kind: 3)
+210. IncludePath (Kind: 18)
+211. LibPath (Kind: 18)
+212. LibraryList (Kind: 18)
+213. TasmViaCppOpts (Kind: 18)
+214. ClearPackageCache (Kind: 3)
+215. ClearUnitCache (Kind: 3)
+216. MarkModified (Kind: 3)
+217. CaseSensitive (Kind: 3)
+218. PurgeComment (Kind: 3)
+219. PageSize (Kind: 1)
+220. ListFile (Kind: 18)
+221. TasmCrossReference (Kind: 3)
+222. TasmSymbolTables (Kind: 3)
+223. TasmGenerateListing (Kind: 3)
+224. TasmIncludeConditionals (Kind: 3)
+225. TasmIncludeErrors (Kind: 3)
+226. TasmExpanded (Kind: 3)
+227. TasmCaseCheckingOn (Kind: 3)
+228. TasmAllCase (Kind: 3)
+229. TasmDebugOn (Kind: 3)
+230. TasmFullDebug (Kind: 3)
+231. TasmWarningsOn (Kind: 3)
+232. TasmWarningsLevel1 (Kind: 3)
+233. TasmHashTable (Kind: 1)
+234. TasmPasses (Kind: 1)
+235. TasmSymbolLength (Kind: 1)
+236. TasmDirective (Kind: 18)
+237. NoAskLibs (Kind: 3)
+238. CGGlobalStackAccesses (Kind: 3)
+239. CGThisPointer (Kind: 3)
+240. CGInlinePointer (Kind: 3)
+241. CGLinkCGLib (Kind: 3)
+242. DefaultNamespace (Kind: 18)
+243. AutoRegisterTLB (Kind: 3)
+244. AutoGenImportAssembly (Kind: 3)
+245. AutoIncBuildNum (Kind: 3)
+246. Build (Kind: 1)
+247. CodePage (Kind: 1)
+248. IncludeVersionInfo (Kind: 3)
+249. Keys (Kind: 7)
+250. Locale (Kind: 1)
+251. MajorVersion (Kind: 1)
+252. MinorVersion (Kind: 1)
+253. ModuleAttribs (Kind: 6)
+254. Release (Kind: 1)
+255. HostApplication (Kind: 18)
+256. RunParams (Kind: 18)
+257. EnvVars (Kind: 7)
+258. SymTabs (Kind: 7)
+259. Launcher (Kind: 18)
+260. UseLauncher (Kind: 3)
+261. DebugCWD (Kind: 18)
+262. DebugSourcePath (Kind: 18)
+263. RemoteHost (Kind: 18)
+264. RemotePath (Kind: 18)
+265. RemoteParams (Kind: 18)
+266. RemoteLauncher (Kind: 18)
+267. UseRemoteLauncher (Kind: 3)
+268. RemoteCWD (Kind: 18)
+269. RemoteDebug (Kind: 3)
+270. LoadAllSymbols (Kind: 3)
+271. LoadUnspecifiedSymbols (Kind: 3)
+272. SymbolSearchPath (Kind: 18)
+
+--- Значения опций ---
+
+Align: 8
+BoolEval: 0
+Assertions: 1
+UnitDebugInfo: 2
+ImportedData: 1
+LongStrings: 1
+IOChecks: 1
+WriteableConst: 0
+LocalSymbols: 1
+TypeInfo: 0
+Optimization: 0
+OpenStrings: 1
+OverflowChecks: 1
+RangeChecks: 1
+StackChecks: 0
+TypedAddress: 0
+SafeDivide: 0
+VarStringChecks: 1
+StackFrames: 1
+ExtendedSyntax: 1
+ReferenceInfo: 2
+MinEnumSize: 1
+DebugInfo: -1
+RemoteSymbols: -1
+OutputObj: -1
+GenHpp: 0
+HintFlag: -1
+WarnFlag: -1
+StackSize: 16384
+MaxStackSize: 1048576
+ResourceReserve: 0
+ImageBase: 4194304
+Target: 1
+MapFile: 0
+GenDRC: 0
+GenDOC: 0
+CompileName: ""
+Defines: "DEBUG"
+OutputDir: ".\$(Platform)\$(Config)"
+UnitOutputDir: ".\$(Platform)\$(Config)"
+UnitDir: ""
+ObjDir: ""
+SrcDir: ""
+ResDir: ""
+NamespacePrefix: "Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;System;Xml;Data;Datasnap;Web;Soap"
+PkgDllDir: ""
+OptionsString: ""
+SOName: ""
+SOPrefix: ""
+SOPrefixDefined: 0
+SOSuffix: ""
+SOVersion: ""
+DynamicLoader: ""
+PasCodepage: "0"
+SignAssembly: 0
+DelaySign: 0
+KeyFile: ""
+KeyContainer: ""
+WarnSymbolDeprecated: 1
+WarnSymbolLibrary: 1
+WarnSymbolPlatform: 1
+WarnSymbolExperimental: 1
+WarnUnitLibrary: 1
+WarnUnitPlatform: 1
+WarnUnitDeprecated: 1
+WarnUnitExperimental: 1
+WarnHresultCompat: 1
+WarnHidingMember: 1
+WarnHiddenVirtual: 1
+WarnGarbage: 1
+WarnBoundsError: 1
+WarnZeroNilCompat: 1
+WarnStringConstTrunced: 1
+WarnForLoopVarVarpar: 1
+WarnTypedConstVarpar: 1
+WarnAsgToTypedConst: 1
+WarnCaseLabelRange: 1
+WarnForVariable: 1
+WarnConstructingAbstract: 1
+WarnComparisonFalse: 1
+WarnComparisonTrue: 1
+WarnComparingSignedUnsigned: 1
+WarnCombiningSignedUnsigned: 1
+WarnUnsupportedConstruct: 1
+WarnFileOpen: 1
+WarnFileOpenUnitsrc: 1
+WarnBadGlobalSymbol: 1
+WarnDuplicateCtorDtor: 1
+WarnInvalidDirective: 1
+WarnPackageNoLink: 1
+WarnPackagedThreadvar: 1
+WarnImplicitImport: 1
+WarnHppemitIgnored: 1
+WarnNoRetval: 1
+WarnUseBeforeDef: 1
+WarnForLoopVarUndef: 1
+WarnUnitNameMismatch: 1
+WarnNoCfgFileFound: 1
+WarnMessageDirective: 1
+WarnImplicitVariants: 1
+WarnUnicodeToLocale: 1
+WarnLocaleToUnicode: 1
+WarnImagebaseMultiple: 1
+WarnSuspiciousTypecast: 1
+WarnPrivatePropaccessor: 1
+WarnUnsafeType: 0
+WarnUnsafeCode: 0
+WarnUnsafeCast: 0
+WarnOptionTruncated: 1
+WarnWideCharReduced: 1
+WarnDuplicatesIgnored: 1
+WarnInitSeq: 1
+WarnLocalPInvoke: 1
+WarnTypeInfoImplicitlyAdded: 1
+WarnRLinkWarning: 1
+WarnImplicitStringCast: 1
+WarnImplicitStringCastLoss: 1
+WarnExplicitStringCast: 0
+WarnExplicitStringCastLoss: 0
+WarnCvtWCharToAChar: 1
+WarnCvtNarrowingStringLost: 1
+WarnCvtACharToWChar: 1
+WarnCvtWideningStringLost: 1
+WarnNonPortableTypecast: 1
+WarnXMLWhitespaceNotAllowed: 1
+WarnXMLUnknownEntity: 1
+WarnXMLInvalidNameStart: 1
+WarnXMLInvalidName: 1
+WarnXMLExpectedCharacter: 1
+WarnXMLCREFNoResolve: 1
+WarnXMLNoParm: 1
+WarnXMLNoMatchingParm: 1
+WarnImmutableStrings: 0
+PkgDcpDir: ""
+UsePackages: 0
+Packages: "ray4delphi;DataSnapServer;vclwinx;fmx;emshosting;DbxCommonDriver;vclie;bindengine;VCLRESTComponents;FireDACCommonODBC;DBXMSSQLDriver;IndyIPCommon;emsclient;FireDACCommonDriver;IndyProtocols;vclx;dbxcds;vcledge;IndyIPClient;bindcompvclwinx;FmxTeeUI;emsedge;bindcompfmx;DBXFirebirdDriver;inetdb;ibmonitor;FireDACSqliteDriver;DbxClientDriver;FireDACASADriver;Tee;soapmidas;vclactnband;TeeUI;fmxFireDAC;dbexpress;FireDACInfxDriver;DBXMySQLDriver;VclSmp;inet;DataSnapCommon;fmxase;vcltouch;DBXOdbcDriver;dbrtl;FireDACOracleDriver;FireDACDBXDriver;fmxdae;TeeDB;FireDACMSAccDriver;CustomIPTransport;FireDACMSSQLDriver;DataSnapIndy10ServerTransport;DataSnapConnectors;DBXInterBaseDriver;vcldsnap;FireDACMongoDBDriver;IndySystem;FireDACTDataDriver;Skia.Package.VCL;vcldb;ibxbindings;vclFireDAC;bindcomp;FireDACCommon;DataSnapServerMidas;FireDACODBCDriver;emsserverresource;inetstn;IndyCore;RESTBackendComponents;bindcompdbx;rtl;FireDACMySQLDriver;FireDACADSDriver;RESTComponents;DBXSqliteDriver;vcl;adortl;dsnapxml;IndyIPServer;DataSnapClient;DataSnapProviderClient;dsnapcon;DBXSybaseASEDriver;DBXDb2Driver;vclimg;DataSnapFireDAC;emsclientfiredac;FireDACPgDriver;FireDAC;FireDACDSDriver;inetdbxpress;xmlrtl;tethering;ibxpress;bindcompvcl;dsnap;DBXSybaseASADriver;CloudService;DBXOracleDriver;FireDACDb2Driver;DBXInformixDriver;vclib;fmxobj;bindcompvclsmp;DataSnapNativeClient;FMXTee;DatasnapConnectorsFreePascal;soaprtl;soapserver;FireDACIBDriver"
+UnitAliases: ""
+ExeDescription: ""
+ImplicitBuild: -1
+RuntimeOnly: 0
+DesigntimeOnly: 0
+DebugSourcePath: ""
+ImageDebugInfo: 0
+HeapSize: <ошибка получения значения>
+MaxHeapSize: <ошибка получения значения>
+LinkMaxErrors: <ошибка получения значения>
+LinkShowMangle: 0
+LinkGenImportLib: 0
+LinkGenLib: 0
+LinkNoStateFiles: 0
+LinkSubsysMajor: <ошибка получения значения>
+LinkSubsysMinor: 0
+LinkCaseSensitiveLink: 0
+LinkCalculateChecksum: 0
+LinkFastTLS: 0
+LinkReplaceResources: 0
+LinkUserMajor: <ошибка получения значения>
+LinkUserMinor: 0
+LinkImageComment: ""
+LinkDelayLoad: ""
+CppDebugInfo: 0
+LineNumbers: 0
+AutoRegVars: 0
+MergeDupStrs: 0
+EnableInLines: 0
+ShowWarnings: 2
+StdStackFrame: 0
+TreatEnumsAsInts: 0
+PCH: 2
+ShowInfoMsgs: 0
+ShowExtendedMsgs: 0
+GenDll: 0
+GenConsoleApp: 0
+GenPackage: 0
+ShowLinkerWarnings: 0
+LinkDebugVcl: -1
+InstructionSet: 3
+Alignment: 3
+CallingConvention: 0
+RegisterVars: 0
+Ansi: 0
+AutoDep: -1
+Underscore: 0
+PICCodeGen: 0
+FastFloat: 0
+PentiumFloat: 0
+NestedComments: 0
+MFCCompat: 0
+IdentLen: <ошибка получения значения>
+MemberPrecision: 0
+ForLoops: 0
+CodeModifiers: 0
+EnableRTTI: 0
+EnableExceptions: 0
+EHLocalInfo: 0
+EHDtor: 0
+EHPrologs: 0
+ZeroBaseClass: 0
+ZeroClassFunction: 0
+ForceCppCompile: 0
+MemberPointer: 0
+VTables: 0
+Templates: 1
+PchPath: ""
+PchStopAfter: ""
+UseDynamicRtl: 0
+MultiThreaded: 0
+CodeOpt: 2
+FloatSupport: 0
+IncludePath: ""
+LibPath: ""
+LibraryList: ""
+TasmViaCppOpts: ""
+ClearPackageCache: 0
+ClearUnitCache: 0
+MarkModified: 0
+CaseSensitive: 0
+PurgeComment: 0
+PageSize: <ошибка получения значения>
+ListFile: ""
+TasmCrossReference: 0
+TasmSymbolTables: -1
+TasmGenerateListing: 0
+TasmIncludeConditionals: 0
+TasmIncludeErrors: 0
+TasmExpanded: 0
+TasmCaseCheckingOn: -1
+TasmAllCase: 0
+TasmDebugOn: -1
+TasmFullDebug: 0
+TasmWarningsOn: 0
+TasmWarningsLevel1: 0
+TasmHashTable: <ошибка получения значения>
+TasmPasses: <ошибка получения значения>
+TasmSymbolLength: <ошибка получения значения>
+TasmDirective: ""
+NoAskLibs: 0
+CGGlobalStackAccesses: 0
+CGThisPointer: 0
+CGInlinePointer: 0
+CGLinkCGLib: 0
+DefaultNamespace: ""
+AutoRegisterTLB: 0
+AutoGenImportAssembly: 0
+AutoIncBuildNum: 0
+Build: 0
+CodePage: 1251
+IncludeVersionInfo: 0
+Keys: 2707187617168 (type: 7)
+Locale: 1049
+MajorVersion: 1
+MinorVersion: 0
+ModuleAttribs: 0
+Release: 0
+HostApplication: ""
+RunParams: ""
+EnvVars: 2707310176416 (type: 7)
+SymTabs: 2707310199744 (type: 7)
+Launcher: ""
+UseLauncher: 0
+DebugCWD: ""
+DebugSourcePath: ""
+RemoteHost: ""
+RemotePath: ""
+RemoteParams: ""
+RemoteLauncher: ""
+UseRemoteLauncher: 0
+RemoteCWD: ""
+RemoteDebug: 0
+LoadAllSymbols: -1
+LoadUnspecifiedSymbols: 0
+SymbolSearchPath: ""

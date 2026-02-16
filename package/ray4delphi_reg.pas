@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, ToolsAPI, DesignIntf, DesignEditors,
   Vcl.Forms, PlatformAPI, Vcl.Menus, Vcl.ActnList, Vcl.Graphics,
-  Vcl.Dialogs, System.UITypes;
+  Vcl.Dialogs, System.UITypes, Vcl.FileCtrl;
 
 type
   { Базовый класс для создателей проектов raylib }
@@ -17,6 +17,8 @@ type
   protected
     function GetProjectFileName: string; virtual; abstract;
     function GetProjectSource: string; virtual; abstract;
+    procedure SetProjectOptions(const Project: IOTAProject); virtual;
+    function GetRaylibPath: string; virtual;
   public
     constructor Create(const AProjectName, APlatform: string);
     { IOTACreator }
@@ -45,6 +47,7 @@ type
   protected
     function GetProjectFileName: string; override;
     function GetProjectSource: string; override;
+    procedure SetProjectOptions(const Project: IOTAProject); override;
   end;
 
   { Создатель проекта raylib с TCustomApplication }
@@ -52,6 +55,7 @@ type
   protected
     function GetProjectFileName: string; override;
     function GetProjectSource: string; override;
+    procedure SetProjectOptions(const Project: IOTAProject); override;
   end;
 
   { Файл исходного кода проекта }
@@ -65,7 +69,7 @@ type
     function GetAge: TDateTime;
   end;
 
-  { Репозиторий визард для простого проекта }
+  { Репозиторий визард для простого проекта (для File > New > Other) }
   TRaySimpleRepositoryWizard = class(TNotifierObject, IOTAWizard,
     IOTARepositoryWizard, IOTAProjectWizard, IOTARepositoryWizard160)
   protected
@@ -91,7 +95,7 @@ type
     procedure SetSelectedPlatform(const APlatform: string);
   end;
 
-  { Репозиторий визард для проекта с TCustomApplication }
+  { Репозиторий визард для проекта с TCustomApplication (для File > New > Other) }
   TRayCustomAppRepositoryWizard = class(TNotifierObject, IOTAWizard,
     IOTARepositoryWizard, IOTAProjectWizard, IOTARepositoryWizard160)
   protected
@@ -130,7 +134,7 @@ implementation
 
 uses
   System.TypInfo, System.StrUtils, Winapi.Windows,
-  System.IOUtils;
+  System.IOUtils, System.Win.Registry, Vcl.ActnPopup;
 
 resourcestring
   sRaySimpleProject = 'raylib Simple Project';
@@ -143,7 +147,9 @@ resourcestring
   sRayPage = 'raylib Projects';
   sRaySimpleIDString = 'Ray4Delphi.SimpleRepositoryWizard';
   sRayCustomIDString = 'Ray4Delphi.CustomRepositoryWizard';
-  sRayMenuIDString = 'Ray4Delphi.MenuWizard';
+  sRaySimpleMenuIDString = 'Ray4Delphi.SimpleMenuWizard';
+  sRayCustomMenuIDString = 'Ray4Delphi.CustomMenuWizard';
+
 
 const
   sProjectPersonality = sDelphiPersonality;
@@ -152,10 +158,8 @@ const
 var
   SimpleWizardIndex: Integer = -1;
   CustomWizardIndex: Integer = -1;
-  MenuWizardIndex: Integer = -1;
-
-  { Категория для галереи Welcome Page }
   GalleryCategory: IOTAGalleryCategory = nil;
+  ProjectDirectorySelected: string = '';  // Глобальная переменная для хранения выбранной директории
 
 { Вспомогательные функции }
 function GetActiveProjectGroup: IOTAProjectGroup;
@@ -180,33 +184,72 @@ begin
   end;
 end;
 
-function GenerateUniqueProjectName(const BaseName: string): string;
+function GetCurrentProjectDirectory: string;
 var
   ProjectGroup: IOTAProjectGroup;
+  ActiveProject: IOTAProject;
+  ModuleServices: IOTAModuleServices;
+begin
+  Result := GetCurrentDir;
+
+  if Supports(BorlandIDEServices, IOTAModuleServices, ModuleServices) then
+  begin
+    // Сначала пытаемся получить активный проект
+    ActiveProject := ModuleServices.GetActiveProject;
+    if ActiveProject <> nil then
+    begin
+      Result := ExtractFilePath(ActiveProject.FileName);
+      if Result <> '' then
+        Exit;
+    end;
+
+    // Если нет активного проекта, ищем проект группу
+    ProjectGroup := GetActiveProjectGroup;
+    if (ProjectGroup <> nil) and (ProjectGroup.FileName <> '') then
+    begin
+      Result := ExtractFilePath(ProjectGroup.FileName);
+      if Result <> '' then
+        Exit;
+    end;
+  end;
+end;
+
+function GenerateUniqueProjectName(const BaseName: string; const ProjectDir: string): string;
+var
   i: Integer;
-  ProjectDir: string;
+  ProjectFileName: string;
+  IsUnique: Boolean;
 begin
   Result := '';
-  ProjectGroup := GetActiveProjectGroup;
-  if Assigned(ProjectGroup) then
-  begin
-    ProjectDir := ExtractFilePath(ProjectGroup.FileName);
-    if ProjectDir = '' then
-      ProjectDir := GetCurrentDir;
 
-    i := 1;
-    while Result = '' do
-    begin
-      Result := IncludeTrailingPathDelimiter(ProjectDir) + BaseName + IntToStr(i) + '.dpr';
-      if TFile.Exists(Result) then
-        Result := ''
-      else
-        Break;
+  i := 1;
+  while Result = '' do
+  begin
+    ProjectFileName := ProjectDir + BaseName + IntToStr(i) + '.dpr';
+
+    // Проверяем уникальность имени
+    IsUnique := True;
+
+    // Проверяем существование файла на диске
+    if TFile.Exists(ProjectFileName) then
+      IsUnique := False;
+
+    if IsUnique then
+      Result := ProjectFileName
+    else
       Inc(i);
+
+    // Предотвращаем бесконечный цикл
+    if i > 1000 then
+    begin
+      Result := ProjectDir + BaseName + IntToStr(Random(1000)) + '.dpr';
+      Break;
     end;
-  end
-  else
-    Result := IncludeTrailingPathDelimiter(GetCurrentDir) + BaseName + '1.dpr';
+  end;
+
+  // Показываем сообщение о том, куда сохраняется проект
+  (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+    Format('Ray4Delphi: Creating project in: %s', [ProjectDir]));
 end;
 
 { TRayBaseProjectCreator }
@@ -293,11 +336,95 @@ begin
   Result := sProjectPersonality;
 end;
 
+{ Получение пути к raylib }
+function TRayBaseProjectCreator.GetRaylibPath: string;
+begin
+  Result := '';
+
+  Result := GetEnvironmentVariable('RAY4LAZ_PATH');
+  if (Result <> '') and DirectoryExists(Result) then
+  begin
+    Result := IncludeTrailingPathDelimiter(Result) + 'source';
+    if DirectoryExists(Result) then
+      Exit;
+  end;
+
+  { Сообщаем пользователю, что используется путь по умолчанию }
+  (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+  'Please ensure raylib source files are there or set RAY4LAZ_PATH environment variable.');
+end;
+
+{ Установка опций проекта и переключение на Release }
+procedure TRayBaseProjectCreator.SetProjectOptions(const Project: IOTAProject);
+var
+  ProjectOptions: IOTAProjectOptions;
+  ProjectOptionsConfig: IOTAProjectOptionsConfigurations;
+  RaylibPath: string;
+  I: Integer;
+  Config: IOTABuildConfiguration;
+  ReleaseConfig: IOTABuildConfiguration;
+begin
+  if Project = nil then Exit;
+
+  RaylibPath := GetRaylibPath;
+  ProjectOptions := Project.ProjectOptions;
+
+  if ProjectOptions = nil then Exit;
+
+  { Устанавливаем путь к raylib }
+  ProjectOptions.Values['UnitDir'] := RaylibPath;
+   // ProjectOptions.Values['OutputDir'] := '';
+  { Пытаемся переключить на Release конфигурацию }
+  if Supports(ProjectOptions, IOTAProjectOptionsConfigurations, ProjectOptionsConfig) then
+  begin
+    ReleaseConfig := nil;
+
+    { Ищем конфигурацию Release }
+    for I := 0 to ProjectOptionsConfig.ConfigurationCount - 1 do
+    begin
+      Config := ProjectOptionsConfig.Configurations[I];
+      if Config <> nil then
+      begin
+        { Проверяем имя конфигурации }
+        if CompareText(Config.Name, 'Release') = 0 then
+        begin
+          ReleaseConfig := Config;
+          Break;
+        end;
+      end;
+    end;
+
+    { Если нашли Release, делаем её активной }
+    if ReleaseConfig <> nil then
+    begin
+      ProjectOptionsConfig.ActiveConfiguration := ReleaseConfig;
+      (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+        'Ray4Delphi: Switched to Release configuration');
+
+      // Убедимся, что путь к raylib установлен и в активной конфигурации
+      ProjectOptions.Values['UnitDir'] := RaylibPath;
+      //   ProjectOptions.Values['OutputDir'] := '';
+      //
+    end
+    else
+    begin
+      (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+        'Ray4Delphi: Release configuration not found, keeping current');
+    end;
+  end;
+
+  ProjectOptions.ModifiedState := True;
+end;
+
 { TRaySimpleProjectCreator }
 
 function TRaySimpleProjectCreator.GetProjectFileName: string;
 begin
-  Result := GenerateUniqueProjectName('raylib_game');
+  if ProjectDirectorySelected = '' then
+    ProjectDirectorySelected := GetCurrentProjectDirectory;
+
+  ProjectDirectorySelected := IncludeTrailingPathDelimiter(ProjectDirectorySelected);
+  Result := GenerateUniqueProjectName('raylib_game', ProjectDirectorySelected);
 end;
 
 function TRaySimpleProjectCreator.GetProjectSource: string;
@@ -350,11 +477,20 @@ begin
   Result := Source;
 end;
 
+procedure TRaySimpleProjectCreator.SetProjectOptions(const Project: IOTAProject);
+begin
+  inherited;
+end;
+
 { TRayCustomAppProjectCreator }
 
 function TRayCustomAppProjectCreator.GetProjectFileName: string;
 begin
-  Result := GenerateUniqueProjectName('raylib_custom');
+  if ProjectDirectorySelected = '' then
+    ProjectDirectorySelected := GetCurrentProjectDirectory;
+
+  ProjectDirectorySelected := IncludeTrailingPathDelimiter(ProjectDirectorySelected);
+  Result := GenerateUniqueProjectName('raylib_custom', ProjectDirectorySelected);
 end;
 
 function TRayCustomAppProjectCreator.GetProjectSource: string;
@@ -375,14 +511,11 @@ begin
     sLineBreak +
     'type' + sLineBreak +
     '  TRayApplication = class' + sLineBreak +
-    '  private' + sLineBreak +
-    '    FTitle: string;' + sLineBreak +
     '  public' + sLineBreak +
     '    constructor Create;' + sLineBreak +
     '    destructor Destroy; override;' + sLineBreak +
     '    procedure Run;' + sLineBreak +
     '    procedure DoRun; virtual;' + sLineBreak +
-    '    property Title: string read FTitle write FTitle;' + sLineBreak +
     '  end;' + sLineBreak +
     sLineBreak +
     'const' + sLineBreak +
@@ -393,8 +526,7 @@ begin
     'constructor TRayApplication.Create;' + sLineBreak +
     'begin' + sLineBreak +
     '  inherited;' + sLineBreak +
-    '  FTitle := AppTitle;' + sLineBreak +
-    '  InitWindow(800, 600, PChar(FTitle));' + sLineBreak +
+    '  InitWindow(800, 600, AppTitle);' + sLineBreak +
     '  SetTargetFPS(60);' + sLineBreak +
     'end;' + sLineBreak +
     sLineBreak +
@@ -440,6 +572,11 @@ begin
   Result := Source;
 end;
 
+procedure TRayCustomAppProjectCreator.SetProjectOptions(const Project: IOTAProject);
+begin
+  inherited;
+end;
+
 { TRayProjectSourceFile }
 
 constructor TRayProjectSourceFile.Create(const ASource: string);
@@ -475,11 +612,61 @@ begin
   Result := [wsEnabled];
 end;
 
-procedure TRaySimpleRepositoryWizard.Execute;
+
+{ Получение пути к raylib }
+function GetRaylibPath: string;
 begin
-  (BorlandIDEServices as IOTAModuleServices).CreateModule(
-    TRaySimpleProjectCreator.Create('', TRayPlatformAlias.GetPlatformName));
+  Result := '';
+
+  Result := GetEnvironmentVariable('RAY4LAZ_PATH');
+  if (Result <> '') and DirectoryExists(Result) then
+  begin
+    Result := IncludeTrailingPathDelimiter(Result);
+    if DirectoryExists(Result) then
+      Exit;
+  end;
 end;
+
+procedure TRaySimpleRepositoryWizard.Execute;
+var
+  Project: IOTAProject;
+  ModuleServices: IOTAModuleServices;
+  Creator: TRaySimpleProjectCreator;
+  Sr, Ds: String;
+begin
+
+
+  Creator := TRaySimpleProjectCreator.Create('', TRayPlatformAlias.GetPlatformName);
+  ModuleServices := BorlandIDEServices as IOTAModuleServices;
+
+  { Создаем модуль и получаем созданный проект }
+  Project := ModuleServices.CreateModule(Creator) as IOTAProject;
+
+  { Устанавливаем пути к raylib и переключаем на Release }
+  if Project <> nil then
+    Creator.SetProjectOptions(Project);
+
+  Project.MarkModified;
+
+  //GetRaylibPath
+
+  Project.Save(False,True);
+  Project.MarkModified;
+  {$IFDEF WIN64}
+    Sr := GetRaylibPath + 'libs\x86_64-win64\libraylib.dll';
+    Ds := GetCurrentProjectDirectory + 'Win64\Release\' + 'libraylib.dll';
+
+    if not DirectoryExists(GetCurrentProjectDirectory+'Win64') then
+     CreateDir(GetCurrentProjectDirectory+'Win64');
+
+    if not DirectoryExists(GetCurrentProjectDirectory+'Win64\Release') then
+      CreateDir(GetCurrentProjectDirectory+'Win64\Release');
+
+    CopyFile(PWideChar(Sr), PWideChar(Ds), True);
+
+    Project.Show;
+  {$ENDIF}
+  end;
 
 function TRaySimpleRepositoryWizard.GetAuthor: string;
 begin
@@ -498,8 +685,12 @@ end;
 
 function TRaySimpleRepositoryWizard.GetGlyph: THandle;
 begin
-  // Загрузка иконки с указанным именем
+  { Загрузка иконки с указанным именем }
   Result := LoadIcon(HInstance, 'RAY_ICON');
+
+  { Если иконка не найдена, используем стандартную }
+  if Result = 0 then
+    Result := LoadIcon(0, IDI_APPLICATION);
 end;
 
 function TRaySimpleRepositoryWizard.GetDesigner: string;
@@ -547,7 +738,7 @@ end;
 function TRaySimpleRepositoryWizard.GetPlatforms: TArray<string>;
 begin
   { Поддерживаемые платформы }
-  Result := TArray<string>.Create('Win32', 'Win64');
+  Result := TArray<string>.Create('Win64', 'Linux64');
 end;
 
 procedure TRaySimpleRepositoryWizard.SetSelectedPersonality(const APersonality: string);
@@ -562,7 +753,7 @@ end;
 
 procedure TRaySimpleRepositoryWizard.SetSelectedPlatform(const APlatform: string);
 begin
-  { Не требуется для нашей реализации }
+ //ShowMessage(APlatform);
 end;
 
 { TRayCustomAppRepositoryWizard }
@@ -583,9 +774,43 @@ begin
 end;
 
 procedure TRayCustomAppRepositoryWizard.Execute;
+var
+  Project: IOTAProject;
+  ModuleServices: IOTAModuleServices;
+  Creator: TRayCustomAppProjectCreator;
+  sr, ds: String;
 begin
-  (BorlandIDEServices as IOTAModuleServices).CreateModule(
-    TRayCustomAppProjectCreator.Create('', TRayPlatformAlias.GetPlatformName));
+
+
+  Creator := TRayCustomAppProjectCreator.Create('', TRayPlatformAlias.GetPlatformName);
+  ModuleServices := BorlandIDEServices as IOTAModuleServices;
+
+  { Создаем модуль и получаем созданный проект }
+  Project := ModuleServices.CreateModule(Creator) as IOTAProject;
+
+  { Устанавливаем пути к raylib и переключаем на Release }
+  if Project <> nil then
+    Creator.SetProjectOptions(Project);
+
+  Project.ProjectOptions.ModifiedState := True;
+  Project.Save(False,True);
+
+  {$IFDEF WIN64}
+  Sr := GetRaylibPath + 'libs\x86_64-win64\libraylib.dll';
+  Ds := GetCurrentProjectDirectory + 'Win64\Release\' + 'libraylib.dll';
+
+  if not DirectoryExists(GetCurrentProjectDirectory+'Win64') then
+    CreateDir(GetCurrentProjectDirectory+'Win64');
+
+  if not DirectoryExists(GetCurrentProjectDirectory+'Win64\Release') then
+    CreateDir(GetCurrentProjectDirectory+'Win64\Release');
+
+  CopyFile(PWideChar(Sr), PWideChar(Ds), True);
+  {$ENDIF}
+
+
+  Project.Show;
+
 end;
 
 function TRayCustomAppRepositoryWizard.GetAuthor: string;
@@ -605,10 +830,10 @@ end;
 
 function TRayCustomAppRepositoryWizard.GetGlyph: THandle;
 begin
-  // Загрузка иконки с указанным именем
+  { Загрузка иконки с указанным именем }
   Result := LoadIcon(HInstance, 'RAY_ICON');
 
-  // Если иконка не найдена, можно загрузить стандартную
+  { Если иконка не найдена, можно загрузить стандартную }
   if Result = 0 then
     Result := LoadIcon(0, IDI_APPLICATION);
 end;
@@ -658,7 +883,7 @@ end;
 function TRayCustomAppRepositoryWizard.GetPlatforms: TArray<string>;
 begin
   { Поддерживаемые платформы }
-  Result := TArray<string>.Create('Win32', 'Win64');
+  Result := TArray<string>.Create('Win64','Linux64');
 end;
 
 procedure TRayCustomAppRepositoryWizard.SetSelectedPersonality(const APersonality: string);
@@ -676,6 +901,7 @@ begin
   { Не требуется для нашей реализации }
 end;
 
+
 { TRayPlatformAlias }
 
 class function TRayPlatformAlias.GetPlatformName: string;
@@ -691,18 +917,23 @@ end;
 
 procedure Register;
 begin
-  { Регистрируем два отдельных пункта}
+
+  { Регистрируем два пункта для диалога File > New > Other (репозиторий) }
   if SimpleWizardIndex = -1 then
     SimpleWizardIndex := (BorlandIDEServices as IOTAWizardServices).AddWizard(TRaySimpleRepositoryWizard.Create);
 
   if CustomWizardIndex = -1 then
     CustomWizardIndex := (BorlandIDEServices as IOTAWizardServices).AddWizard(TRayCustomAppRepositoryWizard.Create);
+
+
 end;
 
 initialization
   SimpleWizardIndex := -1;
   CustomWizardIndex := -1;
+
   GalleryCategory := nil;
+  ProjectDirectorySelected := '';  // Сбрасываем при старте
 
 finalization
   if SimpleWizardIndex <> -1 then
@@ -711,6 +942,6 @@ finalization
   if CustomWizardIndex <> -1 then
     (BorlandIDEServices as IOTAWizardServices).RemoveWizard(CustomWizardIndex);
 
-  { Очищаем ссылку на категорию }
   GalleryCategory := nil;
+  ProjectDirectorySelected := '';  // Сбрасываем при завершении
 end.
