@@ -63,6 +63,6 @@ object Form1: TForm1
     Anchors = [akRight, akBottom]
     Caption = 'Remove'
     TabOrder = 1
-    OnClick = AddEnvBtnClick
+    OnClick = RemEnvBtnClick
   end
 end

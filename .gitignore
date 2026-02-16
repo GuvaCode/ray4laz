@@ -3,8 +3,8 @@ temp/*.o
 temp/*.ppu
 temp/*.a
 temp/*.compiled
-temp/
-
+temp/delphi_reg_src/Win32
+tool/
 binary/*
 !binary/resources/
 

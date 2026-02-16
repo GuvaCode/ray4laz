@@ -16,10 +16,13 @@ type
 
     procedure AddEnvBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure RemEnvBtnClick(Sender: TObject);
+    procedure UpdateBtnState;
   private
     procedure SetSystemEnvironmentVariable(const Name, Value: string);
     procedure DeleteSystemEnvironmentVariable(const Name: string);
     function IsEnvironmentAdd(const Name: string): boolean;
+    function IsEnvVarInRegistry(const Name: string): boolean; // Новая функция
   public
     { Public declarations }
   end;
@@ -36,14 +39,11 @@ procedure TForm1.AddEnvBtnClick(Sender: TObject);
 var
   ProgramPath: string;
 begin
-// Получаем путь к директории программы
+  // Получаем путь к директории программы
   ProgramPath := ExtractFileDir(ParamStr(0));
-
   // Устанавливаем переменную окружения
   SetSystemEnvironmentVariable('RAY4LAZ_PATH', ProgramPath);
-
-
-  ShowMessage('RAY4LAZ_PATH = ' + ProgramPath);
+  UpdateBtnState;
 end;
 
 procedure TForm1.DeleteSystemEnvironmentVariable(const Name: string);
@@ -51,22 +51,29 @@ var
   Reg: TRegistry;
   S: string;
 begin
-  Reg := TRegistry.Create(KEY_WRITE);
+  Reg := TRegistry.Create(KEY_ALL_ACCESS);
   try
-    Reg.RootKey := HKEY_CURRENT_USER; // или HKEY_LOCAL_MACHINE для всех пользователей
-    if Reg.OpenKey('Environment', False) then
+    Reg.RootKey := HKEY_CURRENT_USER;
+
+    // Альтернативный путь: попробуем открыть с расширенными правами
+    if Reg.OpenKey('\Environment', False) then  // Добавлен слеш
     begin
       if Reg.ValueExists(Name) then
       begin
         Reg.DeleteValue(Name);
 
-        // Уведомляем систему об изменении
+        // Уведомляем систему
         S := 'Environment';
         SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0,
-          NativeInt(PChar(S)), SMTO_ABORTIFHUNG, 5000, nil);
+          LPARAM(PChar(S)), SMTO_ABORTIFHUNG, 5000, nil);
+
+        SetEnvironmentVariable(PChar(Name), nil);
+        // ShowMessage('Переменная удалена');
       end;
       Reg.CloseKey;
-    end;
+    end
+    else
+      ShowMessage('Не удалось открыть ключ');
   finally
     Reg.Free;
   end;
@@ -74,15 +81,38 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  RemEnvBtn.Enabled := IsEnvironmentAdd('RAY4LAZ_PATH');
-  AddEnvBtn.Enabled := not RemEnvBtn.Enabled;
+  UpdateBtnState;
+end;
+
+// Новая функция для проверки наличия переменной в реестре
+function TForm1.IsEnvVarInRegistry(const Name: string): boolean;
+var
+  Reg: TRegistry;
+begin
+  Result := False;
+  Reg := TRegistry.Create(KEY_READ);
+  try
+    Reg.RootKey := HKEY_CURRENT_USER;
+    if Reg.OpenKey('Environment', False) then
+    begin
+      Result := Reg.ValueExists(Name);
+      Reg.CloseKey;
+    end;
+  finally
+    Reg.Free;
+  end;
 end;
 
 function TForm1.IsEnvironmentAdd(const Name: string): boolean;
 begin
-  showMessage(GetEnvironmentVariable('RAY4LAZ_PATH'));
-  if GetEnvironmentVariable('RAY4LAZ_PATH') <> '' then result := True else
-  result := False;
+  // Используем проверку через реестр вместо GetEnvironmentVariable
+  Result := IsEnvVarInRegistry(Name);
+end;
+
+procedure TForm1.RemEnvBtnClick(Sender: TObject);
+begin
+  DeleteSystemEnvironmentVariable('RAY4LAZ_PATH');
+  UpdateBtnState;
 end;
 
 procedure TForm1.SetSystemEnvironmentVariable(const Name, Value: string);
@@ -92,7 +122,7 @@ var
 begin
   Reg := TRegistry.Create(KEY_WRITE);
   try
-    Reg.RootKey := HKEY_CURRENT_USER; // или HKEY_LOCAL_MACHINE для всех пользователей
+    Reg.RootKey := HKEY_CURRENT_USER;
     if Reg.OpenKey('Environment', True) then
     begin
       Reg.WriteString(Name, Value);
@@ -106,6 +136,12 @@ begin
   finally
     Reg.Free;
   end;
+end;
+
+procedure TForm1.UpdateBtnState;
+begin
+  RemEnvBtn.Enabled := IsEnvironmentAdd('RAY4LAZ_PATH');
+  AddEnvBtn.Enabled := not RemEnvBtn.Enabled;
 end;
 
 end.
