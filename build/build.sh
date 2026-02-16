@@ -48,6 +48,7 @@ clear
 mkdir -p ../libs
 mkdir -p ../libs/x86_64-linux
 mkdir -p ../libs/x86_64-win64
+mkdir -p ../libs/i686-win32   # Для Win32 динамики
 
 echo -e "${GREEN}Download raylib master branch${NC}"
 
@@ -79,6 +80,7 @@ cd raylib/src
 
 rm -f ../../../libs/x86_64-linux/libraylib*
 rm -f ../../../libs/x86_64-win64/libraylib*
+rm -f ../../../libs/i686-win32/libraylib*
 
 echo ""
 
@@ -139,6 +141,17 @@ cp libraylib.a ../../../libs/x86_64-linux/libraylib.a
 
 echo " "
 echo "---------------------------------"
+echo -e "${YELLOW}Build x86_64_LINUX dynamic${NC}"
+echo "---------------------------------"
+echo " "
+make clean
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE
+cp libraylib.so* ../../../libs/x86_64-linux/
+# Создаем симлинк для libraylib.so без версии
+ln -sf libraylib.so.*.?.? ../../../libs/x86_64-linux/libraylib.so
+
+echo " "
+echo "---------------------------------"
 echo -e "${YELLOW}Build x64 Windows statics${NC}"
 echo "---------------------------------"
 echo " "
@@ -186,6 +199,28 @@ cp $RAYLIB_MODULE_RAYGUI_PATH/raygui.h .
 
 make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar 
 cp raylib.dll ../../../libs/x86_64-win64/libraylib.dll
+# Копируем также .dll.a для линковки
+cp libraylib.dll.a ../../../libs/x86_64-win64/
+
+echo " "
+echo "---------------------------------"
+echo -e "${YELLOW}Build Win32 dynamic only${NC}"
+echo "---------------------------------"
+echo " "
+
+make clean
+i686-w64-mingw32-windres raylib.rc -o raylib.rc.data
+i686-w64-mingw32-windres raylib.dll.rc -o raylib.dll.rc.data
+
+# Используем RAYLIB_MODULE_RAYGUI_PATH вместо прямых путей
+echo "#define RAYGUI_IMPLEMENTATION" > raygui.c
+echo "#include \"$RAYLIB_MODULE_RAYGUI_PATH/raygui.h\"" >> raygui.c
+cp $RAYLIB_MODULE_RAYGUI_PATH/raygui.h .
+
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED RAYLIB_MODULE_RAYGUI=TRUE OS=Windows_NT CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar 
+cp raylib.dll ../../../libs/i686-win32/libraylib.dll
+# Копируем также .dll.a для линковки
+cp libraylib.dll.a ../../../libs/i686-win32/
 
 cd ../../
 
