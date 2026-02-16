@@ -337,14 +337,17 @@ begin
 end;
 
 { Получение пути к raylib }
-function TRayBaseProjectCreator.GetRaylibPath: string;
+(*function TRayBaseProjectCreator.GetRaylibPath: string;
 begin
   Result := '';
 
   Result := GetEnvironmentVariable('RAY4LAZ_PATH');
   if (Result <> '') and DirectoryExists(Result) then
   begin
+    //Result := '';
     Result := IncludeTrailingPathDelimiter(Result) + 'source';
+
+    (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(result);
     if DirectoryExists(Result) then
       Exit;
   end;
@@ -353,6 +356,50 @@ begin
   (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
   'Please ensure raylib source files are there or set RAY4LAZ_PATH environment variable.');
 end;
+*)
+
+function TRayBaseProjectCreator.GetRaylibPath: string;
+var
+  EnvPath: string;
+begin
+  Result := '';
+
+  { Получаем путь из переменной окружения }
+  EnvPath := GetEnvironmentVariable('RAY4LAZ_PATH');
+
+  { Отладочная информация }
+  (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+    'RAY4LAZ_PATH = "' + EnvPath + '"');
+
+  { Проверяем существование пути }
+  if (EnvPath <> '') and DirectoryExists(EnvPath) then
+  begin
+    { Проверяем наличие подпапки source }
+    Result := IncludeTrailingPathDelimiter(EnvPath) + 'source';
+
+    if DirectoryExists(Result) then
+    begin
+      (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+        'Found raylib source at: ' + Result);
+      Exit;
+    end
+    else
+    begin
+      (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+        'Warning: "source" subdirectory not found in ' + EnvPath);
+    end;
+  end
+  else
+  begin
+    (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+      'Warning: RAY4LAZ_PATH directory does not exist: ' + EnvPath);
+  end;
+
+  { Сообщаем пользователю, что используется путь по умолчанию }
+  (BorlandIDEServices as IOTAMessageServices).AddTitleMessage(
+    'Please ensure raylib source files are there or set RAY4LAZ_PATH environment variable.');
+end;
+
 
 { Установка опций проекта и переключение на Release }
 procedure TRayBaseProjectCreator.SetProjectOptions(const Project: IOTAProject);
@@ -646,12 +693,7 @@ begin
   if Project <> nil then
     Creator.SetProjectOptions(Project);
 
-  Project.MarkModified;
 
-  //GetRaylibPath
-
-  Project.Save(False,True);
-  Project.MarkModified;
 
     Sr := GetRaylibPath + 'libs\x86_64-win64\libraylib.dll';
     Ds := GetCurrentProjectDirectory + 'Win64\Release\' + 'libraylib.dll';
@@ -675,9 +717,13 @@ begin
 
 
     CopyFile(PWideChar(Sr), PWideChar(Ds), True);
+  Project.MarkModified;
 
+  //GetRaylibPath
 
-    Project.Show;
+  Project.Save(False,True);
+  Project.MarkModified;
+  Project.Show;
 end;
 
 function TRaySimpleRepositoryWizard.GetAuthor: string;
@@ -831,7 +877,8 @@ begin
 
   CopyFile(PWideChar(Sr), PWideChar(Ds), True);
 
-
+  Project.Save(False,True);
+  Project.MarkModified;
   Project.Show;
 
 end;
