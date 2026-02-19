@@ -317,11 +317,11 @@ const
      (* ModelAnimation *)
      PModelAnimation = ^TModelAnimation;
      TModelAnimation = record
+         name : array[0..31] of AnsiChar; // Animation name
          boneCount : Integer;      // Number of bones
          frameCount : Integer;     // Number of animation frames
          bones : PBoneInfo;        // Bones information (skeleton)
          framePoses : PPTransform; // Poses array by frame
-         name : array[0..31] of AnsiChar; // Animation name
        end;
 
       (* Ray, ray for raycasting *)
@@ -2151,6 +2151,10 @@ function LoadModelAnimations(fileName: PAnsiChar; animCount: PInteger): PModelAn
 procedure UpdateModelAnimation(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimation';
 {Update model animation mesh bone matrices (GPU skinning)}
 procedure UpdateModelAnimationBones(model: TModel; anim: TModelAnimation; frame: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimationBones';
+{Update model animation mesh bone matrices with interpolation between two poses(GPU skinning)}
+procedure UpdateModelAnimationBonesLerp(model: TModel; animA: TModelAnimation; frameA: integer; animB: TModelAnimation; frameB: Integer; value: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelAnimationBonesLerp';
+{Update model vertices according to mesh bone matrices (CPU)}
+procedure UpdateModelVertsToCurrentBones(model: TModel); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateModelVertsToCurrentBones';
 {Unload animation data}
 procedure UnloadModelAnimation(anim: TModelAnimation); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadModelAnimation';
 {Unload animation array data}
