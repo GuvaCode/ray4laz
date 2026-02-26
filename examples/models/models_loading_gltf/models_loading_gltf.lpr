@@ -77,7 +77,7 @@ begin
 
       // Update model animation
       anim := modelAnimations[animIndex];
-      animCurrentFrame := (animCurrentFrame + 1) mod anim.frameCount;
+      animCurrentFrame := (animCurrentFrame + 1) mod anim.keyframeCount;
       UpdateModelAnimation(model, anim, animCurrentFrame);
 
       // Update camera

@@ -160,7 +160,7 @@ begin
           5: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_cyber.rgs'));
           6: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_terminal.rgs'));
         end;
-          GuiSetStyle(LABELS, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
+          GuiSetStyle(UILABEL, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
           prevVisualStyleActive := visualStyleActive;
       end;
       // Draw
