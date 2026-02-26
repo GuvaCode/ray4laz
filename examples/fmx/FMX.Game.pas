@@ -1,47 +1,30 @@
-﻿(*******************************************************************************************
-*
-*   raylib [core] example - 3d camera fps
-*
-*   Example complexity rating: [★★★☆] 3/4
-*
-*   Example originally created with raylib 5.5, last time updated with raylib 5.5
-*
-*   Example contributed by Agnis Aldins (@nezvers) and reviewed by Ramon Santamaria (@raysan5)
-*
-*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
-*   BSD-like license that allows static linking with closed source software
-*
-*   Copyright (c) 2025 Agnis Aldins (@nezvers)
-*   Pascal translation (c) 2025 Vadim Gunko (@GuvaCode)
-*
-********************************************************************************************)
-program core_3d_camera_fps;
+unit FMX.Game;
+
+interface
 
 uses
-  Math,
-  raylib,
-  raymath;
+  Winapi.Windows, System.SysUtils, System.Classes, Math, raylib, raymath;
+
 
 //----------------------------------------------------------------------------------
 // Defines and Macros
 //----------------------------------------------------------------------------------
 const
   // Movement constants
-  GRAVITY         = 32.0;
-  MAX_SPEED       = 20.0;
-  CROUCH_SPEED    = 5.0;
-  JUMP_FORCE      = 12.0;
-  MAX_ACCEL       = 150.0;
+  GRAVITY = 32.0;
+  MAX_SPEED = 20.0;
+  CROUCH_SPEED = 5.0;
+  JUMP_FORCE = 12.0;
+  MAX_ACCEL = 150.0;
   // Grounded drag
-  FRICTION        = 0.86;
+  FRICTION = 0.86;
   // Increasing air drag, increases strafing speed
-  AIR_DRAG        = 0.98;
+  AIR_DRAG = 0.98;
   // Responsiveness for turning movement direction to looked direction
-  CONTROL         = 15.0;
-  CROUCH_HEIGHT   = 0.0;
-  STAND_HEIGHT    = 1.0;
-  BOTTOM_HEIGHT   = 0.5;
-
+  CONTROL = 15.0;
+  CROUCH_HEIGHT = 0.0;
+  STAND_HEIGHT = 1.0;
+  BOTTOM_HEIGHT = 0.5;
   NORMALIZE_INPUT = 0;
 
 //----------------------------------------------------------------------------------
@@ -50,6 +33,7 @@ const
 type
   // Body structure
   PBody = ^TBody;
+
   TBody = record
     position: TVector3;
     velocity: TVector3;
@@ -69,14 +53,16 @@ var
   headLerp: Single;
   lean: TVector2;
 
+procedure Run(Parent: THandle; Proc: TProc<THandle>);
 
+implementation
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition
 //----------------------------------------------------------------------------------
 // Update body considering current world state
-procedure UpdateBody(body: PBody; rot: Single; side: Integer; forward_: Integer;
-                    jumpPressed: Boolean; crouchHold, sprintHold: Boolean);
+
+procedure UpdateBody(body: PBody; rot: Single; side: Integer; forward_: Integer; jumpPressed: Boolean; crouchHold, sprintHold: Boolean);
 var
   input: TVector2;
   delta: Single;
@@ -141,11 +127,10 @@ begin
   // More info here: https://youtu.be/v3zT3Z5apaM?t=165
   if crouchHold then
     maxSpeed := CROUCH_SPEED
+  else if sprintHold then
+    maxSpeed := MAX_SPEED * 2
   else
-    if sprintHold then
-      maxSpeed := MAX_SPEED * 2
-    else
-      maxSpeed := MAX_SPEED;
+    maxSpeed := MAX_SPEED;
 
   accel := Clamp(maxSpeed - speed, 0.0, MAX_ACCEL * delta);
   hvel.x := hvel.x + body^.dir.x * accel;
@@ -190,7 +175,7 @@ begin
 
   // Clamp view down
   maxAngleDown := Vector3Angle(Vector3Negate(up), yaw);
-  maxAngleDown := maxAngleDown * -1.0; // Downwards angle is negative
+  maxAngleDown := maxAngleDown *  - 1.0; // Downwards angle is negative
   maxAngleDown := maxAngleDown + 0.001; // Avoid numerical errors
   if -lookRotation.y < maxAngleDown then
     lookRotation.y := -maxAngleDown;
@@ -200,7 +185,7 @@ begin
 
   // Rotate view vector around right axis
   pitchAngle := -lookRotation.y - lean.y;
-  pitchAngle := Clamp(pitchAngle, -PI/2 + 0.0001, PI/2 - 0.0001); // Clamp angle so it doesn't go past straight up or straight down
+  pitchAngle := Clamp(pitchAngle, -PI / 2 + 0.0001, PI / 2 - 0.0001); // Clamp angle so it doesn't go past straight up or straight down
   pitch := Vector3RotateByAxisAngle(yaw, right, pitchAngle);
 
   // Head animation
@@ -241,12 +226,12 @@ begin
       if ((y and 1) <> 0) and ((x and 1) <> 0) then
       begin
         DrawPlane(Vector3Create(x * tileSize, 0.0, y * tileSize),
-                 Vector2Create(tileSize, tileSize), tileColor1);
+          Vector2Create(tileSize, tileSize), tileColor1);
       end
       else if ((y and 1) = 0) and ((x and 1) = 0) then
       begin
         DrawPlane(Vector3Create(x * tileSize, 0.0, y * tileSize),
-                 Vector2Create(tileSize, tileSize), LIGHTGRAY);
+          Vector2Create(tileSize, tileSize), LIGHTGRAY);
       end;
     end;
   end;
@@ -258,15 +243,15 @@ begin
   DrawCubeV(towerPos, towerSize, towerColor);
   DrawCubeWiresV(towerPos, towerSize, DARKBLUE);
 
-  towerPos.x := towerPos.x * -1;
+  towerPos.x := towerPos.x *  - 1;
   DrawCubeV(towerPos, towerSize, towerColor);
   DrawCubeWiresV(towerPos, towerSize, DARKBLUE);
 
-  towerPos.z := towerPos.z * -1;
+  towerPos.z := towerPos.z *  - 1;
   DrawCubeV(towerPos, towerSize, towerColor);
   DrawCubeWiresV(towerPos, towerSize, DARKBLUE);
 
-  towerPos.x := towerPos.x * -1;
+  towerPos.x := towerPos.x *  - 1;
   DrawCubeV(towerPos, towerSize, towerColor);
   DrawCubeWiresV(towerPos, towerSize, DARKBLUE);
 
@@ -274,130 +259,134 @@ begin
   DrawSphere(Vector3Create(300.0, 300.0, 0.0), 100.0, ColorCreate(255, 0, 0, 255));
 end;
 
+procedure Run(Parent: THandle; Proc: TProc<THandle>);
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-var
-  screenWidth, screenHeight: Integer;
-  camera: TCamera;
-  mouseDelta: TVector2;
-  sideway, forward: Integer;
-  crouching, sprinting: Boolean;
-  delta: Single;
-  floorExtent, x, y: Integer;
-  tileSize: Single;
-  tileColor1: TColor;
-  towerSize, towerPos: TVector3;
-  towerColor: TColor;
 begin
+
+  // Main game loop
+  TThread.CreateAnonymousThread(
+    procedure
+    var
+      screenWidth, screenHeight: Integer;
+      camera: TCamera;
+      mouseDelta: TVector2;
+      sideway, forward: Integer;
+      crouching, sprinting: Boolean;
+      delta: Single;
+    begin
   // Initialization
   //--------------------------------------------------------------------------------------
-  screenWidth := 800;
-  screenHeight := 450;
+      screenWidth := 800;
+      screenHeight := 450;
 
-  InitWindow(screenWidth, screenHeight, 'raylib [core] example - 3d camera fps');
+      InitWindow(screenWidth, screenHeight, 'raylib [core] example - 3d camera fps');
+      SetParent(HWND(GetWindowHandle), Parent);
+      Proc(HWND(GetWindowHandle));
+  //
 
   //ToggleFullscreen;
   // Initialize global variables
-  sensitivity := Vector2Create(0.001, 0.001);
-  player.position := Vector3Create(0, 0, 0);
-  player.velocity := Vector3Create(0, 0, 0);
-  player.dir := Vector3Create(0, 0, 0);
-  player.isGrounded := true;
-  lookRotation := Vector2Create(0, 0);
-  headTimer := 0.0;
-  walkLerp := 0.0;
-  headLerp := STAND_HEIGHT;
-  lean := Vector2Create(0, 0);
+      sensitivity := Vector2Create(0.001, 0.001);
+      player.position := Vector3Create(0, 0, 0);
+      player.velocity := Vector3Create(0, 0, 0);
+      player.dir := Vector3Create(0, 0, 0);
+      player.isGrounded := true;
+      lookRotation := Vector2Create(0, 0);
+      headTimer := 0.0;
+      walkLerp := 0.0;
+      headLerp := STAND_HEIGHT;
+      lean := Vector2Create(0, 0);
 
   // Initialize camera variables
   // NOTE: UpdateCameraFPS() takes care of the rest
-  camera.fovy := 60.0;
-  camera.projection := CAMERA_PERSPECTIVE;
-  camera.position := Vector3Create(
-    player.position.x,
-    player.position.y + (BOTTOM_HEIGHT + headLerp),
-    player.position.z
-  );
+      camera.fovy := 60.0;
+      camera.projection := CAMERA_PERSPECTIVE;
+      camera.position := Vector3Create(
+        player.position.x,
+        player.position.y + (BOTTOM_HEIGHT + headLerp),
+        player.position.z
+      );
 
-  UpdateCameraFPS(@camera); // Update camera parameters
+      UpdateCameraFPS(@camera); // Update camera parameters
 
-  DisableCursor();        // Limit cursor to relative movement inside the window
+      //DisableCursor();        // Limit cursor to relative movement inside the window
 
-  SetTargetFPS(75);       // Set our game to run at 60 frames-per-second
+      SetTargetFPS(75);       // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
+      while not WindowShouldClose() do    // Detect window close button or ESC key
+      begin
+        // Update
+        //----------------------------------------------------------------------------------
+        mouseDelta := GetMouseDelta();
+        lookRotation.x := lookRotation.x - mouseDelta.x * sensitivity.x;
+        lookRotation.y := lookRotation.y + mouseDelta.y * sensitivity.y;
 
-  // Main game loop
-  while not WindowShouldClose() do    // Detect window close button or ESC key
-  begin
-    // Update
-    //----------------------------------------------------------------------------------
-    mouseDelta := GetMouseDelta();
-    lookRotation.x := lookRotation.x - mouseDelta.x * sensitivity.x;
-    lookRotation.y := lookRotation.y + mouseDelta.y * sensitivity.y;
+        sideway := Integer(IsKeyDown(KEY_D)) - Integer(IsKeyDown(KEY_A));
+        forward := Integer(IsKeyDown(KEY_W)) - Integer(IsKeyDown(KEY_S));
+        crouching := IsKeyDown(KEY_LEFT_CONTROL);
+        sprinting := IsKeyDown(KEY_LEFT_SHIFT);
+        UpdateBody(@player, lookRotation.x, sideway, forward, IsKeyDown(KEY_SPACE), crouching, sprinting);
 
-    sideway := Integer(IsKeyDown(KEY_D)) - Integer(IsKeyDown(KEY_A));
-    forward := Integer(IsKeyDown(KEY_W)) - Integer(IsKeyDown(KEY_S));
-    crouching := IsKeyDown(KEY_LEFT_CONTROL);
-    sprinting := IsKeyDown(KEY_LEFT_SHIFT);
-    UpdateBody(@player, lookRotation.x, sideway, forward, IsKeyDown(KEY_SPACE), crouching, sprinting);
+        delta := GetFrameTime();
+        headLerp := Lerp(headLerp, IfThen(crouching, CROUCH_HEIGHT, STAND_HEIGHT), 20.0 * delta);
+        camera.position := Vector3Create(
+          player.position.x,
+          player.position.y + (BOTTOM_HEIGHT + headLerp),
+          player.position.z
+        );
 
-    delta := GetFrameTime();
-    headLerp := Lerp(headLerp, IfThen(crouching, CROUCH_HEIGHT, STAND_HEIGHT), 20.0 * delta);
-    camera.position := Vector3Create(
-      player.position.x,
-      player.position.y + (BOTTOM_HEIGHT + headLerp),
-      player.position.z
-    );
+        if player.isGrounded and ((forward <> 0) or (sideway <> 0)) then
+        begin
+          headTimer := headTimer + delta * 3.0;
+          walkLerp := Lerp(walkLerp, 1.0, 10.0 * delta);
+          camera.fovy := Lerp(camera.fovy, 55.0, 5.0 * delta);
+        end
+        else
+        begin
+          walkLerp := Lerp(walkLerp, 0.0, 10.0 * delta);
+          camera.fovy := Lerp(camera.fovy, 60.0, 5.0 * delta);
+        end;
 
-    if player.isGrounded and ((forward <> 0) or (sideway <> 0)) then
-    begin
-      headTimer := headTimer + delta * 3.0;
-      walkLerp := Lerp(walkLerp, 1.0, 10.0 * delta);
-      camera.fovy := Lerp(camera.fovy, 55.0, 5.0 * delta);
-    end
-    else
-    begin
-      walkLerp := Lerp(walkLerp, 0.0, 10.0 * delta);
-      camera.fovy := Lerp(camera.fovy, 60.0, 5.0 * delta);
-    end;
+        lean.x := Lerp(lean.x, sideway * 0.02, 10.0 * delta);
+        lean.y := Lerp(lean.y, forward * 0.015, 10.0 * delta);
 
-    lean.x := Lerp(lean.x, sideway * 0.02, 10.0 * delta);
-    lean.y := Lerp(lean.y, forward * 0.015, 10.0 * delta);
+        UpdateCameraFPS(@camera);
+        //----------------------------------------------------------------------------------
 
-    UpdateCameraFPS(@camera);
-    //----------------------------------------------------------------------------------
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
 
-    // Draw
-    //----------------------------------------------------------------------------------
-    BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-      ClearBackground(RAYWHITE);
-
-      BeginMode3D(camera);
+        BeginMode3D(camera);
         DrawLevel();
-      EndMode3D();
+        EndMode3D();
 
-      // Draw info box
-      DrawRectangle(5, 5, 330, 75, Fade(SKYBLUE, 0.5));
-      DrawRectangleLines(5, 5, 330, 75, BLUE);
+          // Draw info box
+        DrawRectangle(5, 5, 330, 75, Fade(SKYBLUE, 0.5));
+        DrawRectangleLines(5, 5, 330, 75, BLUE);
 
-      DrawText('Camera controls:', 15, 15, 10, BLACK);
-      DrawText('- Move keys: W, A, S, D, Space, Left-Ctrl', 15, 30, 10, BLACK);
-      DrawText('- Look around: arrow keys or mouse', 15, 45, 10, BLACK);
-      DrawText(PAnsiChar(TextFormat('- Velocity Len: (%06.3f)',
-                Vector2Length(Vector2Create(player.velocity.x, player.velocity.z)))),
-                15, 60, 10, BLACK);
+        DrawText('Camera controls:', 15, 15, 10, BLACK);
+        DrawText('- Move keys: W, A, S, D, Space, Left-Ctrl', 15, 30, 10, BLACK);
+        DrawText('- Look around: arrow keys or mouse', 15, 45, 10, BLACK);
+        DrawText(PAnsiChar(TextFormat('- Velocity Len: (%06.3f)',
+              Vector2Length(Vector2Create(player.velocity.x, player.velocity.z)))),
+          15, 60, 10, BLACK);
 
-    EndDrawing();
-    //----------------------------------------------------------------------------------
-  end;
+        EndDrawing();
+      //----------------------------------------------------------------------------------
+      end;
 
-  // De-Initialization
-  //--------------------------------------------------------------------------------------
-  CloseWindow();        // Close window and OpenGL context
-  //--------------------------------------------------------------------------------------
+      // De-Initialization
+      //--------------------------------------------------------------------------------------
+      CloseWindow();        // Close window and OpenGL context
+      //--------------------------------------------------------------------------------------
+    end).Start;
+end;
+
 end.
-
-
 
