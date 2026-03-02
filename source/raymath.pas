@@ -118,6 +118,8 @@ function Vector2Negate(v : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STA
 function Vector2Divide(v1, v2 : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Divide';
 { Normalize provided vector }
 function Vector2Normalize(v : TVector2): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Normalize';
+{ Transforms a Vector2 by a given Matrix }
+function Vector2Transform(v: TVector2; mat: TMatrix): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Transform';
 { Calculate linear interpolation between two vectors }
 function Vector2Lerp(v1, v2 : TVector2; amount : Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector2Lerp';
 { Calculate reflected vector to normal }
@@ -225,7 +227,7 @@ function Vector3Clamp(v, min, max: TVector3): TVector3; cdecl; external {$IFNDEF
 { Clamp the magnitude of the vector between two values }
 function Vector3ClampValue(v: TVector3; min, max: Single): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3ClampValue';
 { Check whether two given vectors are almost equal }
-function Vector3Equals(p, q: TVector3): longint; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Equals';
+function Vector3Equals(p, q: TVector3): integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Equals';
 { Compute the direction of a refracted ray where v specifies the normalized direction of the incoming ray, n specifies the
   normalized normal vector of the interface of two optical media, and r specifies the ratio of the refractive index of the medium
   from where the ray comes to the refractive index of the medium on the other side of the surface }
@@ -366,7 +368,7 @@ function QuaternionToEuler(q : TQuaternion): TVector3; cdecl; external {$IFNDEF 
 { Transform a quaternion given a transformation matrix }
 function QuaternionTransform(q : TQuaternion; mat : TMatrix): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionTransform';
 { Check whether two given quaternions are almost equal }
-function QuaternionEquals(p, q: TQuaternion): longint; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionEquals';
+function QuaternionEquals(p, q: TQuaternion): integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionEquals';
 { Compose a transformation matrix from rotational, translational and scaling components }
 function MatrixCompose(translation: TVector3; rotation: TQuaternion; scale: TVector3): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixCompose';
 { Decompose a transformation matrix into its rotational, translational and scaling components and remove shear }

@@ -1120,8 +1120,6 @@ function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; // Compati
 function GetScreenToWorldRay(position: TVector2; camera: TCamera): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorldRay';
 {Get a ray trace from screen position (i.e mouse) in a viewport}
 function GetScreenToWorldRayEx(position: TVector2; camera: TCamera; width, height: Integer): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorldRayEx';
-{Get a ray trace from mouse position in a viewport}
-function GetViewRay(mousePosition: TVector2; camera: TCamera; width, height: Single): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetViewRay';
 {Get the screen space position for a 3d world space position}
 function GetWorldToScreen(position: TVector3; camera: TCamera): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetWorldToScreen';
 {Get size position for a 3d world space position}
@@ -1156,7 +1154,7 @@ procedure SwapScreenBuffer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF}
 {Register all input events}
 procedure PollInputEvents; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'PollInputEvents';
 {Wait for some time (halt program execution) }
-procedure WaitTime(ms: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaitTime';
+procedure WaitTime(seconds: Double); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'WaitTime';
 
 (* Random values generation functions *)
 

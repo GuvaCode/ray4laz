@@ -177,7 +177,7 @@ const
   RL_ONE = 1;                                       // GL_ONE
   RL_SRC_COLOR = $0300;                             // GL_SRC_COLOR
   RL_ONE_MINUS_SRC_COLOR = $0301;                   // GL_ONE_MINUS_SRC_COLOR
-  RL_SRC_ALPHA = 0302;                              // GL_SRC_ALPHA
+  RL_SRC_ALPHA = $0302;                             // GL_SRC_ALPHA
   RL_ONE_MINUS_SRC_ALPHA = $0303;                   // GL_ONE_MINUS_SRC_ALPHA
   RL_DST_ALPHA = $0304;                             // GL_DST_ALPHA
   RL_ONE_MINUS_DST_ALPHA = $0305;                   // GL_ONE_MINUS_DST_ALPHA
@@ -271,6 +271,7 @@ type
     OPENGL_33 = TrlGlVersion(3);    // OpenGL 3.3 (GLSL 330)
     OPENGL_43 = TrlGlVersion(4);    // OpenGL 4.3 (using GLSL 330)
     OPENGL_ES_20 = TrlGlVersion(5); // OpenGL ES 2.0 (GLSL 100)
+    OPENGL_ES_30 = TrlGlVersion(6);
 
 type
   (* Trace log level *)
@@ -740,7 +741,7 @@ function rlLoadTextureCubemap(const data: Pointer; size: Integer; format: TrlPix
 {Update GPU texture with new data}
 procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height: Integer; format: TrlPixelFormat; data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateTexture';
 {Get OpenGL internal formats}
-procedure rlGetGlTextureFormats(format: TrlPixelFormat; glInternalFormat, glFormat, glType: PLongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetGlTextureFormats';
+procedure rlGetGlTextureFormats(format: TrlPixelFormat; glInternalFormat, glFormat, glType: PCardinal); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetGlTextureFormats';
 {Get name string for pixel format}
 function rlGetPixelFormatName(format: TrlPixelFormat): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetPixelFormatName';
 {Unload texture from GPU memory}
