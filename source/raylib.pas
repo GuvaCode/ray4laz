@@ -1,5 +1,5 @@
 {
-raylib ver 5.6-dev
+raylib ver 6.0
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
@@ -662,7 +662,7 @@ const
       PGamepadButton = ^TGamepadButton;
       TGamepadButton =  Integer;
       const
-        GAMEPAD_BUTTON_UNKNOWN           = TGamepadButton(0);  // Unknown button, just for error checking
+        GAMEPAD_BUTTON_UNKNOWN           = TGamepadButton(0);  // Unknown button, for error checking
         GAMEPAD_BUTTON_LEFT_FACE_UP      = TGamepadButton(1);  // Gamepad left DPAD up button
         GAMEPAD_BUTTON_LEFT_FACE_RIGHT   = TGamepadButton(2);  // Gamepad left DPAD right button
         GAMEPAD_BUTTON_LEFT_FACE_DOWN    = TGamepadButton(3);  // Gamepad left DPAD down button
@@ -749,7 +749,7 @@ const
          SHADER_LOC_VERTEX_BONEIDS      = TShaderLocationIndex(26); // Shader location: vertex attribute: bone indices
          SHADER_LOC_VERTEX_BONEWEIGHTS        = TShaderLocationIndex(27); // Shader location: vertex attribute: bone weights
          SHADER_LOC_MATRIX_BONETRANSFORMS     = TShaderLocationIndex(28); // Shader location: matrix attribute: bone transforms (animation)
-         SHADER_LOC_VERTEX_INSTANCETRANSFORMS = TShaderLocationIndex(29); // Shader location: vertex attribute: instance transforms
+         SHADER_LOC_VERTEX_INSTANCETRANSFORM  = TShaderLocationIndex(29); // Shader location: vertex attribute: instance transforms
 
          SHADER_LOC_MAP_DIFFUSE = SHADER_LOC_MAP_ALBEDO;
          SHADER_LOC_MAP_SPECULAR = SHADER_LOC_MAP_METALNESS;
@@ -821,7 +821,7 @@ const
      PTextureFilter = ^TTextureFilter;
      TTextureFilter =  Integer;
      const
-       TEXTURE_FILTER_POINT            = TTextureFilter(0); // No filter, just pixel approximation
+       TEXTURE_FILTER_POINT            = TTextureFilter(0); // No filter, pixel approximation
        TEXTURE_FILTER_BILINEAR         = TTextureFilter(1); // Linear filtering
        TEXTURE_FILTER_TRILINEAR        = TTextureFilter(2); // Trilinear filtering (linear with mipmaps)
        TEXTURE_FILTER_ANISOTROPIC_4X   = TTextureFilter(3); // Anisotropic filtering 4x
@@ -1926,6 +1926,8 @@ procedure SetTextLineSpacing(spacing: Integer); cdecl; external {$IFNDEF RAY_STA
 function MeasureText(const text: PAnsiChar; fontSize: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureText';
 {Measure string size for Font}
 function MeasureTextEx(font: TFont; const text: PAnsiChar; fontSize, spacing: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureTextEx';
+{Measure string size for an existing array of codepoints for Font}
+function MeasureTextCodepoints(font: TFont; const codepoints: PInteger; length: Integer; fontSize, spacing: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MeasureTextCodepoints';
 {Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found}
 function GetGlyphIndex(font: TFont; codepoint: Integer): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetGlyphIndex';
 {Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found}

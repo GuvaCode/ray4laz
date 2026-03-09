@@ -2,7 +2,7 @@
 *
 *   rlgl v5.0 - A multi-OpenGL abstraction layer with an immediate-mode style API
 *
-*   An abstraction layer for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0)
+*   An abstraction layer for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0, ES 3.0)
 *   that provides a pseudo-OpenGL 1.1 immediate-mode style API (rlVertex, rlTranslate, rlRotate...)
 *
 *   When chosing an OpenGL backend different than OpenGL 1.1, some internal buffer are
@@ -63,7 +63,6 @@ unit rlgl;
 // Include configuration file
 {$I raylib.inc}
 
-
 interface
 
 uses raylib;
@@ -101,6 +100,7 @@ const
   RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD2    = 'vertexTexCoord2';   // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2
   RL_DEFAULT_SHADER_ATTRIB_NAME_BONEINDICES  = 'vertexBoneIndices'; // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEINDICES
   RL_DEFAULT_SHADER_ATTRIB_NAME_BONEWEIGHTS  = 'vertexBoneWeights'; // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS
+  RL_DEFAULT_SHADER_ATTRIB_NAME_INSTANCETRANSFORM = 'instanceTransform'; // Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_INSTANCETRANSFORM
   RL_DEFAULT_SHADER_UNIFORM_NAME_MVP         = 'mvp';               // model-view-projection matrix
   RL_DEFAULT_SHADER_UNIFORM_NAME_VIEW        = 'matView';           // view matrix
   RL_DEFAULT_SHADER_UNIFORM_NAME_PROJECTION  = 'matProjection';     // projection matrix
@@ -216,7 +216,7 @@ const
   RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES = 6;
   RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEINDICES = 7;
   RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS = 8;
-  RL_DEFAULT_SHADER_ATTRIB_LOCATION_INSTANCETRANSFORMS = 9;
+  RL_DEFAULT_SHADER_ATTRIB_LOCATION_INSTANCETRANSFORM = 9;
 
 type
   // Dynamic vertex buffers (position + texcoords + colors + indices arrays)
@@ -227,10 +227,11 @@ type
       texcoords : PSingle;             // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
       normals : PSingle;               // Vertex normal (XYZ - 3 components per vertex) (shader-location = 2)
       colors : PByte;                  // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+      {$if defined(GRAPHICS_API_OPENGL_11) or defined(GRAPHICS_API_OPENGL_33)}
+      indices : PLongWord;              // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+      {$endif}
       {$if defined(GRAPHICS_API_OPENGL_ES2)}
-      indices : PDword;                // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
-      {$else}
-      indices : PLongWord;             // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+      indices : PWord;                  // Vertex indices (in case vertex data comes indexed) (6 indices per quad) (unsigned short)
       {$endif}
       vaoId : LongWord;                // OpenGL Vertex Array Object id
       vboId : array[0..4] of LongWord; // OpenGL Vertex Buffer Objects id (5 types of vertex data)
@@ -266,12 +267,13 @@ type
   PrlGlVersion = ^TrlGlVersion;
   TrlGlVersion =  Integer;
   const
-    OPENGL_11 = TrlGlVersion(1);    // OpenGL 1.1
-    OPENGL_21 = TrlGlVersion(2);    // OpenGL 2.1 (GLSL 120)
-    OPENGL_33 = TrlGlVersion(3);    // OpenGL 3.3 (GLSL 330)
-    OPENGL_43 = TrlGlVersion(4);    // OpenGL 4.3 (using GLSL 330)
-    OPENGL_ES_20 = TrlGlVersion(5); // OpenGL ES 2.0 (GLSL 100)
-    OPENGL_ES_30 = TrlGlVersion(6);
+    RL_OPENGL_11_SOFTWARE = TrlGlVersion(0); // OpenGL 1.1 software rendering
+    RL_OPENGL_11 = TrlGlVersion(1);          // OpenGL 1.1
+    RL_OPENGL_21 = TrlGlVersion(2);          // OpenGL 2.1 (GLSL 120)
+    RL_OPENGL_33 = TrlGlVersion(3);          // OpenGL 3.3 (GLSL 330)
+    RL_OPENGL_43 = TrlGlVersion(4);          // OpenGL 4.3 (using GLSL 330)
+    RL_OPENGL_ES_20 = TrlGlVersion(5);       // OpenGL ES 2.0 (GLSL 100)
+    RL_OPENGL_ES_30 = TrlGlVersion(6);       // OpenGL ES 3.0 (GLSL 300 es)
 
 type
   (* Trace log level *)
@@ -534,12 +536,10 @@ procedure rlDisableVertexBufferElement; cdecl; external {$IFNDEF RAY_STATIC}cDll
 procedure rlEnableVertexAttribute(index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableVertexAttribute';
 {Disable vertex attribute index}
 procedure rlDisableVertexAttribute(index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableVertexAttribute';
-{$ifdef GRAPHICS_API_OPENGL_11}
 {Enable attribute state pointer}
 procedure rlEnableStatePointer(vertexAttribType: Integer; buffer: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlEnableStatePointer';
 {Disable attribute state pointer}
 procedure rlDisableStatePointer(vertexAttribType: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDisableStatePointer';
-{$endif}
 
 (* Textures state *)
 
@@ -556,7 +556,7 @@ procedure rlDisableTextureCubemap; cdecl; external {$IFNDEF RAY_STATIC}cDllName{
 {Set texture parameters (filter, wrap)}
 procedure rlTextureParameters(id: LongWord; param, value: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlTextureParameters';
 {Set cubemap parameters (filter, wrap)}
-procedure rlCubemapParameters(id: LongWord; param, value: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlTextureParameters';
+procedure rlCubemapParameters(id: LongWord; param, value: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCubemapParameters';
 
 (* Shader state *)
 
@@ -660,7 +660,7 @@ procedure rlglClose; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name '
 {Load OpenGL extensions (loader function required)}
 procedure rlLoadExtensions(loader: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadExtensions';
 {Get OpenGL procedure address}
-procedure rlGetProcAddress(const procName: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetProcAddress';
+function rlGetProcAddress(const procName: PAnsiChar): Pointer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetProcAddress';
 {Get current OpenGL version}
 function rlGetVersion: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetVersion';
 {Set current framebuffer width}
@@ -695,13 +695,13 @@ procedure rlDrawRenderBatchActive; cdecl; external {$IFNDEF RAY_STATIC}cDllName{
 {Check internal buffer overflow for a given number of vertex}
 function rlCheckRenderBatchLimit(vCount: Integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCheckRenderBatchLimit';
 {Set current texture for render batch and check buffers limits}
-procedure rlSetTexture(id: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetTexture';
+procedure rlSetTexture(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetTexture';
 
 //------------------------------------------------------------------------------------------------------------------------
 
 (* Vertex buffers management *)
 
-{Load vertex array (vao) if supported  }
+{Load vertex array (vao) if supported}
 function rlLoadVertexArray: LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadVertexArray';
 {Load a vertex buffer attribute}
 function rlLoadVertexBuffer(const buffer: Pointer; size: Integer; dynamic_: Boolean): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadVertexBuffer';
@@ -720,14 +720,14 @@ procedure rlSetVertexAttribute(index: LongWord; compSize, type_: Integer; normal
 {Set vertex attribute data divisor}
 procedure rlSetVertexAttributeDivisor(index: LongWord; divisor: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttributeDivisor';
 {Set vertex attribute default value, when attribute to provided}
-procedure rlSetVertexAttributeDefault(locIndex: Integer; value:pointer; attribType, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttributeDefault';
+procedure rlSetVertexAttributeDefault(locIndex: Integer; value: pointer; attribType, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetVertexAttributeDefault';
 {Draw vertex array (currently active vao)}
 procedure rlDrawVertexArray(offset, count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArray';
 {Draw vertex array elements}
 procedure rlDrawVertexArrayElements(offset, count: Integer; const buffer: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArrayElements';
 {Draw vertex array (currently active vao) with instancing}
 procedure rlDrawVertexArrayInstanced(offset, count, instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArrayInstanced';
-{Draw vertex array (currently active vao) with instancing}
+{Draw vertex array elements with instancing}
 procedure rlDrawVertexArrayElementsInstanced(offset, count: Integer; const buffer: Pointer; instances: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlDrawVertexArrayElementsInstanced';
 
 (* Textures management *)
@@ -739,7 +739,7 @@ function rlLoadTextureDepth(width, height: Integer; useRenderBuffer: boolean): L
 {Load texture cubemap}
 function rlLoadTextureCubemap(const data: Pointer; size: Integer; format: TrlPixelFormat; mipmapCount: integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadTextureCubemap';
 {Update GPU texture with new data}
-procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height: Integer; format: TrlPixelFormat; data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateTexture';
+procedure rlUpdateTexture(id: LongWord; offsetX, offsetY, width, height: Integer; format: TrlPixelFormat; const data: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateTexture';
 {Get OpenGL internal formats}
 procedure rlGetGlTextureFormats(format: TrlPixelFormat; glInternalFormat, glFormat, glType: PCardinal); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetGlTextureFormats';
 {Get name string for pixel format}
@@ -770,24 +770,29 @@ procedure rlUnloadFramebuffer(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC
 {Copy framebuffer pixel data to internal buffer}
 procedure rlCopyFramebuffer(x, y, width, height, format: Integer; pixels: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCopyFramebuffer';
 {Resize internal framebuffer}
-procedure rlResizeFramebuffer(width, height: Pointer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlResizeFramebuffer';
+procedure rlResizeFramebuffer(width, height: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlResizeFramebuffer';
 
 (* Shaders management *)
 
-{Load shader from code strings}
-function rlLoadShaderCode(vsCode, fsCode: PAnsiChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderCode';
-{Compile custom shader and return shader id (type: GL_VERTEX_SHADER,GL_FRAGMENT_SHADER)}
-function rlCompileShader(shaderCode: PAnsiChar; type_: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlCompileShader';
-{Load custom shader program}
-function rlLoadShaderProgram(vShaderId, fShaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderProgram';
+{Load (compile) shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)}
+function rlLoadShader(const code: PAnsiChar; type_: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShader';
+{Load shader from code strings (vertex + fragment)}
+function rlLoadShaderProgram(const vsCode, fsCode: PAnsiChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderProgram';
+{Load shader program, using already loaded shader ids}
+function rlLoadShaderProgramEx(vsId, fsId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderProgramEx';
+{Load compute shader program}
+function rlLoadShaderProgramCompute(csId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderProgramCompute';
+
+{Unload shader, loaded with rlLoadShader()}
+procedure rlUnloadShader(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadShader';
 {Unload shader program}
 procedure rlUnloadShaderProgram(id: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadShaderProgram';
 {Get shader location uniform, requires shader program id}
-function rlGetLocationUniform(shaderId: LongWord; uniformName: PAnsiChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationUniform';
+function rlGetLocationUniform(id: LongWord; const uniformName: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationUniform';
 {Get shader location attribute, requires shader program id}
-function rlGetLocationAttrib(shaderId: LongWord; attribName: PAnsiChar): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationAttrib';
+function rlGetLocationAttrib(id: LongWord; const attribName: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlGetLocationAttrib';
 {Set shader value uniform}
-procedure rlSetUniform(locIndex: Integer; value: Pointer; uniformType: TrlShaderUniformDataType; count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniform';
+procedure rlSetUniform(locIndex: Integer; const value: Pointer; uniformType: TrlShaderUniformDataType; count: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniform';
 {Set shader value matrix}
 procedure rlSetUniformMatrix(locIndex: Integer; mat: TMatrix); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetUniformMatrix';
 {Set shader value matrices}
@@ -797,22 +802,18 @@ procedure rlSetUniformSampler(locIndex: Integer; textureId: LongWord); cdecl; ex
 {Set shader currently active (id and locations)}
 procedure rlSetShader(id: LongWord; locs: PInteger); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlSetShader';
 
-
 (* Compute shader management *)
-
-{Load compute shader program}
-function rlLoadComputeShaderProgram(shaderId: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadComputeShaderProgram';
-{Dispatch compute shader (equivalent to *draw* for graphics pilepine)}
+{Dispatch compute shader (equivalent to *draw* for graphics pipeline)}
 procedure rlComputeShaderDispatch(groupX, groupY, groupZ: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlComputeShaderDispatch';
 
 (* Shader buffer storage object management (ssbo) *)
 
 {Load shader storage buffer object (SSBO)}
-function rlLoadShaderBuffer(size: LongWord; data: Pointer; usageHint: LongWord): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderBuffer';
+function rlLoadShaderBuffer(size: LongWord; data: Pointer; usageHint: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderBuffer';
 {Unload shader storage buffer object (SSBO)}
 procedure rlUnloadShaderBuffer(ssboId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadShaderBuffer';
 {Update SSBO buffer data}
-procedure rlUpdateShaderBuffer(id: LongWord; data: Pointer; dataSize, offset: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateShaderBuffer';
+procedure rlUpdateShaderBuffer(id: LongWord; const data: Pointer; dataSize, offset: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUpdateShaderBuffer';
 {Bind SSBO buffer}
 procedure rlBindShaderBuffer(id, index: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlBindShaderBuffer';
 {Read SSBO buffer data (GPU->CPU)}

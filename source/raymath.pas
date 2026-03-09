@@ -290,6 +290,8 @@ function MatrixAdd(left : TMatrix; right : TMatrix): TMatrix; cdecl; external {$
 function MatrixSubtract(left : TMatrix; right : TMatrix): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixSubtract';
 { Returns two matrix multiplication }
 function MatrixMultiply(left : TMatrix; right : TMatrix): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixMultiply';
+// ---
+function MatrixMultiplyValue(left: TMatrix; value: Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixMultiplyValue';
 { Returns translation matrix }
 function MatrixTranslate(x, y, z : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixTranslate';
 { Create rotation matrix from axis and angle }
