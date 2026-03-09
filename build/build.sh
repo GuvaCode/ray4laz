@@ -136,7 +136,7 @@ make PLATFORM=PLATFORM_MEMORY GRAPHICS=GRAPHICS_API_OPENGL_11_SOFTWARE RAYLIB_MO
 cp libraylib.a ../../../libs/x86_64-linux/libraylib_membuffer.a
 
 make clean
-make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE 
+make PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=TRUE  
 cp libraylib.a ../../../libs/x86_64-linux/libraylib.a
 
 echo " "

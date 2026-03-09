@@ -2429,15 +2429,28 @@ uses
 
 {$IFDEF UNIX}
   {$IFDEF RAY_STATIC}
+
+  {$IFDEF DRAW_MEM_BUFFER}
+    {$linklib libraylib_membuffer.a}
+  {$ELSE}
+    {$linklib libraylib.a}
+  {$ENDIF}
+
     {$linklib c}
     {$linklib m}
     {$linklib dl}
     {$linklib pthread}
-      {$IFDEF DRAW_MEM_BUFFER}
-        {$linklib libraylib_membuffer.a}
-      {$ELSE}
-        {$linklib libraylib.a}
-      {$ENDIF}
+    {$linklib X11}
+  //  {$linklib libXrandr}
+ //   {$linklib libXinerama}
+  //  {$linklib libXi}
+  //  {$linklib libXcursor}
+  //  {$linklib libGL}
+  //  {$linklib libm}
+  //  {$linklib libdl}
+  //  {$linklib librt}
+
+
   {$ENDIF}
 {$ENDIF}
 
