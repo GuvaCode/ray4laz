@@ -2440,7 +2440,9 @@ uses
     {$linklib m}
     {$linklib dl}
     {$linklib pthread}
-    {$linklib X11}
+    {$IFNDEF darwin}
+       {$linklib X11}
+    {$ENDIF}
   //  {$linklib libXrandr}
  //   {$linklib libXinerama}
   //  {$linklib libXi}
