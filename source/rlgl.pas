@@ -1,6 +1,6 @@
 {**********************************************************************************************
 *
-*   rlgl v5.0 - A multi-OpenGL abstraction layer with an immediate-mode style API
+*   rlgl v6.0 - A multi-OpenGL abstraction layer with an immediate-mode style API
 *
 *   An abstraction layer for multiple OpenGL versions (1.1, 2.1, 3.3 Core, ES 2.0, ES 3.0)
 *   that provides a pseudo-OpenGL 1.1 immediate-mode style API (rlVertex, rlTranslate, rlRotate...)
@@ -267,7 +267,7 @@ type
   PrlGlVersion = ^TrlGlVersion;
   TrlGlVersion =  Integer;
   const
-    RL_OPENGL_11_SOFTWARE = TrlGlVersion(0); // OpenGL 1.1 software rendering
+    RL_OPENGL_SOFTWARE = TrlGlVersion(0); // OpenGL 1.1 software rendering
     RL_OPENGL_11 = TrlGlVersion(1);          // OpenGL 1.1
     RL_OPENGL_21 = TrlGlVersion(2);          // OpenGL 2.1 (GLSL 120)
     RL_OPENGL_33 = TrlGlVersion(3);          // OpenGL 3.3 (GLSL 330)

@@ -1274,9 +1274,9 @@ function ChangeDirectory(const dirPath: PAnsiChar): Boolean; cdecl; external {$I
 function IsPathFile(const path: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsPathFile';
 {Check if fileName is valid for the platform/OS}
 function IsFileNameValid(const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFileNameValid';
-{Load directory filepaths}
+{Load directory filepaths, files and directories, no subdirs scan}
 function LoadDirectoryFiles(const dirPath: PAnsiChar): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFiles';
-{Load directory filepaths with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result}
+{Load directory filepaths with extension filtering and subdir scan; some filters available: "*.*", "FILES*", "DIRS*"}
 function LoadDirectoryFilesEx(const basePath, filter: PAnsiChar; scanSubdirs: Boolean): TFilePathList; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadDirectoryFilesEx';
 {Unload filepaths}
 procedure UnloadDirectoryFiles(files: TFilePathList); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadDirectoryFiles';
@@ -1487,16 +1487,17 @@ procedure DrawLineStrip(const points: PVector2; pointCount: Integer; color: TCol
 procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineBezier';
 {Draw a dashed line}
 procedure DrawLineDashed(startPos, endPos: TVector2; dashSize, spaceSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineDashed';
+
 {Draw a color-filled circle}
 procedure DrawCircle(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircle';
+{Draw a color-filled circle (Vector version)}
+procedure DrawCircleV(center: TVector2; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleV';
+{Draw a gradient-filled circle}
+procedure DrawCircleGradient(center: TVector2; radius: Single; inner, outer: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleGradient';
 {Draw a piece of a circle}
 procedure DrawCircleSector(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleSector';
 {Draw circle sector outline}
 procedure DrawCircleSectorLines(center: TVector2; radius, startAngle, endAngle: Single; segments: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleSectorLines';
-{Draw a gradient-filled circle}
-procedure DrawCircleGradient(centerX, centerY: Integer; radius: Single; color1, color2: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleGradient';
-{Draw a color-filled circle (Vector version)}
-procedure DrawCircleV(center: TVector2; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleV';
 {Draw circle outline}
 procedure DrawCircleLines(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleLines';
 {Draw circle outline (Vector version)}
@@ -1640,7 +1641,7 @@ function IsImageValid(image: TImage): Boolean; cdecl; external {$IFNDEF RAY_STAT
 procedure UnloadImage(image: TImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadImage';
 {Export image data to file, returns true on success}
 function ExportImage(image: TImage; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImage';
-{Export image to memory buffer}
+{Export image to memory buffer, memory must be MemFree()}
 function ExportImageToMemory(image: TImage; const fileType: PAnsiChar; fileSize: PInteger): PByte; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageToMemory';
 {Export image as code file defining an array of bytes, returns true on success  }
 function ExportImageAsCode(image: TImage; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportImageAsCode';
@@ -1976,14 +1977,20 @@ function TextFormat(const text: PAnsiChar): PAnsiChar; cdecl; varargs; external 
 function TextSubtext(const text: PAnsiChar; position, length: Integer): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextSubtext';
 {Remove text spaces, concat words}
 function TextRemoveSpaces(const text: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextRemoveSpaces';
-{Get text between two strings}
+{Get text between two strings (memory must be freed!)}
 function GetTextBetween(const text, beginTag, endTag: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTextBetween';
 {Replace text string (WARNING: memory must be freed!)}
 function TextReplace(const text, search, replacement: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplace';
+{Replace text string with allocation (memory must be freed!)}
+function TextReplaceAlloc(const text, search, replacement: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplaceAlloc';
 {Replace text between two specific strings (WARNING: memory must be freed!)}
 function TextReplaceBetween(const text, beginTag, endTag, replacement: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplaceBetween';
+{Replace text between two specific strings with allocation (memory must be freed!)}
+function TextReplaceBetweenAlloc(const text, beginTag, endTag, replacement: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextReplaceBetweenAlloc';
 {Insert text in a position (WARNING: memory must be freed!)}
 function TextInsert(const text, insert: PAnsiChar; position: Integer): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextInsert';
+{Insert text in a position with allocation (memory must be freed!)}
+function TextInsertAlloc(const text, insert: PAnsiChar; position: Integer): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextInsertAlloc';
 {Join text strings with delimiter}
 function TextJoin(textList: PPAnsiChar; count: Integer; const delimiter: PAnsiChar): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TextJoin';
 {Split text into multiple strings, using MAX_TEXTSPLIT_COUNT static strings}
@@ -2083,10 +2090,6 @@ procedure DrawModelEx(model: TModel; position, rotationAxis: TVector3; rotationA
 procedure DrawModelWires(model: TModel; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelWires';
 {Draw a model wires (with texture if set) with extended parameters}
 procedure DrawModelWiresEx(model: TModel; position, rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelWiresEx';
-{Draw a model as points}
-procedure DrawModelPoints(model: TModel; position: TVector3; scale: Single; tint: TColorB) cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelPoints';
-{Draw a model as points with extended parameters}
-procedure DrawModelPointsEx(model: TModel; position: TVector3; rotationAxis: TVector3; rotationAngle: Single; scale: TVector3; tint: TColorB) cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawModelPointsEx';
 {Draw bounding box (wires)}
 procedure DrawBoundingBox(box: TBoundingBox; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBoundingBox';
 {Draw a billboard texture}
@@ -2328,7 +2331,7 @@ procedure StopAudioStream(stream: TAudioStream); cdecl; external {$IFNDEF RAY_ST
 procedure SetAudioStreamVolume(stream: TAudioStream; volume: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamVolume';
 {Set pitch for audio stream (1.0 is base level)}
 procedure SetAudioStreamPitch(stream: TAudioStream; pitch: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamPitch';
-{Set pan for audio stream (0.5 is centered)}
+{Set pan for audio stream (-1.0 to 1.0 range, 0.0 is centered)}
 procedure SetAudioStreamPan(stream: TAudioStream; pan: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamPan';
 {Default size for new audio streams}
 procedure SetAudioStreamBufferSizeDefault(size: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetAudioStreamBufferSizeDefault';
@@ -2440,10 +2443,12 @@ uses
     {$linklib m}
     {$linklib dl}
     {$linklib pthread}
-    {$linklib X11}
-  //  {$linklib libXrandr}
- //   {$linklib libXinerama}
-  //  {$linklib libXi}
+    {$IFNDEF DARWIN}
+     {$linklib X11}
+    {$ENDIF}
+    //  {$linklib libXrandr}
+   //   {$linklib libXinerama}
+  //    {$linklib libXi}
   //  {$linklib libXcursor}
   //  {$linklib libGL}
   //  {$linklib libm}

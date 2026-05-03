@@ -1,14 +1,14 @@
 {********************************************************************************************
 *                                                                                           *
-*    5.0-dev (2026)    Current dev version...                                               *
+*    5.0 (2026)                                                                             *
 *                                                                                           *
 *   DESCRIPTION:                                                                            *
 *                                                                                           *
-*   raygui is a tools-dev-focused immediate-mode-gui library based on raylib but also       *
+*   raygui is a tools-dev-
+ed immediate-mode-gui library based on raylib but also       *
 *   available as a standalone library, as long as input and drawing functions are provided. *
 *                                                                                           *
 *   Pascal header 2021 - 2026 by Gunko Vadim                                                *
-*   Based on raygui.h v5.0-dev                                                              *
 *                                                                                           *
 *********************************************************************************************}
 
@@ -32,7 +32,7 @@ const
   RAYGUI_VERSION_MAJOR = 5;
   RAYGUI_VERSION_MINOR = 0;
   RAYGUI_VERSION_PATCH = 0;
-  RAYGUI_VERSION = '5.0-dev';
+  RAYGUI_VERSION = '5.0';
 
 //----------------------------------------------------------------------------------
 // Defines and Macros (translated for Pascal)
@@ -629,8 +629,8 @@ function GuiDummyRec(bounds: TRectangle; const text: PAnsiChar): Integer; cdecl;
 function GuiGrid(bounds: TRectangle; const text: PAnsiChar; spacing: Single; subdivs: Integer; mouseCell: PVector2): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiGrid';
 
 // Advance controls set
-function GuiListView(bounds: TRectangle; const text: PAnsiChar; scrollIndex: PInteger; active: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListView';
-function GuiListViewEx(bounds: TRectangle; text: PPAnsiChar; count: Integer; scrollIndex: PInteger; active: PInteger; focus: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListViewEx';
+function GuiListView(bounds: TRectangle; const text: PChar; scrollIndex: PInteger; active: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListView';
+function GuiListViewEx(bounds: TRectangle; text: PPChar; count: Integer; scrollIndex: PInteger; active: PInteger; focus: PInteger): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiListViewEx';
 function GuiMessageBox(bounds: TRectangle; const title, message, buttons: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiMessageBox';
 function GuiTextInputBox(bounds: TRectangle; const title, message, buttons, text: PAnsiChar; textMaxSize: Integer; secretViewActive: PBoolean): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiTextInputBox';
 function GuiColorPicker(bounds: TRectangle; const text: PAnsiChar; color: PColorB): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiColorPicker';

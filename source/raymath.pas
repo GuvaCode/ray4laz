@@ -236,19 +236,29 @@ function Vector3Refract(v, n: TVector3; r: Single): TVector3; cdecl; external {$
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector4 math
 //----------------------------------------------------------------------------------
+{ Get  vector zero }
 function Vector4Zero(): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Zero';
+{ Get vector one }
 function Vector4One(): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4One';
+{ Add two vectors }
 function Vector4Add(v1, v2: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Add';
+{ Add value to vector components }
 function Vector4AddValue(v: TVector4; add: Single): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4AddValue';
+{ Substract vectors }
 function Vector4Subtract(v1, v2: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Subtract';
+{ Substract value from vector components }
 function Vector4SubtractValue(v: TVector4; add: Single): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4SubtractValue';
+{ Vector length }
 function Vector4Length(v: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Length';
+{ Vector square length }
 function Vector4LengthSqr(v: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4LengthSqr';
+{ Vectors dot product }
 function Vector4DotProduct(v1, v2: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4DotProduct';
 { Calculate distance between two vectors }
 function Vector4Distance(v1, v2: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Distance';
 { Calculate square distance between two vectors }
 function Vector4DistanceSqr(v1, v2: TVector4): Single; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4DistanceSqr';
+{ Scale vector components by value (multiply) }
 function Vector4Scale(v: TVector4; scale: Single): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Scale';
 { Multiply vector by vector }
 function Vector4Multiply(v1, v2: TVector4): TVector4; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector4Multiply';
@@ -290,7 +300,7 @@ function MatrixAdd(left : TMatrix; right : TMatrix): TMatrix; cdecl; external {$
 function MatrixSubtract(left : TMatrix; right : TMatrix): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixSubtract';
 { Returns two matrix multiplication }
 function MatrixMultiply(left : TMatrix; right : TMatrix): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixMultiply';
-// ---
+{ Multiply matrix components by value }
 function MatrixMultiplyValue(left: TMatrix; value: Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixMultiplyValue';
 { Returns translation matrix }
 function MatrixTranslate(x, y, z : Single): TMatrix; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MatrixTranslate';
