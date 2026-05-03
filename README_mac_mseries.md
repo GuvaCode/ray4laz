@@ -43,11 +43,11 @@ There are three options:
 ```
       <Options>
         <PassLinkerOptions Value="True"/>
-        <LinkerOptions Value="&apos;-framework IOKit&apos;"/>
+        <LinkerOptions Value="-framework IOKit"/>
       </Options>
     </Linking>
     <Other>
-      <CustomOptions Value="&apos;-WM11.0&apos;"/>
+      <CustomOptions Value="-WM11.0"/>
     </Other>
   </CompilerOptions>
 ```
@@ -62,11 +62,11 @@ Run these commands in the folder of the project you wish to change:
 sed -i '' '/<\/Linking>/,/<\/CompilerOptions>/c\
      <Options>\
         <PassLinkerOptions Value="True"/>\
-        <LinkerOptions Value="&apos;-framework IOKit&apos;"/>\
+        <LinkerOptions Value="-framework IOKit"/>\
       </Options>\
     </Linking>\
     <Other>\
-      <CustomOptions Value="&apos;-WM11.0&apos;"/>\
+      <CustomOptions Value="-WM11.0"/>\
     </Other>\
   </CompilerOptions>' *.lpi
 sed -i '' '/^uses/ s/^uses/& CocoaAll,/' *.lpr
@@ -81,11 +81,11 @@ Run these commands from the _root folder of the repo_ to make these changes to e
 find examples -type f -name "*.lpi" -print0 | xargs -0 sed -i '' '/<\/Linking>/,/<\/CompilerOptions>/c\
      <Options>\
         <PassLinkerOptions Value="True"/>\
-        <LinkerOptions Value="&apos;-framework IOKit&apos;"/>\
+        <LinkerOptions Value="-framework IOKit"/>\
       </Options>\
     </Linking>\
     <Other>\
-      <CustomOptions Value="&apos;-WM11.0&apos;"/>\
+      <CustomOptions Value="-WM11.0"/>\
     </Other>\
   </CompilerOptions>'
 find examples -type f -name "*.lpr" -print0 | xargs -0 sed -i '' '/^uses/ s/^\(uses\)/\1 CocoaAll,/'
