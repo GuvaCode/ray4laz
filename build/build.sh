@@ -55,7 +55,7 @@ echo -e "${GREEN}Download raylib master branch${NC}"
 git clone https://github.com/raysan5/raylib.git
 
 sed -i 's|    #define SUPPORT_FILEFORMAT_HDR      0|    #define SUPPORT_FILEFORMAT_HDR      1|g' raylib/src/config.h
-
+sed -i 's|    #define SUPPORT_FILEFORMAT_JPG      0|    #define SUPPORT_FILEFORMAT_JPG      1|g' raylib/src/config.h
 # Скачиваем raygui
 git clone https://github.com/raysan5/raygui.git
 

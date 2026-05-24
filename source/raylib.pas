@@ -1031,15 +1031,15 @@ procedure DisableEventWaiting; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$END
 
 (* Cursor-related functions *)
 
-{Shows cursor}
+{Show cursor}
 procedure ShowCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ShowCursor';
-{Hides cursor}
+{Hide cursor}
 procedure HideCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'HideCursor';
 {Check if cursor is not visible}
 function IsCursorHidden: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsCursorHidden';
-{Enables cursor (unlock cursor)}
+{Enable cursor (unlock cursor)}
 procedure EnableCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'EnableCursor';
-{Disables cursor (lock cursor)}
+{Disable cursor (lock cursor)}
 procedure DisableCursor; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DisableCursor';
 {Check if cursor is on the current screen.}
 function IsCursorOnScreen: Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsCursorOnScreen';
@@ -1196,7 +1196,7 @@ procedure OpenURL(const url: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDl
 type
   TTraceLogCallback = procedure(logLevel: TTraceLogLevel; const Text: PAnsiChar; Args: Pointer); cdecl varargs;
   TLoadFileDataCallback = function(const fileName: PAnsiChar; dataSize: PInteger): PAnsiChar; cdecl;
-  TSaveFileDataCallback = function(const fileName: PAnsiChar; data: Pointer; dataSize: Integer): Boolean; cdecl;
+  TSaveFileDataCallback = function(const fileName: PAnsiChar; const data: Pointer; dataSize: Integer): Boolean; cdecl;
   TLoadFileTextCallback = function(const fileName: PAnsiChar): PAnsiChar; cdecl;
   TSaveFileTextCallback = function(const fileName, text: PAnsiChar): Boolean; cdecl;
 
@@ -1210,7 +1210,7 @@ function LoadFileData(const fileName: PAnsiChar; dataSize: PInteger): PByte; cde
 {Unload file data allocated by LoadFileData()}
 procedure UnloadFileData(data: PByte); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFileData';
 {Save data to file from byte array (write), returns true on success}
-function SaveFileData(const fileName: PAnsiChar; data: Pointer; dataSize: integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileData';
+function SaveFileData(const fileName: PAnsiChar; const data: Pointer; dataSize: integer): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SaveFileData';
 {Export data to code (.h), returns true on success}
 function ExportDataAsCode(const data: PAnsiChar; dataSize: integer; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportDataAsCode';
 {Load text data from file (read), returns a '\0' terminated string}
@@ -1302,13 +1302,13 @@ function EncodeDataBase64(const data: PByte; dataSize: Integer; outputSize: PInt
 {Decode Base64 string (expected NULL terminated), memory must be MemFree()}
 function DecodeDataBase64(const text: PAnsiChar; outputSize: PInteger): PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DecodeDataBase64';
 {Compute CRC32 hash code}
-function ComputeCRC32(data: PAnsiChar; dataSize: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeCRC32';
+function ComputeCRC32(const data: PAnsiChar; dataSize: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeCRC32';
 {Compute MD5 hash code, returns static int[4] (16 bytes)}
-function ComputeMD5(data: PAnsiChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeMD5';
+function ComputeMD5(const data: PAnsiChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeMD5';
 {Compute SHA1 hash code, returns static int[5] (20 bytes)}
-function ComputeSHA1(data: PAnsiChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA1';
+function ComputeSHA1(const data: PAnsiChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA1';
 {Compute SHA256 hash code, returns static int[8] (32 bytes)}
-function ComputeSHA256(data: PAnsiChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA256';
+function ComputeSHA256(const data: PAnsiChar; dataSize: Integer): PLongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ComputeSHA256';
 
 (* Automation events functionality *)
 
@@ -1540,6 +1540,8 @@ procedure DrawRectangleRoundedLines(rec: TRectangle; roundness: Single; segments
 procedure DrawRectangleRoundedLinesEx(rec: TRectangle; roundness: Single; segments: Integer; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRoundedLinesEx';
 {Draw a color-filled triangle (vertex in counter-clockwise order!)}
 procedure DrawTriangle(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangle';
+{Draw triangle with interpolated colors (vertex in counter-clockwise order!)}
+procedure DrawTriangleGradient(v1, v2, v3: TVector2; c1, c2, c3: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleGradient';
 {Draw triangle outline (vertex in counter-clockwise order!)}
 procedure DrawTriangleLines(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleLines';
 {Draw a triangle fan defined by points (first vertex is the center)}
@@ -1585,7 +1587,7 @@ function GetSplinePointBasis(p1, p2, p3, p4: TVector2; t: Single): TVector2; cde
 {Get (evaluate) spline point: Catmull-Rom}
 function GetSplinePointCatmullRom(p1, p2, p3, p4: TVector2; t: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSplinePointCatmullRom';
 {Get (evaluate) spline point: Quadratic Bezier}
-function GetSplinePointBezierQuad(p1, c2, p3: TVector2; t: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSplinePointBezierQuad';
+function GetSplinePointBezierQuadratic(p1, c2, p3: TVector2; t: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSplinePointBezierQuadratic';
 {Get (evaluate) spline point: Cubic Bezier}
 function GetSplinePointBezierCubic(p1, c2, c3, p4: TVector2; t: Single): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetSplinePointBezierCubic';
 
@@ -1724,7 +1726,7 @@ procedure ImageColorInvert(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}c
 {Modify image color: grayscale}
 procedure ImageColorGrayscale(image: PImage); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorGrayscale';
 {Modify image color: contrast (-100 to 100)}
-procedure ImageColorContrast(image: PImage; contrast: Single); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorContrast';
+procedure ImageColorContrast(image: PImage; contrast: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorContrast';
 {Modify image color: brightness (-255 to 255)}
 procedure ImageColorBrightness(image: PImage; brightness: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageColorBrightness';
 {Modify image color: replace color}
@@ -1772,9 +1774,14 @@ procedure ImageDrawRectangleV(dst: PImage; position, size: TVector2; color: TCol
 {Draw rectangle within an image}
 procedure ImageDrawRectangleRec(dst: PImage; rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleRec';
 {Draw rectangle lines within an image}
-procedure ImageDrawRectangleLines(dst: PImage; rec: TRectangle; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleLines';
+procedure ImageDrawRectangleLines(dst: PImage; posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleLines';
+{Draw rectangle lines within an image with extended parameters}
+procedure ImageDrawRectangleLinesEx(dst: PImage; rec: TRectangle; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleLinesEx';
+
 {Draw triangle within an image}
 procedure ImageDrawTriangle(dst: PImage; v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangle';
+{Draw triangle with interpolated colors within an image}
+procedure ImageDrawTriangleGradient(dst: PImage; v1, v2, v3: TVector2; c1, c2, c3: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleGradient';
 {Draw triangle with interpolated colors within an image}
 procedure ImageDrawTriangleEx(dst: PImage; v1, v2, v3: TVector2; c1, c2, c3: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleEx';
 {Draw triangle outline within an image}
@@ -2051,11 +2058,11 @@ procedure DrawCylinderEx(startPos, endPos: TVector3; startRadius, endRadius: Sin
 {Draw a cylinder/cone wires}
 procedure DrawCylinderWires(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderWires';
 {Draw a cylinder wires with base at startPos and top at endPos}
-procedure DrawCylinderWiresEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderWiresEx';
+procedure DrawCylinderWiresEx(startPos, endPos: TVector3; startRadius, endRadius: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderWiresEx';
 {Draw a capsule with the center of its sphere caps at startPos and endPos}
-procedure DrawCapsule(startPos, endPos: TVector3;  radius: Single; slices, rings: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCapsule';
+procedure DrawCapsule(startPos, endPos: TVector3;  radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCapsule';
 {Draw capsule wireframe with the center of its sphere caps at startPos and endPos}
-procedure DrawCapsuleWires(startPos, endPos: TVector3;  radius: Single; slices, rings: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCapsuleWires';
+procedure DrawCapsuleWires(startPos, endPos: TVector3;  radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCapsuleWires';
 {Draw a plane XZ}
 procedure DrawPlane(centerPos: TVector3; size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPlane';
 {Draw a ray line}
@@ -2229,7 +2236,7 @@ function LoadSoundAlias(source: TSound): TSound; cdecl; external {$IFNDEF RAY_ST
 {Checks if a sound is valid (data loaded and buffers initialized)}
 function IsSoundValid(sound: TSound): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsSoundValid';
 {Update sound buffer with new data (default data format: 32 bit float, stereo)}
-procedure UpdateSound(sound: TSound; const data: Pointer; sampleCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateSound';
+procedure UpdateSound(sound: TSound; const data: Pointer; frameCount: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UpdateSound';
 {Unload wave data}
 procedure UnloadWave(wave: TWave); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadWave';
 {Unload sound}
