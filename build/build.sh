@@ -7,6 +7,16 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# ==============================================================================
+# ФЛАГИ ДЛЯ СОВМЕСТИМОСТИ СО СТАРЫМИ glibc (Ubuntu 20.04/22.04, Debian 11/12 и т.д.)
+# ==============================================================================
+# -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 : Отключает _FORTIFY_SOURCE=3 (по умолчанию в GCC 13/14 на Ubuntu 24.04+),
+#                                         который заменяет sscanf/strtol на __isoc23_sscanf/__isoc23_strtol.
+# -std=c99                              : Явно задаем C99, чтобы избежать C23. 
+#                                         (Makefile raylib все равно добавит -std=gnu99).
+export CFLAGS="-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 -std=c99"
+# ==============================================================================
+
 echo -e "${GREEN}raylib build scripts ${NC}"
 echo -e "${YELLOW}"
 read -p "Installing dependencies...(y/n)?" answer
