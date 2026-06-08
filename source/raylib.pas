@@ -294,6 +294,7 @@ const
        end;
 
      (* Anim pose, an array of Transform[] *)
+     PModelAnimPose = ^TModelAnimPose;
      TModelAnimPose = PTransform;
 
      (* Bone, skeletal animation bone *)
@@ -333,7 +334,7 @@ const
          name : array[0..31] of AnsiChar; // Animation name
          boneCount: Integer;              // Number of bones (per pose)
          keyframeCount: Integer;          // Number of animation key frames
-         keyframePoses: ^TModelAnimPose;  // Animation sequence keyframe poses [keyframe][pose]
+         keyframePoses: PModelAnimPose;  // Animation sequence keyframe poses [keyframe][pose]
        end;
 
       (* Ray, ray for raycasting *)
@@ -1114,8 +1115,6 @@ procedure UnloadShader(shader: TShader); cdecl; external {$IFNDEF RAY_STATIC}cDl
 
 (* Screen-space-related functions *)
 
-{Get a ray trace from mouse position}
-function GetMouseRay(mousePosition: TVector2; camera: TCamera): TRay; // Compatibility hack for previous raylib versions
 {Get a ray trace from screen position (i.e mouse)}
 function GetScreenToWorldRay(position: TVector2; camera: TCamera): TRay; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetScreenToWorldRay';
 {Get a ray trace from screen position (i.e mouse) in a viewport}
@@ -1230,17 +1229,17 @@ procedure SetLoadFileTextCallback(callback: TLoadFileTextCallback); cdecl; exter
 procedure SetSaveFileTextCallback(callback: TSaveFileTextCallback); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetSaveFileTextCallback';
 
 // File system functions
-{Rename file (if exists)}
+{Rename file (if exists), returns 0 on success}
 function FileRename(const fileName, fileRename: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileRename';
-{Remove file (if exists)}
+{Remove file (if exists), returns 0 on success}
 function FileRemove(const fileName: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileRemove';
-{Copy file from one path to another, dstPath created if it doesn't exist}
+{Copy file from one path to another, dstPath created if it doesn't exist, returns 0 on success}
 function FileCopy(const srcPath, dstPath: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileCopy';
-{Move file from one directory to another, dstPath created if it doesn't exist}
+{Move file from one directory to another, dstPath created if it doesn't exist, returns 0 on success}
 function FileMove(const srcPath, dstPath: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileMove';
-{Replace text in an existing file}
+{Replace text in an existing file, returns 0 on success}
 function FileTextReplace(const fileName, search, replacement: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileTextReplace';
-{Find text in existing file}
+{Find text in existing file, returns -1 if index not found or index otherwise}
 function FileTextFindIndex(const fileName, search: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileTextFindIndex';
 {Check if file exists}
 function FileExists(const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'FileExists';
@@ -1268,8 +1267,8 @@ function GetWorkingDirectory: PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDl
 function GetApplicationDirectory: PAnsiChar; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetApplicationDirectory';
 {Create directories (including full path requested), returns 0 on success}
 function MakeDirectory(const dirPath: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'MakeDirectory';
-{Change working directory, return true on success}
-function ChangeDirectory(const dirPath: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ChangeDirectory';
+{Change working directory, returns 0 on success}
+function ChangeDirectory(const dirPath: PAnsiChar): Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ChangeDirectory';
 {Check if a given path is a file or a directory}
 function IsPathFile(const path: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsPathFile';
 {Check if fileName is valid for the platform/OS}
@@ -1422,8 +1421,7 @@ function GetTouchPointId(index: Integer): Integer; cdecl; external {$IFNDEF RAY_
 function GetTouchPosition(index: Integer): TVector2; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTouchPosition';
 {Get touch points count}
 function GetTouchPointCount: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTouchPointCount';
-{Get last touch event registered}
-function GetTouchEvent: Integer; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetTouchEvent';
+
 
 //------------------------------------------------------------------------------------
 // Gestures and Touch Handling Functions (Module: rgestures)
@@ -1462,7 +1460,7 @@ procedure UpdateCameraPro(camera: PCamera; movement, rotation: TVector3; zoom: s
 // defining a font char white rectangle would allow drawing everything in a single draw call
 
 {Set texture and rectangle to be used on shapes drawing}
-procedure SetShapesTexture(texture: TTexture2D; source: TRectangle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShapesTexture';
+procedure SetShapesTexture(texture: TTexture2D; rec: TRectangle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetShapesTexture';
 {Get texture that is used for shapes drawing}
 function GetShapesTexture: TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetShapesTexture';
 {Get texture source rectangle that is used for shapes drawing}
@@ -1488,6 +1486,46 @@ procedure DrawLineBezier(startPos, endPos: TVector2; thick: Single; color: TColo
 {Draw a dashed line}
 procedure DrawLineDashed(startPos, endPos: TVector2; dashSize, spaceSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawLineDashed';
 
+{Draw a color-filled triangle (vertex in counter-clockwise order!)}
+procedure DrawTriangle(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangle';
+{Draw triangle with interpolated colors (vertex in counter-clockwise order!)}
+procedure DrawTriangleGradient(v1, v2, v3: TVector2; c1, c2, c3: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleGradient';
+{Draw triangle outline (vertex in counter-clockwise order!)}
+procedure DrawTriangleLines(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleLines';
+{Draw a triangle fan defined by points (first vertex is the center)}
+procedure DrawTriangleFan(const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleFan';
+{Draw a triangle strip defined by points}
+procedure DrawTriangleStrip(const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleStrip';
+{Draw a color-filled rectangle}
+procedure DrawRectangle(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangle';
+{Draw a color-filled rectangle (Vector version)}
+procedure DrawRectangleV(position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleV';
+{Draw a color-filled rectangle}
+procedure DrawRectangleRec(rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRec';
+{Draw a color-filled rectangle with pro parameters}
+procedure DrawRectanglePro(rec: TRectangle; origin: TVector2; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectanglePro';
+{Draw a vertical-gradient-filled rectangle}
+procedure DrawRectangleGradientV(posX, posY, width, height: Integer; top, bottom: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientV';
+{Draw a horizontal-gradient-filled rectangle}
+procedure DrawRectangleGradientH(posX, posY, width, height: Integer; left, right: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientH';
+{Draw a gradient-filled rectangle with custom vertex colors}
+procedure DrawRectangleGradientEx(rec: TRectangle; col1, col2, col3, col4: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientEx';
+{Draw rectangle outline}
+procedure DrawRectangleLines(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleLines';
+{Draw rectangle outline with extended parameters}
+procedure DrawRectangleLinesEx(rec: TRectangle; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleLinesEx';
+{Draw rectangle with rounded edges}
+procedure DrawRectangleRounded(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRounded';
+{Draw rectangle lines with rounded edges}
+procedure DrawRectangleRoundedLines(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRoundedLines';
+{Draw rectangle with rounded edges outline}
+procedure DrawRectangleRoundedLinesEx(rec: TRectangle; roundness: Single; segments: Integer; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRoundedLinesEx';
+{Draw a regular polygon (Vector version)}
+procedure DrawPoly(center: TVector2; sides: Integer; radius: Single; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPoly';
+{Draw a polygon outline of n sides}
+procedure DrawPolyLines(center: TVector2; sides: Integer; radius, rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPolyLines';
+{Draw a polygon outline of n sides with extended parameters }
+procedure DrawPolyLinesEx(center: TVector2; sides: Integer; radius, rotation, lineThick: single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPolyLinesEx';
 {Draw a color-filled circle}
 procedure DrawCircle(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircle';
 {Draw a color-filled circle (Vector version)}
@@ -1502,6 +1540,8 @@ procedure DrawCircleSectorLines(center: TVector2; radius, startAngle, endAngle: 
 procedure DrawCircleLines(centerX, centerY: Integer; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleLines';
 {Draw circle outline (Vector version)}
 procedure DrawCircleLinesV(center: TVector2; radius: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleLinesV';
+{Draw circle outline with line thickness}
+procedure DrawCircleLinesEx(center: TVector2; radius, thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCircleLinesEx';
 {Draw ellipse}
 procedure DrawEllipse(centerX, centerY: Integer; radiusH, radiusV: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawEllipse';
 {Draw ellipse (Vector version)}
@@ -1514,46 +1554,6 @@ procedure DrawEllipseLinesV(center: TVector2; radiusH, radiusV: Single; color: T
 procedure DrawRing(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRing';
 {Draw ring outline}
 procedure DrawRingLines(center: TVector2; innerRadius, outerRadius, startAngle, endAngle: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRingLines';
-{Draw a color-filled rectangle}
-procedure DrawRectangle(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangle';
-{Draw a color-filled rectangle (Vector version)}
-procedure DrawRectangleV(position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleV';
-{Draw a color-filled rectangle}
-procedure DrawRectangleRec(rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRec';
-{Draw a color-filled rectangle with pro parameters}
-procedure DrawRectanglePro(rec: TRectangle; origin: TVector2; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectanglePro';
-{Draw a vertical-gradient-filled rectangle}
-procedure DrawRectangleGradientV(posX, posY, width, height: Integer; top, bottom: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientV';
-{Draw a horizontal-gradient-filled rectangle}
-procedure DrawRectangleGradientH(posX, posY, width, height: Integer; left, right: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientH';
-{Draw a gradient-filled rectangle with custom vertex colors}
-procedure DrawRectangleGradientEx(rec: TRectangle; topLeft, bottomLeft, bottomRight, topRight: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleGradientEx';
-{Draw rectangle outline}
-procedure DrawRectangleLines(posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleLines';
-{Draw rectangle outline with extended parameters}
-procedure DrawRectangleLinesEx(rec: TRectangle; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleLinesEx';
-{Draw rectangle with rounded edges}
-procedure DrawRectangleRounded(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRounded';
-{Draw rectangle lines with rounded edges}
-procedure DrawRectangleRoundedLines(rec: TRectangle; roundness: Single; segments: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRoundedLines';
-{Draw rectangle with rounded edges outline}
-procedure DrawRectangleRoundedLinesEx(rec: TRectangle; roundness: Single; segments: Integer; lineThick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawRectangleRoundedLinesEx';
-{Draw a color-filled triangle (vertex in counter-clockwise order!)}
-procedure DrawTriangle(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangle';
-{Draw triangle with interpolated colors (vertex in counter-clockwise order!)}
-procedure DrawTriangleGradient(v1, v2, v3: TVector2; c1, c2, c3: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleGradient';
-{Draw triangle outline (vertex in counter-clockwise order!)}
-procedure DrawTriangleLines(v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleLines';
-{Draw a triangle fan defined by points (first vertex is the center)}
-procedure DrawTriangleFan(const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleFan';
-{Draw a triangle strip defined by points}
-procedure DrawTriangleStrip(const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTriangleStrip';
-{Draw a regular polygon (Vector version)}
-procedure DrawPoly(center: TVector2; sides: Integer; radius: Single; rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPoly';
-{Draw a polygon outline of n sides}
-procedure DrawPolyLines(center: TVector2; sides: Integer; radius, rotation: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPolyLines';
-{Draw a polygon outline of n sides with extended parameters }
-procedure DrawPolyLinesEx(center: TVector2; sides: Integer; radius, rotation, lineThick: single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawPolyLinesEx';
 
 (* Splines drawing functions *)
 
@@ -1746,7 +1746,6 @@ function GetImageColor(image: TImage; x, y: Integer): TColorB; cdecl; external {
 
 (* Image drawing functions *)
 // NOTE: Image software-rendering functions (CPU)
-
 {Clear image background with given color}
 procedure ImageClearBackground(dst: PImage; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageClearBackground';
 {Draw pixel within an image}
@@ -1759,6 +1758,28 @@ procedure ImageDrawLine(dst: PImage; startPosX, startPosY, endPosX, endPosY: Int
 procedure ImageDrawLineV(dst: PImage; start, _end: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawLineV';
 {Draw a line defining thickness within an image}
 procedure ImageDrawLineEx(dst: PImage; start, _end: TVector2; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawLineEx';
+{Draw a lines sequence within an image}
+procedure ImageDrawLineStrip(dst: PImage; const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawLineStrip';
+{Draw triangle within an image}
+procedure ImageDrawTriangle(dst: PImage; v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangle';
+{Draw triangle with interpolated colors within an image}
+procedure ImageDrawTriangleGradient(dst: PImage; v1, v2, v3: TVector2; c1, c2, c3: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleGradient';
+{Draw triangle outline within an image}
+procedure ImageDrawTriangleLines(dst: PImage; v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleLines';
+{Draw a triangle fan defined by points within an image (first vertex is the center)}
+procedure ImageDrawTriangleFan(dst: PImage; const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleFan';
+{Draw a triangle strip defined by points within an image}
+procedure ImageDrawTriangleStrip(dst: PImage; const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleStrip';
+{Draw rectangle within an image}
+procedure ImageDrawRectangle(dst: PImage; posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangle';
+{Draw rectangle within an image (Vector version)}
+procedure ImageDrawRectangleV(dst: PImage; position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleV';
+{Draw rectangle within an image}
+procedure ImageDrawRectangleRec(dst: PImage; rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleRec';
+{Draw rectangle lines within an image}
+procedure ImageDrawRectangleLines(dst: PImage; posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleLines';
+{Draw rectangle lines within an image with line thickness}
+procedure ImageDrawRectangleLinesEx(dst: PImage; rec: TRectangle; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleLinesEx';
 {Draw a filled circle within an image}
 procedure ImageDrawCircle(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircle';
 {Draw a filled circle within an image (Vector version)}
@@ -1767,39 +1788,18 @@ procedure ImageDrawCircleV(dst: PImage; center: TVector2; radius: Integer; color
 procedure ImageDrawCircleLines(dst: PImage; centerX, centerY, radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircleLines';
 {Draw circle outline within an image (Vector version)}
 procedure ImageDrawCircleLinesV(dst: PImage; center: TVector2; radius: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircleLinesV';
-{Draw rectangle within an image}
-procedure ImageDrawRectangle(dst: PImage; posX, posY, width, height: Integer; color: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangle';
-{Draw rectangle within an image (Vector version)}
-procedure ImageDrawRectangleV(dst: PImage; position, size: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleV';
-{Draw rectangle within an image}
-procedure ImageDrawRectangleRec(dst: PImage; rec: TRectangle; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleRec';
-{Draw rectangle lines within an image}
-procedure ImageDrawRectangleLines(dst: PImage; posX, posY, width, height: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleLines';
-{Draw rectangle lines within an image with extended parameters}
-procedure ImageDrawRectangleLinesEx(dst: PImage; rec: TRectangle; thick: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawRectangleLinesEx';
-
-{Draw triangle within an image}
-procedure ImageDrawTriangle(dst: PImage; v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangle';
-{Draw triangle with interpolated colors within an image}
-procedure ImageDrawTriangleGradient(dst: PImage; v1, v2, v3: TVector2; c1, c2, c3: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleGradient';
-{Draw triangle with interpolated colors within an image}
-procedure ImageDrawTriangleEx(dst: PImage; v1, v2, v3: TVector2; c1, c2, c3: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleEx';
-{Draw triangle outline within an image}
-procedure ImageDrawTriangleLines(dst: PImage; v1, v2, v3: TVector2; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleLines';
-{Draw a triangle fan defined by points within an image (first vertex is the center)}
-procedure ImageDrawTriangleFan(dst: PImage; const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleFan';
-{Draw a triangle strip defined by points within an image}
-procedure ImageDrawTriangleStrip(dst: PImage; const points: PVector2; pointCount: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTriangleStrip';
-{Draw a source image within a destination image (tint applied to source)}
-procedure ImageDraw(dst: PImage; src: TImage; srcRec, dstRec: TRectangle; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDraw';
+{Draw a gradient-filled circle within an image}
+procedure ImageDrawCircleGradient(dst: PImage; center: TVector2; radius: Single; inner, outer: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawCircleGradient';
+{Draw an image within an image}
+procedure ImageDrawImage(dst: PImage; src: TImage; posX, posY: Integer; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawImage';
+{Draw a part of an image defined by a rectangle within an image}
+procedure ImageDrawImageRec(dst: PImage; src: TImage; srcRec: TRectangle; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawImageRec';
+{Draw a part of an image defined by a rectangle into destination rectangle, with scaling and rotation, within an image}
+procedure ImageDrawImagePro(dst: PImage; src: TImage; srcRec, dstRec: TRectangle; origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawImagePro';
 {Draw text (using default font) within an image (destination)}
-procedure ImageDrawText(dst: PImage; const text: PAnsiChar; posX, posY, fontSize: Integer; color:TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawText';
+procedure ImageDrawText(dst: PImage; const text: PAnsiChar; posX, posY, fontSize: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawText';
 {Draw text (custom sprite font) within an image (destination)}
 procedure ImageDrawTextEx(dst: PImage; font: TFont; const text: PAnsiChar; position: TVector2; fontSize, spacing: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ImageDrawTextEx';
-
-(* Texture loading functions *)
-// NOTE: These functions require GPU access
-
 {Load texture from file into GPU memory (VRAM)}
 function LoadTexture(const fileName: PAnsiChar): TTexture2D; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadTexture';
 {Load texture from image data}
@@ -1839,11 +1839,11 @@ procedure DrawTextureV(texture: TTexture2D; position: TVector2; tint: TColorB); 
 {Draw a Texture2D with extended parameters}
 procedure DrawTextureEx(texture: TTexture2D; position: TVector2; rotation, scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureEx';
 {Draw a part of a texture defined by a rectangle}
-procedure DrawTextureRec(texture: TTexture2D; source: TRectangle; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureRec';
+procedure DrawTextureRec(texture: TTexture2D; rec: TRectangle; position: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureRec';
 {Draw a part of a texture defined by a rectangle with 'pro' parameters}
-procedure DrawTexturePro(texture: TTexture2D; source, dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTexturePro';
+procedure DrawTexturePro(texture: TTexture2D; srcrec, dstrec: TRectangle; origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTexturePro';
 {Draws a texture (or part of it) that stretches or shrinks nicely}
-procedure DrawTextureNPatch(texture: TTexture2D; nPatchInfo: TNPatchInfo; dest: TRectangle; origin: TVector2; rotation: Single; tint: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureNPatch';
+procedure DrawTextureNPatch(texture: TTexture2D; nPatchInfo: TNPatchInfo; dstrec: TRectangle; origin: TVector2; rotation: Single; tint: TColorB);cdecl;external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawTextureNPatch';
 
 (* Color/pixel related functions *)
 
@@ -1876,7 +1876,7 @@ function ColorLerp(color1, color2: TColorB; factor: Single): TColorB; cdecl; ext
 {Get Color structure from hexadecimal value}
 function GetColor(hexValue: LongWord): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetColor';
 {Get Color from a source pixel pointer of certain format}
-function GetPixelColor(srcPtr: Pointer; format: TPixelFormat): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPixelColor';
+function GetPixelColor(const srcPtr: Pointer; format: TPixelFormat): TColorB; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GetPixelColor';
 {Set color formatted into destination pixel pointer}
 procedure SetPixelColor(dstPtr: Pointer; color: TColorB; format: TPixelFormat); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetPixelColor';
 {Get pixel data size in bytes for certain format}
@@ -2052,13 +2052,13 @@ procedure DrawSphereEx(centerPos: TVector3; radius: Single; rings, slices: Integ
 {Draw sphere wires}
 procedure DrawSphereWires(centerPos: TVector3; radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSphereWires';
 {Draw a cylinder/cone}
-procedure DrawCylinder(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinder';
+procedure DrawCylinder(position: TVector3; radiusTop, radiusBottom, height: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinder';
 {Draw a cylinder with base at startPos and top at endPos}
 procedure DrawCylinderEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderEx';
 {Draw a cylinder/cone wires}
-procedure DrawCylinderWires(position: TVector3; radiusTop, radiusBottom, height: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderWires';
+procedure DrawCylinderWires(position: TVector3; radiusTop, radiusBottom, height: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderWires';
 {Draw a cylinder wires with base at startPos and top at endPos}
-procedure DrawCylinderWiresEx(startPos, endPos: TVector3; startRadius, endRadius: Single; slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderWiresEx';
+procedure DrawCylinderWiresEx(startPos, endPos: TVector3; startRadius, endRadius: Single; sides: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCylinderWiresEx';
 {Draw a capsule with the center of its sphere caps at startPos and endPos}
 procedure DrawCapsule(startPos, endPos: TVector3;  radius: Single; rings, slices: Integer; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawCapsule';
 {Draw capsule wireframe with the center of its sphere caps at startPos and endPos}
@@ -2102,9 +2102,9 @@ procedure DrawBoundingBox(box: TBoundingBox; color: TColorB); cdecl; external {$
 {Draw a billboard texture}
 procedure DrawBillboard(camera: TCamera; texture: TTexture2D; position: TVector3; scale: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboard';
 {Draw a billboard texture defined by source}
-procedure DrawBillboardRec(camera: TCamera; texture: TTexture2D; source: TRectangle; position: TVector3; size: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboardRec';
+procedure DrawBillboardRec(camera: TCamera; texture: TTexture2D; rec: TRectangle; position: TVector3; size: TVector2; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboardRec';
 {Draw a billboard texture defined by source and rotation}
-procedure DrawBillboardPro(camera: TCamera; texture: TTexture2D; source: TRectangle; position, up: TVector3; size, origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboardPro';
+procedure DrawBillboardPro(camera: TCamera; texture: TTexture2D; rec: TRectangle; position, up: TVector3; size, origin: TVector2; rotation: Single; tint: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawBillboardPro';
 
 (* Mesh management functions *)
 

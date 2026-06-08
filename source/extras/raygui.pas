@@ -1,6 +1,6 @@
 {********************************************************************************************
 *                                                                                           *
-*    5.0 (2026)                                                                             *
+*    5.0 - dev (2026)                                                                             *
 *                                                                                           *
 *   DESCRIPTION:                                                                            *
 *                                                                                           *
@@ -21,7 +21,7 @@ unit raygui;
 // Include configuration file
 {$I ../raylib.inc}
 {.$DEFINE RAYGUI_NO_ICONS}
-//   Avoid including embedded icons data (256 icons, 16x16 pixels, 1-bit per pixel, 2KB)
+//   Avoid including embedded icons data (512 icons, 16x16 pixels, 1-bit per pixel, 2KB)
 
 interface
 
@@ -324,12 +324,13 @@ const
   ICON_CONE = 247;
   ICON_ELLIPSOID = 248;
   ICON_CAPSULE = 249;
-  ICON_250 = 250;
-  ICON_251 = 251;
-  ICON_252 = 252;
-  ICON_253 = 253;
-  ICON_254 = 254;
-  ICON_255 = 255;
+  ICON_FILETYPE_FONT = 250;
+  ICON_FILETYPE_3D = 251;
+  ICON_FILETYPE_CODE_XML = 252;
+  ICON_FILETYPE_CODE_C = 253;
+  ICON_FILETYPE_CODE_PYTHON = 254;
+  ICON_FILETYPE_CODE_JS = 255;
+  ICON_FILETYPE_ICON = 256;
 
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
@@ -576,6 +577,8 @@ function GuiGetStyle(control: Integer; property_: Integer): Integer; cdecl; exte
 
 // Styles loading functions
 procedure GuiLoadStyle(const fileName: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadStyle';
+// Load style from memory (binary only)
+procedure GuiLoadStyleFromMemory(const fileData: PByte; dataSize: Integer); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadStyleFromMemory';
 procedure GuiLoadStyleDefault; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GuiLoadStyleDefault';
 
 // Tooltips management functions
