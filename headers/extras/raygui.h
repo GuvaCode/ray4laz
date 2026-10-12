@@ -1,6 +1,6 @@
 /*******************************************************************************************
 *
-*   raygui v5.0 - A simple and easy-to-use immediate-mode gui library
+*   raygui v5.1-dev - A simple and easy-to-use immediate-mode gui library
 *
 *   DESCRIPTION:
 *       raygui is a tools-dev-focused immediate-mode-gui library based on raylib but also
@@ -145,6 +145,8 @@
 *           Draw text bounds rectangles for debug
 *
 *   VERSIONS HISTORY:
+*       6.0 (xx-xx-2027)  ADDED: Advance controls set?
+*
 *       5.0 (20-Jul-2026) ADDED: NEW control: GuiTabBar()
 *                         ADDED: Support up to 512 icons (v500)
 *                         ADDED: Support icons baking into font atlas image
@@ -353,9 +355,9 @@
 #define RAYGUI_H
 
 #define RAYGUI_VERSION_MAJOR 5
-#define RAYGUI_VERSION_MINOR 0
+#define RAYGUI_VERSION_MINOR 1
 #define RAYGUI_VERSION_PATCH 0
-#define RAYGUI_VERSION  "5.0"
+#define RAYGUI_VERSION  "5.1-dev"
 
 #if !defined(RAYGUI_STANDALONE)
     #include "raylib.h"
@@ -3883,7 +3885,7 @@ int GuiTabBar(Rectangle bounds, const char *text, int *hscroll, int *active)
 
 // Tab Bar control, using text entries list and returning focus entry
 // NOTE: In case of tab close result, consider focused tab
-// TODO: Reeplace GuiToggle() usage for custom implementation for the TABS
+// TODO: Replace GuiToggle() usage for custom implementation for the TABS
 int GuiTabBarEx(Rectangle bounds, char **text, int count, int *hscroll, int *active, int *focus)
 {
     int result = RESULT_NONE;
@@ -5815,11 +5817,10 @@ static void GuiTooltip(Rectangle controlRec)
 
         int lineCount = 0;
         GetTextLines(guiTooltipPtr, &lineCount); // Only using the line count
-        if ((controlRec.y + controlRec.height + textSize.y + 4 + 8*lineCount) > GetScreenHeight())
-            controlRec.y -= (controlRec.height + textSize.y + 4 + 8*lineCount);
+        if ((controlRec.y + controlRec.height + textSize.y + 4 + GuiGetStyle(DEFAULT, TEXT_LINE_SPACING)*lineCount) > GetScreenHeight())
+            controlRec.y -= (controlRec.height + textSize.y + 4 + GuiGetStyle(DEFAULT, TEXT_LINE_SPACING)*lineCount);
 
-        // TODO: Probably TEXT_LINE_SPACING should be considered on panel size instead of hardcoding 8.0f
-        GuiPanel(RAYGUI_CLITERAL(Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, textSize.y + 8.0f*lineCount }, NULL);
+        GuiPanel(RAYGUI_CLITERAL(Rectangle){ controlRec.x, controlRec.y + controlRec.height + 4, textSize.x + 16, textSize.y + GuiGetStyle(DEFAULT, TEXT_LINE_SPACING)*lineCount }, NULL);
 
         int textPadding = GuiGetStyle(LABEL, TEXT_PADDING);
         int textAlignment = GuiGetStyle(LABEL, TEXT_ALIGNMENT);
