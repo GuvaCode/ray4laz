@@ -207,12 +207,12 @@ begin
         dropdownEditMode1 := not dropdownEditMode1;
 
       // Label
-      GuiSetStyle(UILABEL, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
+      GuiSetStyle(LABEL_, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
       GuiSetStyle(DEFAULT, TEXT_SIZE, GuiGetFont().baseSize * 2);
       GuiLabel(RectangleCreate(0, GetScreenHeight() - 100.0, GetScreenWidth(), 40),
         'PRESS SPACE to START BLENDING');
       GuiSetStyle(DEFAULT, TEXT_SIZE, GuiGetFont().baseSize);
-      GuiSetStyle(UILABEL, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
+      GuiSetStyle(LABEL_, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
 
       // Timeline for anim0
       GuiProgressBar(RectangleCreate(60, GetScreenHeight() - 60.0, GetScreenWidth() - 180.0, 20), 'ANIM 0',

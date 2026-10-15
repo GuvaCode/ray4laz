@@ -33,6 +33,7 @@ begin
 
         DrawCircle(screenWidth div 5, 120, 35, DARKBLUE);
         DrawCircleGradient(Vector2Create(screenWidth / 5.0, 220.0), 60, GREEN, SKYBLUE);
+
         DrawCircleLines(screenWidth div 5, 340, 80, DARKBLUE);
         DrawEllipse(screenWidth div 5, 120, 25, 20, YELLOW);
         DrawEllipseLines(screenWidth div 5, 120, 30, 25, YELLOW);

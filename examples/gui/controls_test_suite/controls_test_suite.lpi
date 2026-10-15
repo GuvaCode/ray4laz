@@ -32,6 +32,7 @@
       <Unit>
         <Filename Value="controls_test_suite.lpr"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="raygui_controls_test"/>
       </Unit>
     </Units>
   </ProjectOptions>

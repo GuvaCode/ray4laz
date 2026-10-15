@@ -1,176 +1,119 @@
-{*******************************************************************************************
-*
-*   raygui - controls test suite
-*
-*   TEST CONTROLS:
-*       - GuiDropdownBox()
-*       - GuiCheckBox()
-*       - GuiSpinner()
-*       - GuiValueBox()
-*       - GuiTextBox()
-*       - GuiButton()
-*       - GuiComboBox()
-*       - GuiListView()
-*       - GuiToggleGroup()
-*       - GuiColorPicker()
-*       - GuiSlider()
-*       - GuiSliderBar()
-*       - GuiProgressBar()
-*       - GuiColorBarAlpha()
-*       - GuiScrollPanel()
-*
-*
-*   DEPENDENCIES:
-*       raylib 4.5          - Windowing/input management and drawing
-*       raygui 3.5          - Immediate-mode GUI controls with custom styling and icons
-*
-*   COMPILATION (Windows - MinGW):
-*       gcc -o $(NAME_PART).exe $(FILE_NAME) -I../../src -lraylib -lopengl32 -lgdi32 -std=c99
-*
-*   LICENSE: zlib/libpng
-*
-*   Copyright (c) 2016-2024 Ramon Santamaria (@raysan5)
-*
-*   Pascal translation (c) 2024 Vadim Gunko (@guvacode)
-*
-**********************************************************************************************}
+program raygui_controls_test;
 
-program controls_test_suite;
-
-{$mode objfpc}{$H+}
+{$MODE OBJFPC}{$H+}
 
 uses
-  cmem, raygui, raylib, fontutil, sysutils;
+  SysUtils,
+  raylib, raygui;
 
 const
-  screenWidth = 960;
-  screenHeight = 560;
-  LIST_VIEW_ITEMS_COUNT = 256;  // Количество элементов в списке
+  screenWidth  = 960;
+  screenHeight = 580;
+
+  STYLE_PATH = 'resources/gui_styles/';
 
 var
-  dropdownBox000Active: integer = 0;
-  dropDown000EditMode: boolean = false;
+  tabActive: Integer = 0;
 
-  dropdownBox001Active: integer = 0;
-  dropDown001EditMode: boolean = false;
+  dropdownBox000Active: Integer = 0;
+  dropDown000EditMode: Boolean = False;
 
-  spinner001Value: integer = 0;
-  spinnerEditMode: boolean = false;
+  dropdownBox001Active: Integer = 0;
+  dropDown001EditMode: Boolean = False;
 
-  valueBox002Value: integer = 0;
-  valueBoxEditMode: boolean = false;
+  spinner001Value: Integer = 0;
+  spinnerEditMode: Boolean = False;
 
-  textBoxText: PChar = 'Text box';
-  textBoxEditMode: boolean = false;
+  valueBox002Value: Integer = 0;
+  valueBoxEditMode: Boolean = False;
 
-  textBoxMultiText: PChar;
+  textBoxText: array[0..63] of Char = 'Text box';
+  textBoxEditMode: Boolean = False;
 
-  textBoxMultiEditMode: boolean = false;
+  textBoxMultiText: array[0..1023] of Char =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ' +
+    'tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, ' +
+    'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' + #10#10 +
+    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu ' +
+    'fugiat nulla pariatur.' + #10#10 +
+    'Thisisastringlongerthanexpectedwithoutspacestotestcharbreaksforthosecases,checkingifworkingasexpected.' + #10#10 +
+    'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt ' +
+    'mollit anim id est laborum.';
+  textBoxMultiEditMode: Boolean = False;
 
-  listViewScrollIndex: integer = 0;
-  listViewActive: integer = -1;
+  listViewScrollIndex: Integer = 0;
+  listViewActive: Integer = -1;
 
-  listViewExScrollIndex: integer = 0;
-  listViewExActive: integer = 2;
-  listViewExFocus: integer = -1;
+  listViewExScrollIndex: Integer = 0;
+  listViewExActive: Integer = 2;
+  listViewExFocus: Integer = -1;
 
-  // Динамический массив для 256 элементов
-  listViewExList: array of PChar;
+  listViewExList: array[0..7] of PAnsiChar = (
+    'This', 'is', 'a', 'list view', 'with', 'disable', 'elements', 'amazing!'
+  );
 
-  colorPickerValue: TColorB = (r: 230; g: 41; b: 55; a: 255);
-  sliderValue: single = 50.0;
-  sliderBarValue: single = 60;
-  progressValue: single = 0.1;
-  forceSquaredChecked: boolean = false;
-  alphaValue: single = 0.5;
-  visualStyleActive: integer = 0;
-  prevVisualStyleActive: integer = 0;
+  colorPickerValue: TColor;
 
-  toggleGroupActive: integer = 0;
-  toggleSliderActive: integer = 0;
+  sliderValue: Single = 50.0;
+  sliderBarValue: Single = 60.0;
+  progressValue: Single = 0.1;
+
+  forceSquaredChecked: Boolean = False;
+
+  alphaValue: Single = 0.5;
+
+  visualStyleActive: Integer = 0;
+  prevVisualStyleActive: Integer = 0;
+
+  toggleGroupActive: Integer = 0;
+  toggleSliderActive: Integer = 0;
 
   viewScroll: TVector2;
+  view: TRectangle;
 
-  exitWindow: boolean = false;
-  showMessageBox: boolean = false;
+  exitWindow: Boolean = False;
+  showMessageBox: Boolean = False;
 
-  textInput: Char;
-  textInputFileName: PChar;
-  showTextInputBox: boolean = false;
+  textInput: array[0..255] of Char;
+  textInputFileName: array[0..255] of Char;
+  showTextInputBox: Boolean = False;
 
-  alpha: single = 1.0;
+  alpha: Single = 1.0;
+
+  frameCounter: Integer = 0;
 
   droppedFiles: TFilePathList;
-  view: TRectangle;
+  btnActive: Integer;
   mouseCell: TVector2;
 
-  ExResult, BoxResult: integer;
-
-  Font: TFont;
-  i: integer;  // Счетчик для циклов
-
-// Процедура для создания списка из 256 элементов
-procedure CreateListViewItems;
-var
-  j: integer;
+// Вспомогательная функция: приводим Integer-результат raygui к Boolean
+function GuiClicked(Result_: Integer): Boolean; inline;
 begin
-  // Выделяем память под массив указателей
-  SetLength(listViewExList, LIST_VIEW_ITEMS_COUNT);
-
-  // Заполняем массив элементами
-  for j := 0 to LIST_VIEW_ITEMS_COUNT - 1 do
-  begin
-    // Выделяем память для каждой строки (максимум 64 символа)
-    GetMem(listViewExList[j], 64);
-
-    // Добавляем иконку #18# и номер элемента
-    // Можно использовать разные иконки для разных элементов
-    if j mod 10 = 0 then
-      StrPCopy(listViewExList[j], '#18#Item ' + IntToStr(j + 1))
-    else if j mod 5 = 0 then
-      StrPCopy(listViewExList[j], '#19#Element ' + IntToStr(j + 1))
-    else
-      StrPCopy(listViewExList[j], 'Item ' + IntToStr(j + 1));
-  end;
+  GuiClicked := Result_ <> 0;
 end;
 
-// Процедура для освобождения памяти списка
-procedure FreeListViewItems;
+// Вспомогательная функция: полный путь к .rgs-стилю
+function StylePath(const FileName: string): PAnsiChar;
 var
-  j: integer;
+  full: string;
 begin
-  for j := 0 to LIST_VIEW_ITEMS_COUNT - 1 do
-  begin
-    if listViewExList[j] <> nil then
-      FreeMem(listViewExList[j]);
-  end;
-  SetLength(listViewExList, 0);
+  full := GetApplicationDirectory() + STYLE_PATH + FileName;
+  StylePath := PAnsiChar(full);
 end;
 
 begin
-  // Initialization
-  //--------------------------------------------------------------------------------------
   InitWindow(screenWidth, screenHeight, 'raygui - controls test suite');
   SetExitKey(0);
+
+  colorPickerValue := RED;
+  viewScroll.Create(0, 0);
+  view.Create(0, 0, 0, 0);
+  mouseCell.Create(0, 0);
+
+  FillChar(textInput, SizeOf(textInput), 0);
+  FillChar(textInputFileName, SizeOf(textInputFileName), 0);
+
   SetTargetFPS(60);
-
-  // Выделяем память для текстовых полей
-  textBoxMultiText := StrAlloc(1025);
-  StrPCopy(textBoxMultiText, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' +#10+#10+
-          'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.' + #10 + #10 +
-          'Thisisastringlongerthanexpectedwithoutspacestotestcharbreaksforthosecases,checkingifworkingasexpected.' + #10 +#10 +
-          'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
-
-  textInputFileName := StrAlloc(256);
-  StrPCopy(textInputFileName, 'text.txt');
-
-  // Создаем список из 256 элементов
-  CreateListViewItems();
-
-  // Раскомментируйте для использования пользовательского шрифта
-  // Font := LoadUnicodeFont(16,'Cornerita_Regular.ttf');
-  // GuiSetFont(Font);
-  //--------------------------------------------------------------------------------------
 
   // Main game loop
   while not exitWindow do
@@ -181,202 +124,204 @@ begin
     if IsKeyPressed(KEY_ESCAPE) then
       showMessageBox := not showMessageBox;
 
-    if (IsKeyDown(KEY_LEFT_CONTROL) and IsKeyPressed(KEY_S)) then
-      showTextInputBox := true;
+    if IsKeyDown(KEY_LEFT_CONTROL) and IsKeyPressed(KEY_S) then
+      showTextInputBox := True;
 
     if IsFileDropped() then
     begin
       droppedFiles := LoadDroppedFiles();
-      if (droppedFiles.count > 0) and IsFileExtension(droppedFiles.paths[0], '.rgs') then
+
+      if (droppedFiles.count > 0) and
+         IsFileExtension(droppedFiles.paths[0], '.rgs') then
         GuiLoadStyle(droppedFiles.paths[0]);
+
       UnloadDroppedFiles(droppedFiles);
     end;
 
-    if alpha < 0.0 then
-      alpha := 0.0;
-    if IsKeyPressed(KEY_SPACE) then
-      alpha := 1.0;
+    if alpha < 0.0 then alpha := 0.0;
+    if IsKeyPressed(KEY_SPACE) then alpha := 1.0;
+
     GuiSetAlpha(alpha);
 
     if IsKeyPressed(KEY_LEFT) then
       progressValue := progressValue - 0.1
     else if IsKeyPressed(KEY_RIGHT) then
       progressValue := progressValue + 0.1;
-
-    if progressValue > 1.0 then
-      progressValue := 1.0
-    else if progressValue < 0.0 then
-      progressValue := 0.0;
+    if progressValue > 1.0 then progressValue := 1.0
+    else if progressValue < 0.0 then progressValue := 0.0;
 
     if visualStyleActive <> prevVisualStyleActive then
     begin
+      GuiLoadStyleDefault();
+
       case visualStyleActive of
-        0: GuiLoadStyleDefault;
-        1: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_jungle.rgs'));
-        2: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_lavanda.rgs'));
-        3: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_dark.rgs'));
-        4: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_bluish.rgs'));
-        5: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_cyber.rgs'));
-        6: GuiLoadStyle(PChar(GetApplicationDirectory + 'resources/gui_styles/style_terminal.rgs'));
+        0:  ; // Default style
+        1:  GuiLoadStyle(StylePath('style_jungle.rgs'));
+        2:  GuiLoadStyle(StylePath('style_lavanda.rgs'));
+        3:  GuiLoadStyle(StylePath('style_dark.rgs'));
+        4:  GuiLoadStyle(StylePath('style_bluish.rgs'));
+        5:  GuiLoadStyle(StylePath('style_cyber.rgs'));
+        6:  GuiLoadStyle(StylePath('style_terminal.rgs'));
+        7:  GuiLoadStyle(StylePath('style_candy.rgs'));
       end;
-      GuiSetStyle(UILABEL, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
+
+      GuiSetStyle(LABEL_, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
       prevVisualStyleActive := visualStyleActive;
     end;
 
     // Draw
-    //------------------------------------------------------------------------
     BeginDrawing();
-      ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
 
-      // raygui: controls drawing ---------------------------------------------
-      // Check all possible events that require GuiLock
-      if (dropDown000EditMode or dropDown001EditMode) then
-        GuiLock();
+    ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
 
-      // First GUI column
-      GuiCheckBox(RectangleCreate(25, 108, 15, 15), 'ТЕСТ ГУИ!', @forceSquaredChecked);
-      GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
+    // Check all possible events that require GuiLock
+    if dropDown000EditMode or dropDown001EditMode then GuiLock();
+    if showTextInputBox then GuiLock();
 
-      if GuiSpinner(RectangleCreate(25, 135, 125, 30), nil, @spinner001Value, 0, 100, spinnerEditMode) <> 0 then
-        spinnerEditMode := not spinnerEditMode;
+    GuiSetStyle(TABBAR, TAB_ITEMS_WIDTH, 140);
+    GuiTabBar(RectangleCreate(0, 8, GetScreenWidth(), 26),
+      '#176#TAB_01;#177#TAB_02;#178#TAB_03;#179#TAB_04;#180#TAB_05;#181#TAB_06',
+      nil, @tabActive);
 
-      if GuiValueBox(RectangleCreate(25, 175, 125, 30), nil, @valueBox002Value, 0, 100, valueBoxEditMode) <> 0 then
-        valueBoxEditMode := not valueBoxEditMode;
+    // First GUI column
+    GuiCheckBox(RectangleCreate(25, 108 + 20, 15, 15), 'FORCE CHECK!', @forceSquaredChecked);
 
-      GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
+    GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
+    if GuiClicked(GuiSpinner(RectangleCreate(25, 135 + 20, 125, 30), nil, @spinner001Value, 0, 100, spinnerEditMode)) then
+      spinnerEditMode := not spinnerEditMode;
+    if GuiClicked(GuiValueBox(RectangleCreate(25, 175 + 20, 125, 30), nil, @valueBox002Value, 0, 100, valueBoxEditMode)) then
+      valueBoxEditMode := not valueBoxEditMode;
+    GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
+    if GuiClicked(GuiTextBox(RectangleCreate(25, 215 + 20, 125, 30), textBoxText, 64, textBoxEditMode)) then
+      textBoxEditMode := not textBoxEditMode;
 
-      if GuiTextBox(RectangleCreate(25, 215, 125, 30), @textBoxText, 64, textBoxEditMode) <> 0 then
-        textBoxEditMode := not textBoxEditMode;
+    GuiSetStyle(BUTTON, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
 
-      GuiSetStyle(BUTTON, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
+    if GuiClicked(GuiButton(RectangleCreate(25, 255 + 20, 125, 30), GuiIconText(ICON_FILE_SAVE, 'Save File'))) then
+      showTextInputBox := True;
 
-      if GuiButton(RectangleCreate(25, 255, 125, 30), GuiIconText(ICON_FILE_SAVE, 'Save File')) <> 0 then
-        showTextInputBox := true;
+    GuiGroupBox(RectangleCreate(25, 310 + 20, 125, 150), 'STATES');
+    GuiSetState(STATE_NORMAL);   GuiButton(RectangleCreate(30, 320 + 20, 115, 30), 'NORMAL');
+    GuiSetState(STATE_FOCUSED);  GuiButton(RectangleCreate(30, 355 + 20, 115, 30), 'FOCUSED');
+    GuiSetState(STATE_PRESSED);  GuiButton(RectangleCreate(30, 390 + 20, 115, 30), '#15#PRESSED');
+    GuiSetState(STATE_DISABLED); GuiButton(RectangleCreate(30, 425 + 20, 115, 30), 'DISABLED');
+    GuiSetState(STATE_NORMAL);
 
-      GuiGroupBox(RectangleCreate(25, 310, 125, 150), 'STATES');
+    GuiSetStyle(COMBOBOX, COMBO_BUTTON_WIDTH, 40);
+    GuiComboBox(RectangleCreate(25, 480 + 20, 125, 30),
+      'default;Jungle;Lavanda;Dark;Bluish;Cyber;Terminal;Candy',
+      @visualStyleActive);
 
-      GuiSetState(STATE_NORMAL);
-      GuiButton(RectangleCreate(30, 320, 115, 30), 'NORMAL');
+    if dropDown000EditMode or dropDown001EditMode then GuiUnlock();
+    if showTextInputBox then GuiLock();
 
-      GuiSetState(STATE_FOCUSED);
-      GuiButton(RectangleCreate(30, 355, 115, 30), 'FOCUSED');
+    GuiSetStyle(DROPDOWNBOX, TEXT_PADDING, 4);
+    GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
+    if GuiClicked(GuiDropdownBox(RectangleCreate(25, 65 + 20, 125, 30),
+      '#01#ONE;#02#TWO;#03#THREE;#04#FOUR',
+      @dropdownBox001Active, dropDown001EditMode)) then
+      dropDown001EditMode := not dropDown001EditMode;
+    GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
+    GuiSetStyle(DROPDOWNBOX, TEXT_PADDING, 0);
 
-      GuiSetState(STATE_PRESSED);
-      GuiButton(RectangleCreate(30, 390, 115, 30), '#15#PRESSED');
+    if GuiClicked(GuiDropdownBox(RectangleCreate(25, 25 + 20, 125, 30),
+      '#27#ONE;#28#TWO;#29#THREE',
+      @dropdownBox000Active, dropDown000EditMode)) then
+      dropDown000EditMode := not dropDown000EditMode;
 
-      GuiSetState(STATE_DISABLED);
-      GuiButton(RectangleCreate(30, 425, 115, 30), 'DISABLED');
+    // Second GUI column
+    GuiListView(RectangleCreate(165, 25 + 20, 140, 124),
+      'Charmander;Bulbasaur;#18#Squirtle;Pikachu;Eevee;Pidgey',
+      @listViewScrollIndex, @listViewActive);
+    GuiListViewEx(RectangleCreate(165, 162 + 20, 140, 184),
+      @listViewExList[0], 8,
+      @listViewExScrollIndex, @listViewExActive, @listViewExFocus);
+    GuiSetStyle(LISTVIEW, LIST_ITEMS_BORDER_NORMAL, 0);
 
-      GuiSetState(STATE_NORMAL);
+    GuiToggleGroup(RectangleCreate(165, 360 + 20, 140, 24),
+      '#1#ONE'#10'#3#TWO'#10'#8#THREE'#10'#23#',
+      @toggleGroupActive);
+    GuiSetStyle(SLIDER, SLIDER_PADDING, 2);
+    GuiToggleSlider(RectangleCreate(165, 480 + 20, 140, 30),
+      'ON;OFF', @toggleSliderActive);
+    GuiSetStyle(SLIDER, SLIDER_PADDING, 0);
 
-      GuiComboBox(RectangleCreate(25, 480, 125, 30), 'default;Jungle;Lavanda;Dark;Bluish;Cyber;Terminal', @visualStyleActive);
+    // Third GUI column
+    GuiPanel(RectangleCreate(320, 25 + 20, 225, 140), 'Panel Info');
+    GuiColorPicker(RectangleCreate(320, 185 + 20, 196, 192), nil, @colorPickerValue);
 
-      // NOTE: GuiDropdownBox must draw after any other control that can be covered on unfolding
+    GuiSlider(RectangleCreate(355, 400 + 20, 165, 20), 'TEST',
+      TextFormat('%2.2f', sliderValue), @sliderValue, -50, 100);
+    GuiSliderBar(RectangleCreate(320, 430 + 20, 200, 20), nil,
+      TextFormat('%i', Trunc(sliderBarValue)), @sliderBarValue, 0, 100);
+
+    GuiProgressBar(RectangleCreate(320, 460 + 20, 200, 20), nil,
+      TextFormat('%i%%', Trunc(progressValue * 100)),
+      @progressValue, 0.0, 1.0);
+    GuiEnable();
+
+    GuiScrollPanel(RectangleCreate(560, 25 + 20, 102, 354), nil,
+      RectangleCreate(560, 25, 300, 1200), @viewScroll, @view);
+
+    GuiGrid(RectangleCreate(560, 25 + 180 + 195 + 20, 100, 120), nil,
+      20, 3, @mouseCell);
+
+    GuiColorBarAlpha(RectangleCreate(320, 490 + 20, 200, 30), nil, @alphaValue);
+
+    GuiSetStyle(DEFAULT, TEXT_ALIGNMENT_VERTICAL, TEXT_ALIGN_TOP);
+    GuiSetStyle(DEFAULT, TEXT_WRAP_MODE, TEXT_WRAP_WORD);
+    if GuiClicked(GuiTextBox(RectangleCreate(678, 25 + 20, 258, 492), textBoxMultiText, 1024, textBoxMultiEditMode)) then
+      textBoxMultiEditMode := not textBoxMultiEditMode;
+    GuiSetStyle(DEFAULT, TEXT_WRAP_MODE, TEXT_WRAP_NONE);
+    GuiSetStyle(DEFAULT, TEXT_ALIGNMENT_VERTICAL, TEXT_ALIGN_MIDDLE);
+
+    GuiSetStyle(DEFAULT, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
+    GuiStatusBar(RectangleCreate(0, GetScreenHeight() - 20, GetScreenWidth(), 20),
+      'This is a status bar');
+    GuiSetStyle(DEFAULT, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
+
+    if showMessageBox then
+    begin
+      DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, 0.8));
+      btnActive := -1;
+      GuiMessageBox(
+        RectangleCreate(GetScreenWidth() / 2 - 125, GetScreenHeight() / 2 - 50, 250, 100),
+        GuiIconText(ICON_EXIT, 'Close Window'),
+        'Do you really want to exit?', 'Yes;No', @btnActive);
+
+      if (btnActive = 0) or (btnActive = 2) then
+        showMessageBox := False
+      else if btnActive = 1 then
+        exitWindow := True;
+    end;
+
+    if showTextInputBox then
+    begin
       GuiUnlock();
-      GuiSetStyle(DROPDOWNBOX, TEXT_PADDING, 4);
-      GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
 
-      if GuiDropdownBox(RectangleCreate(25, 65, 125, 30), '#01#ONE;#02#TWO;#03#THREE;#04#FOUR',
-         @dropdownBox001Active, dropDown001EditMode) <> 0 then
-        dropDown001EditMode := not dropDown001EditMode;
+      DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, 0.8));
+      btnActive := -1;
+      GuiTextInputBox(
+        RectangleCreate(GetScreenWidth() / 2 - 120, GetScreenHeight() / 2 - 60, 240, 140),
+        GuiIconText(ICON_FILE_SAVE, 'Save file as...'),
+        'Introduce output file name:', textInput, 255, 'Ok;Cancel',
+        @btnActive, nil);
 
-      GuiSetStyle(DROPDOWNBOX, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
-      GuiSetStyle(DROPDOWNBOX, TEXT_PADDING, 0);
-
-      if GuiDropdownBox(RectangleCreate(25, 25, 125, 30), 'ONE;TWO;THREE', @dropdownBox000Active, dropDown000EditMode) <> 0 then
-        dropDown000EditMode := not dropDown000EditMode;
-
-      // Second GUI column
-      GuiListView(RectangleCreate(165, 25, 140, 124), 'Charmander;Bulbasaur;#18#Squirtel;Pikachu;Eevee;Pidgey',
-        @listViewScrollIndex, @listViewActive);
-
-      // GuiListViewEx с 256 элементами
-     { GuiListViewEx(RectangleCreate(165, 162, 140, 184),
-                    listViewExList,
-                    LIST_VIEW_ITEMS_COUNT,
-                    @listViewExScrollIndex,
-                    @listViewExActive,
-                    @listViewExFocus); }
-
-      GuiToggleGroup(RectangleCreate(165, 360, 140, 24), PChar('#1#ONE' + #10 + '#3#TWO' + #10 + '#8#THREE'), @toggleGroupActive);
-
-      GuiSetStyle(SLIDER, SLIDER_PADDING, 2);
-      GuiToggleSlider(RectangleCreate(165, 480, 140, 30), 'ON;OFF', @toggleSliderActive);
-      GuiSetStyle(SLIDER, SLIDER_PADDING, 0);
-
-      // Third GUI column
-      GuiPanel(RectangleCreate(320, 25, 225, 140), 'Panel Info');
-      GuiColorPicker(RectangleCreate(320, 185, 196, 192), nil, @colorPickerValue);
-
-      GuiSlider(RectangleCreate(355, 400, 165, 20), 'TEST', TextFormat('%2.2f', sliderValue), @sliderValue, -50, 100);
-
-      GuiSliderBar(RectangleCreate(320, 430, 200, 20), nil, TextFormat('%i', Trunc(sliderBarValue)), @sliderBarValue, 0, 100);
-
-      GuiProgressBar(RectangleCreate(320, 460, 200, 20), nil, TextFormat('%i%%', Trunc(progressValue * 200)), @progressValue, 0.0, 1.0);
-      GuiEnable();
-
-      // NOTE: View rectangle could be used to perform some scissor test
-      GuiScrollPanel(RectangleCreate(560, 25, 102, 354), nil, RectangleCreate(560, 25, 300, 1200), @viewScroll, @view);
-
-      GuiGrid(RectangleCreate(560, 25 + 180 + 195, 100, 120), nil, 20, 3, @mouseCell);
-
-      GuiColorBarAlpha(RectangleCreate(320, 490, 200, 30), nil, @alphaValue);
-
-      GuiSetStyle(DEFAULT, TEXT_ALIGNMENT_VERTICAL, TEXT_ALIGN_TOP);
-      GuiSetStyle(DEFAULT, TEXT_WRAP_MODE, TEXT_WRAP_WORD);
-      if GuiTextBox(RectangleCreate(678, 25, 258, 492), textBoxMultiText, 1024, textBoxMultiEditMode) <> 0 then
-        textBoxMultiEditMode := not textBoxMultiEditMode;
-      GuiSetStyle(DEFAULT, TEXT_WRAP_MODE, TEXT_WRAP_NONE);
-      GuiSetStyle(DEFAULT, TEXT_ALIGNMENT_VERTICAL, TEXT_ALIGN_MIDDLE);
-
-      GuiSetStyle(DEFAULT, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
-      GuiStatusBar(RectangleCreate(0, GetScreenHeight() - 20, GetScreenWidth(), 20), 'This is a status bar - 256 items in ListViewEx!');
-      GuiSetStyle(DEFAULT, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
-
-      // MessageBox
-      if showMessageBox then
+      if btnActive = 1 then
       begin
-        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, 0.8));
-        ExResult := GuiMessageBox(RectangleCreate(GetScreenWidth() / 2 - 125, GetScreenHeight() / 2 - 50, 250, 100),
-          GuiIconText(ICON_EXIT, 'Close Window'), 'Do you really want to exit?', 'Yes;No');
-
-        if (ExResult = 0) or (ExResult = 2) then
-          showMessageBox := false
-        else if (ExResult = 1) then
-          exitWindow := true;
+        // TODO: Validate textInput value and save
+        TextCopy(textInputFileName, textInput);
       end;
 
-      // TextInputBox
-      if showTextInputBox then
+      if (btnActive = 0) or (btnActive = 1) or (btnActive = 2) then
       begin
-        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, 0.8));
-        BoxResult := GuiTextInputBox(RectangleCreate(GetScreenWidth() / 2 - 120, GetScreenHeight() / 2 - 60, 240, 140),
-          GuiIconText(ICON_FILE_SAVE, 'Save file as...'), 'Introduce output file name:', 'Ok;Cancel',
-          @textInput, 64, nil);
-
-        if BoxResult = 1 then
-        begin
-          // TODO: Validate textInput value and save
-          TextCopy(textInputFileName, @textInput);
-        end;
-
-        if (BoxResult = 0) or (BoxResult = 1) or (BoxResult = 2) then
-        begin
-          showTextInputBox := false;
-          StrPCopy(textInputFileName, 'text.txt');
-        end;
+        showTextInputBox := False;
+        TextCopy(textInput, '');
       end;
+    end;
 
     EndDrawing();
   end;
 
-  // De-Initialization
-  //----------------------------------------------------------------------------
-  // Освобождаем память
-  FreeListViewItems();
-  StrDispose(textBoxMultiText);
-  StrDispose(textInputFileName);
-
   CloseWindow();
-  //----------------------------------------------------------------------------
 end.

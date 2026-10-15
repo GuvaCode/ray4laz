@@ -166,9 +166,9 @@ begin
       DrawCircleV(point, 4.0, BLACK);
 
       // Draw GUI controls
-      GuiSetStyle(UILABEL, TEXT_COLOR_NORMAL, ColorToInt(GRAY));
+      GuiSetStyle(LABEL_, TEXT_COLOR_NORMAL, ColorToInt(GRAY));
       GuiToggle(RectangleCreate(640, 70, 120, 20), 'Pause', @pause);
-      GuiSetStyle(UILABEL, TEXT_COLOR_NORMAL, ColorToInt(LIME));
+      GuiSetStyle(LABEL_, TEXT_COLOR_NORMAL, ColorToInt(LIME));
       GuiSliderBar(RectangleCreate(640, 40, 120, 20), 'Angle', PChar(Format('%.0f' + #176, [angle])), @angle, 0.0, 360.0);
 
       // Angle values panel
