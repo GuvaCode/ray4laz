@@ -1,6 +1,6 @@
 {********************************************************************************************
 *                                                                                           *
-*    5.0 - dev (2026)                                                                       *
+*    5.1 - dev (2026)                                                                       *
 *                                                                                           *
 *   DESCRIPTION:                                                                            *
 *                                                                                           *
@@ -29,9 +29,9 @@ uses
 
 const
   RAYGUI_VERSION_MAJOR = 5;
-  RAYGUI_VERSION_MINOR = 0;
+  RAYGUI_VERSION_MINOR = 1;
   RAYGUI_VERSION_PATCH = 0;
-  RAYGUI_VERSION = '5.0';
+  RAYGUI_VERSION = '5.1';
 
 //----------------------------------------------------------------------------------
 // Defines and Macros (translated for Pascal)
@@ -526,6 +526,7 @@ const
   DROPDOWN_ITEMS_SPACING = 17;     // DropdownBox items separation
   DROPDOWN_ARROW_HIDDEN = 18;      // DropdownBox arrow hidden
   DROPDOWN_ROLL_UP = 19;           // DropdownBox roll up flag (default rolls down)
+  DROPDOWN_MAX_HEIGHT =20;         // DropdownBox max height, using scrollbar if required, 0-No limit
 
 // TextBox/TextBoxMulti/ValueBox/Spinner
 type

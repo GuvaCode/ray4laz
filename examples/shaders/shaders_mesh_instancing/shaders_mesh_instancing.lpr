@@ -125,7 +125,13 @@ begin
     end;
   // De-Initialization
   //--------------------------------------------------------------------------------------
-  CloseWindow();        // Close window and OpenGL context
+
+
+    transforms := nil;    // Free transforms
+    UnloadMaterial(matInstances);    // Also unloads the instancing shader
+    UnloadMaterial(matDefault);      // Unload default material
+    UnloadMesh(cube);                // Unload cube mesh
+   CloseWindow();        // Close window and OpenGL context
   //--------------------------------------------------------------------------------------
 end.
 

@@ -1,5 +1,5 @@
 {
-raylib ver 6.0
+raylib ver 6.2
 A simple and easy-to-use library to enjoy videogames programming ( www.raylib.com )
 Pascal header by Gunko Vadim (@guvacode)
 }
@@ -66,9 +66,7 @@ const
      TVector2 = record
          x : single; // Vector x component
          y : single; // Vector y component
-         //{$IFDEF ADVANCEDRECORDS}
          procedure Create(aX, aY: single);
-         //{$ENDIF}
        end;
      TVector2Data = array[0..1] of Single;
 
@@ -228,7 +226,7 @@ const
      { TCamera2D }
 
      TCamera2D = record
-         offset   : TVector2; // Camera offset (screen space offset from window origin)
+         offset   : TVector2; // Camera offset (screen space offset from window origin, unscaled by DPI, real pixel size)
          target   : TVector2; // Camera target (world space target point that is mapped to screen space offset)
          rotation : single;   // Camera rotation in degrees (pivots around target)
          zoom     : single;   // Camera zoom (scaling around target), must not be set to 0, set to 1.0f for no scale
@@ -308,7 +306,7 @@ const
      PModelSkeleton = ^TModelSkeleton;
      TModelSkeleton = record
          boneCount : LongWord;          // Number of bones
-         BoneInfo  : PBoneInfo;        // Bones information (skeleton)
+         bones     : PBoneInfo;        // Bones information (skeleton)
          bindPose  : TModelAnimPose;   // Bones base transformation (Transform[])
        end;
 
@@ -1170,7 +1168,7 @@ function GetRandomValue(min, max: Integer): Integer; cdecl; external {$IFNDEF RA
 
 {Takes a screenshot of current screen (filename extension defines format)}
 procedure TakeScreenshot(const fileName: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TakeScreenshot';
-{Setup init configuration flags (view FLAGS)}
+{Set init configuration flags (view FLAGS)}
 procedure SetConfigFlags(flags: TConfigFlags); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'SetConfigFlags';
 {Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)}
 procedure TraceLog(logLevel: TTraceLogLevel;const text: PAnsiChar); cdecl; varargs; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'TraceLog';
@@ -1572,7 +1570,7 @@ procedure DrawRingLinesEx(center: TVector2; innerRadius, outerRadius, startAngle
 (* Splines drawing functions *)
 
 {Draw spline: Linear, minimum 2 points}
-procedure DrawSplineLinear(const points: PVector3; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineLinear';
+procedure DrawSplineLinear(const points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineLinear';
 {Draw spline: B-Spline, minimum 4 points}
 procedure DrawSplineBasis(const points: PVector2; pointCount: Integer; thick: Single; color: TColorB); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'DrawSplineBasis';
 {Draw spline: Catmull-Rom, minimum 4 points}
@@ -1925,7 +1923,7 @@ function LoadFontFromMemory(const fileType: PAnsiChar; const fileData: PByte; da
 {Check if a font is valid (font data loaded, WARNING: GPU texture not checked)}
 function IsFontValid(font: TFont): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'IsFontValid';
 {Load font data for further uses}
-function LoadFontData(const fileData: PByte; dataSize, fontSize: Integer; const codepoints: PInteger; codepointCount, _type: Integer): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontData';
+function LoadFontData(const fileData: PByte; dataSize, fontSize: Integer; const codepoints: PInteger; codepointCount, _type: Integer; glyphCount: PInteger): PGlyphInfo; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'LoadFontData';
 {Generate image font atlas using chars info}
 function GenImageFontAtlas(const glyphs: PGlyphInfo; glyphRecs: PPRectangle; glyphCount, fontSize, padding, packMethod: Integer): TImage; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'GenImageFontAtlas';
 {Unload font chars info data (RAM)}
@@ -1933,7 +1931,7 @@ procedure UnloadFontData(glyphs: PGlyphInfo; glyphCount: Integer); cdecl; extern
 {Unload Font from GPU memory (VRAM)}
 procedure UnloadFont(font: TFont); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'UnloadFont';
 {Export font as code file, returns true on success}
-procedure ExportFontAsCode(font: TFont; const fileName: PAnsiChar); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportFontAsCode';
+function ExportFontAsCode(font: TFont; const fileName: PAnsiChar): Boolean; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'ExportFontAsCode';
 
 (* Text drawing functions *)
 
@@ -2478,8 +2476,8 @@ uses
      {$linklib X11}
     {$ENDIF}
     //  {$linklib libXrandr}
-   //   {$linklib libXinerama}
-  //    {$linklib libXi}
+   // $linklib libXinerama}
+  //  {$linklib libXi}
   //  {$linklib libXcursor}
   //  {$linklib libGL}
   //  {$linklib libm}

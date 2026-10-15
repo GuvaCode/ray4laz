@@ -2,7 +2,7 @@ program textures_magnifying_glass;
 
 {$mode objfpc}{$H+}
 
-uses cmem, raylib, rlgl;
+uses cmem, raylib, raymath, rlgl;
 
 const
   screenWidth = 800;
@@ -30,7 +30,7 @@ begin
   magnifiedWorld := LoadRenderTexture(256, 256);
 
   camera.zoom := 2;
-  camera.offset := Vector2Create(128, 128);
+  camera.offset := Vector2Multiply(Vector2Create( 128, 128 ), GetWindowScaleDPI());
   camera.target := Vector2Create(0, 0);
   camera.rotation := 0;
 

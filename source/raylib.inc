@@ -1,7 +1,7 @@
-
+{$MACRO ON}
 {.$DEFINE RAY_DYNAMIC}
 
-// FPC < 3.3.1 -> динамическая линковка
+// FPC < 3.3.1 динамическая линковка
 {$IF DEFINED(FPC_FULLVERSION) AND (FPC_FULLVERSION < 30301)}
   {$DEFINE RAY_DYNAMIC}
 {$ENDIF}

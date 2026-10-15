@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="12"/>
+    <Version Value="13"/>
     <General>
       <Flags>
         <MainUnitHasCreateFormStatements Value="False"/>
@@ -31,7 +31,6 @@
     <Units>
       <Unit>
         <Filename Value="text_font_loading.lpr"/>
-        <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
   </ProjectOptions>
@@ -49,6 +48,9 @@
         <DebugInfoType Value="dsDwarf3"/>
       </Debugging>
     </Linking>
+    <Other>
+      <CustomOptions Value="-k&quot;-rpath=$ORIGIN&quot;"/>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions>

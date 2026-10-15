@@ -161,6 +161,9 @@ begin
   // De-Initialization
   UnloadMesh(mesh);       // Unload the mesh
   UnloadShader(shader);   // Unload shader
+      UnloadTexture(texture); // Unload texture
+    UnloadTexture(light);   // Unload texture
+    UnloadRenderTexture(lightmap); // Unload lightmap render texture
 
   CloseWindow();        // Close window and OpenGL context
 end.

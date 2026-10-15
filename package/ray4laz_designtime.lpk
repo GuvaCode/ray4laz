@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="5">
+  <Package Version="6">
     <Name Value="ray4laz_designtime"/>
     <Type Value="RunAndDesignTime"/>
     <Author Value="Gunko Vadim guvacode@gmail.com"/>
@@ -12,7 +12,7 @@
       </SearchPaths>
     </CompilerOptions>
     <Description Value="Desing time package for ray4laz "/>
-    <License Value="  Copyright (C) 2020-2025 Gunko Vadim
+    <License Value="  Copyright (C) 2020-2026 Gunko Vadim
 
   This software is provided &apos;as-is&apos;, without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -30,50 +30,49 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 "/>
-    <Version Major="6"/>
-    <Files Count="4">
-      <Item1>
+    <Version Major="6" Minor="2"/>
+    <Files>
+      <Item>
         <Filename Value="ray4laz_simpleprj.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ray4laz_simplePrj"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Filename Value="ray4laz_misc.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ray4laz_misc"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <Filename Value="ray4laz_customappprj.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ray4laz_customAppPrj"/>
-      </Item3>
-      <Item4>
+      </Item>
+      <Item>
         <Filename Value="ushadertool.pas"/>
         <UnitName Value="uShaderTool"/>
-      </Item4>
+      </Item>
     </Files>
-    <CompatibilityMode Value="True"/>
     <i18n>
       <EnableI18N Value="True"/>
       <OutDir Value="lang"/>
       <EnableI18NForLFM Value="True"/>
     </i18n>
-    <RequiredPkgs Count="5">
-      <Item1>
+    <RequiredPkgs>
+      <Item>
         <PackageName Value="SynEditDsgn"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <PackageName Value="CodeTools"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <PackageName Value="ray4laz"/>
-      </Item3>
-      <Item4>
+      </Item>
+      <Item>
         <PackageName Value="IDEIntf"/>
-      </Item4>
-      <Item5>
+      </Item>
+      <Item>
         <PackageName Value="FCL"/>
-      </Item5>
+      </Item>
     </RequiredPkgs>
     <UsageOptions>
       <CustomOptions Value="-dUseCThreads"/>

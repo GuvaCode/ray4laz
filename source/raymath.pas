@@ -220,6 +220,7 @@ function Vector3Barycenter(p, a, b, c : TVector3): TVector3; cdecl; external {$I
 function Vector3Unproject(source:TVector3; projection:TMatrix; view:TMatrix):TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Unproject';
 { Returns Vector3 as float array }
 function Vector3ToFloatV(v : TVector3): TFloat3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3ToFloatV';
+
 { Invert the given vector }
 function Vector3Invert(v: TVector3): TVector3; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'Vector3Invert';
 { Clamp the components of the vector between min and max values specified by the given vectors }
@@ -372,7 +373,7 @@ function QuaternionToMatrix(q : TQuaternion): TMatrix; cdecl; external {$IFNDEF 
 { Returns rotation quaternion for an angle and axis }
 function QuaternionFromAxisAngle(axis : TVector3; angle : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionFromAxisAngle';
 { Returns the rotation angle and axis for a given quaternion }
-procedure QuaternionToAxisAngle(q : TQuaternion; uutAxis : PVector3; outAngle : PSingle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionToAxisAngle';
+procedure QuaternionToAxisAngle(q : TQuaternion; outAxis : PVector3; outAngle : PSingle); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionToAxisAngle';
 { Returns the quaternion equivalent to Euler angles }
 function QuaternionFromEuler(pitch, yaw, roll : Single): TQuaternion; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'QuaternionFromEuler';
 { Return the Euler angles equivalent to quaternion (roll, pitch, yaw) }

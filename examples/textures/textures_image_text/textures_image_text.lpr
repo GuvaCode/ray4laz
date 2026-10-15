@@ -19,6 +19,9 @@ var
   Font: TFont;
   Position: TVector2;
   ShowFont: Boolean;
+  codepointCount: Integer;
+  codepoints: PInteger;
+  scale, atlasRatio, screenRatio, width, height: Single;
 
 begin
   // Initialization
@@ -26,8 +29,18 @@ begin
 
   Parrots := LoadImage(PChar(GetApplicationDirectory + 'resources/parrots.png')); // Load image in CPU memory (RAM)
 
+
+
+  // When no codepoints are provided, LoadFontEx() loads a default set of codepoints
+  // This set includes '@', which "KAISG.ttf" doesn't have a glyph for, causing a warning to be logged
+  // We avoid this by just excluding it from the list of codepoints we load
+  codepointCount := 0;
+  codepoints := LoadCodepoints(' !"#$%&''()*+,-./0123456789:;<=>?ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~', @codepointCount);
+
   // TTF Font loading with custom generation parameters
-  Font := LoadFontEx(PChar(GetApplicationDirectory + 'resources/KAISG.ttf'), 64, nil, 0);
+  font := LoadFontEx('resources/KAISG.ttf', 64, codepoints, codepointCount);
+  UnloadCodepoints(codepoints);
+
 
   // Draw over image using custom font
   ImageDrawTextEx(@Parrots, font, '[Parrots font drawing]', Vector2Create(20.0, 20.0), Font.BaseSize, 0.0, RED);
@@ -66,7 +79,21 @@ begin
         DrawTextEx(Font, '[Parrots font drawing]',
           Vector2Create(Position.X + 20, Position.Y + 20 + 280), Font.BaseSize, 0.0, WHITE);
       end else
-        DrawTexture(Font.Texture, ScreenWidth div 2 - Font.Texture.Width div 2, 50, BLACK);
+      begin
+        // Make the font atlas texture fit the screen, so we can see the whole thing
+        scale := 1.0;
+
+        atlasRatio := font.texture.width/font.texture.height;
+        screenRatio := screenWidth/screenHeight;
+
+          if (atlasRatio >= screenRatio) then scale := screenWidth/font.texture.width
+          else scale := screenHeight/font.texture.height;
+
+          width := font.texture.width * scale;
+          height := font.texture.height * scale;
+
+          DrawTextureEx(font.texture, Vector2Create((screenWidth - width)/2, (screenHeight - height)/2) , 0, scale, BLACK);
+      end;
 
       DrawText('PRESS SPACE to SHOW FONT ATLAS USED', 290, 420, 10, DARKGRAY);
 

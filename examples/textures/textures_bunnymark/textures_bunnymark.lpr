@@ -33,6 +33,7 @@ begin
 
   bunniesCount := 0;
   paused := False;
+  SetTargetFPS(0);               // Set our game to run with an uncapped framerate
 
   // Main game loop
   while not WindowShouldClose() do

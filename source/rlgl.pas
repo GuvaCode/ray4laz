@@ -812,7 +812,7 @@ procedure rlComputeShaderDispatch(groupX, groupY, groupZ: LongWord); cdecl; exte
 (* Shader buffer storage object management (ssbo) *)
 
 {Load shader storage buffer object (SSBO)}
-function rlLoadShaderBuffer(size: LongWord; data: Pointer; usageHint: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderBuffer';
+function rlLoadShaderBuffer(size: LongWord; const data: Pointer; usageHint: Integer): LongWord; cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlLoadShaderBuffer';
 {Unload shader storage buffer object (SSBO)}
 procedure rlUnloadShaderBuffer(ssboId: LongWord); cdecl; external {$IFNDEF RAY_STATIC}cDllName{$ENDIF} name 'rlUnloadShaderBuffer';
 {Update SSBO buffer data}
